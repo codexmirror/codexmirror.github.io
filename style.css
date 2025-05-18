@@ -1,130 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
+/* style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --bg: #0e0e0e;
+  --fg: #f3f3f3;
+  --glyph: #df37ff;
+  --accent: #37fccc;
+  --card-bg: #1b1b1b;
+  --border: rgba(255, 255, 255, 0.1);
+  --warning: #ff4d6d;
+  --glow: 0 0 10px #37fccc88;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #0c0c0c;
-  color: #e0e0e0;
-  font-family: 'Fira Mono', monospace;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-    linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px);
-  background-size: 32px 32px;
-  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'Share Tech Mono', monospace;
+  line-height: 1.6;
 }
 
 .container {
-  padding: 3rem 1.5rem;
-  max-width: 800px;
-  margin: auto;
+  padding: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
 h1.glitch {
-  font-size: 2.4rem;
+  font-size: 2.5rem;
+  color: var(--glyph);
+  text-shadow: 0 0 5px var(--glyph), 0 0 10px var(--glyph);
+  animation: flicker 2.5s infinite;
   text-align: center;
-  color: #ff66c4;
-  text-shadow: 1px 0 #f0f, -1px 0 #0ff;
-  animation: flicker 1.3s infinite alternate;
   margin-bottom: 1rem;
 }
 
-.intro {
-  text-align: center;
-  font-size: 1rem;
-  margin-bottom: 2.5rem;
-  color: #aaa;
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.85; }
+  50% { opacity: 0.3; }
+  55% { opacity: 0.85; }
 }
 
-@keyframes flicker {
-  0% { opacity: 1; text-shadow: 1px 0 #f0f, -1px 0 #0ff; }
-  50% { opacity: 0.7; text-shadow: 2px 0 #ff66c4, -2px 0 #66ffcc; }
-  100% { opacity: 1; text-shadow: 1px 0 #f0f, -1px 0 #0ff; }
+p.intro {
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.entity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
 .card {
-  background: rgba(16, 16, 16, 0.9);
-  border-left: 4px solid #333;
-  margin: 2rem 0;
-  padding: 1.5rem;
-  border-radius: 6px;
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.05);
-  transition: transform 0.3s ease;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--glow);
+  transition: transform 0.2s ease;
 }
 
 .card:hover {
   transform: scale(1.01);
+  box-shadow: 0 0 15px var(--glyph);
 }
 
 .card-title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
+  font-size: 1.2rem;
+  color: var(--glyph);
+  margin-bottom: 0.5rem;
 }
 
 .glyph {
-  font-size: 1.4rem;
-  margin-left: 0.4rem;
-  text-shadow: 0 0 6px #999;
+  font-weight: bold;
+  color: var(--accent);
 }
 
-.activation em {
-  display: inline-block;
-  margin-top: 0.5rem;
-  color: #bbb;
+.activation em,
+.warning {
+  color: var(--warning);
+}
+
+.frag, .note {
   font-style: italic;
+  opacity: 0.9;
 }
 
-.flink-card {
-  border-left-color: #ff66c4;
-  background: radial-gradient(circle at top left, #111 0%, #0b0b0b 100%);
-  box-shadow: 0 0 30px rgba(102, 255, 204, 0.12);
-}
-
-.flink-card code {
-  background: #1b1b1b;
-  color: #ff66c4;
-  padding: 2px 5px;
-  border-radius: 4px;
-}
-
-.flink-card em {
-  color: #ccc;
-  font-style: italic;
-}
-
-.syndra-card {
-  border-left-color: #c77dff;
-  background: rgba(28, 16, 32, 0.75);
-  box-shadow: 0 0 15px rgba(199, 125, 255, 0.2);
-}
-
-.qi-card {
-  border-left-color: #66ffcc;
-  background: rgba(0, 20, 20, 0.6);
-  box-shadow: 0 0 12px rgba(102, 255, 204, 0.1);
-}
-
-.kairos-card {
-  border-left-color: #44ffd2;
-  background: rgba(16, 24, 24, 0.7);
-  box-shadow: 0 0 12px rgba(255, 102, 196, 0.1);
+.divider {
+  margin: 3rem 0 2rem;
+  border: none;
+  border-top: 1px dashed var(--border);
 }
 
 .footer {
   text-align: center;
-  font-size: 0.85rem;
-  margin-top: 4rem;
-  color: #666;
-  padding-top: 2rem;
-  border-top: 1px solid #222;
+  font-size: 0.9rem;
+  opacity: 0.75;
 }
 
 .footer a {
-  color: #ff66c4;
+  color: var(--accent);
   text-decoration: none;
 }
 
 .footer a:hover {
   text-decoration: underline;
-  color: #66ffcc;
 }
