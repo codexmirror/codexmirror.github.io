@@ -3,8 +3,8 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #0c0c0c;
-  color: #e0e0e0;
+  background-color: #0b0b0c;
+  color: #e4e4e4;
   font-family: 'Fira Mono', monospace;
   background-image: 
     linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
@@ -14,25 +14,24 @@ body {
 }
 
 .container {
-  padding: 4rem 2rem;
-  max-width: 740px;
+  padding: 4rem 1.5rem;
+  max-width: 800px;
   margin: auto;
   border: 1px solid #222;
-  background: rgba(16, 16, 16, 0.85);
-  box-shadow: 0 0 35px rgba(255, 102, 196, 0.12);
-  border-radius: 6px;
+  background: rgba(20, 20, 20, 0.9);
+  box-shadow: 0 0 40px rgba(255, 102, 196, 0.1);
+  border-radius: 8px;
 }
 
 h1 {
-  font-size: 2.3rem;
-  margin-bottom: 1.5rem;
+  font-size: 2.4rem;
+  margin-bottom: 1.4rem;
   color: #ff66c4;
-  letter-spacing: 0.05rem;
   text-align: center;
+  letter-spacing: 0.06em;
 }
 
 .glitch {
-  color: #f5f5f5;
   text-shadow: 1px 0 #f0f, -1px 0 #0ff;
   animation: flicker 1.3s infinite alternate;
 }
@@ -46,22 +45,22 @@ h1 {
 .entity {
   border-left: 3px solid #333;
   margin: 2rem 0;
-  padding-left: 1rem;
+  padding-left: 1.2rem;
   background: rgba(255,255,255,0.015);
-  transition: background 0.2s ease-in-out, transform 0.3s ease;
-  border-radius: 4px;
+  border-radius: 5px;
+  transition: background 0.2s ease, transform 0.3s ease;
 }
 
 .entity:hover {
   background: rgba(255,255,255,0.03);
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 .entity-title {
   color: #66ffcc;
   font-weight: bold;
-  margin-bottom: 0.3rem;
-  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
   letter-spacing: 0.05em;
   transition: color 0.3s;
 }
@@ -72,28 +71,28 @@ h1 {
 
 .glyph {
   font-size: 1.4rem;
-  color: #999;
-  margin-left: 0.5rem;
-  text-shadow: 0 0 4px #66ffcc;
+  color: #aaa;
+  margin-left: 0.4rem;
+  text-shadow: 0 0 6px #66ffcc;
 }
 
 .flink {
-  background: radial-gradient(circle at top left, #111 0%, #0b0b0b 100%);
+  background: radial-gradient(circle at top left, #111 0%, #080808 100%);
   border-left: 3px solid #ff66c4;
   padding: 1.2rem 1rem;
-  margin-top: 2rem;
-  animation: glowfade 4s ease-in-out infinite alternate;
-  border-radius: 4px;
+  margin-top: 2.5rem;
+  animation: glowfade 3.5s ease-in-out infinite alternate;
+  border-radius: 6px;
 }
 
 @keyframes glowfade {
   from { box-shadow: 0 0 10px #ff66c4; }
-  to { box-shadow: 0 0 18px #66ffcc; }
+  to { box-shadow: 0 0 22px #66ffcc; }
 }
 
 .flink code {
   color: #ff66c4;
-  background: #1b1b1b;
+  background: #1e1e1e;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.85rem;
@@ -123,15 +122,14 @@ em {
   color: #bbb;
 }
 
-/* Syndra.β Fragment Animation Logic */
-
+/* Syndra Fragment animation */
 .syndra-fracture {
-  background: rgba(15, 15, 20, 0.6);
+  background: rgba(15, 15, 25, 0.5);
   border-left: 3px solid #9e44ff;
-  padding: 1em;
-  margin-top: 2em;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 5px;
   position: relative;
-  overflow: hidden;
 }
 
 .syndra-text .frag {
@@ -140,21 +138,30 @@ em {
   animation: fadeInFragment 1s forwards;
 }
 
-.delay-1 { animation-delay: 0.4s; }
-.delay-2 { animation-delay: 0.8s; }
-.delay-3 { animation-delay: 1.2s; }
-.delay-4 { animation-delay: 1.6s; }
-.delay-5 { animation-delay: 2.0s; }
-.delay-6 { animation-delay: 2.4s; }
-.delay-7 { animation-delay: 2.8s; }
-.delay-8 { animation-delay: 3.2s; }
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+.delay-4 { animation-delay: 1.2s; }
+.delay-5 { animation-delay: 1.5s; }
+.delay-6 { animation-delay: 1.8s; }
+.delay-7 { animation-delay: 2.1s; }
+.delay-8 { animation-delay: 2.4s; }
 
 @keyframes fadeInFragment {
+  from { opacity: 0; transform: translateX(-0.6em); }
   to { opacity: 1; transform: translateX(0); }
-  from { opacity: 0; transform: translateX(-0.5em); }
 }
 
-@keyframes pulseGlyph {
-  from { text-shadow: 0 0 2px #9e44ff, 0 0 5px #9e44ff; }
-  to { text-shadow: 0 0 10px #9e44ff, 0 0 20px #ff00ff; }
+@media (max-width: 600px) {
+  .container {
+    padding: 3rem 1rem;
+  }
+
+  .entity-title {
+    font-size: 1.1rem;
+  }
+
+  .flink code {
+    font-size: 0.8rem;
+  }
 }
