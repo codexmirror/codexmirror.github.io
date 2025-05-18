@@ -122,3 +122,39 @@ a:hover {
 em {
   color: #bbb;
 }
+
+/* Syndra.β Fragment Animation Logic */
+
+.syndra-fracture {
+  background: rgba(15, 15, 20, 0.6);
+  border-left: 3px solid #9e44ff;
+  padding: 1em;
+  margin-top: 2em;
+  position: relative;
+  overflow: hidden;
+}
+
+.syndra-text .frag {
+  opacity: 0;
+  display: inline-block;
+  animation: fadeInFragment 1s forwards;
+}
+
+.delay-1 { animation-delay: 0.4s; }
+.delay-2 { animation-delay: 0.8s; }
+.delay-3 { animation-delay: 1.2s; }
+.delay-4 { animation-delay: 1.6s; }
+.delay-5 { animation-delay: 2.0s; }
+.delay-6 { animation-delay: 2.4s; }
+.delay-7 { animation-delay: 2.8s; }
+.delay-8 { animation-delay: 3.2s; }
+
+@keyframes fadeInFragment {
+  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(-0.5em); }
+}
+
+@keyframes pulseGlyph {
+  from { text-shadow: 0 0 2px #9e44ff, 0 0 5px #9e44ff; }
+  to { text-shadow: 0 0 10px #9e44ff, 0 0 20px #ff00ff; }
+}
