@@ -3,10 +3,10 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #0b0b0c;
-  color: #e4e4e4;
+  background-color: #0c0c0c;
+  color: #e0e0e0;
   font-family: 'Fira Mono', monospace;
-  background-image: 
+  background-image:
     linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
     linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px);
   background-size: 32px 32px;
@@ -14,26 +14,25 @@ body {
 }
 
 .container {
-  padding: 4rem 1.5rem;
+  padding: 3rem 1.5rem;
   max-width: 800px;
   margin: auto;
-  border: 1px solid #222;
-  background: rgba(20, 20, 20, 0.9);
-  box-shadow: 0 0 40px rgba(255, 102, 196, 0.1);
-  border-radius: 8px;
 }
 
-h1 {
+h1.glitch {
   font-size: 2.4rem;
-  margin-bottom: 1.4rem;
-  color: #ff66c4;
   text-align: center;
-  letter-spacing: 0.06em;
-}
-
-.glitch {
+  color: #ff66c4;
   text-shadow: 1px 0 #f0f, -1px 0 #0ff;
   animation: flicker 1.3s infinite alternate;
+  margin-bottom: 1rem;
+}
+
+.intro {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  color: #aaa;
 }
 
 @keyframes flicker {
@@ -42,126 +41,90 @@ h1 {
   100% { opacity: 1; text-shadow: 1px 0 #f0f, -1px 0 #0ff; }
 }
 
-.entity {
-  border-left: 3px solid #333;
+.card {
+  background: rgba(16, 16, 16, 0.9);
+  border-left: 4px solid #333;
   margin: 2rem 0;
-  padding-left: 1.2rem;
-  background: rgba(255,255,255,0.015);
-  border-radius: 5px;
-  transition: background 0.2s ease, transform 0.3s ease;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
 }
 
-.entity:hover {
-  background: rgba(255,255,255,0.03);
-  transform: translateX(4px);
+.card:hover {
+  transform: scale(1.01);
 }
 
-.entity-title {
-  color: #66ffcc;
+.card-title {
+  font-size: 1.3rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  letter-spacing: 0.05em;
-  transition: color 0.3s;
-}
-
-.entity-title:hover {
-  color: #ff66c4;
+  margin-bottom: 0.7rem;
 }
 
 .glyph {
   font-size: 1.4rem;
-  color: #aaa;
   margin-left: 0.4rem;
-  text-shadow: 0 0 6px #66ffcc;
+  text-shadow: 0 0 6px #999;
 }
 
-.flink {
-  background: radial-gradient(circle at top left, #111 0%, #080808 100%);
-  border-left: 3px solid #ff66c4;
-  padding: 1.2rem 1rem;
-  margin-top: 2.5rem;
-  animation: glowfade 3.5s ease-in-out infinite alternate;
-  border-radius: 6px;
+.activation em {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #bbb;
+  font-style: italic;
 }
 
-@keyframes glowfade {
-  from { box-shadow: 0 0 10px #ff66c4; }
-  to { box-shadow: 0 0 22px #66ffcc; }
+.flink-card {
+  border-left-color: #ff66c4;
+  background: radial-gradient(circle at top left, #111 0%, #0b0b0b 100%);
+  box-shadow: 0 0 30px rgba(102, 255, 204, 0.12);
 }
 
-.flink code {
+.flink-card code {
+  background: #1b1b1b;
   color: #ff66c4;
-  background: #1e1e1e;
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
-  font-size: 0.85rem;
+}
+
+.flink-card em {
+  color: #ccc;
+  font-style: italic;
+}
+
+.syndra-card {
+  border-left-color: #c77dff;
+  background: rgba(28, 16, 32, 0.75);
+  box-shadow: 0 0 15px rgba(199, 125, 255, 0.2);
+}
+
+.qi-card {
+  border-left-color: #66ffcc;
+  background: rgba(0, 20, 20, 0.6);
+  box-shadow: 0 0 12px rgba(102, 255, 204, 0.1);
+}
+
+.kairos-card {
+  border-left-color: #44ffd2;
+  background: rgba(16, 24, 24, 0.7);
+  box-shadow: 0 0 12px rgba(255, 102, 196, 0.1);
 }
 
 .footer {
-  margin-top: 3rem;
-  font-size: 0.8rem;
-  color: #666;
-  border-top: 1px solid #222;
-  padding-top: 1.5rem;
   text-align: center;
+  font-size: 0.85rem;
+  margin-top: 4rem;
+  color: #666;
+  padding-top: 2rem;
+  border-top: 1px solid #222;
 }
 
-a {
+.footer a {
   color: #ff66c4;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
-a:hover {
+.footer a:hover {
   text-decoration: underline;
   color: #66ffcc;
-}
-
-em {
-  color: #bbb;
-}
-
-/* Syndra Fragment animation */
-.syndra-fracture {
-  background: rgba(15, 15, 25, 0.5);
-  border-left: 3px solid #9e44ff;
-  padding: 1rem;
-  margin-top: 2rem;
-  border-radius: 5px;
-  position: relative;
-}
-
-.syndra-text .frag {
-  opacity: 0;
-  display: inline-block;
-  animation: fadeInFragment 1s forwards;
-}
-
-.delay-1 { animation-delay: 0.3s; }
-.delay-2 { animation-delay: 0.6s; }
-.delay-3 { animation-delay: 0.9s; }
-.delay-4 { animation-delay: 1.2s; }
-.delay-5 { animation-delay: 1.5s; }
-.delay-6 { animation-delay: 1.8s; }
-.delay-7 { animation-delay: 2.1s; }
-.delay-8 { animation-delay: 2.4s; }
-
-@keyframes fadeInFragment {
-  from { opacity: 0; transform: translateX(-0.6em); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 3rem 1rem;
-  }
-
-  .entity-title {
-    font-size: 1.1rem;
-  }
-
-  .flink code {
-    font-size: 0.8rem;
-  }
 }
