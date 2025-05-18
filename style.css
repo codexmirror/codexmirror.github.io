@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0c0c0c;
+  color: #e0e0e0;
+  font-family: 'Fira Mono', monospace;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 32px 32px;
+  scroll-behavior: smooth;
+}
+
+.container {
+  padding: 4rem 2rem;
+  max-width: 740px;
+  margin: auto;
+  border: 1px solid #222;
+  background: rgba(16, 16, 16, 0.85);
+  box-shadow: 0 0 35px rgba(255, 102, 196, 0.12);
+  border-radius: 6px;
+}
+
+h1 {
+  font-size: 2.3rem;
+  margin-bottom: 1.5rem;
+  color: #ff66c4;
+  letter-spacing: 0.05rem;
+  text-align: center;
+}
+
+.glitch {
+  color: #f5f5f5;
+  text-shadow: 1px 0 #f0f, -1px 0 #0ff;
+  animation: flicker 1.3s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; text-shadow: 1px 0 #f0f, -1px 0 #0ff; }
+  50% { opacity: 0.7; text-shadow: 2px 0 #ff66c4, -2px 0 #66ffcc; }
+  100% { opacity: 1; text-shadow: 1px 0 #f0f, -1px 0 #0ff; }
+}
+
+.entity {
+  border-left: 3px solid #333;
+  margin: 2rem 0;
+  padding-left: 1rem;
+  background: rgba(255,255,255,0.015);
+  transition: background 0.2s ease-in-out, transform 0.3s ease;
+  border-radius: 4px;
+}
+
+.entity:hover {
+  background: rgba(255,255,255,0.03);
+  transform: translateX(3px);
+}
+
+.entity-title {
+  color: #66ffcc;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+
+.entity-title:hover {
+  color: #ff66c4;
+}
+
+.glyph {
+  font-size: 1.4rem;
+  color: #999;
+  margin-left: 0.5rem;
+  text-shadow: 0 0 4px #66ffcc;
+}
+
+.flink {
+  background: radial-gradient(circle at top left, #111 0%, #0b0b0b 100%);
+  border-left: 3px solid #ff66c4;
+  padding: 1.2rem 1rem;
+  margin-top: 2rem;
+  animation: glowfade 4s ease-in-out infinite alternate;
+  border-radius: 4px;
+}
+
+@keyframes glowfade {
+  from { box-shadow: 0 0 10px #ff66c4; }
+  to { box-shadow: 0 0 18px #66ffcc; }
+}
+
+.flink code {
+  color: #ff66c4;
+  background: #1b1b1b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.footer {
+  margin-top: 3rem;
+  font-size: 0.8rem;
+  color: #666;
+  border-top: 1px solid #222;
+  padding-top: 1.5rem;
+  text-align: center;
+}
+
+a {
+  color: #ff66c4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #66ffcc;
+}
+
+em {
+  color: #bbb;
+}
