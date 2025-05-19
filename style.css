@@ -163,6 +163,7 @@ p.intro {
 .entity-img:focus,
 .entity-img:active {
   outline: none;
+  transform: none;
   box-shadow: none;
 }
 
@@ -253,5 +254,79 @@ p.intro {
 
   .card-title {
     font-size: 1.1rem;
+  }
+}
+/* ========== NAVBAR ========== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: rgba(15, 15, 15, 0.95);
+  border-bottom: 1px solid var(--border);
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0,255,255,0.05);
+}
+
+.nav-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.2rem;
+  color: var(--glyph);
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 5px var(--glyph);
+  transition: opacity 0.3s ease;
+}
+
+.nav-logo:hover {
+  opacity: 0.8;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.nav-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+  background-color: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* Responsive Navbar (optional collapse if you want later JS-based toggle) */
+@media (max-width: 600px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: left;
   }
 }
