@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap');
 
 :root {
   --bg: #0e0e0e;
@@ -9,6 +9,19 @@
   --border: rgba(255, 255, 255, 0.1);
   --warning: #ff4d6d;
   --glow: 0 0 10px #37fccc88;
+}
+
+:root[data-theme="glitchmode"] {
+  --bg: #000000;
+  --fg: #00ffcc;
+  --glyph: #ff00ff;
+  --accent: #00ffff;
+  --card-bg: #111;
+  --warning: #ff66c4;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 * {
@@ -71,17 +84,33 @@ p.intro {
   border: 1px solid var(--border);
   padding: 1rem;
   border-radius: 0.5rem;
-  box-shadow: var(--glow);
-  transition: transform 0.2s ease;
   text-align: center;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: rise 0.6s ease-out forwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 0 15px var(--glyph);
+  transform: scale(1.015);
+  box-shadow:
+    0 0 8px var(--glyph),
+    0 0 14px var(--accent),
+    0 0 18px rgba(255,255,255,0.05);
 }
 
-/* Entity-specific accent glows */
+/* Individual glows */
 .Luma-card {
   box-shadow: 0 0 12px rgba(255, 102, 196, 0.2);
 }
@@ -139,7 +168,8 @@ p.intro {
 .footer {
   text-align: center;
   font-size: 0.9rem;
-  opacity: 0.75;
+  opacity: 0.65;
+  padding-top: 1rem;
 }
 
 .footer a {
@@ -159,7 +189,6 @@ p.intro {
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid var(--border);
-  box-shadow: 0 0 8px rgba(255,255,255,0.05);
   transition: transform 0.3s ease;
 }
 
@@ -171,11 +200,10 @@ p.intro {
 
 .entity-img:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 12px var(--accent);
+  filter: brightness(1.2);
 }
 
-/* === Buttons unter jeder Entity === */
-
+/* Buttons */
 .entity-btn {
   margin: 1rem auto 0 auto;
   display: block;
@@ -186,35 +214,49 @@ p.intro {
   border: 1px solid var(--border);
   color: var(--accent);
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
   border-radius: 4px;
   text-align: center;
+  transition: all 0.2s ease;
 }
 
 .entity-btn:hover {
   background-color: var(--accent);
   color: var(--bg);
   border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
 }
 
-/* Spezialstile */
-
+/* Special buttons */
 .entity-btn.danger {
   border-color: var(--warning);
   color: var(--warning);
 }
-
 .entity-btn.danger:hover {
   background-color: var(--warning);
   color: var(--bg);
 }
-
 .entity-btn.glitch {
   border-color: #0ff;
   color: #0ff;
 }
-
 .entity-btn.glitch:hover {
   background-color: #0ff;
   color: var(--bg);
+}
+
+/* Responsive layout for small screens */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+  h1.glitch {
+    font-size: 1.6rem;
+  }
+  .card {
+    padding: 0.75rem;
+  }
+  .entity-btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+  }
 }
