@@ -1,4 +1,4 @@
-/* === Base Reset === */
+/* === BASE RITUAL === */
 * {
   margin: 0;
   padding: 0;
@@ -12,11 +12,11 @@ html, body {
   font-size: 16px;
   color: #a6b2c2;
   line-height: 1.6;
-  position: relative;
   overflow-x: hidden;
+  position: relative;
 }
 
-/* === Scanline Overlay === */
+/* === SCANLINE OVERLAY === */
 body::before {
   content: "";
   position: fixed;
@@ -27,7 +27,7 @@ body::before {
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0px,
-    rgba(255,255,255,0.02) 1px,
+    rgba(255,255,255,0.015) 1px,
     transparent 2px
   );
   z-index: 1;
@@ -35,23 +35,38 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* === Typography === */
-h1, h2 {
+/* === TYPOGRAPHY === */
+h1.glitch {
+  font-size: 2.8rem;
   color: #00f0ff;
+  text-align: center;
   font-weight: 600;
-  text-shadow: 0 0 5px #00f0ff66;
+  letter-spacing: 0.05em;
+  text-shadow:
+    0 0 3px #00f0ff,
+    0 0 8px #00f0ff66,
+    0 0 12px #00f0ff33;
+  margin: 2rem auto 1rem;
+  position: relative;
+  z-index: 2;
+  text-transform: uppercase;
+  word-spacing: 0.2em;
+  animation: headerFlare 12s infinite alternate ease-in-out;
 }
 
-h1 {
-  font-size: 2rem;
-  text-align: center;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+@keyframes headerFlare {
+  0% { text-shadow: 0 0 3px #00f0ff, 0 0 8px #00f0ff66; }
+  50% { text-shadow: 0 0 6px #00f0ffcc, 0 0 14px #00f0ffaa; }
+  100% { text-shadow: 0 0 3px #00f0ff, 0 0 6px #00f0ff55; }
 }
 
 h2 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
+  color: #00f0ff;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 4px #00f0ff55;
 }
 
 .intro {
@@ -59,23 +74,23 @@ h2 {
   max-width: 800px;
   margin: 0 auto;
   padding: 1rem;
-  color: #a6b2c2;
 }
 
 .sideways {
   display: block;
   margin-top: 0.5rem;
   font-style: italic;
-  letter-spacing: 0.05em;
   color: #cc00ff;
+  letter-spacing: 0.05em;
 }
 
-/* === Navigation === */
+/* === NAVIGATION === */
 .navbar {
-  width: 100%;
   background-color: #0a0a0a;
   padding: 1rem 2rem;
   border-bottom: 1px solid #111;
+  z-index: 5;
+  position: relative;
 }
 
 .nav-container {
@@ -88,20 +103,21 @@ h2 {
   font-size: 1.2rem;
   color: #00f0ff;
   text-decoration: none;
+  text-shadow: 0 0 4px #00f0ff55;
 }
 
 .nav-links a {
   margin-left: 1.5rem;
   color: #888;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
   color: #00f0ff;
 }
 
-/* === Grid === */
+/* === ENTITY GRID === */
 .entity-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -109,34 +125,26 @@ h2 {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  z-index: 2;
   position: relative;
+  z-index: 2;
 }
 
-/* === Entity Cards === */
+/* === ENTITY CARD === */
 .entity-card {
   background-color: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 1.5rem;
   border-radius: 8px;
   backdrop-filter: blur(3px);
-  position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 12px #00f0ff33;
+  text-align: center;
 }
 
 .entity-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 20px #cc00ff55;
-}
-
-/* Optional glitch pulse per card (1px shift) */
-@keyframes glitchShift {
-  0% { transform: none; }
-  50% { transform: translate(0.5px, -0.5px); }
-  51% { transform: translate(-0.5px, 1px); }
-  100% { transform: none; }
+  box-shadow: 0 0 24px #cc00ff66;
 }
 
 .entity-card[data-status="dormant"]:nth-child(2n) {
@@ -144,14 +152,31 @@ h2 {
   animation-delay: calc(var(--i, 0) * 1s);
 }
 
-/* === Entity Content === */
+@keyframes glitchShift {
+  0% { transform: none; }
+  48% { transform: translate(-0.5px, 0.5px); }
+  50% { transform: translate(1px, -1px); }
+  52% { transform: translate(0.5px, 1px); }
+  100% { transform: none; }
+}
+
+/* === ENTITY IMAGE === */
 .entity-img {
   width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  filter: contrast(1.05) brightness(1.1);
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: 0.5rem;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  border: 1px solid #222;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #00f0ff22;
+}
+
+/* === TEXT ELEMENTE === */
+.entity-card p {
+  margin-top: 0.75rem;
+  line-height: 1.5;
+  color: #a6b2c2;
 }
 
 .glyph {
@@ -177,7 +202,7 @@ h2 {
   opacity: 0.7;
 }
 
-/* === Buttons === */
+/* === BUTTONS === */
 .entity-btn {
   display: block;
   margin: 1.2rem auto 0 auto;
@@ -218,7 +243,7 @@ h2 {
   box-shadow: 0 0 8px #fffc7f88;
 }
 
-/* === Footer === */
+/* === FOOTER === */
 .footer {
   text-align: center;
   font-size: 0.8rem;
