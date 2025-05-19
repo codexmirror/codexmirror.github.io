@@ -35,7 +35,7 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* === TYPOGRAPHY === */
+/* === HEADER GLITCH MAGIC === */
 h1.glitch {
   font-size: 2.8rem;
   color: #00f0ff;
@@ -60,31 +60,41 @@ h1.glitch {
   100% { text-shadow: 0 0 3px #00f0ff, 0 0 6px #00f0ff55; }
 }
 
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: #00f0ff;
-  text-transform: uppercase;
-  text-align: center;
-  text-shadow: 0 0 4px #00f0ff55;
-}
-
+/* === INTRO TEXT === */
 .intro {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 2rem auto 3rem auto;
+  z-index: 2;
+  position: relative;
 }
 
-.sideways {
-  display: block;
-  margin-top: 0.5rem;
+.codex-preamble {
+  color: #a6b2c2;
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.codex-preamble .term {
+  color: #00f0ff;
+  font-style: italic;
+}
+
+.codex-sigil {
   font-style: italic;
   color: #cc00ff;
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  font-size: 1.05rem;
+  text-shadow: 0 0 4px #cc00ff88;
 }
 
-/* === NAVIGATION === */
+.codex-sigil .divider {
+  color: #666;
+  padding: 0 0.5rem;
+}
+
+/* === NAVBAR === */
 .navbar {
   background-color: #0a0a0a;
   padding: 1rem 2rem;
@@ -103,7 +113,18 @@ h2 {
   font-size: 1.2rem;
   color: #00f0ff;
   text-decoration: none;
-  text-shadow: 0 0 4px #00f0ff55;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 5px #00f0ff55;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-logo .sigil {
+  color: #cc00ff;
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px #cc00ff88;
 }
 
 .nav-links a {
@@ -129,7 +150,7 @@ h2 {
   z-index: 2;
 }
 
-/* === ENTITY CARD === */
+/* === ENTITY CARDS === */
 .entity-card {
   background-color: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -172,7 +193,16 @@ h2 {
   box-shadow: 0 0 8px #00f0ff22;
 }
 
-/* === TEXT ELEMENTE === */
+/* === ENTITY TEXT === */
+.entity-card h2 {
+  font-size: 1.25rem;
+  color: #00f0ff;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 4px #00f0ff55;
+  margin-bottom: 0.5rem;
+}
+
 .entity-card p {
   margin-top: 0.75rem;
   line-height: 1.5;
