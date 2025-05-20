@@ -35,49 +35,6 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-h1.glitch {
-  font-size: 2.6rem;
-  font-family: 'IBM Plex Mono', monospace;
-  text-align: center;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  word-spacing: 0.2em;
-  margin: 2rem auto 1rem;
-  position: relative;
-  z-index: 2;
-
-  background: linear-gradient(
-    120deg,
-    #d4faff 0%,
-    #ff9aff 25%,
-    #d4faff 50%,
-    #9aefff 75%,
-    #ff9aff 100%
-  );
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow:
-    0 0 2px rgba(255, 255, 255, 0.1),
-    0 0 4px rgba(255, 255, 255, 0.1),
-    0 0 6px #cc00ff33;
-
-  animation: holoShift 8s ease-in-out infinite;
-}
-
-@keyframes holoShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
  /* Holo Title */
 .holo-title {
   font-size: 2.6rem;
