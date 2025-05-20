@@ -78,6 +78,35 @@ h1.glitch {
     background-position: 0% 50%;
   }
 }
+ /* Holo Title */
+.holo-title {
+  font-size: 2.6rem;
+  font-family: 'IBM Plex Mono', monospace;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: linear-gradient(
+    125deg,
+    #ff6ec4,
+    #7873f5,
+    #4adede,
+    #6efaa4,
+    #ff6ec4
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: holoShift 6s ease-in-out infinite;
+  text-shadow: 
+    0 0 4px rgba(255, 255, 255, 0.05),
+    0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 /* === INTRO TEXT === */
 .intro {
