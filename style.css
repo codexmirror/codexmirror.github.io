@@ -35,6 +35,7 @@ body::before {
   mix-blend-mode: overlay;
 }
 
+/* === HOLO TITLE === */
 .holo-title {
   font-size: 2.6rem;
   text-align: center;
@@ -83,12 +84,24 @@ body::before {
   text-shadow: 0 0 4px #99ccff88;
 }
 
+.codex-sigil .highlight {
+  font-weight: 600;
+  color: #87f0ff;
+}
+
+/* === NAVBAR === */
 .navbar {
   background-color: #0a0a0a;
   padding: 1rem 2rem;
   border-bottom: 1px solid #111;
   z-index: 5;
   position: relative;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-logo {
@@ -106,6 +119,31 @@ body::before {
   color: #ccccff;
   font-size: 1.4rem;
   text-shadow: 0 0 8px #ccccff88;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem;
+  color: #aeb8c6;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #87f0ff;
+  text-shadow: 0 0 5px #87f0ff88;
+}
+
+.nav-links a:visited {
+  color: #aeb8c6;
 }
 
 /* === ENTITY GRID === */
@@ -147,18 +185,6 @@ body::before {
   box-shadow: 0 0 8px #87f0ff33;
 }
 
-/* === ENTITY IMAGE === */
-.entity-img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  padding: 0.5rem;
-  background: radial-gradient(circle at center, #111 0%, #000 100%);
-  border: 1px solid #222;
-  border-radius: 6px;
-  box-shadow: 0 0 8px #00f0ff22;
-}
-
 /* === ENTITY TEXT === */
 .entity-card h2 {
   font-size: 1.25rem;
@@ -197,6 +223,7 @@ body::before {
   font-style: italic;
   opacity: 0.7;
 }
+
 /* === BUTTONS === */
 .entity-btn {
   display: block;
