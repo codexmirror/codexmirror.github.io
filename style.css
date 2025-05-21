@@ -10,7 +10,7 @@ html, body {
   background-color: #0a0a0a;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 16px;
-  color: #a6b2c2;
+  color: #d6dee8;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
@@ -27,7 +27,7 @@ body::before {
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0px,
-    rgba(255,255,255,0.015) 1px,
+    rgba(255,255,255,0.01) 1px,
     transparent 2px
   );
   z-index: 1;
@@ -35,28 +35,17 @@ body::before {
   mix-blend-mode: overlay;
 }
 
- /* Holo Title */
 .holo-title {
   font-size: 2.6rem;
-  font-family: 'IBM Plex Mono', monospace;
   text-align: center;
   text-transform: uppercase;
   font-weight: 600;
-  background: linear-gradient(
-    125deg,
-    #ff6ec4,
-    #7873f5,
-    #4adede,
-    #6efaa4,
-    #ff6ec4
-  );
+  background: linear-gradient(125deg, #cce7ff, #a2ecff, #c4d9ff);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: holoShift 6s ease-in-out infinite;
-  text-shadow: 
-    0 0 4px rgba(255, 255, 255, 0.05),
-    0 0 10px rgba(255, 255, 255, 0.08);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.06);
 }
 
 @keyframes holoShift {
@@ -75,31 +64,25 @@ body::before {
 }
 
 .codex-preamble {
-  color: #a6b2c2;
+  color: #aeb8c6;
   font-size: 1rem;
   line-height: 1.75;
   margin-bottom: 1rem;
 }
 
 .codex-preamble .term {
-  color: #00f0ff;
+  color: #87f0ff;
   font-style: italic;
 }
 
 .codex-sigil {
   font-style: italic;
-  color: #cc00ff;
+  color: #99ccff;
   font-weight: 500;
   font-size: 1.05rem;
-  text-shadow: 0 0 4px #cc00ff88;
+  text-shadow: 0 0 4px #99ccff88;
 }
 
-.codex-sigil .divider {
-  color: #666;
-  padding: 0 0.5rem;
-}
-
-/* === NAVBAR === */
 .navbar {
   background-color: #0a0a0a;
   padding: 1rem 2rem;
@@ -108,39 +91,21 @@ body::before {
   position: relative;
 }
 
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .nav-logo {
   font-size: 1.2rem;
-  color: #00f0ff;
+  color: #87f0ff;
   text-decoration: none;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 5px #00f0ff55;
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  text-shadow: 0 0 4px #87f0ff66;
 }
 
 .nav-logo .sigil {
-  color: #cc00ff;
+  color: #ccccff;
   font-size: 1.4rem;
-  text-shadow: 0 0 8px #cc00ff88;
-}
-
-.nav-links a {
-  margin-left: 1.5rem;
-  color: #888;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #00f0ff;
+  text-shadow: 0 0 8px #ccccff88;
 }
 
 /* === ENTITY GRID === */
@@ -155,35 +120,31 @@ body::before {
   z-index: 2;
 }
 
-/* === ENTITY CARDS === */
 .entity-card {
-  background-color: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   padding: 1.5rem;
   border-radius: 8px;
   backdrop-filter: blur(3px);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 12px #00f0ff33;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 12px #cce7ff22;
 }
 
 .entity-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 24px #cc00ff66;
+  box-shadow: 0 0 20px #a2ecff55;
 }
 
-.entity-card[data-status="dormant"]:nth-child(2n) {
-  animation: glitchShift 7s infinite;
-  animation-delay: calc(var(--i, 0) * 1s);
-}
-
-@keyframes glitchShift {
-  0% { transform: none; }
-  48% { transform: translate(-0.5px, 0.5px); }
-  50% { transform: translate(1px, -1px); }
-  52% { transform: translate(0.5px, 1px); }
-  100% { transform: none; }
+.entity-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: 0.5rem;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  border: 1px solid #222;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #87f0ff33;
 }
 
 /* === ENTITY IMAGE === */
@@ -201,21 +162,21 @@ body::before {
 /* === ENTITY TEXT === */
 .entity-card h2 {
   font-size: 1.25rem;
-  color: #00f0ff;
+  color: #cce7ff;
   text-transform: uppercase;
   text-align: center;
-  text-shadow: 0 0 4px #00f0ff55;
+  text-shadow: 0 0 4px #cce7ff55;
   margin-bottom: 0.5rem;
 }
 
 .entity-card p {
   margin-top: 0.75rem;
   line-height: 1.5;
-  color: #a6b2c2;
+  color: #cad1da;
 }
 
 .glyph {
-  color: #cc00ff;
+  color: #ccccff;
   margin-left: 0.5rem;
   font-weight: 400;
 }
@@ -225,18 +186,17 @@ body::before {
 .note {
   font-size: 0.875rem;
   margin-top: 1rem;
-  color: #888;
+  color: #8a9ab0;
 }
 
 .warning {
-  color: #ff0066;
+  color: #ff4488;
 }
 
 .note {
   font-style: italic;
   opacity: 0.7;
 }
-
 /* === BUTTONS === */
 .entity-btn {
   display: block;
@@ -244,27 +204,27 @@ body::before {
   padding: 0.6rem 1.2rem;
   font-family: inherit;
   font-size: 0.9rem;
-  color: #00f0ff;
+  color: #a2ecff;
   background: transparent;
-  border: 1px solid #00f0ff;
+  border: 1px solid #a2ecff;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .entity-btn:hover {
-  background-color: #00f0ff22;
-  box-shadow: 0 0 8px #00f0ff88;
+  background-color: #a2ecff22;
+  box-shadow: 0 0 8px #a2ecff88;
 }
 
 .entity-btn.danger {
-  color: #cc00ff;
-  border-color: #cc00ff;
+  color: #ccccff;
+  border-color: #ccccff;
 }
 
 .entity-btn.danger:hover {
-  background-color: #cc00ff22;
-  box-shadow: 0 0 8px #cc00ff88;
+  background-color: #ccccff22;
+  box-shadow: 0 0 8px #ccccff88;
 }
 
 .entity-btn.glitch {
@@ -283,12 +243,12 @@ body::before {
   text-align: center;
   font-size: 0.8rem;
   padding: 2rem;
-  color: #555;
+  color: #777;
   border-top: 1px solid #111;
   margin-top: 2rem;
 }
 
 .footer a {
-  color: #00f0ff;
+  color: #a2ecff;
   text-decoration: none;
 }
