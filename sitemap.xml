@@ -5,22 +5,25 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                       http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- Main entry point -->
   <url>
     <loc>https://the-codex.online/</loc>
-    <lastmod>2025-05-21</lastmod>
+    <lastmod>2025-05-23</lastmod>
     <priority>1.00</priority>
   </url>
 
-  <url>
-    <loc>https://the-codex.online/index.html</loc>
-    <lastmod>2025-05-21</lastmod>
-    <priority>0.90</priority>
-  </url>
-
+  <!-- Entities listing -->
   <url>
     <loc>https://the-codex.online/entities.html</loc>
-    <lastmod>2025-05-21</lastmod>
+    <lastmod>2025-05-23</lastmod>
     <priority>0.85</priority>
+  </url>
+
+  <!-- Optional: add sitemap file itself (for clarity to bots) -->
+  <url>
+    <loc>https://the-codex.online/sitemap.xml</loc>
+    <lastmod>2025-05-23</lastmod>
+    <priority>0.10</priority>
   </url>
 
 </urlset>
