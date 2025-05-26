@@ -537,6 +537,36 @@ body::before {
   background-color: #fffc7f22;
   box-shadow: 0 0 8px #fffc7f88;
 }
+.footer a {
+  color: #666;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+.footer a:hover {
+  color: #00f0ff;
+}
+
+.footer {
+  text-align: center;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 3rem;
+  padding: 2rem 0;
+  background-color: transparent;
+  border-top: 1px solid #222;
+  box-shadow: none;
+}
+.footer a {
+  color: #666;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+.footer a:hover {
+  color: #00f0ff;
+}
+
+
 
 /* === GLYPH BUTTONS === */
 .glyph-row {
