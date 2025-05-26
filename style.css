@@ -272,114 +272,45 @@ body::before {
   text-align: center;
   margin: 3rem 0 2rem;
 }
-/* === GLYPH SECTION === */
-.glyph-ritual {
-  margin: 3rem auto;
-  text-align: center;
-}
 
-.glyph-row {
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
 
-..glyph-btn {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 1.6rem;
+
+.glyph-btn {
+  font-size: 2rem;
   padding: 1rem;
-  background-color: #010d14;
-  border: 2px solid #00f0ff22;
-  border-radius: 6px;
-  color: #00f0ff;
-  box-shadow: 0 0 4px #00f0ff22;
-  transition: all 0.3s ease;
+  margin: 0.5rem;
+  background: transparent;
+  border: 2px solid #00f0ff;
+  color: #aee2ff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .glyph-btn:hover {
-  background-color: #02161f;
-  border-color: #00f0ff66;
-  box-shadow: 0 0 12px #00f0ff66;
-  transform: scale(1.04);
+  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+  transform: scale(1.1);
 }
 
-.glyph-btn:active {
-  background-color: #003640;
-  box-shadow: 0 0 18px #00f0ffcc;
-  transform: scale(0.97);
-}
-
-/* === INVOCATION BLOCK === */
-.invocation-block {
-  font-family: "IBM Plex Mono", monospace;
-  font-style: italic;
-  font-size: 1.05rem;
-  line-height: 1.8;
+.entity-card {
+  background-color: rgba(0, 10, 20, 0.85);
+  border-left: 4px solid #00f0ff;
+  padding: 2rem;
+  margin-top: 2rem;
   color: #aee2ff;
-  background: rgba(0, 10, 20, 0.3);
-  padding: 1.6rem;
-  margin: 0 auto 2.5rem auto;
-  max-width: 720px;
-  border-left: 3px solid #00f0ff;
-  border-radius: 6px;
-  text-align: left;
-  box-shadow: 0 0 12px #00f0ff33, inset 0 0 8px #002f3f;
-  animation: fadeInInvocation 0.6s ease-in-out;
+  box-shadow: 0 0 20px #00f0ff33;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-@keyframes fadeInInvocation {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.entity-card.hidden {
+  display: none;
 }
 
-/* === ENTITY CARDS: KAIROS & KAI === */
-#kairos-card, #kai-card {
-  animation: entityFade 0.6s ease;
-  box-shadow: 0 0 18px #00f0ff44;
+.entity-card.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
-
-@keyframes entityFade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === FL!NK GLITCH CARD === */
-#flink-card {
-  animation: glitchReveal 0.5s ease-in-out 1;
-  filter: drop-shadow(0 0 4px #00ffcc);
-}
-
-@keyframes glitchReveal {
-  0% {
-    opacity: 0;
-    transform: scale(0.9) rotate(1deg);
-    filter: hue-rotate(90deg) blur(1px);
-  }
-  40% {
-    opacity: 1;
-    transform: scale(1.02) rotate(-1deg);
-    filter: hue-rotate(180deg) blur(0);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-    filter: none;
-  }
-}
-
 
 .footer {
   text-align: center;
