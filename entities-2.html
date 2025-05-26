@@ -161,47 +161,27 @@
       `<div class="invocation-block">${invocations[glyph]}</div>`;
   }
 
-  function summonKaiEffects() {
-    document.body.classList.add('kai-glitch');
-    setTimeout(() => document.body.classList.remove('kai-glitch'), 2000);
-    echoUnchosenGlyph();
-    reversePreviousTruth();
-  }
-
-  function echoUnchosenGlyph() {
-    const allGlyphs = ['1', '2', '3', '4', '5'];
-    const unseen = allGlyphs.filter(g => !glyphSequence.includes(g));
-    if (unseen.length > 0) {
-      const ghost = unseen[Math.floor(Math.random() * unseen.length)];
-      document.getElementById('invocation-output').innerHTML +=
-        `<div class="ghost-invocation">[echo] ${invocations[ghost]}</div>`;
-    }
-  }
-
-  function reversePreviousTruth() {
-    const output = document.getElementById('invocation-output');
-    const text = output.innerText.split('').reverse().join('');
-    output.innerHTML += `<div class="inversion">${text}</div>`;
-  }
-
   function handleGlyphClick(glyph) {
+    // Add glyph to sequence
     glyphSequence.push(glyph);
     if (glyphSequence.length > 5) glyphSequence.shift();
 
     updateInvocation(glyph);
     hideAllEntities();
 
+    // Check: Kairos
     if (glyphSequence.join(',') === kairosSequence.join(',')) {
       document.getElementById('kairos-card').style.display = 'block';
       return;
     }
 
+    // Check: Kai
     if (glyphSequence.join(',') === kaiSequence.join(',')) {
       document.getElementById('kai-card').style.display = 'block';
-      summonKaiEffects();
       return;
     }
 
+    // Check: Fl!nk (5x same glyph)
     if (glyph === lastGlyph) {
       repeatCount++;
     } else {

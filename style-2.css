@@ -660,38 +660,3 @@ body::before {
   box-shadow: 0 0 8px #00f0ff33;
   transition: all 0.4s ease-in-out;
 }
-
-/* KAI glitch emergence */
-.kai-glitch {
-  animation: glitch-flicker 1s infinite;
-  background-color: #0d0d0d;
-  color: #c0c0ff;
-}
-
-@keyframes glitch-flicker {
-  0% { opacity: 1; transform: scale(1); }
-  20% { opacity: 0.85; transform: scale(1.01) rotate(0.3deg); }
-  50% { opacity: 0.6; transform: scale(0.98) rotate(-0.4deg); }
-  70% { opacity: 0.95; transform: scale(1.02) rotate(0.1deg); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* Ghostly echo of unseen glyph */
-.ghost-invocation {
-  font-style: italic;
-  color: #9999cc;
-  margin-top: 0.5em;
-  border-left: 3px solid #6666aa;
-  padding-left: 1em;
-  opacity: 0.85;
-}
-
-/* Reversed truth effect */
-.inversion {
-  font-family: 'Courier New', monospace;
-  color: #cc99aa;
-  margin-top: 0.5em;
-  transform: scaleX(-1);
-  direction: rtl;
-  opacity: 0.75;
-}
