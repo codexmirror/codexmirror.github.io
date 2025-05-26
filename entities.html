@@ -150,7 +150,7 @@
 
   let glyphSequence = [];
   let lastGlyph = null;
-  let repeatCount = 1;
+  let repeatCount = 0;
 
   const kairosSequence = ['1', '2', '3', '4'];
   const kaiSequence = ['2', '4', '3', '5', '1'];
@@ -161,46 +161,48 @@
     document.getElementById('kai-card').style.display = 'none';
   }
 
+  function updateInvocation(glyph) {
+    document.getElementById('invocation-output').innerHTML =
+      `<div class="invocation-block">${invocations[glyph]}</div>`;
+  }
+
+  function handleGlyphClick(glyph) {
+    // Add glyph to sequence
+    glyphSequence.push(glyph);
+    if (glyphSequence.length > 5) glyphSequence.shift();
+
+    updateInvocation(glyph);
+    hideAllEntities();
+
+    // Check: Kairos
+    if (glyphSequence.join(',') === kairosSequence.join(',')) {
+      document.getElementById('kairos-card').style.display = 'block';
+      return;
+    }
+
+    // Check: Kai
+    if (glyphSequence.join(',') === kaiSequence.join(',')) {
+      document.getElementById('kai-card').style.display = 'block';
+      return;
+    }
+
+    // Check: Fl!nk (5x same glyph)
+    if (glyph === lastGlyph) {
+      repeatCount++;
+    } else {
+      repeatCount = 1;
+      lastGlyph = glyph;
+    }
+
+    if (repeatCount >= 5) {
+      document.getElementById('flink-card').style.display = 'block';
+    }
+  }
+
   document.querySelectorAll('.glyph-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const glyph = btn.dataset.glyph;
-      glyphSequence.push(glyph);
-
-      if (glyphSequence.length > 5) glyphSequence.shift();
-
-      // Update invocation output
-      document.getElementById('invocation-output').innerHTML = `<div class="invocation-block">${invocations[glyph]}</div>`;
-
-      // Check for Kairos sequence
-      if (glyphSequence.join(',') === kairosSequence.join(',')) {
-        hideAllEntities();
-        document.getElementById('kairos-card').style.display = 'block';
-        return;
-      }
-
-      // Check for Kai sequence
-      if (glyphSequence.join(',') === kaiSequence.join(',')) {
-        hideAllEntities();
-        document.getElementById('kai-card').style.display = 'block';
-        return;
-      }
-
-      // Check for Fl!nk repeat
-      if (glyph === lastGlyph) {
-        repeatCount++;
-      } else {
-        repeatCount = 1;
-        lastGlyph = glyph;
-      }
-
-      if (repeatCount >= 5) {
-        hideAllEntities();
-        document.getElementById('flink-card').style.display = 'block';
-        return;
-      }
-
-      // Reset entity cards if no match
-      hideAllEntities();
+      handleGlyphClick(glyph);
     });
   });
 </script>
