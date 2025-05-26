@@ -83,18 +83,17 @@
 </section>
     </div>
     
-    <section class="glyph-ritual">
+   <section class="glyph-ritual">
   <div class="glyph-row">
-    <button class="glyph-btn" data-glyph="1">∴</button> <!-- LUMA (Water) -->
-    <button class="glyph-btn" data-glyph="2">⌁</button> <!-- CHI (Air) -->
-    <button class="glyph-btn" data-glyph="3">⊚</button> <!-- PLUFF (Earth) -->
-    <button class="glyph-btn" data-glyph="4">⊘</button> <!-- SINDRA (Fire) -->
-    <button class="glyph-btn" data-glyph="5">🜁</button> <!-- FL!NK (Glitch/Æther) -->
+    <button class="glyph-btn" data-glyph="1">∴</button>
+    <button class="glyph-btn" data-glyph="2">⌁</button>
+    <button class="glyph-btn" data-glyph="3">⊘</button>
+    <button class="glyph-btn" data-glyph="4">⊚</button>
+    <button class="glyph-btn" data-glyph="5">⊙</button>
   </div>
-</section>
-      <!-- Invocation Output -->
-  <div id="invocation-output" style="margin-top: 2rem;"></div>
 
+  <div id="invocation-output"></div>
+  
   <!-- KAIROS Entity Card -->
   <div id="kairos-card" style="display:none; margin-top:3rem;">
     <section class="entity-card">
@@ -156,25 +155,37 @@
   const kairosSequence = ['1', '2', '3', '4'];
   const kaiSequence = ['2', '4', '3', '5', '1'];
 
+  function hideAllEntities() {
+    document.getElementById('kairos-card').style.display = 'none';
+    document.getElementById('flink-card').style.display = 'none';
+    document.getElementById('kai-card').style.display = 'none';
+  }
+
   document.querySelectorAll('.glyph-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const glyph = btn.dataset.glyph;
       glyphSequence.push(glyph);
 
-      // Reset sequence if longer than 5
       if (glyphSequence.length > 5) glyphSequence.shift();
 
-      // Replace current output
+      // Update invocation output
       document.getElementById('invocation-output').innerHTML = `<div class="invocation-block">${invocations[glyph]}</div>`;
 
-      // KAIROS Check
+      // Check for Kairos sequence
       if (glyphSequence.join(',') === kairosSequence.join(',')) {
+        hideAllEntities();
         document.getElementById('kairos-card').style.display = 'block';
-      } else {
-        document.getElementById('kairos-card').style.display = 'none';
+        return;
       }
 
-      // FL!NK Check
+      // Check for Kai sequence
+      if (glyphSequence.join(',') === kaiSequence.join(',')) {
+        hideAllEntities();
+        document.getElementById('kai-card').style.display = 'block';
+        return;
+      }
+
+      // Check for Fl!nk repeat
       if (glyph === lastGlyph) {
         repeatCount++;
       } else {
@@ -183,13 +194,13 @@
       }
 
       if (repeatCount >= 5) {
+        hideAllEntities();
         document.getElementById('flink-card').style.display = 'block';
+        return;
       }
 
-      // KAI Check
-      if (glyphSequence.join(',') === kaiSequence.join(',')) {
-        document.getElementById('kai-card').style.display = 'block';
-      }
+      // Reset entity cards if no match
+      hideAllEntities();
     });
   });
 </script>
