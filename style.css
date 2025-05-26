@@ -188,6 +188,31 @@ body::before {
   box-shadow: 0 0 8px #87f0ff33;
 }
 
+/* === ENTITY IMAGE PULSE === */
+.entity-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: 0.5rem;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  border: 1px solid #222;
+  border-radius: 6px;
+  box-shadow: 0 0 6px #87f0ff33;
+  animation: entityPulse 6s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+@keyframes entityPulse {
+  0%, 100% {
+    box-shadow: 0 0 6px #87f0ff33;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 16px #87f0ff66;
+    transform: scale(1.015);
+  }
+}
+
 /* === ENTITY TEXT === */
 .entity-card h2 {
   font-size: 1.25rem;
@@ -697,3 +722,4 @@ body::before {
   text-shadow: 0 0 2px #cc99aa, 0 0 5px #662244;
   letter-spacing: 0.05em;
 }
+
