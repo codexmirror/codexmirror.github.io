@@ -538,86 +538,77 @@ body::before {
   box-shadow: 0 0 8px #fffc7f88;
 }
 
-.elemental-glyphs {
-  text-align: center;
+/* === GLYPH BUTTONS === */
+.glyph-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin: 3rem 0 2rem;
 }
 
-
-
 .glyph-btn {
-  font-size: 2rem;
-  padding: 1rem;
-  margin: 0.5rem;
+  font-size: 1.6rem;
+  padding: 0.8rem;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #666;
   background: transparent;
-  border: 2px solid #00f0ff;
   color: #aee2ff;
   border-radius: 50%;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 .glyph-btn:hover {
-  box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
-  transform: scale(1.1);
+  border-color: #00f0ff;
+  color: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff66;
+  transform: scale(1.05);
 }
 
-.entity-card {
-  background-color: rgba(0, 10, 20, 0.85);
-  border-left: 4px solid #00f0ff;
+/* === SUMMONED ENTITY CARDS === */
+.entity-card.summoned {
+  margin: 2rem auto 0 auto;
+  max-width: 700px;
   padding: 2rem;
-  margin-top: 2rem;
+  background-color: rgba(10, 20, 30, 0.6);
+  border: 1px solid #222;
+  border-left: 4px solid #555;
   color: #aee2ff;
-  box-shadow: 0 0 20px #00f0ff33;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s ease;
 }
 
-.entity-card.hidden {
+.entity-card.summoned.hidden {
   display: none;
 }
 
-.entity-card.visible {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
+.entity-card.summoned h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #cceeff;
+  text-shadow: 0 0 3px #00f0ff33;
 }
 
-.footer {
-  text-align: center;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 3rem;
-  padding: 2rem 0;
-  background-color: transparent;
-  border-top: 1px solid #222;
-  box-shadow: none;
-}
-.footer a {
-  color: #666;
-  text-decoration: none;
-  margin: 0 0.5rem;
-}
-.footer a:hover {
-  color: #00f0ff;
+.entity-card.summoned p {
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #bbddee;
 }
 
-.footer {
-  text-align: center;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 3rem;
-  padding: 2rem 0;
-  background-color: transparent;
-  border-top: 1px solid #222;
-  box-shadow: none;
-}
-.footer a {
-  color: #666;
-  text-decoration: none;
-  margin: 0 0.5rem;
-}
-.footer a:hover {
-  color: #00f0ff;
+.entity-card.summoned .note {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #a0bccc;
+  margin-top: 1rem;
+  opacity: 0.8;
 }
