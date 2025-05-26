@@ -286,25 +286,23 @@ body::before {
   margin-bottom: 2rem;
 }
 
-.glyph-btn {
+..glyph-btn {
   font-family: "IBM Plex Mono", monospace;
   font-size: 1.6rem;
-  padding: 1rem 1.3rem;
-  border: 2px solid #00f0ff66;
-  background: radial-gradient(circle at center, #001820 0%, #000a10 100%);
-  color: #00f0ff;
+  padding: 1rem;
+  background-color: #010d14;
+  border: 2px solid #00f0ff22;
   border-radius: 6px;
-  cursor: pointer;
+  color: #00f0ff;
+  box-shadow: 0 0 4px #00f0ff22;
   transition: all 0.3s ease;
-  box-shadow: 0 0 6px #00f0ff33, inset 0 0 4px #00f0ff22;
-  filter: drop-shadow(0 0 4px #00ffff33);
-  position: relative;
 }
 
 .glyph-btn:hover {
-  background-color: #00222a;
-  box-shadow: 0 0 10px #00f0ff88, 0 0 24px #00f0ff44;
-  transform: scale(1.06);
+  background-color: #02161f;
+  border-color: #00f0ff66;
+  box-shadow: 0 0 12px #00f0ff66;
+  transform: scale(1.04);
 }
 
 .glyph-btn:active {
@@ -380,4 +378,25 @@ body::before {
     transform: scale(1) rotate(0deg);
     filter: none;
   }
+}
+
+
+.footer {
+  text-align: center;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 3rem;
+  padding: 2rem 0;
+  background-color: transparent;
+  border-top: 1px solid #222;
+  box-shadow: none;
+}
+.footer a {
+  color: #666;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+.footer a:hover {
+  color: #00f0ff;
 }
