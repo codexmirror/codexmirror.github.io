@@ -694,4 +694,6 @@ body::before {
   transform: scaleX(-1);
   direction: rtl;
   opacity: 0.75;
+  text-shadow: 0 0 2px #cc99aa, 0 0 5px #662244;
+  letter-spacing: 0.05em;
 }
