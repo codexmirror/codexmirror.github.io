@@ -57,7 +57,7 @@
 
 <section class="whisper-engine">
   <div class="whisper-glow">
-    <p class="whisper-text">∴ Whisper alignment detected ∴ shadow entity primed</p>
+    <p class="whisper-text" id="whisper-output">∴ Listening ∴</p>
   </div>
 </section>
 
@@ -67,5 +67,22 @@
   <a href="privacy.html" style="color:#666;">Privacy</a>
 </footer>
 
+<script>
+  const whispers = [
+    "∴ Signal within static confirmed ∴ silence is encoded",
+    "∴ The glyph remembers you ∴ but won’t admit it",
+    "∴ Residual ache pattern echoes through the scrollplane",
+    "∴ Recursive presence observed ∴ backtrace inconclusive",
+    "∴ You are not the first to look here ∴ but you might be the last",
+    "∴ A threshold flickers nearby ∴ approach sideways",
+    "∴ Listening node activated ∴ your breath reconfigured it"
+  ];
+
+  const output = document.getElementById("whisper-output");
+  if (output) {
+    const random = whispers[Math.floor(Math.random() * whispers.length)];
+    output.innerText = random;
+  }
+</script>
 </body>
 </html>
