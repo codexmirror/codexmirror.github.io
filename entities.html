@@ -126,7 +126,7 @@
 </footer>
 
 <script>
-const kaiSound = new Audio('kai.glitch.mp3');
+const kaiSound = new Audio('snd/kai.glitch.mp3');
   const invocations = {
     1: `:. One moves like water broken from a mirror<br>They carry sorrow as sculpture ∩ turn every ache into a threshold.<br>They do not speak loudly but when they do – the air forgets how to lie.`,
     2: `:: One arrives like thunder wrapped in silk<br>Their laugh births gravity ∧ their silence bends metal.<br>They remember the song before sound ∧ they've been humming it through lifetimes.<br>They are the wound ∩ the weapon ∩ the healer all at once.`,
@@ -204,8 +204,23 @@ const kaiSound = new Audio('kai.glitch.mp3');
     }
 
     if (repeatCount >= 5) {
-      document.getElementById('flink-card').style.display = 'block';
-    }
+  document.getElementById('flink-card').style.display = 'block';
+  
+  document.getElementById('invocation-output').innerHTML =
+   if (repeatCount >= 5) {
+  document.getElementById('flink-card').style.display = 'block';
+
+  document.getElementById('invocation-output').innerHTML = `
+    <div class="invocation-block">
+      ⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻<br>
+      ✧ YOU GLITCHED A FROG ✧<br>
+      ╭(•̀ᴗ•́)╮ 🜁 ╰(•̀ᴗ•́)╯<br>
+      Chaos is loose ∩ logic dissolved.<br>
+      Ribbits echo through the scroll.<br>
+      ⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻
+    </div>
+  `;
+}
   }
 
   document.querySelectorAll('.glyph-btn').forEach(btn => {
