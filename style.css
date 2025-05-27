@@ -723,3 +723,25 @@ body::before {
   letter-spacing: 0.05em;
 }
 
+.whisper-engine {
+  background: radial-gradient(circle, rgba(24,24,24,1) 0%, rgba(10,10,10,1) 100%);
+  padding: 2rem 1rem;
+  text-align: center;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.whisper-text {
+  color: #9aefff;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 4px #0ff5, 0 0 10px #8200ff22;
+  animation: whisperPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes whisperPulse {
+  0% { opacity: 0.65; }
+  50% { opacity: 1; }
+  100% { opacity: 0.65; }
+}
+
