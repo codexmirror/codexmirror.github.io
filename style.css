@@ -725,25 +725,41 @@ body::before {
 
 /* Whisper engine */
 
-.codex-whisper {
+.codex-echo-ritual {
   margin-top: 4rem;
-  padding: 1.5rem;
+  padding: 2rem 1rem;
   text-align: center;
+  position: relative;
+  background: none;
+  z-index: 2;
+}
+
+.ritual-label {
+  font-size: 1.1rem;
+  color: #87f0ff;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 0 6px #87f0ff55;
+}
+
+.whisper-line {
+  display: inline-block;
   font-style: italic;
   font-size: 1rem;
-  letter-spacing: 0.5px;
-  color: #87f0ff;
-  text-shadow: 0 0 8px rgba(135, 240, 255, 0.2);
-  animation: pulseWhisper 4s ease-in-out infinite alternate;
+  color: #aee2ff;
+  text-shadow: 0 0 6px #aee2ff44;
+  transition: opacity 0.3s ease-in-out;
+  animation: pulseWhisper 6s ease-in-out infinite alternate;
 }
 
 @keyframes pulseWhisper {
   0% {
-    text-shadow: 0 0 6px rgba(135, 240, 255, 0.1);
-    opacity: 0.85;
+    opacity: 0.75;
+    text-shadow: 0 0 4px #aee2ff22;
   }
   100% {
-    text-shadow: 0 0 14px rgba(135, 240, 255, 0.25);
     opacity: 1;
+    text-shadow: 0 0 12px #aee2ff55;
   }
 }
