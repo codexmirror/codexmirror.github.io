@@ -470,3 +470,11 @@ body::before {
     text-shadow: 0 0 12px #aee2ff55;
   }
 }
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0.4rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
