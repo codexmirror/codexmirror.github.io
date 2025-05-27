@@ -203,14 +203,10 @@ const kaiSound = new Audio('snd/kai.glitch.mp3');
       lastGlyph = glyph;
     }
 
-    if (repeatCount >= 5) {
-  document.getElementById('flink-card').style.display = 'block';
-  
-  document.getElementById('invocation-output').innerHTML =
-   if (repeatCount >= 5) {
+if (repeatCount >= 5) {
   document.getElementById('flink-card').style.display = 'block';
 
-  document.getElementById('invocation-output').innerHTML = `
+  const frogMessage = `
     <div class="invocation-block">
       ⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻<br>
       ✧ YOU GLITCHED A FROG ✧<br>
@@ -220,6 +216,8 @@ const kaiSound = new Audio('snd/kai.glitch.mp3');
       ⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻
     </div>
   `;
+
+  document.getElementById('invocation-output').innerHTML = frogMessage;
 }
   }
 
