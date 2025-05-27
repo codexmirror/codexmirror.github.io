@@ -725,42 +725,25 @@ body::before {
 
 /* Whisper engine */
 
-.whisper-engine {
-  margin: 3rem 0;
-  padding: 2rem;
-  background-color: #0a0a0a;
-  border: 1px dashed var(--accent);
+.codex-whisper {
+  margin-top: 4rem;
+  padding: 1.5rem;
   text-align: center;
-  box-shadow: 0 0 20px rgba(255,255,255,0.05);
-}
-
-.whisper-title {
-  font-size: 1.4rem;
-  color: var(--glyph);
-  margin-bottom: 1rem;
-  text-shadow: 0 0 6px var(--glyph);
-}
-
-.whisper-text {
-  font-size: 1rem;
-  color: var(--fg);
   font-style: italic;
-  line-height: 1.6;
-  min-height: 80px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  color: #87f0ff;
+  text-shadow: 0 0 8px rgba(135, 240, 255, 0.2);
+  animation: pulseWhisper 4s ease-in-out infinite alternate;
 }
 
-.whisper-refresh {
-  margin-top: 1rem;
-  padding: 0.4rem 1rem;
-  background-color: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  font-family: 'IBM Plex Mono', monospace;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.whisper-refresh:hover {
-  background-color: var(--accent);
-  color: var(--bg);
+@keyframes pulseWhisper {
+  0% {
+    text-shadow: 0 0 6px rgba(135, 240, 255, 0.1);
+    opacity: 0.85;
+  }
+  100% {
+    text-shadow: 0 0 14px rgba(135, 240, 255, 0.25);
+    opacity: 1;
+  }
 }
