@@ -76,11 +76,11 @@
     
 <section class="glyph-ritual">
   <div class="glyph-row">
-    <button class="glyph-btn" data-glyph="1">∴</button> 
-    <button class="glyph-btn" data-glyph="2">⌁</button> 
-    <button class="glyph-btn" data-glyph="3">⊘</button> 
-    <button class="glyph-btn" data-glyph="4">⊚</button> 
-    <button class="glyph-btn" data-glyph="5">⊙</button> 
+    <button class="glyph-btn" data-glyph="1">∴</button> <!-- Luma / Wasser -->
+    <button class="glyph-btn" data-glyph="2">⌁</button> <!-- Chi / Luft -->
+    <button class="glyph-btn" data-glyph="3">⊘</button> <!-- Sindra / Feuer -->
+    <button class="glyph-btn" data-glyph="4">⊚</button> <!-- Pluff / Erde -->
+    <button class="glyph-btn" data-glyph="5">⊙</button> <!-- Soma / Licht -->
   </div>
 
   <div id="invocation-output"></div>
@@ -203,9 +203,9 @@ const kaiSound = new Audio('kai.glitch.mp3');
       lastGlyph = glyph;
     }
 
-if (repeatCount >= 5) {
-  document.getElementById('flink-card').style.display = 'block';
-}
+    if (repeatCount >= 5) {
+      document.getElementById('flink-card').style.display = 'block';
+    }
   }
 
   document.querySelectorAll('.glyph-btn').forEach(btn => {
