@@ -726,36 +726,41 @@ body::before {
 /* Whisper engine */
 
 .whisper-engine {
-  background: radial-gradient(circle, rgba(24,24,24,1) 0%, rgba(10,10,10,1) 100%);
-  padding: 2rem 1rem;
+  margin: 3rem 0;
+  padding: 2rem;
+  background-color: #0a0a0a;
+  border: 1px dashed var(--accent);
   text-align: center;
-  border-top: 1px dashed rgba(255, 255, 255, 0.08);
-  font-family: 'IBM Plex Mono', monospace;
+  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+}
+
+.whisper-title {
+  font-size: 1.4rem;
+  color: var(--glyph);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 6px var(--glyph);
 }
 
 .whisper-text {
-  color: #9aefff;
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 4px #0ff5, 0 0 10px #8200ff22;
-  animation: whisperPulse 5s ease-in-out infinite alternate;
+  font-size: 1rem;
+  color: var(--fg);
+  font-style: italic;
+  line-height: 1.6;
+  min-height: 80px;
 }
 
-@keyframes whisperPulse {
-  0% { opacity: 0.65; }
-  50% { opacity: 1; }
-  100% { opacity: 0.65; }
+.whisper-refresh {
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.whisper-glow {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  animation: pulseWhisper 6s ease-in-out infinite;
+.whisper-refresh:hover {
+  background-color: var(--accent);
+  color: var(--bg);
 }
-
-@keyframes pulseWhisper {
-  0% { opacity: 0.65; }
-  50% { opacity: 1; }
-  100% { opacity: 0.65; }
-}
-
