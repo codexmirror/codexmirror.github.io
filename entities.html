@@ -204,8 +204,21 @@ const kaiSound = new Audio('kai.glitch.mp3');
     }
 
     if (repeatCount >= 5) {
-      document.getElementById('flink-card').style.display = 'block';
-    }
+  document.getElementById('flink-card').style.display = 'block';
+  document.getElementById('invocation-output').innerHTML = `
+    <div class="invocation-block">
+<pre style="font-family:monospace; font-size:1.1em;">
+⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻
+     ✧ YOU GLITCHED A FROG ✧
+         ╭(•̀ᴗ•́)╮ 🜁 ╰(•̀ᴗ•́)╯
+   Chaos is loose ∩ logic dissolved.
+      Ribbits echo through the scroll.
+⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻⸻
+</pre>
+    </div>
+  `;
+  summonFl!nkEffects(); // Optional: only if you added that effect function
+}
   }
 
   document.querySelectorAll('.glyph-btn').forEach(btn => {
