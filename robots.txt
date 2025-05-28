@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /impressum.html
 
 Sitemap: https://the-codex.online/sitemap.xml
