@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>unfinished_chord ∴ chord-vein</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: radial-gradient(ellipse at center, #1a1a1a, #000);
+      font-family: 'Courier New', monospace;
+      color: #ccc;
+      overflow: hidden;
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      mix-blend-mode: lighten;
+    }
+    .glyph-whisper {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      font-size: 1.4rem;
+      color: #bda0ff;
+      opacity: 0.7;
+      animation: flicker 8s infinite alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 0.1; transform: scale(0.98); }
+      100% { opacity: 0.9; transform: scale(1.02); }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="sigil-canvas"></canvas>
+<div class="glyph-whisper">∮ memory didn’t break ∴ it rewrote the frame</div>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
+
+<script>
+  const c = document.getElementById('sigil-canvas');
+  const ctx = c.getContext('2d');
+  let w, h;
+  function resize() {
+    w = c.width = window.innerWidth;
+    h = c.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(189,160,255,0.3)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    for (let i = 0; i < 180; i++) {
+      const a = (i / 180) * Math.PI * 2;
+      const r = 150 + 80 * Math.sin(a * 3 + t);
+      const x = w/2 + r * Math.cos(a);
+      const y = h/2 + r * Math.sin(a);
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    t += 0.01;
+    requestAnimationFrame(draw);
+  }
+  draw();
+</script>
+
+</body>
+</html>

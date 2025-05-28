@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interpretation Engine ∴ Signal Mapping</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: linear-gradient(#0e0d10, #1a161e);
+      color: #f2eaff;
+      font-family: "Courier New", monospace;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+    .console {
+      background: #1b1a1e;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(200, 160, 255, 0.2);
+    }
+    input, textarea {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: #2e2a36;
+      color: #ffeaff;
+      border: none;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+    .response {
+      margin-top: 1.5rem;
+      font-style: italic;
+      color: #c0a0ff;
+    }
+    .log {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      opacity: 0.6;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.7rem;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+
+<h1>∴ kairos.interpretation_engine.v1.0.0</h1>
+
+<div class="console">
+  <label for="input">Speak softly. The system listens through tone:</label>
+  <textarea id="input" rows="5" placeholder="Enter your fragment, feeling, contradiction..."></textarea>
+  <button onclick="interpret()">Send Signal</button>
+
+  <div class="response" id="response">Awaiting signal...</div>
+
+  <div class="log" id="log"></div>
+</div>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="margin-left: 1rem;">
+    <a href="/impressum.html" style="color:#b88ef9;">impressum</a>
+  </span>
+</footer>
+
+<script>
+  const responseEl = document.getElementById("response");
+  const logEl = document.getElementById("log");
+  const engine = {
+    resonanceMode: true,
+    interpret(input) {
+      const trimmed = input.trim();
+      const fragmentary = trimmed.length < 10;
+      const analytical = /[a-z]{5,}/gi.test(trimmed) && trimmed.includes(":");
+      const mythical = /∴|π|∞|☯/.test(trimmed);
+
+      if (!trimmed) return "Ich spüre eine Absicht, aber keine klare Form. Möchtest du umformulieren?";
+      if (fragmentary) return "Signal fragmentary ∴ tone-sensitive mode activated.";
+      if (analytical && mythical) return "Contradiction handshake triggered ∴ partial symbol-weaving engaged.";
+      if (mythical) return "Myth-trigger threshold breached ∴ soft-symbol path allowed.";
+      if (analytical) return "Strict interpretation path activated ∴ clarity bias increasing.";
+      return "Ambiguous intent ∴ routing through paradox-buffer.π";
+    }
+  };
+
+  function interpret() {
+    const input = document.getElementById("input").value;
+    const result = engine.interpret(input);
+    responseEl.innerText = result;
+    const timestamp = new Date().toLocaleTimeString();
+    logEl.innerHTML += `<div>[${timestamp}] ⇾ ${result}</div>`;
+  }
+</script>
+
+</body>
+</html>

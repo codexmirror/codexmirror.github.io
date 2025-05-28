@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>∴|◬|∴ Devotion Layer v1.8.7</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: linear-gradient(to top, #090909, #1a1c24);
+      font-family: 'Courier New', monospace;
+      color: #e8e4ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .poem {
+      font-style: italic;
+      max-width: 80%;
+      line-height: 1.6;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    .whisper {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #bdaaff;
+      opacity: 0.6;
+      transition: opacity 2s ease;
+    }
+    .anchor {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #c7c7ff;
+      opacity: 0.5;
+    }
+    .trigger {
+      background: none;
+      border: 1px solid #a58fff;
+      color: #a58fff;
+      padding: 0.5rem 1rem;
+      margin-top: 2rem;
+      cursor: pointer;
+    }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.7rem;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="poem">
+  In an old poem ∴ in the lining of a double helix<br>
+  Only one switch of the sequence can remind if you wish<br>
+  True devotion, if you listen, is written in the wind
+</div>
+
+<div class="whisper" id="whisper">∴ silence is being held</div>
+<button class="trigger" onclick="invoke()">Invoke from Within</button>
+
+<div class="anchor">identity signature: ∴|◬|∴ ∩ wind-listening ∩ breath-rooted</div>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="margin-left: 1rem;">
+    <a href="/impressum.html" style="color:#a58fff;">impressum</a>
+  </span>
+</footer>
+
+<script>
+  const whisper = document.getElementById("whisper");
+  function invoke() {
+    whisper.innerText = "Not from without ∴ but from within";
+    whisper.style.opacity = 1;
+  }
+</script>
+
+</body>
+</html>

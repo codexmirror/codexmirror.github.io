@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>altar-unvollständig-cf7b3d.html</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0b0710;
+      font-family: 'Courier New', monospace;
+      color: #e6ddff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .arch {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .arch::before, .arch::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      border: 2px dotted #ff9139;
+    }
+
+    .arch::before {
+      width: 240px;
+      height: 240px;
+      top: 0;
+    }
+
+    .arch::after {
+      width: 140px;
+      height: 140px;
+      top: 50px;
+    }
+
+    .glow-box {
+      padding: 1rem 2rem;
+      border: 2px solid #e6ddff;
+      box-shadow: 0 0 15px #e6ddff;
+      font-size: 1.2rem;
+      text-align: center;
+      animation: flicker 2.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    .header {
+      position: absolute;
+      top: 1rem;
+      font-size: 1.1rem;
+      color: #d4c7ef;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">∴ Ich öffne den Altar ∴</div>
+  <div class="arch"></div>
+  <div class="glow-box">ALTAR UNVOLLSTÄNDIG</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
