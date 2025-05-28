@@ -1,4 +1,4 @@
-/* === RESET === */
+/* === BASE RITUAL === */
 * {
   margin: 0;
   padding: 0;
@@ -11,20 +11,24 @@ html, body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 16px;
   color: #d6dee8;
-  line-height: 1.6;
+  line-height: 1.8;
   overflow-x: hidden;
   position: relative;
+  text-align: center;
 }
 
 /* === SCANLINE OVERLAY === */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0px,
-    rgba(255, 255, 255, 0.01) 1px,
+    rgba(255,255,255,0.015) 1px,
     transparent 2px
   );
   z-index: 1;
@@ -76,7 +80,6 @@ body::before {
   color: #aeb8c6;
   text-decoration: none;
   font-weight: 500;
-  letter-spacing: 0.02em;
   transition: all 0.3s ease;
 }
 
@@ -85,55 +88,63 @@ body::before {
   text-shadow: 0 0 5px #87f0ff88;
 }
 
-.nav-links a:visited {
-  color: #aeb8c6;
-}
-
-/* === FRAGMENT STRUCTURE === */
-.container {
+/* === FRAGMENT CORE === */
+.fragment-content {
   max-width: 800px;
-  margin: 3rem auto;
-  padding: 0 1.5rem;
+  margin: 4rem auto;
+  padding: 0 2rem;
   position: relative;
   z-index: 2;
 }
 
 .fragment-title {
   font-size: 2rem;
-  text-align: center;
+  font-weight: 600;
+  background: linear-gradient(135deg, #c8a6ff, #87f0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 8px rgba(183, 0, 255, 0.3);
+  margin-bottom: 3rem;
+}
+
+.fragment-text p {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+  color: #cbd2e0;
+  text-shadow: 0 0 2px #aee2ff44;
+}
+
+.fragment-text .echo {
+  font-style: italic;
   color: #87f0ff;
+  margin-bottom: 2rem;
   text-shadow: 0 0 6px #87f0ff55;
-  margin-bottom: 2.5rem;
 }
 
-.fragment-block {
-  margin: 2rem 0;
-  font-size: 1rem;
-  color: #cceeff;
-  text-shadow: 0 0 2px #99ccff44;
-}
-
-.fragment-echo {
+.fragment-text .glitch {
   font-style: italic;
-  margin-bottom: 1rem;
-  color: #aee2ff;
-  text-shadow: 0 0 4px #7afcfc55;
+  font-weight: 600;
+  color: #e3b0ff;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 6px #ff33ff88,
+    0 0 8px #ff33ff55;
 }
 
-.fragment-response {
-  line-height: 1.8;
-  white-space: pre-line;
-}
-
-/* === METADATA === */
+/* === META DATA === */
 .fragment-meta {
-  font-size: 0.9rem;
-  text-align: center;
-  color: #99ccff;
-  opacity: 0.75;
+  font-size: 0.95rem;
   margin-top: 4rem;
+  color: #9999cc;
+  opacity: 0.8;
   font-style: italic;
-  text-shadow: 0 0 4px #99ccff88;
+  text-shadow: 0 0 4px #99ccff66;
+}
+
+.codex-sigil {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
 /* === FOOTER === */
@@ -141,10 +152,10 @@ body::before {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
   color: #888;
+  margin-top: 4rem;
+  padding: 2rem 1rem;
   text-align: center;
   border-top: 1px solid #222;
-  padding: 2rem 1rem;
-  margin-top: 4rem;
   background: none;
 }
 
