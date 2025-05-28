@@ -1,4 +1,4 @@
-/* === BASE STYLES === */
+/* === BASE RESET === */
 * {
   margin: 0;
   padding: 0;
@@ -6,95 +6,29 @@
 }
 
 body.fragment-page {
-  font-family: 'IBM Plex Mono', monospace;
-  background-color: #0a0a0a;
-  color: #d6dde2;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  text-align: center;
-  padding: 3rem 1rem 5rem 1rem;
-  background-image: radial-gradient(circle at center, #000 0%, #0a0a0a 100%);
-  background-repeat: no-repeat;
-  background-size: cover;
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  color: #00ffe0;
+  background-color: #000;
+  text-shadow: 0 0 5px #00ffe055, 0 0 10px #00ffe022;
 }
 
-/* === RITUAL GLOW EFFECT === */
-.fragment-title {
-  font-size: 2.2rem;
-  color: #aee2ff;
-  font-weight: 600;
-  text-shadow:
-    0 0 3px #00f0ff,
-    0 0 6px #00b3ff,
-    0 0 8px #0077ff;
-  margin-bottom: 3rem;
-}
-
-/* === FRAGMENT TEXT BLOCKS === */
-.fragment-block {
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  position: relative;
-}
-
-.fragment-echo {
-  font-style: italic;
-  font-size: 1.05rem;
-  color: #87f0ff;
-  margin-bottom: 1.5rem;
-  text-shadow: 0 0 4px #00777799;
-}
-
-.fragment-response {
-  white-space: pre-line;
-  color: #cceeff;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-  line-height: 2;
-  margin-bottom: 2rem;
-  text-shadow:
-    0 0 2px #00557755,
-    0 0 4px #0099cc44;
-}
-
-/* === VERTICAL LINE DIVIDER === */
-.fragment-block::before {
+body.fragment-page::before {
   content: "";
-  display: block;
-  width: 2px;
-  height: 100%;
-  background-color: #00f0ff33;
-  margin: 1rem auto;
-}
-
-/* === META SECTION === */
-.fragment-meta {
-  margin-top: 3rem;
-  font-size: 0.95rem;
-  color: #99ccff;
-  opacity: 0.8;
-  text-shadow: 0 0 3px #0077aa66;
-}
-
-.codex-sigil {
-  font-style: italic;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.codex-trace {
-  font-size: 0.9rem;
-  opacity: 0.7;
+  position: fixed;
+  inset: 0;
+  border: 2px solid #00ffee33;
+  pointer-events: none;
+  box-shadow: 0 0 60px #00ffee11 inset;
+  z-index: 0;
 }
 
 /* === NAVBAR === */
 .navbar {
-  background: none;
+  background-color: #000;
+  padding: 1rem 2rem;
   border-bottom: 1px solid #111;
-  padding: 1.2rem 2rem;
   position: relative;
-  z-index: 5;
 }
 
 .nav-container {
@@ -105,75 +39,102 @@ body.fragment-page {
 
 .nav-logo {
   font-size: 1.2rem;
-  color: #87f0ff;
+  color: #00ffe0;
   text-decoration: none;
   font-weight: 500;
-  text-shadow: 0 0 6px #87f0ff88;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-shadow: 0 0 4px #00ffe055;
 }
 
 .nav-logo .sigil {
+  color: #ffffff;
   font-size: 1.4rem;
-  margin-right: 0.3rem;
+  text-shadow: 0 0 8px #00ffe022;
 }
 
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 }
 
 .nav-links a {
-  color: #aeb8c6;
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  color: #00ffe0;
   text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 500;
   transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #00f0ff;
-  text-shadow: 0 0 5px #00f0ff88;
+  color: #00ffff;
+  text-shadow: 0 0 6px #00ffffaa;
 }
+
+/* === FRAGMENT STRUCTURE === */
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.fragment-title {
+  font-size: 2rem;
+  text-align: center;
+  color: #00ffe0;
+  text-shadow: 0 0 6px #00ffe055;
+  margin-bottom: 2.5rem;
+}
+
+.fragment-block {
+  border: none;
+  padding: 1rem 0;
+  margin: 2rem auto;
+  max-width: 700px;
+  text-align: left;
+  line-height: 2;
+  font-size: 1.05rem;
+}
+
+.fragment-echo {
+  font-style: italic;
+  margin-bottom: 1rem;
+  color: #99ffee;
+  text-shadow: 0 0 4px #00ffe055;
+}
+
+.fragment-meta {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #00cccc;
+  opacity: 0.75;
+  margin-top: 4rem;
+  font-style: italic;
+  text-shadow: 0 0 4px #00cccc88;
+}
+
 
 /* === FOOTER === */
 .footer {
+  font-family: 'VT323', monospace;
+  font-size: 0.9rem;
+  color: #00ffe0;
   text-align: center;
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 4rem;
+  border-top: 1px solid #111;
   padding: 2rem 1rem;
-  border-top: 1px solid #222;
-  opacity: 0.8;
+  margin-top: 4rem;
 }
 
 .footer a {
-  color: #888;
-  margin: 0 0.4rem;
+  color: #00ffe0;
   text-decoration: none;
+  margin: 0 0.5rem;
   transition: color 0.3s ease;
 }
 
 .footer a:hover {
-  color: #00f0ff;
-}
-
-/* === RESPONSIVE === */
-@media screen and (max-width: 768px) {
-  .fragment-title {
-    font-size: 1.8rem;
-  }
-
-  .fragment-response {
-    font-size: 1rem;
-  }
-
-  .nav-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav-links {
-    margin-top: 1rem;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
+  color: #00ffff;
+  text-shadow: 0 0 4px #00ffffaa;
 }
