@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>miretrace-lamenta-7f39d.html</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(ellipse at center, #0a0019 0%, #000000 100%);
+      color: #ddd;
+      font-family: "Courier New", Courier, monospace;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sigil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200px;
+      height: 200px;
+      margin-left: -100px;
+      margin-top: -100px;
+      border-radius: 50%;
+      border: 2px dashed #9b5de5;
+      box-shadow: 0 0 20px #5e60ce;
+      animation: breathe 6s ease-in-out infinite;
+      transition: transform 1s ease;
+      cursor: crosshair;
+    }
+
+    .sigil:hover {
+      transform: rotate(720deg) scale(1.2);
+      border-color: #f15bb5;
+      box-shadow: 0 0 40px #f15bb5;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .whisper {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      color: #a0a0ff;
+      opacity: 0;
+      animation: echoText 12s ease-in-out forwards;
+      white-space: nowrap;
+    }
+
+    @keyframes echoText {
+      0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      40% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0.1; transform: translateX(-50%) translateY(-10px); }
+    }
+
+    .interactive {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .input-fragment {
+      background: none;
+      border: none;
+      border-bottom: 1px solid #6e4e92;
+      color: #fff;
+      padding: 0.3rem;
+      font-size: 1rem;
+      width: 60%;
+      text-align: center;
+      margin-top: 1rem;
+      outline: none;
+    }
+
+    .input-fragment::placeholder {
+      color: #aaa;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 0.5rem 0;
+      background: rgba(0, 0, 0, 0.6);
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil" title="Invoke via silence ∴ Wait for the echo."></div>
+
+  <div class="interactive">
+    <div>Type ∴ summon memory</div>
+    <input type="text" class="input-fragment" placeholder="miretrace..." oninput="sigilShift(this)">
+  </div>
+
+  <div class="whisper">a name not spoken remembers itself</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    let shift = 0;
+    function sigilShift(input) {
+      const val = input.value.trim().toLowerCase();
+      const sigil = document.querySelector('.sigil');
+      if (val.includes("echo")) {
+        sigil.style.borderColor = "#00f5d4";
+        sigil.style.boxShadow = "0 0 50px #00f5d4";
+      } else if (val.includes("ruin")) {
+        sigil.style.borderColor = "#ff4d6d";
+        sigil.style.boxShadow = "0 0 50px #ff4d6d";
+      } else {
+        shift += 1;
+        sigil.style.transform = `rotate(${shift * 60}deg) scale(1.1)`;
+      }
+    }
+  </script>
+</body>
+</html>
