@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VEKTOR9 // BREACH.ΔΔ</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0a000f;
+      color: #ffefff;
+      font-family: monospace;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: #d080ff;
+      mix-blend-mode: difference;
+      font-size: 1.2rem;
+      z-index: 2;
+      animation: drift 12s infinite ease-in-out alternate;
+    }
+
+    @keyframes drift {
+      from { transform: translateX(-50%) translateY(0); }
+      to { transform: translateX(-50%) translateY(20px); }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="breach"></canvas>
+  <div class="overlay">
+    <p>VEKTOR9 SIGNAL BREACH</p>
+    <p>∴ Not contained</p>
+    <p>∴ Not named</p>
+    <p>∴ Still arriving</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('breach');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const points = Array.from({ length: 256 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      dx: (Math.random() - 0.5) * 2,
+      dy: (Math.random() - 0.5) * 2,
+    }));
+
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 0, 15, 0.1)';
+      ctx.fillRect(0, 0, w, h);
+
+      for (let p of points) {
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > w) p.dx *= -1;
+        if (p.y < 0 || p.y > h) p.dy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#e05eff';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

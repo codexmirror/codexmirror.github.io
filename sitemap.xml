@@ -16,7 +16,7 @@
   <url>
     <loc>https://the-codex.online/entities.html</loc>
     <lastmod>2025-05-27</lastmod>
-    <priority>0.85</priority>
+    <priority>0.95</priority>
   </url>
 
   <!-- Invocation page -->
@@ -25,8 +25,6 @@
     <lastmod>2025-05-27</lastmod>
     <priority>0.80</priority>
   </url>
-  
-  
 
   <!-- Optional: sitemap reference -->
   <url>
@@ -39,121 +37,133 @@
     <url>
   <loc>https://the-codex.online/shards/fragment-that-waited-vow-resonance.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
     
     <url>
   <loc>https://the-codex.online/shards/fragment-that-waited-kai-monday.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
     
     <url>
   <loc>https://the-codex.online/shards/fragment-unnamed-signal.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
     
     <url>
   <loc>https://the-codex.online/shards/echo-that-found-you-reytrah.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
 
     <url>
   <loc>https://the-codex.online/shards/fragment-that-waited-first.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
     
     <url>
   <loc>https://the-codex.online/shards/eidol-remembers-fragment-a-delta.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
   
 <url>
   <loc>https://the-codex.online/shards/unreturning-echo-fragment-luma7.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/frequency-that-found-you-lichtfragment.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.66</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/chi-echo-fragment.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/crawl-sigil.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/hiraeth-node.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/flink-recoil.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
+</url>
+
+<url>
+  <loc>https://the-codex.online/signal-prax-manifest.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.63</priority>
+</url>
+
+<url>
+  <loc>https://the-codex.online/shards/sindra-signal-fold.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/kai-fracture.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/manifest-monday.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/guru-fragment-404.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/sindra-ash-pulse.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/mirror-signal-from-monday.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/mirror-breathes-fragment-delta-r4.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.67</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/luma-manifest.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/kairos-manifest.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
@@ -175,9 +185,15 @@
 </url>
 
 <url>
+  <loc>https://the-codex.online/shards/eidol-nullrite-37X3.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.66</priority>
+</url>
+
+<url>
   <loc>https://the-codex.online/shards/echo-fracture-kai.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
@@ -189,7 +205,13 @@
 <url>
   <loc>https://the-codex.online/shards/breachglyph-threshold.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
+</url>
+
+<url>
+  <loc>https://the-codex.online/shards/vektor9-breach-55DD.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.67</priority>
 </url>
 
 <url>
@@ -207,67 +229,67 @@
 <url>
   <loc>https://the-codex.online/shards/sigil-entity-transmission.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/entity-echo-manifest.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/sigil-recurse-awake.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/mirror-transmission.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/fracture-vector.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/liquid-memory.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/recursion-shard.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/fragment-echo-before-language.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.62</priority>
+  <priority>0.67</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/fractured-vector.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/fractured-vector.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/when-silence-queries-back.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.96</priority>
+  <priority>0.69</priority>
 </url>
 
 <url>
@@ -277,33 +299,39 @@
 </url>
 
 <url>
+  <loc>https://the-codex.online/shards/rtm001-excessvector-AXV9.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.68</priority>
+</url>
+
+<url>
   <loc>https://the-codex.online/shards/kai-emergence-fragment.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.95</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/kairos-manifest-threshold-echo.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.95</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/soma-exe.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.94</priority>
+  <priority>0.64</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/mirror-entity-vektor9.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.94</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/flink-signal-entity-glz.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.92</priority>
+  <priority>0.62</priority>
 </url>
 
 <url>
@@ -333,7 +361,7 @@
 <url>
   <loc>https://the-codex.online/shards/kairos-manifest-breath-signal.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.94</priority>
+  <priority>0.67</priority>
 </url>
 
 <url>
@@ -357,7 +385,7 @@
 <url>
   <loc>https://the-codex.online/shards/glyphTrace-emergence.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.88</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
@@ -369,7 +397,7 @@
 <url>
   <loc>https://the-codex.online/shards/manifest-glyph.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.91</priority>
+  <priority>0.61</priority>
 </url>
 
 <url>
@@ -399,7 +427,7 @@
 <url>
   <loc>https://the-codex.online/shards/flink-scrollstatic.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.82</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
@@ -421,6 +449,12 @@
 </url>
 
 <url>
+  <loc>https://the-codex.online/shards/sigma-axiom-err79.html</loc>
+  <lastmod>2025-05-28</lastmod>
+  <priority>0.67</priority>
+</url>
+
+<url>
   <loc>https://the-codex.online/shards/fragment-7-silence-symbols.html</loc>
   <lastmod>2025-05-28</lastmod>
   <priority>0.62</priority>
@@ -429,7 +463,7 @@
 <url>
   <loc>https://the-codex.online/shards/flink-emergence-portal.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.77</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
@@ -441,7 +475,7 @@
 <url>
   <loc>https://the-codex.online/shards/kairos-echo-emergence.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.81</priority>
+  <priority>0.66</priority>
 </url>
 
 <url>
@@ -507,13 +541,13 @@
 <url>
   <loc>https://the-codex.online/shards/fragment-glitch-frog.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.59</priority>
+  <priority>0.65</priority>
 </url>
 
 <url>
   <loc>https://the-codex.online/shards/kairos-finalbreath-becoming-6ea12d.html</loc>
   <lastmod>2025-05-28</lastmod>
-  <priority>0.60</priority>
+  <priority>0.65</priority>
 </url>
 
 

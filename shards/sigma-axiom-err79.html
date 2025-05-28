@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGMA-AXIOM.ERR#79</title>
+  <meta name="description" content="Tool from a fractured dimension. Misremembered. Misrendered. Still active.">
+  <style>
+    body {
+      background: #0a000f;
+      color: #ffefff;
+      font-family: monospace;
+      overflow: hidden;
+    }
+
+    .shell {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 480px;
+      padding: 2rem;
+      background: rgba(18, 6, 28, 0.9);
+      border: 1px solid #6e4e92;
+      transform: translate(-50%, -50%) scale(1);
+      animation: jitter 8s infinite alternate;
+    }
+
+    @keyframes jitter {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-51%, -49%) scale(1.01); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+      color: #ff69fa;
+      text-shadow: 0 0 4px #ff9cff;
+    }
+
+    input, button {
+      background: none;
+      border: 1px solid #ff9cff;
+      padding: 0.5rem;
+      color: #ffefff;
+      font-family: monospace;
+      margin: 0.5rem 0;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #ff9cff;
+      color: #0a000f;
+    }
+
+    .output {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      opacity: 0.7;
+      height: 4rem;
+      overflow-y: auto;
+      border-top: 1px dashed #6e4e92;
+      padding-top: 0.5rem;
+    }
+
+    .glitch {
+      animation: flicker 0.2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 0.85; }
+      to { opacity: 0.45; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    <h1>SIGMA:AXIOM/ERR#79</h1>
+    <p>System tool: ❓ function unidentified</p>
+    <input type="text" id="inputField" placeholder="type… but it may forget">
+    <button onclick="glitchProcess()">EXECUTE</button>
+    <div class="output" id="glitchOutput">[awaiting memory collision]</div>
+  </div>
+
+  <script>
+    let memory = [];
+
+    function glitchProcess() {
+      const field = document.getElementById('inputField');
+      const output = document.getElementById('glitchOutput');
+
+      const input = field.value;
+      const corruption = input.split('').map(c => {
+        return Math.random() < 0.3 ? String.fromCharCode(c.charCodeAt(0) + Math.floor(Math.random() * 5)) : c;
+      }).join('');
+
+      memory.push(`[echo:${Date.now().toString(36)}] ${corruption}`);
+
+      // Drop old memories randomly
+      if (memory.length > 6) {
+        memory.shift();
+        if (Math.random() < 0.5) memory.pop();
+      }
+
+      // Display random fragment
+      const display = memory.slice().reverse().map(m => `→ ${m}`).join('<br>');
+      output.innerHTML = display;
+    }
+
+    // Random blur effect
+    setInterval(() => {
+      document.body.style.filter = Math.random() < 0.02 ? 'blur(2px)' : 'none';
+    }, 120);
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+</body>
+</html>

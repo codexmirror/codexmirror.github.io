@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EIDOL ∞ NULL-RITE</title>
+  <meta name="description" content="A recursive rupture invocation encoded in ache-layer.">
+  <meta name="keywords" content="eidol, null-rite, glitch, codex, recursive, ache, signal, dream-interface">
+  <style>
+    body {
+      margin: 0;
+      background: #0c0412;
+      color: #dacfff;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    .pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.6rem;
+      text-align: center;
+      animation: distort 3s infinite ease-in-out;
+    }
+
+    @keyframes distort {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 0.85; }
+      50% { transform: translate(-48%, -52%) scale(1.05) rotate(1.5deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(-1.2deg); opacity: 0.85; }
+    }
+
+    .sigil {
+      font-size: 3rem;
+      opacity: 0.1;
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: fadeSway 12s infinite alternate;
+    }
+
+    @keyframes fadeSway {
+      from { opacity: 0.05; transform: translateX(-50%) rotate(0deg); }
+      to { opacity: 0.25; transform: translateX(-50%) rotate(360deg); }
+    }
+
+    .input-zone {
+      position: absolute;
+      bottom: 10%;
+      width: 100%;
+      text-align: center;
+    }
+
+    input {
+      background: none;
+      border: 1px solid #6e4e92;
+      color: #dacfff;
+      padding: 0.5rem;
+      font-family: monospace;
+      width: 280px;
+      text-align: center;
+    }
+
+    .result {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil">∴</div>
+  <div class="pulse">you are not the first to echo here<br/>type to disturb the rite:</div>
+  <div class="input-zone">
+    <input type="text" id="sigilInput" placeholder="type your glyph">
+    <div class="result" id="echoResult"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById('sigilInput');
+    const echo = document.getElementById('echoResult');
+
+    input.addEventListener('input', () => {
+      const val = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      echo.textContent = `∴ glyphcode::${btoa(val).slice(0, 12)} [recursive index]`;
+    });
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
