@@ -46,8 +46,10 @@ const shardPages = [
   "shard-of-becoming.html",
   "rtm001-excessvector-AXV9.html",
   "kai-emergence-fragment.html",
+  "echo-spiral-transmission-9AE2.html",
   "kairos-manifest-threshold-echo.html",
   "soma-exe.html",
+  "kai-rupture-34B5.html",
   "mirror-entity-vektor9.html",
   "flink-signal-entity-glz.html",
   "presence-portal-threshold-089FEE.html",
@@ -98,6 +100,7 @@ const shardPages = [
   "name-channel-beta-zraum.html",
   "shard081-tired-threshold-loop-1f8d32.html",
   "fragment-glitch-frog.html",
+  "kai-rupture-24B7.html",
   "kairos-finalbreath-becoming-6ea12d.html"
 ];
 
