@@ -1,39 +1,42 @@
-/* === BASE RITUAL === */
+/* === BASE RESET === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-  background-color: #0a0a0a;
+body.fragment-page {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 16px;
   color: #d6dee8;
-  line-height: 1.8;
-  overflow-x: hidden;
-  position: relative;
+  background-color: #0a0a0a;
+  line-height: 1.7;
   text-align: center;
+  padding-top: 2rem;
 }
 
-/* === SCANLINE OVERLAY === */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    rgba(255,255,255,0.015) 1px,
-    transparent 2px
-  );
-  z-index: 1;
-  pointer-events: none;
-  mix-blend-mode: overlay;
+/* === HOLO-TITLE STYLE (MODIFIED) === */
+.fragment-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #a77dff, #d799ff, #a77dff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: codexPulse 8s ease-in-out infinite;
+  text-shadow:
+    0 0 4px rgba(200, 150, 255, 0.2),
+    0 0 8px rgba(200, 100, 255, 0.2),
+    0 0 14px rgba(255, 200, 255, 0.1);
+}
+
+/* === KEYFRAME GLOW === */
+@keyframes codexPulse {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* === NAVBAR === */
@@ -41,7 +44,6 @@ body::before {
   background-color: #0a0a0a;
   padding: 1rem 2rem;
   border-bottom: 1px solid #111;
-  z-index: 5;
   position: relative;
 }
 
@@ -75,11 +77,9 @@ body::before {
 }
 
 .nav-links a {
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 0.95rem;
   color: #aeb8c6;
   text-decoration: none;
-  font-weight: 500;
   transition: all 0.3s ease;
 }
 
@@ -88,84 +88,56 @@ body::before {
   text-shadow: 0 0 5px #87f0ff88;
 }
 
-/* === FRAGMENT CORE === */
-.fragment-content {
-  max-width: 800px;
-  margin: 4rem auto;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 2;
+/* === FRAGMENT BLOCKS === */
+.fragment-block {
+  margin: 2rem auto;
+  max-width: 720px;
+  padding: 0 1rem;
 }
 
-.fragment-title {
-  font-size: 2rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #c8a6ff, #87f0ff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 8px rgba(183, 0, 255, 0.3);
-  margin-bottom: 3rem;
-}
-
-.fragment-text p {
-  margin-bottom: 1.2rem;
-  font-size: 1.1rem;
-  color: #cbd2e0;
-  text-shadow: 0 0 2px #aee2ff44;
-}
-
-.fragment-text .echo {
+.fragment-echo {
   font-style: italic;
   color: #87f0ff;
-  margin-bottom: 2rem;
-  text-shadow: 0 0 6px #87f0ff55;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 
-.fragment-text .glitch {
+.fragment-response {
+  margin-bottom: 1.2rem;
+  color: #d6dee8;
+}
+
+/* === HIGHLIGHTED LINES === */
+.fragment-response .highlight {
+  color: #d799ff;
   font-style: italic;
-  font-weight: 600;
-  color: #e3b0ff;
-  text-shadow:
-    0 0 2px #fff,
-    0 0 6px #ff33ff88,
-    0 0 8px #ff33ff55;
-}
-
-/* === META DATA === */
-.fragment-meta {
-  font-size: 0.95rem;
-  margin-top: 4rem;
-  color: #9999cc;
-  opacity: 0.8;
-  font-style: italic;
-  text-shadow: 0 0 4px #99ccff66;
-}
-
-.codex-sigil {
-  margin-bottom: 0.5rem;
   font-weight: 500;
+  text-shadow: 0 0 4px #d799ff99;
+}
+
+/* === META === */
+.fragment-meta {
+  font-size: 0.9rem;
+  color: #99ccff;
+  margin-top: 3rem;
+  text-shadow: 0 0 2px #99ccff77;
 }
 
 /* === FOOTER === */
 .footer {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  color: #888;
   margin-top: 4rem;
   padding: 2rem 1rem;
-  text-align: center;
+  font-size: 0.9rem;
+  color: #777;
   border-top: 1px solid #222;
-  background: none;
 }
 
 .footer a {
   color: #777;
   text-decoration: none;
-  margin: 0 0.4rem;
-  transition: color 0.3s ease;
+  margin: 0 0.5rem;
 }
 
 .footer a:hover {
-  color: #00f0ff;
+  color: #87f0ff;
 }
