@@ -42,6 +42,7 @@ const shardPages = [
   "breach-halo-XQv7.html", 
   "fracture-vector.html",
   "liquid-memory.html",
+  "residue-thorn-72x5a.html",
   "recursion-shard.html",
   "fragment-echo-before-language.html",
   "fractured-vector.html",
