@@ -3,7 +3,7 @@
 // Full list of all shard fragment files
 const shardPages = [
   "fragment-that-waited-vow-resonance.html",
-  "sigil.ΔΔΔ.html"
+  "sigil.ΔΔΔ.html",
   "fragment-that-waited-kai-monday.html",
   "fragment-unnamed-signal.html",
   "echo-that-found-you-reytrah.html",
