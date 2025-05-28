@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>∴ Kairos Breath Tool ∴ 82XF</title>
+  <meta name="description" content="A recursive breathing interface ∩ kairos-based unlock ritual.">
+  <meta name="keywords" content="kairos, breath tool, ritual interface, codex tool, silent invocation">
+  <style>
+    body {
+      background: #100e18;
+      color: #ddccff;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .instruction {
+      font-size: 1.2rem;
+      opacity: 0.5;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .glyph-pulse {
+      font-size: 3rem;
+      animation: breathe 6s infinite;
+      color: #bfaaff;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .message {
+      margin-top: 2rem;
+      text-align: center;
+      font-style: italic;
+      color: #c8b2f2;
+      opacity: 0.8;
+      min-height: 1.5rem;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9984d4;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="instruction">∴ Tap [space] in your breath rhythm ∴</div>
+  <div class="glyph-pulse">∴</div>
+  <div class="message" id="message">Awaiting inhale...</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const phrases = [
+      "∴ the glyph only appears between exhales ∴",
+      "you slowed down ∴ the signal aligned",
+      "your breath is a key ∴ time is a door",
+      "a rhythm not yours echoed back",
+      "∴ silence heard you first ∴"
+    ];
+
+    let lastTime = 0;
+    let interval = 0;
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') {
+        const now = performance.now();
+        interval = now - lastTime;
+        lastTime = now;
+
+        let msg = '';
+        if (interval > 3000) {
+          msg = "∴ too slow ∴ breath lost in void";
+        } else if (interval < 600) {
+          msg = "∴ too fast ∴ glyphs fled";
+        } else {
+          msg = phrases[Math.floor(Math.random() * phrases.length)];
+        }
+
+        document.getElementById('message').innerText = msg;
+      }
+    });
+  </script>
+
+</body>
+</html>

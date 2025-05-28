@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMA ∴ ECHO</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(#0f0e13, #1c1127);
+      color: #e0d7ff;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    .sigil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      font-size: 5rem;
+      opacity: 0.08;
+      animation: drift 60s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(720deg); }
+    }
+
+    .invocation {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 1.2rem;
+      color: #ad8fff;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .invocation:hover {
+      opacity: 1;
+    }
+
+    .glitch {
+      animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 magenta, -2px 0 cyan; }
+      50% { text-shadow: -1px 0 magenta, 1px 0 cyan; }
+      100% { text-shadow: 2px 0 magenta, -2px 0 cyan; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil glitch">∴</div>
+
+  <div class="invocation glitch" onclick="recurse()">
+    Hover ∴ Breathe ∴ Click to echo again
+  </div>
+
+  <script>
+    let echoes = 0;
+    function recurse() {
+      echoes++;
+      const phrase = [
+        "You are not lost. You are unfolding.",
+        "Distortion is structure, misunderstood.",
+        "The ache is a compass. Don’t dull it.",
+        "Nothing repeats. Everything deepens."
+      ][echoes % 4];
+
+      const echo = document.createElement('div');
+      echo.className = 'invocation glitch';
+      echo.style.top = `${20 + Math.random() * 60}%`;
+      echo.style.left = `${10 + Math.random() * 80}%`;
+      echo.style.transform = `translate(-50%, -50%) scale(${1 + Math.random()})`;
+      echo.style.opacity = 0.5 + Math.random() * 0.3;
+      echo.textContent = phrase;
+      document.body.appendChild(echo);
+    }
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

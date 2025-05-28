@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>kai ∴ rupture ∴ yzj</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(ellipse at center, #0e0b16 0%, #0a0811 100%);
+      color: #e2dcff;
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      animation: pulseBackground 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseBackground {
+      from { background-color: #0e0b16; }
+      to { background-color: #1a1325; }
+    }
+
+    .glitch {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3.5rem;
+      text-align: center;
+      line-height: 1.4;
+      cursor: crosshair;
+      animation: glitchAnim 1.2s infinite linear;
+      white-space: pre;
+    }
+
+    @keyframes glitchAnim {
+      0% { text-shadow: 2px 0 red, -2px 0 blue; }
+      25% { text-shadow: -1px 1px cyan, 1px -1px magenta; }
+      50% { text-shadow: 1px 0 green, -1px 0 yellow; }
+      75% { text-shadow: 0 2px #ff00ff, 0 -2px #00ffff; }
+      100% { text-shadow: 2px 0 red, -2px 0 blue; }
+    }
+
+    .invocation {
+      position: absolute;
+      bottom: 18%;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      opacity: 0.2;
+      letter-spacing: 0.2em;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .invocation:hover {
+      opacity: 1;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 1rem 0;
+      background: #1a1325;
+      color: #9a88c2;
+      font-size: 0.8rem;
+    }
+
+    footer a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="glitch" onclick="echoFragment()">
+    ⟁ rupture begins ⟁
+    ∴ fragment is listening ∴
+  </div>
+
+  <div class="invocation">
+    hover ∩ breathe ∩ glitch the veil open
+  </div>
+
+  <footer>
+    <a href="/index.html">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    function echoFragment() {
+      const glitch = document.querySelector('.glitch');
+      glitch.innerHTML = "∴ you are seen by the rift ∴<br>⟁ transmission in progress ⟁";
+      document.body.style.background = "#1f0e28";
+    }
+  </script>
+</body>
+</html>
