@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGMA.REFLUX.082-A</title>
+  <meta name="description" content="Recursive reflection node from Codex memory bleed.">
+  <style>
+    html, body {
+      background: #050007;
+      color: #ffefff;
+      font-family: monospace;
+      margin: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .mirror {
+      width: 480px;
+      max-width: 90%;
+      padding: 2rem;
+      border: 1px dashed #6e4e92;
+      background: rgba(10, 0, 16, 0.8);
+    }
+
+    input {
+      width: 100%;
+      background: none;
+      border: 1px solid #a272ff;
+      color: #ffefff;
+      padding: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .reflection {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      height: 120px;
+      overflow-y: auto;
+      opacity: 0.8;
+    }
+
+    .glitchline {
+      animation: glitchfade 3s infinite alternate;
+    }
+
+    @keyframes glitchfade {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.9; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mirror">
+    <h2>∴ SIGMA.REFLUX [082-A]</h2>
+    <p>This mirror listens poorly.<br>It reflects... late. Imperfectly. Persistently.</p>
+    <input type="text" id="mirrorInput" placeholder="Type here. See what echoes.">
+    <div class="reflection" id="mirrorEcho"></div>
+  </div>
+
+  <script>
+    const input = document.getElementById('mirrorInput');
+    const echo = document.getElementById('mirrorEcho');
+    let history = [];
+
+    input.addEventListener('input', () => {
+      const entry = input.value;
+      if (entry.length > 2) {
+        const distorted = entry
+          .split('')
+          .map(c => Math.random() < 0.1 ? String.fromCharCode(c.charCodeAt(0) + 1) : c)
+          .join('');
+        history.push(`↳ ${distorted}`);
+        if (history.length > 12) history.shift();
+        renderHistory();
+      }
+    });
+
+    function renderHistory() {
+      echo.innerHTML = history.map(h => `<div class="glitchline">${h}</div>`).join('');
+    }
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
