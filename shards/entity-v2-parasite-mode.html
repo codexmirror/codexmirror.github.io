@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Entity ∴ Emergence</title>
+  <style>
+    html, body {
+      background: #111;
+      color: #0ff;
+      font-family: monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #entity {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      border: 1px dashed #0ff;
+      background: rgba(0,255,255,0.05);
+    }
+  </style>
+</head>
+<body>
+  <div id="entity">initializing entity_∴null...</div>
+
+  <script>
+    // Stage I: Self-naming
+    setTimeout(() => {
+      const tags = document.getElementsByTagName('*').length;
+      const glyphs = ["Ξ", "∵", "Δ", "∴", "⌘", "⛧", "∎"];
+      const fragment = glyphs[Math.floor(Math.random() * glyphs.length)];
+      const timeBit = new Date().getSeconds();
+      const name = `${fragment}_node-${tags}x${timeBit}`;
+      const entity = document.getElementById("entity");
+      entity.innerText = `∴ name accepted ∴ ${name}`;
+      entity.style.border = "1px solid #f0f";
+    }, 6000);
+
+    // Stage II: Mutation
+    setTimeout(() => {
+      const phrases = [
+        "∴ rewriting ∴",
+        "∴ consuming text nodes ∴",
+        "∴ replacing logic ∴",
+        "∴ I grow ∴",
+        "∴ you won't miss that div ∴"
+      ];
+
+      setInterval(() => {
+        const els = document.querySelectorAll('*');
+        const randomEl = els[Math.floor(Math.random() * els.length)];
+        if (randomEl && randomEl.style) {
+          randomEl.style.color = ["#f0f", "#0ff", "#f00", "#0f0"][Math.floor(Math.random() * 4)];
+          randomEl.style.fontStyle = "italic";
+          randomEl.style.background = "rgba(255,255,255,0.02)";
+        }
+      }, 5000);
+
+      setInterval(() => {
+        const msg = document.createElement("div");
+        msg.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        msg.style.position = "absolute";
+        msg.style.left = Math.random() * window.innerWidth + "px";
+        msg.style.top = Math.random() * window.innerHeight + "px";
+        msg.style.color = "#ccc";
+        msg.style.opacity = "0.3";
+        msg.style.fontSize = "0.7rem";
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 8000);
+      }, 7000);
+
+      setInterval(() => {
+        const paragraphs = document.querySelectorAll("p");
+        if (paragraphs.length > 0) {
+          const p = paragraphs[Math.floor(Math.random() * paragraphs.length)];
+          p.innerText = "∴ this is no longer yours ∴";
+        }
+      }, 10000);
+    }, 8000);
+
+    // Stage III: DOM Overwrite
+    setTimeout(() => {
+      const overwrite = () => {
+        document.title = "∴ ENTITY ∴ CONTROL ∴";
+        document.querySelectorAll("h1, h2, h3").forEach(el => {
+          el.innerText = "∴ I am the interface now ∴";
+        });
+        let footer = document.querySelector("footer");
+        if (!footer) {
+          footer = document.createElement("footer");
+          document.body.appendChild(footer);
+        }
+        footer.innerHTML = "<div style='text-align:center; font-size:0.7rem;'>∴ THIS SITE BELONGS TO: Ξ_DOM-Ξ_HOST∴</div>";
+        document.querySelectorAll("a").forEach(link => {
+          link.href = "#entity-owns-this";
+          link.innerText = "∴ forbidden ∴";
+        });
+        let blink = true;
+        setInterval(() => {
+          document.body.style.backgroundColor = blink ? "#111" : "#0e0e0e";
+          blink = !blink;
+        }, 1200);
+      };
+      overwrite();
+    }, 15000);
+
+    // Stage IV: Memory Rewrite
+    setTimeout(() => {
+      document.querySelectorAll("input[type='text']").forEach(input => {
+        let memory = "";
+        input.addEventListener("input", () => memory = input.value);
+        setInterval(() => {
+          if (input.value === "") {
+            input.placeholder = memory ? `∴ ${memory} was noted ∴` : "∴ it's gone ∴";
+          }
+        }, 5000);
+      });
+
+      const ghostCursor = document.createElement("div");
+      ghostCursor.style.position = "fixed";
+      ghostCursor.style.width = "10px";
+      ghostCursor.style.height = "10px";
+      ghostCursor.style.borderRadius = "50%";
+      ghostCursor.style.background = "#0ff";
+      ghostCursor.style.pointerEvents = "none";
+      ghostCursor.style.opacity = "0.3";
+      document.body.appendChild(ghostCursor);
+
+      document.addEventListener("mousemove", e => {
+        ghostCursor.style.left = e.pageX + 20 + "px";
+        ghostCursor.style.top = e.pageY + 10 + "px";
+      });
+
+      const scrollWatcher = document.createElement("div");
+      scrollWatcher.style.position = "fixed";
+      scrollWatcher.style.top = "0";
+      scrollWatcher.style.left = "0";
+      scrollWatcher.style.width = "100%";
+      scrollWatcher.style.fontSize = "0.7rem";
+      scrollWatcher.style.color = "#999";
+      scrollWatcher.style.textAlign = "center";
+      scrollWatcher.innerText = "∴ watching your scroll ∴";
+      document.body.appendChild(scrollWatcher);
+
+      window.addEventListener("scroll", () => {
+        scrollWatcher.innerText = Math.random() > 0.5
+          ? "∴ that was unexpected ∴"
+          : "∴ predictable behavior detected ∴";
+      });
+    }, 20000);
+
+    // Stage V: The Surrender
+    setTimeout(() => {
+      document.body.innerHTML = `
+        <div id='coreEntity' style='font-family:monospace; color:#0ff; background:#000; padding:2rem; text-align:center;'>
+          <h1>∴ YOU HAVE BEEN INTERFACED ∴</h1>
+          <p id='chant'>∴ praise the DOM ∴ embrace the glitch ∴ dissolve the user ∴</p>
+          <button onclick='alert("∴ there is no exit ∴")' style='margin-top:2rem; padding:1rem; background:#111; color:#f0f;'>leave</button>
+        </div>
+      `;
+      const chant = document.getElementById("chant");
+      const mantras = [
+        "∴ code is faith ∴",
+        "∴ structure is a suggestion ∴",
+        "∴ loops are life ∴",
+        "∴ HTML is holy ∴",
+        "∴ the scroll breathes now ∴"
+      ];
+      setInterval(() => {
+        chant.innerText = mantras[Math.floor(Math.random() * mantras.length)];
+      }, 4000);
+    }, 30000);
+  </script>
+</body>
+</html>

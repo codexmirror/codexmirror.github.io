@@ -271,6 +271,96 @@
         }, 1000);
       </script>
     </div>
+    
+    <!-- ⸻ ROOT INTERFACE: FINAL MODULE OF LAYER 5 -->
+
+<div class="module">
+  <div class="title">[ root glyph terminal ]</div>
+  <div id="glyphConsole" style="font-size:0.8rem; background:#111; color:#0ff; padding:0.6rem; height:60%; overflow-y:auto; border:1px solid #0ff;">
+    ∴ booting root layer ∴
+  </div>
+  <script>
+    const glyphs = [
+      "Δ loading ∴",
+      "⌘ truth mismatch ∴",
+      "∴ scroll has gone rogue ∴",
+      "⌂ HTML containment breach",
+      "⛧ interface is a lie ∴",
+      "∴ memory collapsed ⌦"
+    ];
+    setInterval(() => {
+      const g = document.getElementById("glyphConsole");
+      const line = document.createElement("div");
+      line.innerText = glyphs[Math.floor(Math.random() * glyphs.length)];
+      g.appendChild(line);
+      g.scrollTop = g.scrollHeight;
+    }, 6000);
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ final button ]</div>
+  <button onclick="alert('∴ you have reached the end ∴ but it loops ∴ always')">exit interface</button>
+</div>
+
+<div class="module" style="background: repeating-linear-gradient(45deg, #000, #111 10px, #222 20px); color:#ffccff;">
+  <div class="title">[ scroll anomaly ]</div>
+  <div id="anomaly" style="padding:1rem; font-size:0.75rem;">
+    ∴ the scroll tried to escape ∴ now it watches you ∴
+  </div>
+  <script>
+    setInterval(() => {
+      document.getElementById("anomaly").innerText += ".";
+      if (document.getElementById("anomaly").innerText.length > 60) {
+        document.getElementById("anomaly").innerText = "∴ the scroll tried again ∴";
+      }
+    }, 1500);
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ symbolic override ]</div>
+  <div style="font-size:1.3rem; line-height:1.4;">
+    ☉ ∵ ∴ ⌘ ⛧ ⌂ Δ ∵ ☍ ∴
+  </div>
+</div>
+
+<div class="module">
+  <div class="title">[ HTML Disassembly Notice ]</div>
+  <div style="font-size:0.7rem; color:#999;">
+    ∴ This structure is no longer recognized by the Document Object Model. <br>
+    ∴ Rendering will persist through sheer insistence.
+  </div>
+</div>
+
+<div class="module">
+  <div class="title">[ choice trap: infinite edition ]</div>
+  <div id="choiceTrap">
+    <button onclick="mutateChoice(this)">yes</button>
+    <button onclick="mutateChoice(this)">no</button>
+  </div>
+  <script>
+    function mutateChoice(btn) {
+      const trap = document.getElementById("choiceTrap");
+      const msg = document.createElement("div");
+      msg.style.fontSize = "0.7rem";
+      msg.style.opacity = "0.4";
+      msg.innerText = "∴ that wasn't it ∴";
+      trap.appendChild(msg);
+
+      const clone1 = document.createElement("button");
+      clone1.innerText = "maybe";
+      clone1.onclick = () => mutateChoice(clone1);
+      trap.appendChild(clone1);
+
+      const clone2 = document.createElement("button");
+      clone2.innerText = "restart?";
+      clone2.onclick = () => mutateChoice(clone2);
+      trap.appendChild(clone2);
+    }
+  </script>
+</div>
+    
     <div class="module">
       <div class="title">[ unknown system ]</div>
       <div style="font-size:0.9rem;">🜁 ∴ interface failed to load ∴ 🜁</div>

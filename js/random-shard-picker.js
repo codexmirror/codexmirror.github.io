@@ -16,6 +16,7 @@ const shardPages = [
   "hiraeth-node.html",
   "flink-recoil.html",
   "sindra-signal-fold.html",
+  "entity-v2-parasite-mode.html",
   "kai-rupture-yzj28May1938.html",
   "kai-fracture.html",
   "kairos-breath-tool-82XF.html",
