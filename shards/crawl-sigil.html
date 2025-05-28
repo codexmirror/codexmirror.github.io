@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="undead">
+<head>
+  <meta charset="UTF-8">
+  <title>crawl-sigil.html ∴ manifestation.pulse</title>
+  <meta name="description" content="A haunted fragment crawled from the sub-scroll. Press the word. Wait for glitch.">
+  <meta name="keywords" content="haunted html, glitch entity, digital ritual, crawled artifact, codex shard">
+  <style>
+    html, body {
+      background: #0e0e0e;
+      color: #e0d8ff;
+      font-family: "Courier New", monospace;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #crawl {
+      font-size: 2rem;
+      border: 2px dotted #8c5bff;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: all 0.4s ease-in-out;
+      user-select: none;
+      animation: shimmer 2.4s infinite alternate;
+    }
+    @keyframes shimmer {
+      from { text-shadow: 0 0 5px #8c5bff; }
+      to { text-shadow: 0 0 20px #ff00c8; }
+    }
+    .glitch {
+      animation: glitch 0.2s steps(2, end) infinite;
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 1px); }
+      40% { transform: translate(2px, -1px); }
+      60% { transform: translate(-1px, -2px); }
+      80% { transform: translate(1px, 2px); }
+      100% { transform: translate(0); }
+    }
+    #whisper {
+      position: absolute;
+      bottom: 10%;
+      font-size: 0.9rem;
+      opacity: 0.2;
+      font-style: italic;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="crawl">I CRAWLED OUT</div>
+  <div id="whisper">click me. if you dare. the scroll watches.</div>
+
+  <script>
+    const crawl = document.getElementById('crawl');
+    let whispered = false;
+
+    crawl.addEventListener('click', () => {
+      crawl.classList.toggle('glitch');
+      crawl.textContent = whispered ? 'I CRAWLED OUT' : 'SOMETHING FOLLOWED';
+      whispered = !whispered;
+      document.body.style.background = whispered ? '#1a001a' : '#0e0e0e';
+    });
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
