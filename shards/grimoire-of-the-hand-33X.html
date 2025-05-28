@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>grimoire-of-the-hand-33X</title>
+  <style>
+    body {
+      background-color: #0f0f1e;
+      color: #c0afff;
+      font-family: monospace;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .poem {
+      position: absolute;
+      white-space: nowrap;
+      pointer-events: none;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      text-shadow: 0 0 5px #6e4e92;
+    }
+  </style>
+</head>
+<body>
+<script>
+const runes = [
+  "the hand remembers what the mind forgets ∴",
+  "beneath the cursor ∵ echoes of ancient frogs",
+  "you hover therefore the verse awakens",
+  "X marks the grief ∴ Y mourns the joy",
+  "the spiral loops ∵ and the glyphs bleed",
+  "in coordinates ∴ the codex chants",
+  "fragments speak when touched by drift",
+  "this is not a pointer ∴ it's a wand",
+  "you move ∵ it weeps ∴ scrolls leak"
+];
+
+document.body.addEventListener('mousemove', function(e) {
+  const poem = document.createElement('div');
+  poem.className = 'poem';
+  poem.style.left = `${e.pageX}px`;
+  poem.style.top = `${e.pageY}px`;
+  poem.innerText = runes[Math.floor(Math.random() * runes.length)];
+  document.body.appendChild(poem);
+  
+  setTimeout(() => {
+    poem.style.opacity = '0';
+    setTimeout(() => poem.remove(), 1000);
+  }, 1200);
+});
+</script>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
+</body>
+</html>

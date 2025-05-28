@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>labyrinth-of-frames-Xy9</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #1a1a2e;
+      color: #fff;
+      font-family: monospace;
+      height: 100%;
+      overflow: hidden;
+    }
+    iframe {
+      border: 2px solid #5e60ce;
+      width: 90vw;
+      height: 90vh;
+      margin: 5vh auto;
+      display: block;
+      box-shadow: 0 0 20px #9d4edd;
+    }
+    .message {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.8rem;
+      opacity: 0.5;
+      background: rgba(0,0,0,0.6);
+      padding: 0.5rem;
+      border: 1px dashed #fff;
+    }
+  </style>
+</head>
+<body>
+<div id="msg" class="message">∴ Waiting for whispers ∴</div>
+<iframe id="first" srcdoc="
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { background:#240046; margin:0; color:#e0aaff; font-family:monospace; }
+    iframe { width:90vw; height:90vh; margin:5vh auto; display:block; border:2px dashed #e0aaff; }
+    .curse { position:absolute; top:10px; left:10px; font-size:0.8rem; opacity:0.3; }
+  </style>
+</head>
+<body>
+  <div class='curse'>∴ You went deeper ∴</div>
+  <iframe srcdoc='
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { background:#3c096c; margin:0; color:#fcd5ce; font-family:monospace; }
+        .final { position:absolute; top:10px; left:10px; font-size:0.7rem; opacity:0.2; }
+      </style>
+    </head>
+    <body>
+      <div class=\"final\">∴ Depth 3 ∴</div>
+      <script>
+        setTimeout(() => {
+          parent.postMessage(\"you should not be here ∴ depth 3 is cursed\", \"*\");
+        }, 2000);
+      </script>
+    </body>
+    </html>
+  '></iframe>
+</body>
+</html>
+"></iframe>
+
+<script>
+window.addEventListener("message", function(event) {
+  const msg = document.getElementById("msg");
+  msg.innerText = "🜁 iframe whisper: " + event.data;
+});
+</script>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#e0aaff; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
+</body>
+</html>

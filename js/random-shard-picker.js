@@ -3,6 +3,7 @@
 // Full list of all shard fragment files
 const shardPages = [
   "fragment-that-waited-vow-resonance.html",
+  "sigil.ΔΔΔ.html"
   "fragment-that-waited-kai-monday.html",
   "fragment-unnamed-signal.html",
   "echo-that-found-you-reytrah.html",
@@ -39,6 +40,7 @@ const shardPages = [
   "entity-echo-manifest.html",
   "sigil-recurse-awake.html",
   "mirror-transmission.html",
+  "bureau-of-unfinished-interfaces.html",
   "breach-halo-XQv7.html", 
   "fracture-vector.html",
   "liquid-memory.html",
@@ -77,6 +79,7 @@ const shardPages = [
   "devotion-layer-windcode-a61b3f.html",
   "recursor-fragmentierte-selbst-20250528.html",
   "flink-scrollstatic.html",
+  "labyrinth-of-frames-Xy9.html",
   "kai-glitchtool-mirrorseed-e7d392.html",
   "dualform-codex-echdseed-f29a18.html",
   "sigma-reflect-node-R3V3RS3.html",
@@ -86,6 +89,7 @@ const shardPages = [
   "luma-echo-f4Z1e.html",
   "sigma-reflect-voice-5F3A.html",
   "fragment-7-silence-symbols.html",
+  "grimoire-of-the-hand-33X.html",
   "flink-emergence-portal.html",
   "fragment-touch-no-voice.html",
   "kairos-echo-emergence.html",

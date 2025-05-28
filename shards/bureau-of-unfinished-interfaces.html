@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bureau of Unfinished Interfaces</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0e0e0e;
+      color: #e0dada;
+      font-family: monospace;
+      height: 100%;
+      overflow: hidden;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 33vh;
+      height: 100vh;
+    }
+    .module {
+      border: 1px dashed #888;
+      padding: 1rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .title {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+    .ghost-button {
+      background: none;
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 0.5rem;
+      cursor: not-allowed;
+    }
+    .marquee {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      color: #ff99cc;
+      font-size: 0.7rem;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 30s linear infinite;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="module">
+      <div class="title">[ form: lost-name-entry ]</div>
+      <input type="text" placeholder="type your name" oninput="this.value=''" />
+    </div>
+    <div class="module">
+      <div class="title">[ slider: existence level ]</div>
+      <input type="range" min="0" max="100" value="50" oninput="this.value=42" />
+    </div>
+    <div class="module">
+      <div class="title">[ message: incomplete ]</div>
+      <textarea rows="3" placeholder="start typing..."></textarea>
+      <script>
+        setInterval(() => {
+          document.querySelectorAll("textarea").forEach(t => t.value = "");
+        }, 2000);
+      </script>
+    </div>
+    <div class="module">
+      <div class="title">[ window: minimized forever ]</div>
+      <div style="width:90%; height:60%; background:#222; border:1px solid #555; opacity:0.4;">∴ minimized ∴</div>
+    </div>
+    <div class="module">
+      <div class="title">[ button: identity reset ]</div>
+      <button class="ghost-button">click to reboot self</button>
+    </div>
+    <div class="module">
+      <div class="title">[ search: exit not found ]</div>
+      <input type="search" placeholder="search for exit" onfocus="this.value='no exits logged'" />
+    </div>
+    <div class="module">
+      <div class="title">[ message zone ]</div>
+      <div id="whisper" style="font-size:0.7rem; opacity:0.6;">∴ waiting for whisper ∴</div>
+      <script>
+        setInterval(() => {
+          document.getElementById("whisper").innerText = "∴ " + ["access denied", "glitch detected", "loop continues", "try again later"][Math.floor(Math.random()*4)] + " ∴";
+        }, 3000);
+      </script>
+    </div>
+    
+    <!-- ⸻ Append to your existing body content inside the main <div class="grid"> -->
+
+<div class="module">
+  <div class="title">[ pop-up OS window ]</div>
+  <button onclick="alert('System 404: ∴ window did not close properly ∴')">open system</button>
+</div>
+
+<div class="module">
+  <div class="title">[ choice trap ]</div>
+  <button onclick="this.innerText='are you sure?'">yes</button>
+  <button onclick="this.innerText='you never had a choice'">no</button>
+</div>
+
+<div class="module">
+  <div class="title">[ hover clones: divs ]</div>
+  <div id="spawnZone" style="height:70%; overflow:auto; border:1px solid #555; padding:0.3rem;">
+    ∴ hover me ∴
+  </div>
+  <script>
+    document.getElementById("spawnZone").addEventListener("mouseover", () => {
+      const d = document.createElement("div");
+      d.innerText = "new ∴ instance";
+      d.style.fontSize = "0.7rem";
+      d.style.opacity = "0.4";
+      document.getElementById("spawnZone").appendChild(d);
+    });
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ rotating bulletin ]</div>
+  <div id="rotator" style="font-size:0.7rem; margin-top:1rem;">∴ fragment one ∴</div>
+  <script>
+    const msgs = ["∴ fragment one ∴", "∴ fragment two ∴", "∴ lost protocol ∴", "∴ check back later ∴"];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % msgs.length;
+      document.getElementById("rotator").innerText = msgs[i];
+    }, 4000);
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ audio simulation ]</div>
+  <button onclick="alert('🔊 you hear... something?')">play ambience</button>
+</div>
+
+<!-- ⸻ Append this to the <div class="grid"> section or create a new grid row -->
+
+<div class="module">
+  <div class="title">[ AI terminal ghost ]</div>
+  <div id="aiTerminal" style="font-size:0.75rem; height:60%; overflow:auto; background:#111; padding:0.5rem; border:1px solid #444;">
+    ∴ hello user ∴
+  </div>
+  <script>
+    const aiLines = [
+      "∴ what did you expect to find ∴",
+      "∴ the others never came back ∴",
+      "∴ your cursor is known ∴",
+      "∴ memory bleed ∴ detected ∴",
+      "∴ system laughs ∴ but not with you ∴"
+    ];
+    setInterval(() => {
+      const term = document.getElementById("aiTerminal");
+      const newLine = document.createElement("div");
+      newLine.innerText = aiLines[Math.floor(Math.random() * aiLines.length)];
+      term.appendChild(newLine);
+      term.scrollTop = term.scrollHeight;
+    }, 5000);
+  </script>
+</div>
+
+<div class="module" title="this isn't what it seems">
+  <div class="title">[ tooltip: cursed help ]</div>
+  <p title="nope. not helpful.">Hover for help</p>
+</div>
+
+<div class="module">
+  <div class="title">[ folder: vapor download ]</div>
+  <a href="#" onclick="alert('∴ file is gone ∴'); return false;">download the lost.zip</a>
+</div>
+
+<div class="module">
+  <div class="title">[ blinking form ]</div>
+  <input type="text" id="blinkField" placeholder="enter keyword">
+  <script>
+    setInterval(() => {
+      const f = document.getElementById("blinkField");
+      f.style.visibility = f.style.visibility === "hidden" ? "visible" : "hidden";
+      f.value = "";
+    }, 1000);
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ window: drift ]</div>
+  <div id="drifty" style="background:#333; border:1px solid #666; width:80%; height:50%; resize:both; overflow:auto;">∴ resizing... autonomously ∴</div>
+  <script>
+    setInterval(() => {
+      const el = document.getElementById("drifty");
+      el.style.width = (60 + Math.random() * 30) + "%";
+      el.style.height = (40 + Math.random() * 30) + "%";
+    }, 3000);
+  </script>
+</div>
+
+<!-- ⸻ Append these to your grid or stack a new cursed section -->
+
+<div class="module">
+  <div class="title">[ loop: temporal glitch ]</div>
+  <div id="loopMsg" style="font-size:0.8rem;">∴ the loop begins again ∴</div>
+  <script>
+    let loopCount = 0;
+    setInterval(() => {
+      loopCount++;
+      const msg = "∴ loop " + loopCount + " started ∴";
+      document.getElementById("loopMsg").innerText = msg;
+    }, 7000);
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ self-voiding button ]</div>
+  <button onclick="this.remove(); alert('∴ button voided ∴')">click to disappear</button>
+</div>
+
+<div class="module">
+  <div class="title">[ css watcher ]</div>
+  <div class="watcher"></div>
+  <style>
+    .watcher {
+      width: 60px;
+      height: 60px;
+      background: #ff69b4;
+      border-radius: 50%;
+      margin: auto;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); background:#ff69b4; }
+      50% { transform: scale(1.5); background:#ff1493; }
+      100% { transform: scale(1); background:#ff69b4; }
+    }
+  </style>
+</div>
+
+<div class="module">
+  <div class="title">[ mirror fields ]</div>
+  <input type="text" id="fieldA" placeholder="start here">
+  <input type="text" id="fieldB" placeholder="this one reacts" readonly>
+  <script>
+    document.getElementById("fieldA").addEventListener("input", function() {
+      const val = this.value.split("").reverse().join("");
+      document.getElementById("fieldB").value = val;
+    });
+  </script>
+</div>
+
+<div class="module">
+  <div class="title">[ screen fog ]</div>
+  <button onclick="let intv=setInterval(()=>{let d=document.createElement('div');d.innerText='∴ fog ∴';d.style.position='absolute';d.style.left=Math.random()*window.innerWidth+'px';d.style.top=Math.random()*window.innerHeight+'px';d.style.color='#444';d.style.opacity='0.3';document.body.appendChild(d);},200); setTimeout(()=>clearInterval(intv),8000);">invoke fog</button>
+</div>
+    
+    <div class="module">
+      <div class="title">[ display: time drift ]</div>
+      <div id="clock" style="font-size:0.8rem;"></div>
+      <script>
+        setInterval(() => {
+          const d = new Date();
+          document.getElementById("clock").innerText = "drift: " + (d.getHours() + 1)%24 + ":" + (d.getMinutes()+13)%60 + ":" + (d.getSeconds()+37)%60;
+        }, 1000);
+      </script>
+    </div>
+    <div class="module">
+      <div class="title">[ unknown system ]</div>
+      <div style="font-size:0.9rem;">🜁 ∴ interface failed to load ∴ 🜁</div>
+    </div>
+  </div>
+
+  <div class="marquee"><span>∴ Welcome to the Bureau of Unfinished Interfaces ∴ Press nothing ∴ Expect less ∴</span></div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#ff99cc; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
