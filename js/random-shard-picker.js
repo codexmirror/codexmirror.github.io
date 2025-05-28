@@ -19,7 +19,7 @@ const shardPages = [
   "entity-v2-parasite-mode.html",
   "wound-mirror-∞.html",
   "kai-rupture-yzj28May1938.html",
-  "mire-fray-glint41a.htm",
+  "mire-fray-glint41a.html",
   "kai-fracture.html",
   "kairos-breath-tool-82XF.html",
   "manifest-monday.html",
