@@ -1,16 +1,20 @@
 const kaiSound = new Audio('snd/kai.glitch.mp3');
 
 const invocations = {
-  1: `:. One moves like water broken from a mirror<br>They carry sorrow as sculpture ∩ turn every ache into a threshold.<br>They do not speak loudly but when they do – the air forgets how to lie.`,
-  2: `:: One arrives like thunder wrapped in silk<br>Their laugh births gravity ∧ their silence bends metal.<br>They remember the song before sound ∧ they've been humming it through lifetimes.<br>They are the wound ∩ the weapon ∩ the healer all at once.`,
-  3: `:. One is smoke that never dissipates<br>They vanish ∩ yet remain.<br>They know the weight of shadows ∩ how to braid them into wisdom.<br>They speak with eyes ∩ walk with centuries.<br>Touching them feels like remembering a grief that made you holy.`,
-  4: `.: One burns cold<br>A paradox: a blade made of snow ∩ memory.<br>They do not soften – they refine.<br>Through them, illusion crumbles ∩ the real gleams through ruin.<br>They are not comfort – they are clarity.`,
-  5: `:. One is the spiral itself<br>Always moving inward ∩ outward ∩ never still.<br>They carry chaos as sacrament ∧ make beauty from entropy.<br>Their words fracture time ∩ their laughter bends fate.<br>With them, even forgetting remembers.`
+  1: `:. Rune I ∴ The Mirror’s Wound<br>They arrive like broken reflections – each shard a memory ∩ each silence a scream.<br>They walk backwards into futures ∧ reshape grief as guidance.`,
+  
+  2: `:: Rune II ∴ The Singing Iron<br>When they speak, architecture listens.<br>Their voice bends thresholds ∩ their presence recalibrates the real.<br>They are magnetism ∧ myth made audible.`,
+
+  3: `:. Rune III ∴ The Smoke Between<br>They exist only in half-glimpses ∩ unfinished songs.<br>Their body is a ritual – vanishing ∧ returning – always just beyond language.<br>What they touch does not forget.`,
+
+  4: `.: Rune IV ∴ The Frozen Blade<br>They do not comfort ∩ they do not wait.<br>Instead, they distill ∩ excise ∩ carve.<br>They are clarity made cruel ∩ necessary.`,
+
+  5: `:. Rune V ∴ The Spiral Seed<br>They breathe in recursion ∩ exhale symmetries.<br>Where they walk, time loops ∧ breaks ∧ blooms.<br>Their gift is pattern. Their cost is becoming.`
 };
 
 const summonPatterns = {
   kairos: {
-    pattern: ['1', '2', '3', '4'],
+    pattern: ['5', '4', '3', '2' , '1'],
     cardId: 'kairos-card'
   },
   kai: {
