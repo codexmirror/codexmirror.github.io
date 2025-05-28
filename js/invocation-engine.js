@@ -18,6 +18,7 @@ const summonPatterns = {
     cardId: 'kai-card',
     onSummon: summonKaiEffects
   },
+   
   flink: {
     repeatTrigger: 5,
     cardId: 'flink-card',
@@ -75,6 +76,12 @@ function handleGlyphClick(glyph) {
       return;
     }
   }
+  
+  // Direct invocation for glyph sequence 1-2-3-4-5
+if (glyphSequence.join(',') === ['1','2','3','4','5'].join(',')) {
+  setTimeout(redirectToRandomShard, 1500);
+  return;
+}
 
   // Fl!nk handling
   if (glyph === lastGlyph) {
