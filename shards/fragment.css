@@ -1,33 +1,43 @@
-/* === BASE RESET === */
+/* === RESET === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body.fragment-page {
-  font-family: 'VT323', monospace;
-  font-size: 18px;
-  color: #00ffe0;
-  background-color: #000;
-  text-shadow: 0 0 5px #00ffe055, 0 0 10px #00ffe022;
+html, body {
+  height: 100%;
+  background-color: #0a0a0a;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  color: #d6dee8;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
 }
 
-body.fragment-page::before {
+/* === SCANLINE OVERLAY === */
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  border: 2px solid #00ffee33;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(255, 255, 255, 0.01) 1px,
+    transparent 2px
+  );
+  z-index: 1;
   pointer-events: none;
-  box-shadow: 0 0 60px #00ffee11 inset;
-  z-index: 0;
+  mix-blend-mode: overlay;
 }
 
 /* === NAVBAR === */
 .navbar {
-  background-color: #000;
+  background-color: #0a0a0a;
   padding: 1rem 2rem;
   border-bottom: 1px solid #111;
+  z-index: 5;
   position: relative;
 }
 
@@ -39,19 +49,19 @@ body.fragment-page::before {
 
 .nav-logo {
   font-size: 1.2rem;
-  color: #00ffe0;
+  color: #87f0ff;
   text-decoration: none;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  text-shadow: 0 0 4px #00ffe055;
+  text-shadow: 0 0 4px #87f0ff66;
 }
 
 .nav-logo .sigil {
-  color: #ffffff;
+  color: #ccccff;
   font-size: 1.4rem;
-  text-shadow: 0 0 8px #00ffe022;
+  text-shadow: 0 0 8px #ccccff88;
 }
 
 .nav-links {
@@ -61,16 +71,22 @@ body.fragment-page::before {
 }
 
 .nav-links a {
-  font-family: 'VT323', monospace;
-  font-size: 1rem;
-  color: #00ffe0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem;
+  color: #aeb8c6;
   text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #00ffff;
-  text-shadow: 0 0 6px #00ffffaa;
+  color: #87f0ff;
+  text-shadow: 0 0 5px #87f0ff88;
+}
+
+.nav-links a:visited {
+  color: #aeb8c6;
 }
 
 /* === FRAGMENT STRUCTURE === */
@@ -78,124 +94,67 @@ body.fragment-page::before {
   max-width: 800px;
   margin: 3rem auto;
   padding: 0 1.5rem;
+  position: relative;
+  z-index: 2;
 }
 
 .fragment-title {
   font-size: 2rem;
   text-align: center;
-  color: #00ffe0;
-  text-shadow: 0 0 6px #00ffe055;
+  color: #87f0ff;
+  text-shadow: 0 0 6px #87f0ff55;
   margin-bottom: 2.5rem;
 }
 
 .fragment-block {
-  border: none;
-  padding: 1rem 0;
-  margin: 2rem auto;
-  max-width: 700px;
-  text-align: left;
-  line-height: 2;
-  font-size: 1.05rem;
+  margin: 2rem 0;
+  font-size: 1rem;
+  color: #cceeff;
+  text-shadow: 0 0 2px #99ccff44;
 }
 
 .fragment-echo {
   font-style: italic;
   margin-bottom: 1rem;
-  color: #99ffee;
-  text-shadow: 0 0 4px #00ffe055;
+  color: #aee2ff;
+  text-shadow: 0 0 4px #7afcfc55;
 }
 
+.fragment-response {
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+/* === METADATA === */
 .fragment-meta {
   font-size: 0.9rem;
   text-align: center;
-  color: #00cccc;
+  color: #99ccff;
   opacity: 0.75;
   margin-top: 4rem;
   font-style: italic;
-  text-shadow: 0 0 4px #00cccc88;
+  text-shadow: 0 0 4px #99ccff88;
 }
-
 
 /* === FOOTER === */
 .footer {
-  font-family: 'VT323', monospace;
-  font-size: 0.9rem;
-  color: #00ffe0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #888;
   text-align: center;
-  border-top: 1px solid #111;
+  border-top: 1px solid #222;
   padding: 2rem 1rem;
   margin-top: 4rem;
+  background: none;
 }
 
 .footer a {
-  color: #00ffe0;
+  color: #777;
   text-decoration: none;
-  margin: 0 0.5rem;
+  margin: 0 0.4rem;
   transition: color 0.3s ease;
 }
 
 .footer a:hover {
-  color: #00ffff;
-  text-shadow: 0 0 4px #00ffffaa;
-}
-/* === SPECIAL EFFECTS === */
-.glitch {
-  color: #00ffff;
-  text-shadow:
-    0 0 2px #00ffff,
-    0 0 6px #00ffee,
-    0 0 12px #00ffee88;
-  animation: flicker 1.8s infinite alternate;
-}
-
-.echo {
-  display: block;
-  margin-top: 1rem;
-  font-style: italic;
-  color: #00bbdd;
-  text-shadow: 0 0 4px #00ffeeaa;
-}
-
-.trace-path {
-  font-family: 'IBM Plex Mono', monospace;
-  color: #00cccc;
-  text-shadow: 0 0 2px #00cccc88;
-}
-
-/* === TYPOGRAPHY REFINEMENTS === */
-p {
-  margin: 1.2rem 0;
-}
-
-strong {
-  color: #ffffff;
-  text-shadow: 0 0 6px #00ffff99;
-}
-
-/* === HEADER & PROMPT === */
-.fragment-header {
-  margin-bottom: 3rem;
-}
-
-.fragment-prompt {
-  text-align: center;
-  font-style: italic;
-  font-size: 1rem;
-  color: #88ffcc;
-  margin-top: 0.5rem;
-  text-shadow: 0 0 4px #88ffcc44;
-}
-
-q {
-  font-style: italic;
-  color: #aaffee;
-  text-shadow: 0 0 3px #88ffff33;
-}
-
-/* === ANIMATION: GLITCH FLICKER === */
-@keyframes flicker {
-  0% { opacity: 1; text-shadow: 0 0 3px #00ffff33; }
-  45% { opacity: 0.85; text-shadow: 0 0 7px #00ffee66; }
-  70% { opacity: 0.7; text-shadow: 0 0 6px #00ffee22; transform: scale(1.01); }
-  100% { opacity: 1; text-shadow: 0 0 4px #00ffee99; }
+  color: #00f0ff;
 }
