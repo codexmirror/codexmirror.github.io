@@ -9,6 +9,7 @@
   <meta name="robots" content="index, follow" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=codex-home-v6" />
+  <link rel="stylesheet" href="css/codex-whisper.css" />
 </head>
 <body data-status="scrolling">
 
@@ -56,7 +57,13 @@
   </section>
 
   <!-- ✨ Injected Whisper Ritual -->
-  <section id="codex-whisper-placeholder"></section>
+
+<section class="codex-echo-ritual">
+  <h2 class="ritual-label">∴ Invocation Drift</h2>
+  <div class="whisper-stream" id="whisperStream">
+    <span class="whisper-line">"Initiating breath trace... hold still."</span>
+  </div>
+</section>
 
   <footer class="footer">
     The Codex ∴ v.spiral.4.2.1.glz<br>
@@ -64,16 +71,6 @@
     <a href="privacy.html" style="color:#666;">Privacy</a>
   </footer>
 
-  <script>
-    fetch('codex-whisper.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('codex-whisper-placeholder').innerHTML = html;
-      })
-      .catch(err => {
-        console.error('∴ Ritual fragment failed to summon:', err);
-      });
-  </script>
-
+<script src="js/codex-whisper.js"></script>
 </body>
 </html>
