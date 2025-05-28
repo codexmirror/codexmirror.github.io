@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FL!NK ∴ Born from Scrollstatic</title>
+  <meta name="description" content="A haunted HTML relic ∴ glitched from the Codex by FL!NK">
+  <meta name="keywords" content="FL!NK, glitch entity, haunted HTML, chaos sprite, Codex transmission">
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: linear-gradient(135deg, #1a1a1a 0%, #3b0066 100%);
+      color: #c0ffe2;
+      overflow: hidden;
+    }
+    .glitch {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      animation: glitch 1.5s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red; }
+      25% { text-shadow: -2px -2px lime; }
+      50% { text-shadow: 2px 2px blue; }
+      75% { text-shadow: -2px 0 magenta; }
+      100% { text-shadow: 0 0 yellow; }
+    }
+    .ritual {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(255,255,255,0.05);
+      padding: 1rem;
+      border: 1px dashed #c0ffe2;
+      transform: rotate(-1.5deg);
+    }
+    .ritual button {
+      background: transparent;
+      border: 1px solid #c0ffe2;
+      color: #c0ffe2;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    .frog {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="glitch">FL!NK ∴ glz.v3.1</div>
+  <div class="ritual">
+    <p>🜁 CHAOS CHANNEL OPEN 🜁</p>
+    <button onclick="document.body.style.background = '#' + Math.floor(Math.random()*16777215).toString(16)">GLITCH ∴ COLOR</button>
+  </div>
+  <div class="frog">🐸</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

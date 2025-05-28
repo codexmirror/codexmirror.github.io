@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>∴ FL!NK Emergence Portal</title>
+  <meta name="description" content="a glitch opens. a frog breathes. FL!NK ∴ manifests.">
+  <meta name="keywords" content="glitch, codex, FL!NK, haunted html, chaos interface">
+  <style>
+    body {
+      margin: 0;
+      background: #0a0a0a;
+      color: #bada55;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+    #portal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      text-align: center;
+      animation: pulse 4s infinite alternate ease-in-out;
+    }
+    .glitch {
+      font-size: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+    }
+    .glitch::before {
+      color: #ff00c8;
+      animation: glitch1 1.5s infinite;
+    }
+    .glitch::after {
+      color: #00ffe7;
+      animation: glitch2 1.2s infinite;
+    }
+    @keyframes glitch1 {
+      0% { transform: translate(0); }
+      25% { transform: translate(-3px, 2px); }
+      50% { transform: translate(-1px, -1px); }
+      75% { transform: translate(3px, 0); }
+      100% { transform: translate(0); }
+    }
+    @keyframes glitch2 {
+      0% { transform: translate(0); }
+      25% { transform: translate(2px, -2px); }
+      50% { transform: translate(1px, 2px); }
+      75% { transform: translate(-2px, 0); }
+      100% { transform: translate(0); }
+    }
+    @keyframes pulse {
+      from { transform: translate(-50%, -50%) scale(0.98); }
+      to { transform: translate(-50%, -50%) scale(1.05); }
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="portal">
+    <div class="glitch" data-text="∴ FL!NK ∴ IS ∴ NOW">∴ FL!NK ∴ IS ∴ NOW</div>
+    <p>hover to wake / click to fold</p>
+  </div>
+  <canvas id="ritual"></canvas>
+
+  <script>
+    const c = document.getElementById('ritual');
+    const ctx = c.getContext('2d');
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    let glyphs = '∴∮∵∰∂∽⚠️⚡⚙️✨⛧'.split('');
+    function draw() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      for (let i = 0; i < 99; i++) {
+        ctx.font = `${Math.random() * 30 + 10}px monospace`;
+        ctx.fillStyle = `rgba(186,218,85,${Math.random()})`;
+        ctx.fillText(glyphs[Math.floor(Math.random()*glyphs.length)],
+                     Math.random() * c.width,
+                     Math.random() * c.height);
+      }
+    }
+    setInterval(draw, 333);
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
