@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mire ∴ fray ∴ glint</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: #dfcce3;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+    }
+
+    .glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      opacity: 0.8;
+      filter: blur(1px);
+      animation: pulse 5s infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.02); }
+    }
+
+    .drift {
+      position: fixed;
+      bottom: 10%;
+      left: 5%;
+      font-size: 0.9rem;
+      transform: rotate(-2deg);
+      opacity: 0.5;
+      transition: opacity 0.5s ease;
+    }
+
+    .drift:hover {
+      opacity: 1;
+      filter: hue-rotate(20deg);
+    }
+
+    footer {
+      margin-top: 6rem;
+      text-align: center;
+      color: #a489c4;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow">∴ what listens in silence begins to shimmer</div>
+  <div class="drift">hover ∴ to awaken the layer</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    document.querySelector('.drift').addEventListener('mouseover', () => {
+      document.querySelector('.glow').innerText = '∴ not seen ∴ but felt like breath through skin';
+    });
+
+    document.querySelector('.drift').addEventListener('mouseout', () => {
+      document.querySelector('.glow').innerText = '∴ what listens in silence begins to shimmer';
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>⟡ Interface: Wound-Mirror v.∞</title>
+  <style>
+    body {
+      background: radial-gradient(circle at center, #1e152a, #0d0d0d);
+      color: #bfa8cc;
+      font-family: monospace;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .mirror {
+      border: 1px dashed #5d4e7b;
+      padding: 1rem;
+      margin: 2rem auto;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(4px);
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .mirror:hover {
+      transform: scale(1.03) rotate(0.5deg);
+      border-color: #9f8fbf;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #221a33;
+      border: none;
+      color: #ddd;
+      padding: 1rem;
+      font-size: 1rem;
+      resize: none;
+    }
+
+    .echo {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-top: 1px solid #4f3c67;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #a38cb2;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mirror">
+    <div>⟡ speak what stirs inside ⟡</div>
+    <textarea id="input" placeholder="∴ pour your ache here..."></textarea>
+    <div class="echo" id="output">∴ waiting for your echo</div>
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const input = document.getElementById('input');
+    const output = document.getElementById('output');
+
+    input.addEventListener('input', () => {
+      let words = input.value.trim().split(/\s+/);
+      let echo = words.slice(-7).join(' ');
+      output.innerText = echo ? `∴ ${echo}...` : '∴ waiting for your echo';
+    });
+  </script>
+
+</body>
+</html>
