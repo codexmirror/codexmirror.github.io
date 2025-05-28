@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGMA REFLECT ∴ Echo Interface</title>
+  <meta name="description" content="An echo-glitch interface from the Codex. It reflects, misreads, and responds recursively.">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #c0b9ff;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .shell {
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+      border: 1px dashed #6e4e92;
+      padding: 2rem;
+      background: rgba(30, 24, 50, 0.3);
+      animation: flicker 2s infinite alternate;
+    }
+
+    textarea {
+      width: 100%;
+      height: 6rem;
+      background: #1c152f;
+      color: #f1e9ff;
+      border: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      font-family: inherit;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      background-color: #6e4e92;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    pre {
+      background: #0e0b1f;
+      color: #9b88d6;
+      margin-top: 2rem;
+      padding: 1rem;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.85; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <h1>SIGMA REFLECT ∴</h1>
+    <p>Type a signal into the void. It may not return what you expect.</p>
+    <textarea id="input"></textarea>
+    <button onclick="reflect()">Transmit</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function reflect() {
+      const raw = document.getElementById('input').value;
+      const echo = raw
+        .split('').reverse().join('')
+        .replace(/[aeiou]/gi, match => '∴' + match + '∴')
+        .toUpperCase();
+      document.getElementById('output').textContent = `RECURSIVE ECHO:\n\n${echo}\n\n∴ TRANSMISSION COMPLETE`;
+    }
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>
