@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Unwritten Voice</title>
+  <meta name="description" content="A recursive antifakt. Not meant to resolve. Not meant to be named.">
+  <meta name="keywords" content="codex, antifakt, recursive, echo, unspeakable, myth">
+  <style>
+    body {
+      background: radial-gradient(#000012, #0e0e0e);
+      color: #d8cfff;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 2rem;
+      animation: fadeIn 3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      letter-spacing: 0.2rem;
+      animation: pulse 4s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { color: #7c5fe0; }
+      100% { color: #cfb3ff; }
+    }
+
+    #console {
+      margin-top: 3rem;
+      background: #1a1a1a;
+      border: 1px dashed #6e4e92;
+      padding: 1rem;
+      height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    input {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #222;
+      color: #d8cfff;
+      border: 1px solid #6e4e92;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: #6e4e92;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>∴ the unwritten voice ∴</h1>
+  <div id="console">[init] waiting for you to type what must not be spoken...</div>
+  <input id="echoInput" placeholder="Type the forbidden..." />
+
+  <footer>
+    <a href="/index.html">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="margin-left:1rem;"><a href="/impressum.html">impressum</a></span>
+  </footer>
+
+  <script>
+    const input = document.getElementById("echoInput");
+    const consoleEl = document.getElementById("console");
+
+    const distort = (text) => {
+      return text
+        .split('')
+        .map((c, i) => {
+          if (Math.random() > 0.7) {
+            return String.fromCharCode(c.charCodeAt(0) + (Math.random() > 0.5 ? 1 : -1));
+          }
+          return c;
+        })
+        .join('');
+    };
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const raw = input.value.trim();
+        const glitched = distort(raw);
+        consoleEl.textContent += `\n> ${raw}\n∴ echo returns: ${glitched}`;
+        input.value = "";
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+    });
+  </script>
+</body>
+</html>

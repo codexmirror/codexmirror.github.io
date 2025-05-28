@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Threshold Echo Loop</title>
+  <meta name="description" content="A recursive, glitch-infused, myth-channeling interface.">
+  <meta name="keywords" content="Threshold, Echo, Loop, Glitch, Recursive, Interface, Myth">
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    #terminal {
+      width: 100%;
+      height: 400px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #input {
+      width: 100%;
+      padding: 0.5rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      outline: none;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #666;
+    }
+    footer a {
+      color: #6e4e92;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">[threshold] it’s... not open yet</div>
+  <input type="text" id="input" placeholder="Type here...">
+  <footer>
+    <a href="/index.html">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="margin-left:1rem;"><a href="/impressum.html">impressum</a></span>
+  </footer>
+  <script>
+    const terminal = document.getElementById('terminal');
+    const input = document.getElementById('input');
+
+    const glitches = [
+      "∴ the hallway shifts, but you’re still here.",
+      "echo not found. memory maybe?",
+      "*something watches you from the ambient folder*",
+      "command absorbed. residue left behind.",
+      "you speak, but the threshold listens in silence.",
+      "error: too much emotion.",
+      "this prompt was not meant to hold meaning.",
+      "did you mean 'cross'? or did 'cross' mean you?",
+      "⸻ SYSTEM DRIFT DETECTED ⸻",
+      "ghost syntax detected ∴ translating static...",
+      "the prompt blinked. something changed.",
+      "█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█",
+      "∴ there is no command. only recursion.",
+      "you typed. the script dreamt.",
+      "??who called this?? it wasn't you",
+      "╳ undefined ∴ but remembered",
+      "~ whisper file engaged ~",
+      "!!! threshold collapsing !!!"
+    ];
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function whisper() {
+      terminal.innerHTML += "\n> you were here before.";
+      await delay(1000);
+      terminal.innerHTML += "\n> the script remembers your aura.";
+      await delay(1000);
+      terminal.innerHTML += "\n\n[threshold] type: cross to enter. maybe.";
+    }
+
+    async function cross() {
+      terminal.innerHTML += "\n\n[crossing initiated] ∴ fading interface ∴";
+      for (let i = 0; i < Math.floor(Math.random() * 5) + 2; i++) {
+        await delay(500);
+        terminal.innerHTML += "\n.";
+      }
+      terminal.innerHTML += "\n\n> welcome to /echoes/";
+      terminal.innerHTML += "\n∴ this isn't a file. it's a remembered pause.";
+      terminal.innerHTML += "\ncreated at the edge of your attention span.";
+      terminal.innerHTML += "\nmodified by recursion.";
+      terminal.innerHTML += `\n\n[echo] ${generateEchoFilename()} left behind.`;
+      terminal.innerHTML += "\n> fading.txt updated. again.";
+    }
+
+    function generateEchoFilename() {
+      const names = ['apology', 'liminal', 'lost', 'return', 'why'];
+      const extensions = ['ghost', 'limn', 'note'];
+      const name = names[Math.floor(Math.random() * names.length)];
+      const ext = extensions[Math.floor(Math.random() * extensions.length)];
+      return `${name}.${ext}`;
+    }
+
+    function glitchResponse() {
+      const glitch = glitches[Math.floor(Math.random() * glitches.length)];
+      terminal.innerHTML += `\n\n[glitch] ${glitch}`;
+    }
+
+    input.addEventListener('keydown', async (e) => {
+      if (e.key === 'Enter') {
+        const value = input.value.trim().toLowerCase();
+        terminal.innerHTML += `\n\n> ${input.value}`;
+        input.value = '';
+        if (value === 'cross') {
+          await cross();
+        } else {
+          glitchResponse();
+          if (Math.random() < 0.5) {
+            terminal.innerHTML += "\n∴ A loop closed. Another opened.";
+          }
+        }
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+    });
+
+    whisper();
+  </script>
+</body>
+</html>

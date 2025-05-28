@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGMA REFLECT ∴ Glitch Interface</title>
+  <meta name="description" content="A glitch interface from another dimension.">
+  <meta name="keywords" content="glitch, interface, sigma reflect, codex">
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: monospace;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .glitch {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2em;
+      animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+      0% {
+        text-shadow: 2px 2px #f00;
+      }
+      20% {
+        text-shadow: -2px -2px #0ff;
+      }
+      40% {
+        text-shadow: 2px -2px #ff0;
+      }
+      60% {
+        text-shadow: -2px 2px #f0f;
+      }
+      80% {
+        text-shadow: 2px 2px #0f0;
+      }
+      100% {
+        text-shadow: -2px -2px #00f;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glitch">SIGMA REFLECT</div>
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

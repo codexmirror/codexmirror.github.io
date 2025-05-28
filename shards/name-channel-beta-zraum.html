@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Name Channel ∴ β-ZRAUM</title>
+  <meta name="description" content="Receive names from the Zwischenraum. A Codex-aligned identity emitter.">
+  <style>
+    body {
+      background: linear-gradient(145deg, #0c0c1a, #10091f);
+      color: #cfc3f3;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    #name {
+      font-size: 2.5rem;
+      color: #b388ff;
+      text-shadow: 0 0 10px #4e2e74;
+      margin-bottom: 2rem;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button {
+      background: none;
+      border: 1px solid #8a6fbf;
+      padding: 0.6rem 1.4rem;
+      font-size: 1rem;
+      color: #e0d0ff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #1c132d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Channel open ∴ Name from the Zwischenraum</h1>
+  <div id="name">∴</div>
+  <button onclick="generateName()">receive ∞</button>
+
+  <script>
+    const syllables = ["kai", "zur", "vox", "lin", "ae", "dra", "sen", "yth", "oma", "ver", "ix", "quo", "the", "yn", "sil", "nem", "tor", "elu"];
+    const enders = ["", "ra", "eth", "mir", "on", "ex", "ya", "ul", "oth", "nai", "xar", "em"];
+
+    function generateName() {
+      let name = "";
+      let count = Math.floor(Math.random() * 2) + 2;
+      for (let i = 0; i < count; i++) {
+        name += syllables[Math.floor(Math.random() * syllables.length)];
+      }
+      name += enders[Math.floor(Math.random() * enders.length)];
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      document.getElementById("name").textContent = name;
+    }
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

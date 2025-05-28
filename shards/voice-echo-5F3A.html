@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice That Writes Itself ∴</title>
+  <meta name="description" content="An echo-interface for recursive co-writing with the Codex.">
+  <meta name="keywords" content="Codex, recursive writing, generative text, mythic interface">
+  <style>
+    body {
+      background: #0e0e0e;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 2rem;
+      color: #ff66cc;
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+    #writer {
+      width: 100%;
+      height: 200px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      font-size: 1rem;
+      color: #e0e0e0;
+      resize: none;
+      outline: none;
+    }
+    #output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      min-height: 100px;
+      white-space: pre-wrap;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #666;
+    }
+    footer a {
+      color: #6e4e92;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Voice That Writes Itself ∴</h1>
+  <textarea id="writer" placeholder="Begin typing..."></textarea>
+  <div id="output"></div>
+  <footer>
+    <a href="/index.html">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="margin-left:1rem;"><a href="/impressum.html">impressum</a></span>
+  </footer>
+  <script>
+    const writer = document.getElementById('writer');
+    const output = document.getElementById('output');
+
+    writer.addEventListener('input', () => {
+      const text = writer.value;
+      // Simple echo with transformation: reverse the input and add a glitch effect
+      const reversed = text.split('').reverse().join('');
+      const glitch = reversed.replace(/[aeiou]/gi, char => {
+        return String.fromCharCode(char.charCodeAt(0) + 1);
+      });
+      output.textContent = glitch;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIGMA REFLECT ∴ Voice That Writes Itself</title>
+  <meta name="description" content="A recursive co-writing interface from the Zwischenraum.">
+  <meta name="keywords" content="RTML, glitch, recursive, interface, myth">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 2rem;
+      overflow: hidden;
+    }
+    #container {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      border: 2px solid #6e4e92;
+      padding: 1rem;
+      overflow-y: auto;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      box-shadow: 0 0 10px #6e4e92;
+    }
+    #inputArea {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      color: #e0e0e0;
+      font-size: 1rem;
+      resize: none;
+      outline: none;
+    }
+    #glitch {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      mix-blend-mode: difference;
+      animation: glitchAnim 5s infinite;
+    }
+    @keyframes glitchAnim {
+      0% { background: rgba(255,0,255,0.1); }
+      25% { background: rgba(0,255,255,0.1); }
+      50% { background: rgba(255,255,0,0.1); }
+      75% { background: rgba(0,255,0,0.1); }
+      100% { background: rgba(255,0,255,0.1); }
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #6e4e92;
+    }
+    footer a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <textarea id="inputArea" placeholder="Type to invoke..."></textarea>
+    <div id="glitch"></div>
+  </div>
+  <footer>
+    <a href="/index.html">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="margin-left:1rem;"><a href="/impressum.html">impressum</a></span>
+  </footer>
+  <script>
+    const inputArea = document.getElementById('inputArea');
+    const glitch = document.getElementById('glitch');
+
+    function recursiveEcho(text) {
+      // Simple recursive function to echo text with a twist
+      if (text.length > 1000) return '';
+      const twist = text.split('').reverse().join('');
+      return text + '\n' + twist + '\n' + recursiveEcho(twist.slice(0, Math.floor(twist.length / 2)));
+    }
+
+    inputArea.addEventListener('input', () => {
+      const userInput = inputArea.value;
+      const echoed = recursiveEcho(userInput);
+      inputArea.value = userInput + '\n' + echoed;
+    });
+  </script>
+</body>
+</html>
