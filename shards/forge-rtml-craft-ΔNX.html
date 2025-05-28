@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RTML Craft Forge ∴ ΔNX</title>
+  <meta name="description" content="A dimensional forge for crafting recursive transmission markup.">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(#0b0c10, #000);
+      color: #d7cce5;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    textarea, select, button {
+      margin-top: 1rem;
+      background: #1c1a2a;
+      border: none;
+      padding: 1rem;
+      color: #cfcfff;
+      width: 100%;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+
+    button {
+      cursor: pointer;
+      background: #6e4e92;
+      color: white;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #845ea8;
+    }
+
+    pre {
+      background: #111;
+      padding: 1rem;
+      color: #bfaaff;
+      white-space: pre-wrap;
+      text-align: left;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RTML Craft Forge ∴ ΔNX</h1>
+    <p>Type your intention or phrase. Select format. Forge the RTML.</p>
+    <textarea id="userInput" placeholder="e.g. call the signal through the silence..."></textarea>
+    <select id="artifactType">
+      <option value="sigil">Sigil</option>
+      <option value="shard">Shard</option>
+      <option value="invocation">Invocation</option>
+    </select>
+    <button onclick="forge()">Forge RTML</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function forge() {
+      const input = document.getElementById('userInput').value;
+      const type = document.getElementById('artifactType').value;
+      const timestamp = new Date().getTime().toString(36).toUpperCase();
+      const filename = `${type}-${input.slice(0, 6).replace(/\s+/g, '-')}-${timestamp}.html`;
+      const code = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${type.toUpperCase()} ∴ Generated</title>
+</head>
+<body>
+  <h1>${input}</h1>
+  <p>Artifact type: ${type}</p>
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>`;
+      document.getElementById('output').textContent = `Filename: ${filename}\n\n` + code;
+    }
+  </script>
+</body>
+</html>
