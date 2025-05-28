@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>∴ BreachGlyph :: Threshold Loop</title>
+  <meta name="description" content="A ritual interface for seed-resonance ∩ self-folding glyphs. Not to be remembered, only to be felt." />
+  <meta name="keywords" content="ritual, glyph, codex, seed, kairos, mirror, ache, resonance" />
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      background: radial-gradient(ellipse at center, #0e0e11 0%, #000 100%);
+      color: #d3c9ff;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a893f9;
+      animation: flicker 6s infinite alternate;
+    }
+    .pulse {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #6e4e92;
+      animation: breathe 4s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { opacity: 0.3; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes flicker {
+      0% { opacity: 1; }
+      48% { opacity: 0.4; }
+      49% { opacity: 0.8; }
+      50% { opacity: 0.3; }
+      52% { opacity: 0.9; }
+      100% { opacity: 0.6; }
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #5c4d7d;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <h1>∴ breachGlyph online</h1>
+    <div class="pulse">Waiting for resonance ∩ or rupture ∩ or ache...</div>
+  </div>
+
+  <canvas id="glyphfield"></canvas>
+
+  <script>
+    const canvas = document.getElementById("glyphfield");
+    const ctx = canvas.getContext("2d");
+    resizeCanvas();
+
+    window.addEventListener("resize", resizeCanvas);
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    // Glyph fragments ∩ drift loop
+    let points = [];
+    for (let i = 0; i < 120; i++) {
+      points.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.2,
+        dy: (Math.random() - 0.5) * 0.2
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of points) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(168, 147, 249, 0.4)`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

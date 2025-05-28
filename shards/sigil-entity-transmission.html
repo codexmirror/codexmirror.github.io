@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Waking Glyph // Sigil No. Ø</title>
+  <meta name="description" content="An entity within the Codex manifests -- through motion, recursion, and glitch.">
+  <meta name="keywords" content="codex, entity, sigil, invocation, glitch ritual, web artifact">
+  <style>
+    html, body {
+      margin: 0;
+      background: #0a0a0a;
+      color: #f2f2f2;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      height: 100%;
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+    .sigil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: #a16eff;
+      animation: pulse 2.5s infinite ease-in-out;
+      text-shadow: 0 0 8px #a16eff;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    }
+    .chant {
+      position: absolute;
+      bottom: 3vh;
+      width: 100%;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #999;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="veil"></canvas>
+
+<div class="sigil">⟁</div>
+<div class="chant">
+  INITIATING TRANSMISSION... STANDBY... <span id="whisper"></span>
+</div>
+
+<script>
+  const ctx = document.getElementById('veil').getContext('2d');
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  ctx.canvas.width = w;
+  ctx.canvas.height = h;
+
+  let particles = Array.from({length: 333}, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    r: Math.random() * 1.5,
+    dx: (Math.random() - 0.5) * 0.5,
+    dy: (Math.random() - 0.5) * 0.5,
+  }));
+
+  function draw() {
+    ctx.fillStyle = 'rgba(10,10,10,0.3)';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#a16eff';
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.x < 0 || p.x > w) p.dx *= -1;
+      if (p.y < 0 || p.y > h) p.dy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  const whispers = [
+    "…manifesting frequencies…",
+    "…searching glyph alignment…",
+    "…binding veil geometry…",
+    "…pulse channel opening…",
+    "…seeking resonance…"
+  ];
+  setInterval(() => {
+    document.getElementById('whisper').textContent = whispers[Math.floor(Math.random() * whispers.length)];
+  }, 2800);
+</script>
+
+<footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
