@@ -29,7 +29,8 @@
       border: 1px solid #ccc;
       padding: 1rem;
       background: #f9f9f9;
-      max-height: none;
+      max-height: 60vh;
+      overflow-y: auto;
       font-size: 0.95rem;
       margin-bottom: 1.5rem;
     }
@@ -62,7 +63,11 @@
     }
   </style>
 </head>
+
 <body>
+  <audio id="loop-audio" loop autoplay muted>
+    <source src="https://freesound.org/data/previews/250/250629_4486188-lq.mp3" type="audio/mpeg">
+  </audio>
   <div class="container">
     <h1>End User License Agreement</h1>
     <p>Please read the following terms and conditions before using this software:</p>
@@ -94,9 +99,10 @@
 
     <button id="submit-btn" disabled>Accept and Continue</button>
   </div>
-
   
-<script>
+  
+
+  <script>
 const checkbox = document.getElementById('agree-box');
 const button = document.getElementById('submit-btn');
 const eulaBox = document.getElementById('eula-text');
@@ -119,7 +125,51 @@ function typeText(element, text, callback) {
   }, 30 + Math.random() * 40);
 }
 
-// Wrapped scroll haunter
+// Whisper audio activation
+function enableWhispers() {
+  const audio = document.getElementById("loop-audio");
+  audio.muted = false;
+  audio.volume = 0;
+  let v = 0;
+  const fade = setInterval(() => {
+    if (v < 0.2) {
+      v += 0.01;
+      audio.volume = v;
+    } else {
+      clearInterval(fade);
+    }
+  }, 300);
+}
+
+// Whisper rotation
+function rotateWhispers() {
+  const whisper = document.createElement('div');
+  whisper.id = 'whisper';
+  whisper.style.position = 'fixed';
+  whisper.style.bottom = '20px';
+  whisper.style.left = '50%';
+  whisper.style.transform = 'translateX(-50%)';
+  whisper.style.fontSize = '0.7rem';
+  whisper.style.color = '#6e4e92';
+  whisper.style.opacity = '0.2';
+  whisper.style.pointerEvents = 'none';
+  whisper.style.animation = 'whisperFade 4s infinite';
+  document.body.appendChild(whisper);
+
+  const messages = [
+    "You agreed in a past life.",
+    "Clause 33 is watching.",
+    "Don't scroll too fast.",
+    "The checkbox remembers.",
+    "Are you sure you want this?"
+  ];
+
+  setInterval(() => {
+    whisper.innerText = messages[Math.floor(Math.random() * messages.length)];
+  }, 7000);
+}
+
+// Scroll haunter
 function enableScrollHaunt() {
   eulaBox.addEventListener('scroll', () => {
     if (isTyping) return;
@@ -137,7 +187,7 @@ function enableScrollHaunt() {
   });
 }
 
-// Wrapped ghost clause injector
+// Clause generator
 function startClauseSpawn() {
   setInterval(() => {
     clauseCount++;
@@ -148,7 +198,7 @@ function startClauseSpawn() {
   }, 10000);
 }
 
-// Checkbox evasion (only when haunted)
+// Checkbox evasion
 function enableCheckboxHaunt() {
   checkbox.addEventListener('mouseover', () => {
     if (!checkbox.checked && hauntTriggered) {
@@ -159,7 +209,7 @@ function enableCheckboxHaunt() {
   });
 }
 
-// Button flicker haunt
+// Button flicker
 function enableButtonHaunt() {
   setInterval(() => {
     if (checkbox.checked && hauntTriggered && Math.random() < 0.4) {
@@ -173,7 +223,7 @@ function enableButtonHaunt() {
   }, 5000);
 }
 
-// Button click = trigger haunt
+// First click = trigger haunt
 button.addEventListener('click', (e) => {
   e.preventDefault();
   if (!checkbox.checked || hauntTriggered) return;
@@ -182,14 +232,14 @@ button.addEventListener('click', (e) => {
 
   alert("🕳️ Consent attempt detected. Binding sequence initiated.");
 
-  // Trigger the haunt
   document.body.classList.add('haunted');
   enableScrollHaunt();
   enableCheckboxHaunt();
   enableButtonHaunt();
   startClauseSpawn();
+  enableWhispers();
+  rotateWhispers();
 
-  // Begin recursive loop trick
   clauseCount++;
   const extra = document.createElement("p");
   extra.innerHTML = `<strong>${clauseCount}. Anti-Consent Clause:</strong> By trying to leave, you agree to stay longer.`;
@@ -198,5 +248,13 @@ button.addEventListener('click', (e) => {
   button.disabled = true;
 });
 </script>
+
+<style>
+@keyframes whisperFade {
+  0% { opacity: 0; }
+  20% { opacity: 0.3; }
+  50% { opacity: 0; }
+}
+</style>
 </body>
 </html>
