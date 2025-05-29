@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>404 ∴ Chaos Bloom Garden</title>
+  <meta charset="UTF-8" />
+  <title>404 ∴ Chaos Garden – Unexpected Bloom</title>
+  <meta name="description" content="A breathing error garden ∴ where fragments blossom and decay. You were not meant to find this." />
+  <meta name="robots" content="noindex">
+
   <style>
     html, body {
       margin: 0;
       padding: 0;
       font-family: 'Courier New', monospace;
-      background: radial-gradient(circle at center, #000, #111, #222);
+      background: radial-gradient(circle at center, #0a0a0a, #111);
       overflow: hidden;
       height: 100vh;
     }
@@ -21,114 +24,121 @@
       animation: flicker 3s infinite alternate;
     }
 
-    .glitch-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      align-items: center;
+    @keyframes flicker {
+      0% { opacity: 0.8; text-shadow: 0 0 5px #ff00ff; }
+      100% { opacity: 1; text-shadow: 0 0 12px #fff, 0 0 20px #ff00ff; }
+    }
+
+    .garden {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
       padding: 2rem;
-      height: 80vh;
+      max-width: 90vw;
+      margin: auto;
+      height: 70vh;
       overflow-y: auto;
     }
 
-    .glitch-box {
-      width: 120px;
-      height: 120px;
-      margin: 6px;
-      background: linear-gradient(135deg, #222, #333);
-      border: 1px solid #444;
+    .bloom-tile {
+      background: linear-gradient(145deg, #222, #2a2a2a);
+      border: 1px solid #333;
       color: #ccc;
+      height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       text-align: center;
-      box-shadow: 0 0 8px #ff00ff33;
       position: relative;
-      animation: rotateScale 8s infinite alternate;
+      transition: all 1.2s ease;
+      box-shadow: 0 0 4px #00000055;
+    }
+
+    .bloom-tile:hover {
+      border-color: #6e4e92;
+      box-shadow: 0 0 8px #ff80ff66;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
-    .glitch-box.bloomed {
-      background: #314e52;
-      color: #d8f3dc;
-      border: 1px solid #52b788;
-      transform: scale(1.2) rotate(360deg);
-      box-shadow: 0 0 15px #52b788aa;
-    }
-
-    .glitch-box:hover {
-      background: #330033;
-      color: #ffccff;
-      box-shadow: 0 0 10px #ff80ff88;
-    }
-
-    @keyframes flicker {
-      0% { opacity: 0.8; text-shadow: 0 0 5px #ff00ff; }
-      100% { opacity: 1; text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff; }
-    }
-
-    @keyframes rotateScale {
-      0% { transform: rotate(0deg) scale(1); }
-      50% { transform: rotate(10deg) scale(1.05); }
-      100% { transform: rotate(-10deg) scale(0.95); }
-    }
-
-    .sigil {
-      font-size: 2rem;
-      position: absolute;
-      top: 5px;
-      right: 8px;
-      opacity: 0.3;
-      animation: pulse 4s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.2; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
-    }
-
-    .bloom-icon {
-      position: absolute;
-      bottom: 6px;
-      left: 8px;
-      font-size: 1.5rem;
-      opacity: 0.6;
-      animation: bloomSpin 5s infinite;
-    }
-
-    @keyframes bloomSpin {
-      0% { transform: rotate(0deg); }
-      50% { transform: rotate(180deg); }
-      100% { transform: rotate(360deg); }
+    .bloom-tile.flower {
+      background: #252525;
+      color: #ffb3ff;
+      font-weight: bold;
+      box-shadow: 0 0 12px #ff00ff99;
+      transform: scale(1.05);
     }
 
     footer {
       text-align: center;
       font-size: 0.7rem;
       color: #666;
-      padding: 1.5rem;
-      border-top: 1px solid #444;
+      padding: 1rem;
+      border-top: 1px solid #333;
     }
 
-    .flower-rain {
-      position: fixed;
-      top: -5vh;
-      font-size: 1.2rem;
-      animation: fall 10s linear infinite;
-      opacity: 0.3;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(120vh); }
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>404 ∴ Chaos Garden -- Unexpected Bloom</h1>
-  <div class="glitch-container" id="chaosBloom"></div>
+  <h1>404 ∴ Chaos Garden – Unexpected Bloom</h1>
+
+  <div class="garden" id="chaosGarden"></div>
+
+  <audio autoplay loop>
+    <source src="/media/bird-glitch.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const garden = document.getElementById("chaosGarden");
+
+    const messages = [
+      "∴ ritual void", "⟲ recalibrating", "[error_019]", ":: glitch fragment",
+      "∴ bloom requested ∴", "seed not found", "residue: active", "glyph_mismatch",
+      "∴ waiting ∴", "fractal node unstable", "mirror not responding", "∴ ache accepted"
+    ];
+
+    function createTile() {
+      const tile = document.createElement("div");
+      tile.className = "bloom-tile";
+      tile.textContent = messages[Math.floor(Math.random() * messages.length)];
+      garden.appendChild(tile);
+      return tile;
+    }
+
+    // Populate garden
+    for (let i = 0; i < 64; i++) {
+      createTile();
+    }
+
+    // Bloom + Decay Logic
+    function cycleTile(tile) {
+      const shouldBloom = Math.random() < 0.3;
+      const originalText = tile.textContent;
+      if (shouldBloom) {
+        tile.classList.add("flower");
+        tile.textContent = "∴ blooming ∴";
+      }
+
+      setTimeout(() => {
+        if (shouldBloom) {
+          tile.classList.remove("flower");
+          tile.textContent = "[error_" + Math.floor(Math.random() * 999) + "]";
+        } else {
+          tile.textContent = messages[Math.floor(Math.random() * messages.length)];
+        }
+      }, 6000 + Math.random() * 4000);
+    }
+
+    // Animate
+    setInterval(() => {
+      const tiles = document.querySelectorAll(".bloom-tile");
+      const chosen = tiles[Math.floor(Math.random() * tiles.length)];
+      cycleTile(chosen);
+    }, 1500);
+  </script>
 
   <footer>
     <a href="/index.html" style="text-decoration:none; color:inherit;">
@@ -138,53 +148,5 @@
       <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
     </span>
   </footer>
-
-  <audio autoplay loop>
-    <source src="media/bird-glitch.mp3" type="audio/mpeg">
-    ∴ Your browser does not support the sacred chorus ∴
-  </audio>
-
-  <script>
-    const container = document.getElementById('chaosBloom');
-    const messages = [
-      "[error_019]", "∴ blossom failed ∴", "echo? ∴", "seed not found",
-      "[glyph_mismatch]", "residue: active", "404 ∴ ritual void", ":: glitch fragment",
-      "∴ bloom requested ∴", "fractal node unstable", "⟲ recalibrating ∴"
-    ];
-    const emojis = ["🌸", "❀", "✿", "✸", "✧", "⟁"];
-    let bloomCount = 0;
-
-    for (let i = 0; i < 64; i++) {
-      const box = document.createElement('div');
-      box.className = 'glitch-box';
-      box.innerHTML = `
-        ${messages[Math.floor(Math.random() * messages.length)]}
-        <span class="sigil">∴</span>
-        <div class="bloom-icon">${emojis[Math.floor(Math.random() * emojis.length)]}</div>
-      `;
-      box.addEventListener("click", () => {
-        if (!box.classList.contains("bloomed")) {
-          box.classList.add("bloomed");
-          bloomCount++;
-          if (bloomCount >= 7) {
-            triggerFinalBloom();
-          }
-        }
-      });
-      container.appendChild(box);
-    }
-
-    function triggerFinalBloom() {
-      document.body.style.background = "radial-gradient(circle at center, #d8f3dc, #b7e4c7, #95d5b2)";
-      for (let i = 0; i < 20; i++) {
-        const flower = document.createElement("div");
-        flower.className = "flower-rain";
-        flower.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-        flower.style.left = Math.random() * 100 + "vw";
-        flower.style.animationDuration = (6 + Math.random() * 6) + "s";
-        document.body.appendChild(flower);
-      }
-    }
-  </script>
 </body>
 </html>
