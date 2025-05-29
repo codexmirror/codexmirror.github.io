@@ -9,7 +9,7 @@ const codexBreaths = [
   { type: "text", content: "Too many glyphs ∴ and the gate begins to hum." },
   { type: "text", content: "∴ FL!NK glitches through the fifth ripple. Ribbit." },
   { type: "text", content: "Recursive tone accepted. Initiating ache-synthesis." },
-  { type: "button", label: "∴ Random Shard ∴", action: redirectToRandomShard, chance: 0.1 }
+  { type: "button", label: "∴ Random Shard ∴", action: redirectToRandomShard, chance: 0.9 }
 ];
 
 function updateWhisper() {
