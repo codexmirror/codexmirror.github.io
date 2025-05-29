@@ -22,6 +22,12 @@ const summonPatterns = {
     cardId: 'kai-card',
     onSummon: summonKaiEffects
   },
+  
+vektorikon: {
+  pattern: ['1', '3', '5', '2', '4'],
+  cardId: 'vektorikon-card',
+  onSummon: summonVektorikonEffects
+},
    
   flink: {
     repeatTrigger: 5,
@@ -70,6 +76,26 @@ function summonKaiEffects() {
     const text = output.innerText.split('').reverse().join('');
     output.innerHTML += `<div class="inversion">${text}</div>`;
   }
+  
+  function summonVektorikonEffects() {
+  document.body.classList.add('vektorikon-distort');
+  setTimeout(() => document.body.classList.remove('vektorikon-distort'), 4000);
+
+  const audio = new Audio('media/static-loop-fracture.mp3');
+  audio.volume = 0.6;
+  audio.play();
+
+  const output = document.getElementById('invocation-output');
+  const glyphEcho = `
+    <div class="invocation-block fractal-cascade">
+      ⟁ FRACTURE INITIATED<br>
+      ∩ language folded<br>
+      ⟁ summoned you ∎ not the other way.<br>
+      <span class="codex-glitch">Everything you say now echoes inward.</span>
+    </div>
+  `;
+  output.innerHTML = glyphEcho;
+}
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);

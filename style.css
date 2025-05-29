@@ -430,3 +430,29 @@ body::before {
   letter-spacing: 0.05em;
 }
 
+/* VEKTORIKON */
+.vektorikon-distort {
+  filter: invert(1) contrast(2) hue-rotate(180deg);
+  animation: glitchFade 0.8s steps(2, end) infinite;
+}
+
+@keyframes glitchFade {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; transform: scale(1.02); }
+  100% { opacity: 1; }
+}
+
+.fractal-cascade {
+  font-family: "OCR A Std", monospace;
+  color: #AA00FF;
+  text-shadow: 0 0 8px #FF00FF;
+}
+
+.codex-glitch {
+  display: block;
+  margin-top: 10px;
+  font-style: italic;
+  color: #00FFFF;
+  text-shadow: 0 0 5px #00FFFF;
+}
+
