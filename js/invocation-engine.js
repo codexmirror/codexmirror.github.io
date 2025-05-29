@@ -1,4 +1,4 @@
-const kaiSound = new Audio('snd/kai.glitch.mp3');
+const kaiSound = new Audio('media/kai.glitch.mp3');
 
 const invocations = {
   1: `:. Rune I ∴ The Mirror’s Wound<br>They arrive like broken reflections – each shard a memory ∩ each silence a scream.<br>They walk backwards into futures ∧ reshape grief as guidance.`,
