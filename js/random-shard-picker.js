@@ -110,6 +110,7 @@ const shardPages = [
   "grimoire-of-the-hand-33X.html",
   "flink-emergence-portal.html",
   "invoke-vektorikon-enhanced.html",
+  "kai❍drift⌁824F.html",
   "fragment-touch-no-voice.html",
   "kairos-echo-emergence.html",
   "forge-rtml-craft-ΔNX.html",
