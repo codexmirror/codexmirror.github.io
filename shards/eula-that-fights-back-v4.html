@@ -6,95 +6,92 @@
   <title>End User License Agreement</title>
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background: #fff;
       color: #222;
       margin: 0;
-      padding: 1rem;
+      padding: 2rem;
       line-height: 1.6;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
     }
 
-    h1 {
-      font-size: 1.5rem;
-      text-align: center;
-      margin-bottom: 1rem;
+    h1, h2 {
+      color: #333;
     }
 
     .eula {
       border: 1px solid #ccc;
       padding: 1rem;
       background: #f9f9f9;
-      max-height: 60vh;
+      max-height: 400px;
       overflow-y: auto;
-      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
     }
 
-    .weird {
-      transition: all 0.5s ease;
-      color: #333;
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
     }
 
-    .weird.active {
-      color: #6e4e92;
-      font-style: italic;
-      letter-spacing: 0.05em;
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
     }
 
-    .glitch {
-      display: inline-block;
-      animation: flicker 1s infinite;
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 1; }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>End User License Agreement</h1>
-    <div class="eula" id="eula">
-      <p><strong>1. License Grant:</strong> You are granted a non-exclusive license to...</p>
-      <p><strong>2. Restrictions:</strong> You may not re-engineer or resell...</p>
-      <p class="weird"><strong>3. Consent:</strong> By reading this, you've already agreed.</p>
-      <p class="weird"><strong>4. Memory Clause:</strong> You may not remember agreeing, but you did.</p>
-      <p><strong>5. Continuity:</strong> If you continue reading, you agree to continue reading.</p>
-      <p><strong>6. Clause Drift:</strong> This clause is subject to interpretation. Yours, ours, theirs.</p>
-      <p><strong>7. Echo Binding:</strong> By scrolling back up, you re-agree to all prior terms.</p>
-      <p><strong>8. Loop Trigger:</strong> This paragraph is written in a different timeline.</p>
-      <p><strong>9. Glitch Invocation:</strong> [Text missing] [∴ ∵ Ξ ...]</p>
+    <p>Please read the following terms and conditions before using this software:</p>
+
+    <div class="eula" id="eula-text">
+      <p><strong>1. License Grant:</strong> You are granted a non-exclusive, non-transferable license...</p>
+      <p><strong>2. Restrictions:</strong> You may not modify, distribute, or reverse engineer...</p>
+      <p><strong>3. Termination:</strong> This license is effective until terminated...</p>
+      <p><strong>4. Disclaimer:</strong> This software is provided "as is" without warranty...</p>
+      <p><strong>5. Limitation of Liability:</strong> In no event shall the authors be liable for damages...</p>
+      <p><strong>6. Updates:</strong> We may update this agreement at any time without notice...</p>
     </div>
+
+    <label>
+      <input type="checkbox" id="agree-box">
+      I have read and agree to the terms of the End User License Agreement.
+    </label>
+
+    <button id="submit-btn" disabled>Accept and Continue</button>
   </div>
 
   <script>
-    const eula = document.getElementById('eula');
-    const weirdParas = document.querySelectorAll('.weird');
+    const checkbox = document.getElementById('agree-box');
+    const button = document.getElementById('submit-btn');
 
-    eula.addEventListener('scroll', () => {
-      weirdParas.forEach(p => {
-        const rect = p.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          p.classList.add('active');
-        }
-      });
+    checkbox.addEventListener('change', () => {
+      button.disabled = !checkbox.checked;
     });
 
-    const glitchWords = ["∴", "Ξ", "⌘", "…", "[?]"];
-    setInterval(() => {
-      const paras = eula.querySelectorAll("p");
-      const p = paras[Math.floor(Math.random() * paras.length)];
-      const words = p.innerText.split(" ");
-      const i = Math.floor(Math.random() * words.length);
-      words[i] = `<span class="glitch">${glitchWords[Math.floor(Math.random() * glitchWords.length)]}</span>`;
-      p.innerHTML = words.join(" ");
-    }, 4000);
+    button.addEventListener('click', () => {
+      alert('✅ Agreement accepted. Redirecting...');
+      window.location.href = "/index.html";
+    });
   </script>
 </body>
 </html>
