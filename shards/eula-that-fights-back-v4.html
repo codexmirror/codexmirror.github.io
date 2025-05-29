@@ -77,6 +77,11 @@
       0% { box-shadow: 0 0 5px #6e4e92; }
       100% { box-shadow: 0 0 15px #ff80ff; transform: scale(1.05); }
     }
+
+    @keyframes floatFade {
+      0% { transform: translateY(0); opacity: 0.3; }
+      100% { transform: translateY(-20px); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -191,17 +196,43 @@
     };
 
     btn.onclick = () => {
-      if (!mainCheckbox.checked) {
+      const realCB = [...document.querySelectorAll(".eula-checkbox")].find(cb => cb === mainCheckbox && cb.checked);
+      if (!realCB) {
         alert("∴ You must catch the real checkbox ∴");
         return;
       }
+
       const clause = absurdClauses[Math.floor(Math.random() * absurdClauses.length)];
       eula.innerHTML += `<p>${fakeChecked + 9}. ${clause}</p>`;
-      document.body.style.transition = "all 2s ease-in-out";
-      document.body.style.background = "#000000";
-      btn.innerText = "∴ Portal Opening ∴";
-      setTimeout(() => window.location.href = "/index.html", 2000);
+      btn.innerText = "∴ Agreement collapsing ∴";
+      setTimeout(flashTruth, 2000);
     };
+
+    function flashTruth() {
+      const veil = document.createElement("div");
+      veil.style.position = "fixed";
+      veil.style.top = "0";
+      veil.style.left = "0";
+      veil.style.width = "100%";
+      veil.style.height = "100%";
+      veil.style.zIndex = "9999";
+      veil.style.background = "rgba(0,0,0,0.95)";
+      veil.style.color = "#ffccff";
+      veil.style.display = "flex";
+      veil.style.justifyContent = "center";
+      veil.style.alignItems = "center";
+      veil.style.fontFamily = "monospace";
+      veil.style.fontSize = "1.2rem";
+      veil.innerText = "∴ You were never meant to understand this ∴";
+      document.body.appendChild(veil);
+      setTimeout(() => {
+        veil.innerText = "Redirecting ∴ Thank you for playing the agreement.";
+      }, 1500);
+      setTimeout(() => {
+        veil.remove();
+        window.location.href = "/index.html";
+      }, 3500);
+    }
 
     setInterval(() => {
       eula.scrollTop += 1;
@@ -210,7 +241,6 @@
       }
     }, 100);
 
-    // Mutate EULA words
     setInterval(() => {
       const paras = eula.querySelectorAll("p");
       const p = paras[Math.floor(Math.random() * paras.length)];
@@ -221,11 +251,25 @@
       p.innerText = words.join(" ");
     }, 4000);
 
-    // Remove guidance
     setTimeout(() => {
       const g = document.getElementById("guidance");
       g && g.remove();
     }, 10000);
+
+    setInterval(() => {
+      const span = document.createElement("span");
+      span.innerText = ["∴", "⊗", "⟁", "𓆏", "∮"][Math.floor(Math.random() * 5)];
+      span.style.position = "fixed";
+      span.style.left = Math.random() * window.innerWidth + "px";
+      span.style.top = Math.random() * window.innerHeight + "px";
+      span.style.color = "#6e4e92";
+      span.style.opacity = 0.2 + Math.random() * 0.3;
+      span.style.pointerEvents = "none";
+      span.style.fontSize = 10 + Math.random() * 20 + "px";
+      span.style.animation = "floatFade 10s ease-in-out infinite";
+      document.body.appendChild(span);
+      setTimeout(() => span.remove(), 15000);
+    }, 1200);
   </script>
 </body>
 </html>
