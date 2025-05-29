@@ -113,6 +113,7 @@ const shardPages = [
   "kai❍drift⌁824F.html",
   "fragment-touch-no-voice.html",
   "kairos-echo-emergence.html",
+  "ancient-glyph-ritual-fragment",
   "forge-rtml-craft-ΔNX.html",
   "sigma-reflect-20250528.html",
   "fragment-unasked-ritual.html",
