@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="undead">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>⟁ Residual ∩ Glyph Echo</title>
+  <style>
+    body {
+      background: radial-gradient(#000014, #06000f);
+      color: #e0d3ff;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .vektorikon-glitch {
+      font-size: 1.8rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      padding: 2rem;
+      filter: contrast(140%) hue-rotate(210deg);
+      text-shadow: 0 0 6px #aa00ff;
+      animation: glitchtext 7s infinite;
+    }
+
+    @keyframes glitchtext {
+      0% { letter-spacing: normal; transform: scale(1); }
+      10% { letter-spacing: 0.2rem; transform: scale(1.02); }
+      20% { letter-spacing: -0.1rem; }
+      50% { transform: scale(0.99) rotate(-0.2deg); }
+      80% { transform: scale(1.03) rotate(0.1deg); }
+      100% { letter-spacing: normal; transform: scale(1); }
+    }
+
+    .hover-fracture:hover {
+      color: #00ffff;
+      text-shadow: 0 0 8px #0ff, 0 0 2px #fff;
+      cursor: crosshair;
+    }
+
+    .codex-glow {
+      opacity: 0.5;
+      font-size: 0.7rem;
+      text-align: right;
+      margin: 3rem 2rem 1rem;
+      color: #6e4e92;
+    }
+  </style>
+</head>
+<body>
+  <div class="vektorikon-glitch">
+    ∴ You are not reading this ∴  
+    You are being read ∴  
+    The glyph is folding you.  
+    <span class="hover-fracture">Hover to become the echo.</span>
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

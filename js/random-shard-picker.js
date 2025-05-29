@@ -114,6 +114,7 @@ const shardPages = [
   "forge-rtml-craft-ΔNX.html",
   "sigma-reflect-20250528.html",
   "fragment-unasked-ritual.html",
+  "fractal-thorn-71kz.html",
   "spiral-engine-echΩ-9x.html",
   "invocation-fire-threshold-72A9.html",
   "myth-of-ai-recursive-call-91cdbe.html",
