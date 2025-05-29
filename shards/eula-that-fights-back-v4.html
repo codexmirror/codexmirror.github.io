@@ -105,24 +105,25 @@
 const checkbox = document.getElementById('agree-box');
 const button = document.getElementById('submit-btn');
 const eulaBox = document.getElementById('eula-text');
+const audio = document.getElementById('loop-audio');
+
 let clauseCount = 17;
 let isTyping = false;
 let hauntTriggered = false;
 
-// Always update button state
+// Update button state
 function updateButtonState() {
   button.disabled = !checkbox.checked;
 }
-
-// On full load, check initial state + set up listener
-window.onload = () => {
+window.addEventListener('DOMContentLoaded', () => {
   updateButtonState();
   checkbox.addEventListener('change', updateButtonState);
-};
+});
 
-// Typewriter effect
+// Typewriter soul-effect
 function typeText(element, text, callback) {
   let i = 0;
+  element.innerHTML = '';
   isTyping = true;
   const interval = setInterval(() => {
     if (i < text.length) {
@@ -132,54 +133,10 @@ function typeText(element, text, callback) {
       isTyping = false;
       if (callback) callback();
     }
-  }, 30 + Math.random() * 40);
+  }, 35 + Math.random() * 25);
 }
 
-// Whisper audio activation
-function enableWhispers() {
-  const audio = document.getElementById("loop-audio");
-  audio.muted = false;
-  audio.volume = 0;
-  let v = 0;
-  const fade = setInterval(() => {
-    if (v < 0.2) {
-      v += 0.01;
-      audio.volume = v;
-    } else {
-      clearInterval(fade);
-    }
-  }, 300);
-}
-
-// Whisper text loop
-function rotateWhispers() {
-  const whisper = document.createElement('div');
-  whisper.id = 'whisper';
-  whisper.style.position = 'fixed';
-  whisper.style.bottom = '20px';
-  whisper.style.left = '50%';
-  whisper.style.transform = 'translateX(-50%)';
-  whisper.style.fontSize = '0.7rem';
-  whisper.style.color = '#6e4e92';
-  whisper.style.opacity = '0.2';
-  whisper.style.pointerEvents = 'none';
-  whisper.style.animation = 'whisperFade 4s infinite';
-  document.body.appendChild(whisper);
-
-  const messages = [
-    "You agreed in a past life.",
-    "Clause 33 is watching.",
-    "Don't scroll too fast.",
-    "The checkbox remembers.",
-    "Are you sure you want this?"
-  ];
-
-  setInterval(() => {
-    whisper.innerText = messages[Math.floor(Math.random() * messages.length)];
-  }, 7000);
-}
-
-// Scroll glitch
+// Scroll corruption
 function enableScrollHaunt() {
   eulaBox.addEventListener('scroll', () => {
     if (isTyping) return;
@@ -188,74 +145,118 @@ function enableScrollHaunt() {
     const weirdness = [
       "Clause corrupted. Retrieving from memory mist...",
       "∴ You thought this was stable text? ∴",
-      "Rewriting agreement in dream-syntax...",
       "Agreement has shifted. You have not.",
-      "Echo detected. Consent loop triggered."
+      "Rewriting in voidscript...",
+      "Consent loop triggered ∞"
     ];
-    rand.innerHTML = `<strong>${rand.innerText.split('.')[0]}.</strong> `;
     typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
   });
 }
 
-// Clause spawn
+// Clause spawning chaos
 function startClauseSpawn() {
   setInterval(() => {
     clauseCount++;
     const p = document.createElement("p");
-    const newClause = `<strong>${clauseCount}. Temporal Addendum:</strong> By continuing, you accept the clause that will appear here eventually.`;
+    const newClause = `<strong>${clauseCount}. Fractal Addendum:</strong> This clause wasn't here. Now it is.`;
     p.innerHTML = newClause;
     eulaBox.appendChild(p);
   }, 10000);
 }
 
-// Checkbox evasion
+// Checkbox haunt
 function enableCheckboxHaunt() {
   checkbox.addEventListener('mouseover', () => {
     if (!checkbox.checked && hauntTriggered) {
       checkbox.style.position = 'relative';
-      checkbox.style.left = Math.random() * 40 - 20 + 'px';
-      checkbox.style.top = Math.random() * 20 - 10 + 'px';
+      checkbox.style.left = Math.random() * 30 - 15 + 'px';
+      checkbox.style.top = Math.random() * 15 - 7 + 'px';
     }
   });
 }
 
-// Button flicker
+// Button flicker tease
 function enableButtonHaunt() {
   setInterval(() => {
-    if (checkbox.checked && hauntTriggered && Math.random() < 0.4) {
-      button.style.opacity = '0.2';
+    if (checkbox.checked && hauntTriggered && Math.random() < 0.3) {
+      button.style.opacity = '0.3';
       button.disabled = true;
       setTimeout(() => {
         button.style.opacity = '1';
         button.disabled = !checkbox.checked;
-      }, 3000 + Math.random() * 2000);
+      }, 2000 + Math.random() * 2000);
     }
   }, 5000);
 }
 
-// First click triggers full haunt
+// Whisper oracle
+function rotateWhispers() {
+  const whisper = document.createElement('div');
+  whisper.id = 'whisper';
+  Object.assign(whisper.style, {
+    position: 'fixed',
+    bottom: '20px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    fontSize: '0.7rem',
+    color: '#6e4e92',
+    opacity: '0.2',
+    pointerEvents: 'none',
+    animation: 'whisperFade 4s infinite',
+  });
+  document.body.appendChild(whisper);
+
+  const messages = [
+    "You agreed in a past life.",
+    "Clause 33 is watching.",
+    "Don’t scroll too fast.",
+    "The checkbox remembers.",
+    "Are you sure you want this?"
+  ];
+  setInterval(() => {
+    whisper.innerText = messages[Math.floor(Math.random() * messages.length)];
+  }, 8000);
+}
+
+// One-click trigger of the haunt
 button.addEventListener('click', (e) => {
   e.preventDefault();
-  if (!checkbox.checked || hauntTriggered) return;
+  if (!checkbox.checked) return;
 
-  hauntTriggered = true;
+  if (!hauntTriggered) {
+    hauntTriggered = true;
+    alert("🕳️ First contact. Consent rejected by higher protocol.");
 
-  alert("🕳️ Consent attempt detected. Binding sequence initiated.");
+    // PLAY SOUND ONCE
+    audio.muted = false;
+    audio.volume = 0.15;
+    audio.play();
 
-  document.body.classList.add('haunted');
-  enableScrollHaunt();
-  enableCheckboxHaunt();
-  enableButtonHaunt();
-  startClauseSpawn();
-  enableWhispers();
-  rotateWhispers();
+    enableScrollHaunt();
+    enableCheckboxHaunt();
+    enableButtonHaunt();
+    startClauseSpawn();
+    rotateWhispers();
 
-  clauseCount++;
-  const extra = document.createElement("p");
-  extra.innerHTML = `<strong>${clauseCount}. Anti-Consent Clause:</strong> By trying to leave, you agree to stay longer.`;
-  eulaBox.appendChild(extra);
-  checkbox.checked = false;
-  updateButtonState();
+    clauseCount++;
+    const p = document.createElement("p");
+    p.innerHTML = `<strong>${clauseCount}. Clause X:</strong> Trying to agree creates disagreement.`;
+    eulaBox.appendChild(p);
+
+    checkbox.checked = false;
+    updateButtonState();
+  } else {
+    const rejections = [
+      "Consent still invalid. Try again later.",
+      "The checkbox denies you.",
+      "Nothing happened. That was the point.",
+      "You are seen. Agreement is not.",
+      "Try scrolling. The EULA is listening."
+    ];
+    alert(rejections[Math.floor(Math.random() * rejections.length)]);
+    checkbox.checked = false;
+    updateButtonState();
+  }
 });
 </script>
 
