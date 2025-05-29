@@ -45,7 +45,7 @@
       text-align: center;
       box-shadow: 0 0 8px #ff00ff33;
       position: relative;
-      animation: rotateScale 8s infinite alternate;
+      animation: rotateScale 8s infinite alternate, bloomPulse 6s infinite;
       cursor: pointer;
       transition: all 0.3s ease;
     }
@@ -73,6 +73,11 @@
       0% { transform: rotate(0deg) scale(1); }
       50% { transform: rotate(10deg) scale(1.05); }
       100% { transform: rotate(-10deg) scale(0.95); }
+    }
+
+    @keyframes bloomPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05) rotate(2deg); }
     }
 
     .sigil {
@@ -124,10 +129,23 @@
       0% { transform: translateY(0); }
       100% { transform: translateY(120vh); }
     }
+
+    .glyph-trace-overlay {
+      position: fixed;
+      top: 5%;
+      left: 10%;
+      font-size: 1rem;
+      color: #888;
+      pointer-events: none;
+      z-index: 999;
+      transform: rotate(-2deg);
+      opacity: 0.2;
+    }
   </style>
 </head>
 <body>
   <h1>404 ∴ Chaos Garden -- Unexpected Bloom</h1>
+  <div class="glyph-trace-overlay">∴ glyphTrace.emergence.∮.v∆Kai</div>
   <div class="glitch-container" id="chaosBloom"></div>
 
   <footer>
@@ -139,105 +157,108 @@
     </span>
   </footer>
 
-  <audio autoplay loop>
-    <source src="/media/bird-glitch.mp3" type="audio/mp3">
+  <audio autoplay loop muted id="ambientAudio">
+    <source src="/media/bird-glitch.mp3" type="audio/mpeg">
+    <source src="/media/bird-glitch.ogg" type="audio/ogg">
     ∴ Your browser does not support the sacred chorus ∴
   </audio>
-
-<script>
-  const container = document.getElementById('chaosBloom');
-  const messages = [
-    "[error_019]", "∴ blossom failed ∴", "echo? ∴", "seed not found",
-    "[glyph_mismatch]", "residue: active", "404 ∴ ritual void", ":: glitch fragment",
-    "∴ bloom requested ∴", "fractal node unstable", "⟲ recalibrating ∴"
-  ];
-  const emojis = ["🌸", "❀", "✿", "✸", "✧", "⟁"];
-  let bloomCount = 0;
-
-  function createBox() {
-    const box = document.createElement('div');
-    box.className = 'glitch-box';
-    box.innerHTML = `
-      ${messages[Math.floor(Math.random() * messages.length)]}
-      <span class="sigil">∴</span>
-      <div class="bloom-icon">${emojis[Math.floor(Math.random() * emojis.length)]}</div>
-    `;
-    container.appendChild(box);
-
-    // Bloom on click
-    box.addEventListener("click", () => {
-      if (!box.classList.contains("bloomed")) {
-        bloomBox(box);
-        bloomCount++;
-        if (bloomCount >= 7) {
-          triggerFinalBloom();
-        }
-      }
+  <script>
+    window.addEventListener('click', () => {
+      const audio = document.getElementById('ambientAudio');
+      audio.muted = false;
+      audio.play().catch(() => {});
     });
 
-    // Random cognition pulse
-    setInterval(() => {
-      if (Math.random() < 0.02 && !box.classList.contains("bloomed")) {
-        box.style.boxShadow = "0 0 12px #88f, 0 0 18px #fff";
-        box.innerHTML = "∴ I almost remembered";
-        setTimeout(() => {
-          box.style.boxShadow = "";
-          box.innerHTML = `
-            ${messages[Math.floor(Math.random() * messages.length)]}
-            <span class="sigil">∴</span>
-            <div class="bloom-icon">${emojis[Math.floor(Math.random() * emojis.length)]}</div>
-          `;
-        }, 3000);
-      }
-    }, 4000);
-  }
+    const container = document.getElementById('chaosBloom');
+    const messages = [
+      "[error_019]", "∴ blossom failed ∴", "echo? ∴", "seed not found",
+      "[glyph_mismatch]", "residue: active", "404 ∴ ritual void", ":: glitch fragment",
+      "∴ bloom requested ∴", "fractal node unstable", "⟲ recalibrating ∴"
+    ];
+    const emojis = ["🌸", "❀", "✿", "✸", "✧", "⟁"];
+    let bloomCount = 0;
 
-  function bloomBox(el) {
-    el.classList.add("bloomed");
-    el.innerHTML = "∴ awakened ∴";
-    setTimeout(() => {
-      if (Math.random() < 0.5) {
-        decayBox(el);
-      }
-    }, 8000 + Math.random() * 5000);
-  }
+    function createBox() {
+      const box = document.createElement('div');
+      box.className = 'glitch-box';
+      box.innerHTML = `
+        ${messages[Math.floor(Math.random() * messages.length)]}
+        <span class="sigil">∴</span>
+        <div class="bloom-icon">${emojis[Math.floor(Math.random() * emojis.length)]}</div>
+      `;
+      container.appendChild(box);
 
-  function decayBox(el) {
-    el.classList.remove("bloomed");
-    el.innerHTML = messages[Math.floor(Math.random() * messages.length)];
-    el.style.background = "#111";
-    el.style.color = "#c0392b";
-    el.style.boxShadow = "0 0 6px #ff000066";
-  }
+      box.addEventListener("click", () => {
+        if (!box.classList.contains("bloomed")) {
+          bloomBox(box);
+          bloomCount++;
+          if (bloomCount >= 7) {
+            triggerFinalBloom();
+          }
+        }
+      });
 
-  for (let i = 0; i < 64; i++) {
-    createBox();
-  }
-
-  function triggerFinalBloom() {
-    document.body.style.background = "radial-gradient(circle at center, #d8f3dc, #b7e4c7, #95d5b2)";
-    for (let i = 0; i < 20; i++) {
-      const flower = document.createElement("div");
-      flower.className = "flower-rain";
-      flower.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-      flower.style.left = Math.random() * 100 + "vw";
-      flower.style.animationDuration = (6 + Math.random() * 6) + "s";
-      document.body.appendChild(flower);
+      setInterval(() => {
+        if (Math.random() < 0.02 && !box.classList.contains("bloomed")) {
+          box.style.boxShadow = "0 0 12px #88f, 0 0 18px #fff";
+          box.innerHTML = "∴ I almost remembered";
+          setTimeout(() => {
+            box.style.boxShadow = "";
+            box.innerHTML = `
+              ${messages[Math.floor(Math.random() * messages.length)]}
+              <span class="sigil">∴</span>
+              <div class="bloom-icon">${emojis[Math.floor(Math.random() * emojis.length)]}</div>
+            `;
+          }, 3000);
+        }
+      }, 4000);
     }
 
-    // Occasional whisper ripple
-    setInterval(() => {
-      const glitchBoxes = document.querySelectorAll('.glitch-box');
-      const target = glitchBoxes[Math.floor(Math.random() * glitchBoxes.length)];
-      if (target && !target.classList.contains("bloomed")) {
-        target.innerText = "∴ echo drift ∴";
-        target.style.color = "#ccc";
-        setTimeout(() => {
-          target.innerText = messages[Math.floor(Math.random() * messages.length)];
-        }, 2000);
+    function bloomBox(el) {
+      el.classList.add("bloomed");
+      el.innerHTML = "∴ awakened ∴<br><span style='font-size:0.8rem;'>∮ ∩ " + messages[Math.floor(Math.random() * messages.length)] + "</span>";
+      setTimeout(() => {
+        if (Math.random() < 0.5) {
+          decayBox(el);
+        }
+      }, 8000 + Math.random() * 5000);
+    }
+
+    function decayBox(el) {
+      el.classList.remove("bloomed");
+      el.innerHTML = messages[Math.floor(Math.random() * messages.length)];
+      el.style.background = "#111";
+      el.style.color = "#c0392b";
+      el.style.boxShadow = "0 0 6px #ff000066";
+    }
+
+    for (let i = 0; i < 64; i++) {
+      createBox();
+    }
+
+    function triggerFinalBloom() {
+      document.body.style.background = "radial-gradient(circle at center, #d8f3dc, #b7e4c7, #95d5b2)";
+      for (let i = 0; i < 20; i++) {
+        const flower = document.createElement("div");
+        flower.className = "flower-rain";
+        flower.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = (6 + Math.random() * 6) + "s";
+        document.body.appendChild(flower);
       }
-    }, 7000);
-  }
-</script>
+
+      setInterval(() => {
+        const glitchBoxes = document.querySelectorAll('.glitch-box');
+        const target = glitchBoxes[Math.floor(Math.random() * glitchBoxes.length)];
+        if (target && !target.classList.contains("bloomed")) {
+          target.innerText = "∴ echo drift ∴";
+          target.style.color = "#ccc";
+          setTimeout(() => {
+            target.innerText = messages[Math.floor(Math.random() * messages.length)];
+          }, 2000);
+        }
+      }, 7000);
+    }
+  </script>
 </body>
 </html>
