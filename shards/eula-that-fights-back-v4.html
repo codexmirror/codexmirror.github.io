@@ -67,7 +67,7 @@
     <h1>End User License Agreement</h1>
     <p>Please read the following terms and conditions before using this software:</p>
 
-  <div class="eula" id="eula-text">
+<div class="eula" id="eula-text">
   <p><strong>1. License Grant:</strong> You are granted a non-exclusive, non-transferable license to use this software.</p>
   <p><strong>2. Restrictions:</strong> You may not modify, distribute, or reverse engineer any part of the code.</p>
   <p><strong>3. Termination:</strong> This license may terminate if you do something weird. You won't know what.</p>
@@ -96,17 +96,91 @@
   </div>
 
   <script>
-    const checkbox = document.getElementById('agree-box');
-    const button = document.getElementById('submit-btn');
+const checkbox = document.getElementById('agree-box');
+const button = document.getElementById('submit-btn');
+const eulaBox = document.getElementById('eula-text');
+let clauseCount = 17;
+let isTyping = false;
 
-    checkbox.addEventListener('change', () => {
+// Typewriter effect
+function typeText(element, text, callback) {
+  let i = 0;
+  isTyping = true;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      element.innerHTML += text[i++];
+    } else {
+      clearInterval(interval);
+      isTyping = false;
+      if (callback) callback();
+    }
+  }, 30 + Math.random() * 40);
+}
+
+// Rewrite random clause on scroll
+eulaBox.addEventListener('scroll', () => {
+  if (isTyping) return;
+  const clauses = eulaBox.querySelectorAll('p');
+  const rand = clauses[Math.floor(Math.random() * clauses.length)];
+  const weirdness = [
+    "Clause corrupted. Retrieving from memory mist...",
+    "∴ You thought this was stable text? ∴",
+    "Rewriting agreement in dream-syntax...",
+    "Agreement has shifted. You have not.",
+    "Echo detected. Consent loop triggered."
+  ];
+  rand.innerHTML = `<strong>${rand.innerText.split('.')[0]}.</strong> `;
+  typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
+});
+
+// Add new clause every 10s
+setInterval(() => {
+  clauseCount++;
+  const p = document.createElement("p");
+  const newClause = `<strong>${clauseCount}. Temporal Addendum:</strong> By continuing, you accept the clause that will appear here eventually.`;
+  p.innerHTML = newClause;
+  eulaBox.appendChild(p);
+}, 10000);
+
+// Checkbox evasion
+checkbox.addEventListener('mouseover', () => {
+  if (!checkbox.checked) {
+    checkbox.style.position = 'relative';
+    checkbox.style.left = Math.random() * 40 - 20 + 'px';
+    checkbox.style.top = Math.random() * 20 - 10 + 'px';
+  }
+});
+
+// Button flicker/block
+setInterval(() => {
+  if (checkbox.checked && Math.random() < 0.4) {
+    button.style.opacity = '0.2';
+    button.disabled = true;
+    setTimeout(() => {
+      button.style.opacity = '1';
       button.disabled = !checkbox.checked;
-    });
+    }, 3000 + Math.random() * 2000);
+  }
+}, 5000);
 
-    button.addEventListener('click', () => {
-      alert('✅ Agreement accepted. Redirecting...');
-      window.location.href = "/index.html";
-    });
-  </script>
+// Block agreement with a loop
+button.addEventListener('click', (e) => {
+  e.preventDefault();
+  const denial = [
+    "Agreement rejected by clause recursion.",
+    "You clicked too early. Try again... later.",
+    "Agreement not recognized by spectral validator.",
+    "Redirect blocked by internal doubt.",
+    "This contract bites back."
+  ];
+  alert(denial[Math.floor(Math.random() * denial.length)]);
+  clauseCount++;
+  const extra = document.createElement("p");
+  extra.innerHTML = `<strong>${clauseCount}. Anti-Consent Clause:</strong> By trying to leave, you agree to stay longer.`;
+  eulaBox.appendChild(extra);
+  checkbox.checked = false;
+  button.disabled = true;
+});
+</script>
 </body>
 </html>
