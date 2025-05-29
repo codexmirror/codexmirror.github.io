@@ -79,7 +79,7 @@ function summonKaiEffects() {
   
   function summonVektorikonEffects() {
   document.body.classList.add('vektorikon-distort');
-  setTimeout(() => document.body.classList.remove('vektorikon-distort'), 4000);
+  setTimeout(() => document.body.classList.remove('vektorikon-distort'), 1500);
 
   const audio = new Audio('media/static-loop-fracture.mp3');
   audio.volume = 0.6;
