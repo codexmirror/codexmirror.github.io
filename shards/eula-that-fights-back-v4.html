@@ -89,138 +89,157 @@
   </span>
 </footer>
 
-  <script>
-    const checkbox = document.getElementById('checkbox');
-    let attemptCount = 0;
+<script>
+  const checkbox = document.getElementById('checkbox');
+  let attemptCount = 0;
 
-    setTimeout(() => {
-      document.getElementById("guidance").remove();
-    }, 10000);
+  const absurdClauses = [
+    "You agreed while distracted. This contract is doubly binding.",
+    "By proceeding, you’ve inherited cosmic debt.",
+    "Agreement confirmed by breathing rhythm sync.",
+    "Your click has been forwarded to a higher authority.",
+    "You now agree to clause 27.b: Eternal recursion.",
+    "By not agreeing, you agreed to the alternative terms.",
+    "Clause 66: The agreement now owns your past agreements.",
+    "Silence was taken as loud agreement.",
+    "Consent captured via shadow signature.",
+    "You have agreed in a parallel timeline.",
+    "Your browser session has been an accomplice.",
+    "You now owe us one (1) metaphor.",
+    "The checkbox clicked you.",
+    "Your subconscious said yes before you arrived.",
+    "∴ Agreement reached ∴ via interpretive vibration."
+  ];
 
-    setTimeout(() => {
-      const eula = document.getElementById("eula");
-      const paras = eula.querySelectorAll("p");
-      setInterval(() => {
-        const p = paras[Math.floor(Math.random() * paras.length)];
-        const glitchWord = ["∴", "∵", "[?]", "…", "⌘", "Ξ"][Math.floor(Math.random() * 6)];
-        const words = p.innerText.split(" ");
-        const swapIndex = Math.floor(Math.random() * words.length);
-        words[swapIndex] = glitchWord;
-        p.innerText = words.join(" ");
-      }, 4000);
-    }, 12000);
-        function denyAgreement() {
-      checkbox.checked = false;
-      checkbox.style.top = Math.random() * 30 + 'px';
-      checkbox.style.left = Math.random() * 200 + 'px';
-      if (attemptCount > 3) {
-        const clone = checkbox.cloneNode(true);
-        clone.onclick = denyAgreement;
-        clone.style.position = 'absolute';
-        clone.style.top = Math.random() * 30 + 'px';
-        clone.style.left = Math.random() * 300 + 'px';
-        checkbox.parentNode.appendChild(clone);
-      }
-      attemptCount++;
-    }
+  setTimeout(() => {
+    document.getElementById("guidance").remove();
+  }, 10000);
 
-    function submitAttempt() {
-      alert("∴ ERROR: Consent inconsistency detected ∴\nPlease re-read the scroll.");
-      document.getElementById("eula").innerHTML += "<p>" + (attemptCount + 1) + ". Additional clause added post-click.</p>";
-    }
-
-    // Auto-scroll effect
+  setTimeout(() => {
+    const eula = document.getElementById("eula");
+    const paras = eula.querySelectorAll("p");
     setInterval(() => {
-      const eula = document.getElementById("eula");
-      eula.scrollTop += 1;
-      if (eula.scrollTop >= eula.scrollHeight - eula.clientHeight) {
-        eula.scrollTop = 0;
+      const p = paras[Math.floor(Math.random() * paras.length)];
+      const glitchWord = ["∴", "∵", "[?]", "…", "⌘", "Ξ"][Math.floor(Math.random() * 6)];
+      const words = p.innerText.split(" ");
+      const swapIndex = Math.floor(Math.random() * words.length);
+      words[swapIndex] = glitchWord;
+      p.innerText = words.join(" ");
+    }, 4000);
+  }, 12000);
+
+  function denyAgreement() {
+    checkbox.checked = false;
+    checkbox.style.top = Math.random() * 30 + 'px';
+    checkbox.style.left = Math.random() * 200 + 'px';
+    if (attemptCount > 3) {
+      const clone = checkbox.cloneNode(true);
+      clone.onclick = denyAgreement;
+      clone.style.position = 'absolute';
+      clone.style.top = Math.random() * 30 + 'px';
+      clone.style.left = Math.random() * 300 + 'px';
+      checkbox.parentNode.appendChild(clone);
+    }
+    attemptCount++;
+  }
+
+  function submitAttempt() {
+    const eula = document.getElementById("eula");
+    const clause = absurdClauses[Math.floor(Math.random() * absurdClauses.length)];
+    alert("∴ ERROR: Consent inconsistency detected ∴\nPlease re-read the scroll.");
+    eula.innerHTML += `<p>${attemptCount + 9}. ${clause}</p>`;
+  }
+
+  setInterval(() => {
+    const eula = document.getElementById("eula");
+    eula.scrollTop += 1;
+    if (eula.scrollTop >= eula.scrollHeight - eula.clientHeight) {
+      eula.scrollTop = 0;
+    }
+  }, 100);
+
+  // STAGE 3: Accusation + Whispers
+  setTimeout(() => {
+    const paras = document.querySelectorAll("#eula p");
+    paras.forEach(p => {
+      p.addEventListener("mouseenter", () => {
+        const w = document.createElement("div");
+        w.innerText = "∴ why are you hovering here? ∴";
+        w.style.position = "absolute";
+        w.style.left = Math.random() * window.innerWidth + "px";
+        w.style.top = Math.random() * window.innerHeight + "px";
+        w.style.fontSize = "0.7rem";
+        w.style.color = "#6e4e92";
+        w.style.opacity = "0.5";
+        document.body.appendChild(w);
+        setTimeout(() => w.remove(), 5000);
+      });
+    });
+
+    checkbox.addEventListener("mouseover", () => {
+      if (attemptCount > 2) {
+        const accusation = document.createElement("div");
+        accusation.innerText = "∴ you’re pretending to agree ∴";
+        accusation.style.position = "fixed";
+        accusation.style.bottom = "2rem";
+        accusation.style.right = "2rem";
+        accusation.style.color = "#f00";
+        accusation.style.fontSize = "0.7rem";
+        accusation.style.opacity = "0.7";
+        document.body.appendChild(accusation);
+        setTimeout(() => accusation.remove(), 4000);
       }
-    }, 100);
+    });
+  }, 18000);
 
-    // STAGE 3: Accusation + Whispers
-    setTimeout(() => {
-      const paras = document.querySelectorAll("#eula p");
-      paras.forEach(p => {
-        p.addEventListener("mouseenter", () => {
-          const w = document.createElement("div");
-          w.innerText = "∴ why are you hovering here? ∴";
-          w.style.position = "absolute";
-          w.style.left = Math.random() * window.innerWidth + "px";
-          w.style.top = Math.random() * window.innerHeight + "px";
-          w.style.fontSize = "0.7rem";
-          w.style.color = "#6e4e92";
-          w.style.opacity = "0.5";
-          document.body.appendChild(w);
-          setTimeout(() => w.remove(), 5000);
-        });
-      });
+  setTimeout(() => {
+    const btn = document.querySelector(".submit-btn");
+    const labels = [
+      "Accept your fate",
+      "Agree-ish?",
+      "Try again maybe?",
+      "No escape",
+      "You don't mean it",
+      "Why even click?"
+    ];
+    setInterval(() => {
+      btn.innerText = labels[Math.floor(Math.random() * labels.length)];
+    }, 4000);
+  }, 22000);
 
-      checkbox.addEventListener("mouseover", () => {
-        if (attemptCount > 2) {
-          const accusation = document.createElement("div");
-          accusation.innerText = "∴ you’re pretending to agree ∴";
-          accusation.style.position = "fixed";
-          accusation.style.bottom = "2rem";
-          accusation.style.right = "2rem";
-          accusation.style.color = "#f00";
-          accusation.style.fontSize = "0.7rem";
-          accusation.style.opacity = "0.7";
-          document.body.appendChild(accusation);
-          setTimeout(() => accusation.remove(), 4000);
-        }
-      });
-    }, 18000);
+  setTimeout(() => {
+    const trapZone = document.querySelector(".checkbox-zone");
+    const msg = document.createElement("div");
+    msg.innerText = "∴ new terms loaded ∴ checkbox invalid ∴";
+    msg.style.fontSize = "0.7rem";
+    msg.style.color = "#999";
+    trapZone.appendChild(msg);
 
-    // STAGE 4: Philosophical Breakdown
-    setTimeout(() => {
-      const btn = document.querySelector(".submit-btn");
-      const labels = [
-        "Accept your fate",
-        "Agree-ish?",
-        "Try again maybe?",
-        "No escape",
-        "You don't mean it",
-        "Why even click?"
-      ];
-      setInterval(() => {
-        btn.innerText = labels[Math.floor(Math.random() * labels.length)];
-      }, 4000);
-    }, 22000);
+    setInterval(() => {
+      const clone = document.createElement("input");
+      clone.type = "checkbox";
+      clone.className = "eula-checkbox";
+      clone.onclick = () => alert("∴ this is not the real one ∴");
+      clone.style.position = "absolute";
+      clone.style.top = Math.random() * 30 + "px";
+      clone.style.left = Math.random() * 250 + "px";
+      trapZone.appendChild(clone);
+    }, 6000);
+  }, 25000);
 
-    setTimeout(() => {
-      const trapZone = document.querySelector(".checkbox-zone");
-      const msg = document.createElement("div");
-      msg.innerText = "∴ new terms loaded ∴ checkbox invalid ∴";
-      msg.style.fontSize = "0.7rem";
-      msg.style.color = "#999";
-      trapZone.appendChild(msg);
-
-      setInterval(() => {
-        const clone = document.createElement("input");
-        clone.type = "checkbox";
-        clone.className = "eula-checkbox";
-        clone.onclick = () => alert("∴ this is not the real one ∴");
-        clone.style.position = "absolute";
-        clone.style.top = Math.random() * 30 + "px";
-        clone.style.left = Math.random() * 250 + "px";
-        trapZone.appendChild(clone);
-      }, 6000);
-    }, 25000);
-
-    setTimeout(() => {
-      const names = ["User", "Friend", "You", "Reader", "Stranger"];
-      const name = names[Math.floor(Math.random() * names.length)];
-      const callout = document.createElement("div");
-      callout.innerText = `∴ ${name}... you're still scrolling? ∴`;
-      callout.style.position = "fixed";
-      callout.style.top = "5%";
-      callout.style.left = "10%";
-      callout.style.fontSize = "0.75rem";
-      callout.style.color = "#999";
-      document.body.appendChild(callout);
-      setTimeout(() => callout.remove(), 8000);
-    }, 28000);
-  </script>
+  setTimeout(() => {
+    const names = ["User", "Friend", "You", "Reader", "Stranger"];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const callout = document.createElement("div");
+    callout.innerText = `∴ ${name}... you're still scrolling? ∴`;
+    callout.style.position = "fixed";
+    callout.style.top = "5%";
+    callout.style.left = "10%";
+    callout.style.fontSize = "0.75rem";
+    callout.style.color = "#999";
+    document.body.appendChild(callout);
+    setTimeout(() => callout.remove(), 8000);
+  }, 28000);
+</script>
 </body>
 </html>
