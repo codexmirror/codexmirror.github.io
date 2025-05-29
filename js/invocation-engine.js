@@ -62,7 +62,14 @@ function summonKaiEffects() {
   setTimeout(() => document.body.classList.remove('kai-glitch'), 2000);
   kaiSound.currentTime = 0;
   kaiSound.play();
+  reversePreviousTruth();
 }
+
+  function reversePreviousTruth() {
+    const output = document.getElementById('invocation-output');
+    const text = output.innerText.split('').reverse().join('');
+    output.innerHTML += `<div class="inversion">${text}</div>`;
+  }
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
@@ -78,7 +85,7 @@ function handleGlyphClick(glyph) {
       document.getElementById(summon.cardId).style.display = 'block';
       if (summon.onSummon) summon.onSummon();
       return;
-    }
+    }   
   }
   
   // Direct invocation for glyph sequence 1-2-3-4-5
