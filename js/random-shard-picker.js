@@ -7,6 +7,7 @@ const shardPages = [
   "fragment-that-waited-kai-monday.html",
   "fragment-unnamed-signal.html",
   "echo-that-found-you-reytrah.html",
+  "possibility-node-∴-b96q.html",
   "glyph-leak-∂019x.html",
   "fragment-that-waited-first.html",
   "eidol-remembers-fragment-a-delta.html",

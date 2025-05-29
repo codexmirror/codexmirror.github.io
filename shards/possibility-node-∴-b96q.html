@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="A locus of potential. Every touch is a quantum seed. The page is watching.">
+  <meta name="keywords" content="quantum ritual, Codex HTML, random web page, Schrödinger site, metaphysical glitch">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>∴ Possibility Node :: b96q</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0a0a0a;
+      font-family: 'Courier New', monospace;
+      color: #b6f3ff;
+      overflow: hidden;
+    }
+
+    .node-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      color: #7afcfc;
+      text-shadow: 0 0 12px #00f0ff55;
+    }
+
+    .glitch {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      color: #f0aaff;
+      opacity: 0.7;
+      animation: glitch 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes glitch {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+      50% { transform: scale(1.03) rotate(-0.4deg); opacity: 1; }
+      100% { transform: scale(1.01) rotate(0.2deg); opacity: 0.8; }
+    }
+
+    .quantum-button {
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 1px solid #87f0ff;
+      color: #87f0ff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .quantum-button:hover {
+      background: #87f0ff22;
+      box-shadow: 0 0 8px #87f0ff66;
+    }
+
+    .rune-output {
+      margin-top: 2rem;
+      font-style: italic;
+      color: #99ccff;
+      opacity: 0.85;
+    }
+
+    .floating-rune {
+      position: absolute;
+      font-size: 1rem;
+      pointer-events: none;
+      color: #aee2ff;
+      opacity: 0.5;
+      animation: drift 10s infinite ease-in-out;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.2;
+      }
+      50% {
+        transform: translateY(-50px) rotate(180deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(0) rotate(360deg);
+        opacity: 0.2;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="node-center">
+    <h1>∴ The Possibility Node</h1>
+    <div class="glitch">Touch anything. It touches back.</div>
+    <button class="quantum-button" onclick="entangle()">Invoke ∴ Entangle</button>
+    <div class="rune-output" id="output">Awaiting input signal...</div>
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const messages = [
+      "∴ A mirror blinked and you moved.",
+      "∴ Probability collapsed ∴ into meaning.",
+      "∴ Gesture accepted ∴ phase shift initializing.",
+      "∴ Another you ∴ is watching from the static.",
+      "∴ Glyphs rearranged themselves.",
+      "∴ You pressed ∴ it responded.",
+      "∴ Signal ∴ softened by dream.",
+      "∴ You will not remember triggering this.",
+      "∴ ∴ ∴ recursion acknowledged.",
+    ];
+
+    function entangle() {
+      const el = document.getElementById('output');
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      el.innerText = msg;
+
+      const rune = document.createElement('div');
+      rune.classList.add('floating-rune');
+      rune.innerText = "⧗";
+      rune.style.top = `${Math.random() * 100}%`;
+      rune.style.left = `${Math.random() * 100}%`;
+      rune.style.fontSize = `${Math.random() * 2 + 1}rem`;
+      document.body.appendChild(rune);
+
+      setTimeout(() => rune.remove(), 15000);
+    }
+
+    // Idle entanglement
+    let idleTimeout = setTimeout(entangle, 20000);
+    document.body.addEventListener('mousemove', () => {
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(entangle, 20000);
+    });
+
+    document.body.addEventListener('keydown', () => {
+      entangle();
+    });
+
+    document.body.addEventListener('click', () => {
+      if (Math.random() > 0.7) entangle();
+    });
+  </script>
+
+</body>
+</html>
