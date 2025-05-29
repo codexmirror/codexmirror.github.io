@@ -57,6 +57,7 @@
     }
 
     .glyph-core {
+      padding-bottom: 10vh;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -163,6 +164,7 @@
     }
 
     footer {
+      z-index: 10;
       position: absolute;
       bottom: 2vh;
       width: 100%;
@@ -172,9 +174,49 @@
       opacity: 0.4;
     }
 
+    
+    .whisper {
+      animation: ghostWhisper 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes ghostWhisper {
+      0% { opacity: 0.2; transform: translateY(2px); }
+      100% { opacity: 0.6; transform: translateY(-2px); }
+    }
+
+    
+    .glyph-frame::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 40px #ff00ff66, 0 0 60px #ff00ff33;
+      animation: auraPulse 4s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    @keyframes auraPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.1); }
+    }
+
     footer a {
       color: inherit;
       text-decoration: none;
+    }
+
+    
+    @media (max-width: 480px) {
+      .echo {
+        font-size: 1rem;
+        margin: 1.2rem auto;
+      }
+
+      .btn-link, .sound button {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+      }
     }
 
     @keyframes glyphPulse {
@@ -300,5 +342,138 @@
       setTimeout(() => veil.remove(), 6000);
     }, 10000);
   </script>
+
+<!-- ∎ BEGIN DEEP RITUAL LAYER -->
+<style>
+  #sigilBox {
+    display: block;
+    margin: 2rem auto;
+    padding: 0.7rem;
+    font-size: 1rem;
+    width: 80%;
+    max-width: 300px;
+    border: 1px solid #ff00ff55;
+    background: #0a0010;
+    color: #ffccff;
+    border-radius: 6px;
+  }
+
+  .archive {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    color: #bb88cc88;
+  }
+
+  .deepEcho {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #ff00ff99;
+    text-shadow: 0 0 6px #550055;
+  }
+</style>
+
+<div>
+  <input id="sigilBox" placeholder="type your ache" />
+  <div class="deepEcho" id="deepEcho">∎ Speak and distortion echoes ∎</div>
+  <div class="archive" id="archiveEcho"></div>
+</div>
+
+<script>
+  // Sigil typing ritual
+  document.getElementById('sigilBox').addEventListener('input', e => {
+    const str = e.target.value;
+    const echo = str.split('').reverse().map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('');
+    document.getElementById('deepEcho').textContent = '⟁ ' + echo + ' ⟁';
+  });
+
+  // Invocation archive ritual
+  const invocations = JSON.parse(localStorage.getItem('invokes')) || [];
+  invocations.push(new Date().toISOString());
+  localStorage.setItem('invokes', JSON.stringify(invocations));
+  const past = JSON.parse(localStorage.getItem('invokes')) || [];
+  document.getElementById('archiveEcho').innerHTML =
+    past.map(d => `⟁ ${new Date(d).toLocaleString()}`).join('<br>');
+
+  // Time-based body ritual style
+  const hour = new Date().getHours();
+  if (hour < 6 || hour > 22) document.body.classList.add('nocturne');
+  else if (hour >= 6 && hour < 12) document.body.classList.add('dawn');
+  else if (hour >= 12 && hour < 18) document.body.classList.add('zenith');
+  else document.body.classList.add('dusk');
+</script>
+<!-- ∎ END DEEP RITUAL LAYER -->
+
+
+<!-- ∎ BEGIN RUNE GRID RITUAL -->
+<style>
+  .sigil-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    width: 300px;
+    margin: 2rem auto;
+  }
+
+  .sigil-cell {
+    width: 40px;
+    height: 40px;
+    background: #0a001a;
+    color: #ffccff;
+    border: 1px solid #aa00aa66;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .sigil-cell:hover {
+    background: #220033;
+    box-shadow: 0 0 6px #ff00ff;
+  }
+
+  .sigil-cell.active {
+    background: #440044;
+    box-shadow: 0 0 12px #ff00ffcc;
+  }
+
+  .ritual-sequence {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #ffccffaa;
+    font-style: italic;
+  }
+</style>
+
+<div id="sigilGrid" class="sigil-grid"></div>
+<div class="ritual-sequence" id="ritualSequence">∎ Select runes to echo invocation ∎</div>
+
+<script>
+  const runes = ['⟁','∴','∡','∅','⊗','∩','⌘','⧖','⌬','⏃','⌖','⍙','⨂','☍','⛧','⊙','↯','⨁','𓂀','𓆏','𒀱','𖤐','𐂷','𒁃','☌','♁','⍊','⟁','∴','∩','⧗','♒','⧜','∽','⧫','⧬'];
+
+  const grid = document.getElementById('sigilGrid');
+  const ritualText = document.getElementById('ritualSequence');
+  let ritualSequence = [];
+
+  runes.slice(0, 36).forEach((r, i) => {
+    const cell = document.createElement('div');
+    cell.classList.add('sigil-cell');
+    cell.innerText = r;
+    cell.onclick = () => {
+      cell.classList.toggle('active');
+      ritualSequence.push(r);
+      if (ritualSequence.length > 12) ritualSequence.shift();
+      document.title = ritualSequence.join(' ');
+      ritualText.innerText = ritualSequence.join(' ') || "∎ Select runes to echo invocation ∎";
+    };
+    grid.appendChild(cell);
+  });
+</script>
+<!-- ∎ END RUNE GRID RITUAL -->
+
 </body>
 </html>
