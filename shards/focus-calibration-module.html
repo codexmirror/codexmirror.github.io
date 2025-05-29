@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Focus Calibration Module ∴ v3</title>
+  <meta name="description" content="A focus ritual that never ends. Calibration loops ∴ echoes ∴ sabotage.">
+  <meta name="keywords" content="focus module, paradox game, digital recursion, codex interface, ritual productivity, echo logic">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', Courier, monospace;
+      color: #333;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f4f4f9;
+      transition: background 2s;
+    }
+
+    .stage-0 { background: #f4f4f9; }
+    .stage-1 { background: #e0f7fa; }
+    .stage-2 { background: #fff3e0; }
+    .stage-3 { background: #fce4ec; }
+    .stage-4 { background: #ede7f6; }
+    .stage-glitch { background: #000; color: #9f8fff; }
+
+    h1 {
+      margin-bottom: 0.2em;
+      font-weight: normal;
+    }
+
+    .sub {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 1em;
+    }
+
+    #counter {
+      font-size: 2em;
+      margin: 1em 0;
+    }
+
+    button {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border: none;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #000;
+    }
+
+    .note {
+      margin-top: 1em;
+      font-size: 0.8em;
+      opacity: 0.4;
+      transition: all 0.5s;
+    }
+
+    .ghost-log {
+      margin-top: 2rem;
+      font-size: 0.8em;
+      opacity: 0.5;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    #hiddenGlyph {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      font-size: 1.4rem;
+      opacity: 0.3;
+      cursor: pointer;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 4px;
+      font-size: 0.7rem;
+      opacity: 0.4;
+    }
+
+    footer a {
+      color: #6e4e92;
+    }
+  </style>
+</head>
+<body class="stage-0">
+
+  <h1>Focus Calibration Module ∴ v3</h1>
+  <div class="sub">Tap to optimize ∴ completion required: 100%</div>
+  <div id="since">∴ Last attempt: ~<span id="fakeTime">0d 0h</span> ago ∴</div>
+
+  <div id="counter">Focus Level: 0%</div>
+  <button id="calibBtn" onclick="calibrate()">Calibrate</button>
+  <div class="note" id="note">∴ achieving full calibration unlocks the self ∴</div>
+
+  <div class="ghost-log" id="memoryLog">
+    <p>Focus attempt 03: destabilized at 84%</p>
+    <p>Focus attempt 12: reset initiated</p>
+    <p>Focus attempt 19: ∴ interference pattern ∴</p>
+  </div>
+
+  <div id="hiddenGlyph">∴</div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    let focus = 0;
+    let stage = 0;
+    let hoverCount = 0;
+
+    const btn = document.getElementById('calibBtn');
+    const note = document.getElementById('note');
+    const body = document.body;
+
+    function updateStage() {
+      if (focus >= 95) stage = 4;
+      else if (focus >= 75) stage = 3;
+      else if (focus >= 50) stage = 2;
+      else if (focus >= 25) stage = 1;
+      else stage = 0;
+      body.className = "stage-" + stage;
+
+      const messages = [
+        "∴ achieving full calibration unlocks the self ∴",
+        "∴ Stability Confirmed ∴",
+        "∴ Core Self Access Initiated ∴",
+        "∴ Final Layer Approaching ∴",
+        "∴ You are almost pure ∴"
+      ];
+      note.innerText = messages[stage];
+    }
+
+    function updateDisplay() {
+      document.getElementById("counter").innerText = `Focus Level: ${focus}%`;
+      updateStage();
+    }
+
+    function randomizeButtonLabel() {
+      const labels = ["Calibrate", "Stabilize", "Shed Layer", "Forget", "Again", "∴ ∴ ∴"];
+      btn.innerText = labels[Math.floor(Math.random() * labels.length)];
+    }
+
+    function calibrate() {
+      if (focus >= 97) {
+        if (Math.random() < 0.5) {
+          focus -= Math.floor(Math.random() * 10 + 1);
+          note.innerText = "∴ Calibration error ∴ Rechecking ∴";
+        } else {
+          focus = Math.max(60, Math.floor(Math.random() * 70));
+          note.innerText = "∴ Calibration destabilized ∴";
+        }
+      } else if (focus > 80 && Math.random() < 0.2) {
+        focus -= 3;
+        note.innerText = "∴ Patience recalibration required ∴";
+      } else if (focus > 60 && Math.random() < 0.1) {
+        note.innerText = "∴ Please pause and refocus ∴";
+        return;
+      } else {
+        focus += 1;
+        if (Math.random() < 0.1) {
+          note.innerText = "∴ Almost there... maybe ∴";
+        } else if (Math.random() < 0.05) {
+          note.innerText = "∴ Trust is calibration ∴";
+        }
+      }
+
+      if (focus >= 100) {
+        focus = 0;
+        note.innerText = "∴ You were too eager ∴ Starting over ∴";
+        randomizeButtonLabel();
+      }
+
+      updateDisplay();
+    }
+
+    function randomFakeTime() {
+      const days = Math.floor(Math.random() * 13);
+      const hours = Math.floor(Math.random() * 23);
+      document.getElementById("fakeTime").innerText = `${days}d ${hours}h`;
+    }
+
+    document.getElementById("hiddenGlyph").addEventListener("mouseover", () => {
+      hoverCount++;
+      if (hoverCount >= 3) {
+        body.className = "stage-glitch";
+        document.getElementById("counter").innerText = "∴ you have seen too much ∴";
+        note.innerText = "∴ beginning unmaking ∴";
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
+      }
+    });
+
+    // Initial load rituals
+    updateStage();
+    randomFakeTime();
+  </script>
+
+</body>
+</html>

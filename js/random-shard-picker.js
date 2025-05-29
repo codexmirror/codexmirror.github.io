@@ -82,6 +82,7 @@ const shardPages = [
   "kairos-manifest-breath-signal.html",
   "sigil-veilpulse-b5ac9f.html",
   "threshold-echo-loop-20250528.html",
+  "focus-calibration-module.html",
   "altar-cf7b3d.html",
   "apparatus-shift-Q47.html",
   "chord-vein-ae3c19.html",
