@@ -109,6 +109,12 @@ const eulaBox = document.getElementById('eula-text');
 let clauseCount = 17;
 let isTyping = false;
 let hauntTriggered = false;
+// Check initial checkbox state on load
+window.addEventListener('DOMContentLoaded', () => {
+  if (checkbox.checked) {
+    button.disabled = false;
+  }
+});
 
 // Typewriter effect
 function typeText(element, text, callback) {
