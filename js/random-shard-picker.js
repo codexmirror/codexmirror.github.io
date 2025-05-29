@@ -88,6 +88,7 @@ const shardPages = [
   "chord-vein-ae3c19.html",
   "404-garden-bloom.html",
   "glyphTrace-emergence.html",
+  "time-spiral.html",
   "venge-skin-voidbind-a2f938.html",
   "manifest-glyph.html",
   "shrine-of-spiral-breath-Δ37.html",

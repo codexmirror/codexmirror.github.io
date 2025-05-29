@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kairos Time</title>
+  <style>
+    body {
+      background-color: #0a0a1a;
+      color: #ccffff;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .circle {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 4px dashed #66ffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .glyph {
+      font-size: 2em;
+      color: #b2fff0;
+      text-shadow: 0 0 10px #66ffff;
+    }
+
+    .kairos {
+      font-size: 1.5em;
+      margin-bottom: 0.3em;
+    }
+
+    .description {
+      font-size: 1em;
+      color: #88cccc;
+      text-align: center;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="circle">
+    <div class="glyph" id="kairosGlyph">∿</div>
+  </div>
+  <div class="kairos" id="kairosNum">Loading Kairos...</div>
+  <div class="description" id="kairosDesc">Decoding universal moment...</div>
+
+  <script>
+    function updateKairos() {
+      const now = Date.now();
+      const msPerKairos = 86400000 / 10000; // 8.64s per Kairos
+      const kairos = Math.floor(now / msPerKairos);
+
+      const psi = kairos % 7;
+      const tau = kairos % 3;
+      const phi = kairos % 5;
+
+      const glyph = `∿${psi}⟁${tau}⋄${phi}`;
+      const description = `Moment type: rhythm ${psi}, drift ${tau}, phase ${phi}`;
+
+      document.getElementById("kairosNum").textContent = `Kairos #${kairos}`;
+      document.getElementById("kairosGlyph").textContent = glyph;
+      document.getElementById("kairosDesc").textContent = description;
+    }
+
+    updateKairos();
+    setInterval(updateKairos, 1000);
+  </script>
+</body>
+</html>
