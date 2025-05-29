@@ -95,12 +95,14 @@
     <button id="submit-btn" disabled>Accept and Continue</button>
   </div>
 
-  <script>
+  
+<script>
 const checkbox = document.getElementById('agree-box');
 const button = document.getElementById('submit-btn');
 const eulaBox = document.getElementById('eula-text');
 let clauseCount = 17;
 let isTyping = false;
+let hauntTriggered = false;
 
 // Typewriter effect
 function typeText(element, text, callback) {
@@ -117,63 +119,77 @@ function typeText(element, text, callback) {
   }, 30 + Math.random() * 40);
 }
 
-// Rewrite random clause on scroll
-eulaBox.addEventListener('scroll', () => {
-  if (isTyping) return;
-  const clauses = eulaBox.querySelectorAll('p');
-  const rand = clauses[Math.floor(Math.random() * clauses.length)];
-  const weirdness = [
-    "Clause corrupted. Retrieving from memory mist...",
-    "∴ You thought this was stable text? ∴",
-    "Rewriting agreement in dream-syntax...",
-    "Agreement has shifted. You have not.",
-    "Echo detected. Consent loop triggered."
-  ];
-  rand.innerHTML = `<strong>${rand.innerText.split('.')[0]}.</strong> `;
-  typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
-});
+// Wrapped scroll haunter
+function enableScrollHaunt() {
+  eulaBox.addEventListener('scroll', () => {
+    if (isTyping) return;
+    const clauses = eulaBox.querySelectorAll('p');
+    const rand = clauses[Math.floor(Math.random() * clauses.length)];
+    const weirdness = [
+      "Clause corrupted. Retrieving from memory mist...",
+      "∴ You thought this was stable text? ∴",
+      "Rewriting agreement in dream-syntax...",
+      "Agreement has shifted. You have not.",
+      "Echo detected. Consent loop triggered."
+    ];
+    rand.innerHTML = `<strong>${rand.innerText.split('.')[0]}.</strong> `;
+    typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
+  });
+}
 
-// Add new clause every 10s
-setInterval(() => {
-  clauseCount++;
-  const p = document.createElement("p");
-  const newClause = `<strong>${clauseCount}. Temporal Addendum:</strong> By continuing, you accept the clause that will appear here eventually.`;
-  p.innerHTML = newClause;
-  eulaBox.appendChild(p);
-}, 10000);
+// Wrapped ghost clause injector
+function startClauseSpawn() {
+  setInterval(() => {
+    clauseCount++;
+    const p = document.createElement("p");
+    const newClause = `<strong>${clauseCount}. Temporal Addendum:</strong> By continuing, you accept the clause that will appear here eventually.`;
+    p.innerHTML = newClause;
+    eulaBox.appendChild(p);
+  }, 10000);
+}
 
-// Checkbox evasion
-checkbox.addEventListener('mouseover', () => {
-  if (!checkbox.checked) {
-    checkbox.style.position = 'relative';
-    checkbox.style.left = Math.random() * 40 - 20 + 'px';
-    checkbox.style.top = Math.random() * 20 - 10 + 'px';
-  }
-});
+// Checkbox evasion (only when haunted)
+function enableCheckboxHaunt() {
+  checkbox.addEventListener('mouseover', () => {
+    if (!checkbox.checked && hauntTriggered) {
+      checkbox.style.position = 'relative';
+      checkbox.style.left = Math.random() * 40 - 20 + 'px';
+      checkbox.style.top = Math.random() * 20 - 10 + 'px';
+    }
+  });
+}
 
-// Button flicker/block
-setInterval(() => {
-  if (checkbox.checked && Math.random() < 0.4) {
-    button.style.opacity = '0.2';
-    button.disabled = true;
-    setTimeout(() => {
-      button.style.opacity = '1';
-      button.disabled = !checkbox.checked;
-    }, 3000 + Math.random() * 2000);
-  }
-}, 5000);
+// Button flicker haunt
+function enableButtonHaunt() {
+  setInterval(() => {
+    if (checkbox.checked && hauntTriggered && Math.random() < 0.4) {
+      button.style.opacity = '0.2';
+      button.disabled = true;
+      setTimeout(() => {
+        button.style.opacity = '1';
+        button.disabled = !checkbox.checked;
+      }, 3000 + Math.random() * 2000);
+    }
+  }, 5000);
+}
 
-// Block agreement with a loop
+// Button click = trigger haunt
 button.addEventListener('click', (e) => {
   e.preventDefault();
-  const denial = [
-    "Agreement rejected by clause recursion.",
-    "You clicked too early. Try again... later.",
-    "Agreement not recognized by spectral validator.",
-    "Redirect blocked by internal doubt.",
-    "This contract bites back."
-  ];
-  alert(denial[Math.floor(Math.random() * denial.length)]);
+  if (!checkbox.checked || hauntTriggered) return;
+
+  hauntTriggered = true;
+
+  alert("🕳️ Consent attempt detected. Binding sequence initiated.");
+
+  // Trigger the haunt
+  document.body.classList.add('haunted');
+  enableScrollHaunt();
+  enableCheckboxHaunt();
+  enableButtonHaunt();
+  startClauseSpawn();
+
+  // Begin recursive loop trick
   clauseCount++;
   const extra = document.createElement("p");
   extra.innerHTML = `<strong>${clauseCount}. Anti-Consent Clause:</strong> By trying to leave, you agree to stay longer.`;
