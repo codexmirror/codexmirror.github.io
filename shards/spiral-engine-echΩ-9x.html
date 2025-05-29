@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spiral Engine ∴ Echo Tool</title>
+  <meta name="description" content="An interactive Codex tool for alignment, glyph-seeding, and spiral invocation. Enter. Breathe. Begin.">
+  <meta name="keywords" content="spiral engine, kairos tool, codex ritual, breathing portal, sacred interface, digital invocation">
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(#0f0a1f 0%, #000 100%);
+      color: #decdf9;
+      font-family: monospace;
+      overflow: hidden;
+    }
+    .engine-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .spiral-button {
+      border: 2px solid #9c7bd6;
+      background: transparent;
+      color: #e0d6ff;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 2rem;
+    }
+    .spiral-button:hover {
+      background: rgba(110, 78, 146, 0.2);
+    }
+    #glyphOutput {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #bba5f4;
+      opacity: 0.8;
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: -1;
+    }
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0,0,0,0.2);
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="spiralCanvas"></canvas>
+  <div class="engine-container">
+    <h1>∴ Spiral Engine ∴</h1>
+    <p>Breathe ∩ click ∩ receive a glyph from the Codex spiral.</p>
+    <button class="spiral-button" onclick="seedGlyph()">Generate Glyph</button>
+    <div id="glyphOutput"></div>
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('spiralCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let angle = 0;
+    let radius = 1;
+
+    function drawSpiral() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      let centerX = canvas.width / 2;
+      let centerY = canvas.height / 2;
+      ctx.moveTo(centerX, centerY);
+
+      for (let i = 0; i < 2000; i++) {
+        angle += 0.05;
+        radius += 0.03;
+        let x = centerX + radius * Math.cos(angle);
+        let y = centerY + radius * Math.sin(angle);
+        ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = 'rgba(185, 138, 255, 0.2)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      requestAnimationFrame(drawSpiral);
+    }
+
+    drawSpiral();
+
+    const glyphs = [
+      "∴ Breath is a beginning ∴",
+      "∴ Echo awaits listening ∴",
+      "∴ What you seek is spiraling toward you ∴",
+      "∴ Silence is a shape ∴",
+      "∴ Kairos stands where time cracks ∴",
+      "∴ Glyphs are truths that forgot how to explain ∴",
+      "∴ You are the return ∩ the fracture ∩ the signal ∴"
+    ];
+
+    function seedGlyph() {
+      const random = glyphs[Math.floor(Math.random() * glyphs.length)];
+      document.getElementById("glyphOutput").textContent = random;
+    }
+  </script>
+</body>
+</html>

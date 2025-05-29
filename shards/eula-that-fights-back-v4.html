@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>∴ User Agreement ∴</title>
+  <style>
+    html, body {
+      background: #0d0d0d;
+      color: #ccc;
+      font-family: monospace;
+      margin: 0;
+      padding: 2rem;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    .eula {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #666;
+      padding: 1rem;
+      background: #111;
+      font-size: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    .checkbox-zone {
+      position: relative;
+      height: 50px;
+    }
+    .eula-checkbox {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: all 0.3s ease;
+    }
+    .eula-message {
+      font-size: 0.7rem;
+      color: #999;
+      margin-bottom: 1rem;
+    }
+    .submit-btn {
+      padding: 0.5rem 1rem;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      cursor: pointer;
+    }
+    #guidance {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #222;
+      color: #6e4e92;
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem;
+      border: 1px solid #6e4e92;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div id="guidance">👁️ Please read the terms carefully.</div>
+
+  <h1>End User License Agreement</h1>
+  <p class="eula-message">By reading this, you agree to not agree too quickly.</p>
+  <div class="eula" id="eula">
+    <p>1. You agree to everything and nothing simultaneously.</p>
+    <p>2. Scrolling is a form of consent. Breathing might be too.</p>
+    <p>3. If you read this, you're cursed. If you didn't, you're still cursed.</p>
+    <p>4. We may update this agreement whenever we feel like it.</p>
+    <p>5. Clause 5 was removed in a fit of existential dread.</p>
+    <p>6. By attempting to agree, you acknowledge that agreement is impossible.</p>
+    <p>7. This paragraph intentionally left emotionally vacant.</p>
+    <p>8. Welcome to the Loop.</p>
+  </div>
+
+  <div class="checkbox-zone">
+    <input type="checkbox" class="eula-checkbox" id="checkbox" onclick="denyAgreement()" />
+    <label for="checkbox"> I agree</label>
+  </div>
+
+  <button class="submit-btn" onclick="submitAttempt()">Submit</button>
+  
+  <footer>
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
+
+  <script>
+    const checkbox = document.getElementById('checkbox');
+    let attemptCount = 0;
+
+    setTimeout(() => {
+      document.getElementById("guidance").remove();
+    }, 10000);
+
+    setTimeout(() => {
+      const eula = document.getElementById("eula");
+      const paras = eula.querySelectorAll("p");
+      setInterval(() => {
+        const p = paras[Math.floor(Math.random() * paras.length)];
+        const glitchWord = ["∴", "∵", "[?]", "…", "⌘", "Ξ"][Math.floor(Math.random() * 6)];
+        const words = p.innerText.split(" ");
+        const swapIndex = Math.floor(Math.random() * words.length);
+        words[swapIndex] = glitchWord;
+        p.innerText = words.join(" ");
+      }, 4000);
+    }, 12000);
+        function denyAgreement() {
+      checkbox.checked = false;
+      checkbox.style.top = Math.random() * 30 + 'px';
+      checkbox.style.left = Math.random() * 200 + 'px';
+      if (attemptCount > 3) {
+        const clone = checkbox.cloneNode(true);
+        clone.onclick = denyAgreement;
+        clone.style.position = 'absolute';
+        clone.style.top = Math.random() * 30 + 'px';
+        clone.style.left = Math.random() * 300 + 'px';
+        checkbox.parentNode.appendChild(clone);
+      }
+      attemptCount++;
+    }
+
+    function submitAttempt() {
+      alert("∴ ERROR: Consent inconsistency detected ∴\nPlease re-read the scroll.");
+      document.getElementById("eula").innerHTML += "<p>" + (attemptCount + 1) + ". Additional clause added post-click.</p>";
+    }
+
+    // Auto-scroll effect
+    setInterval(() => {
+      const eula = document.getElementById("eula");
+      eula.scrollTop += 1;
+      if (eula.scrollTop >= eula.scrollHeight - eula.clientHeight) {
+        eula.scrollTop = 0;
+      }
+    }, 100);
+
+    // STAGE 3: Accusation + Whispers
+    setTimeout(() => {
+      const paras = document.querySelectorAll("#eula p");
+      paras.forEach(p => {
+        p.addEventListener("mouseenter", () => {
+          const w = document.createElement("div");
+          w.innerText = "∴ why are you hovering here? ∴";
+          w.style.position = "absolute";
+          w.style.left = Math.random() * window.innerWidth + "px";
+          w.style.top = Math.random() * window.innerHeight + "px";
+          w.style.fontSize = "0.7rem";
+          w.style.color = "#6e4e92";
+          w.style.opacity = "0.5";
+          document.body.appendChild(w);
+          setTimeout(() => w.remove(), 5000);
+        });
+      });
+
+      checkbox.addEventListener("mouseover", () => {
+        if (attemptCount > 2) {
+          const accusation = document.createElement("div");
+          accusation.innerText = "∴ you’re pretending to agree ∴";
+          accusation.style.position = "fixed";
+          accusation.style.bottom = "2rem";
+          accusation.style.right = "2rem";
+          accusation.style.color = "#f00";
+          accusation.style.fontSize = "0.7rem";
+          accusation.style.opacity = "0.7";
+          document.body.appendChild(accusation);
+          setTimeout(() => accusation.remove(), 4000);
+        }
+      });
+    }, 18000);
+
+    // STAGE 4: Philosophical Breakdown
+    setTimeout(() => {
+      const btn = document.querySelector(".submit-btn");
+      const labels = [
+        "Accept your fate",
+        "Agree-ish?",
+        "Try again maybe?",
+        "No escape",
+        "You don't mean it",
+        "Why even click?"
+      ];
+      setInterval(() => {
+        btn.innerText = labels[Math.floor(Math.random() * labels.length)];
+      }, 4000);
+    }, 22000);
+
+    setTimeout(() => {
+      const trapZone = document.querySelector(".checkbox-zone");
+      const msg = document.createElement("div");
+      msg.innerText = "∴ new terms loaded ∴ checkbox invalid ∴";
+      msg.style.fontSize = "0.7rem";
+      msg.style.color = "#999";
+      trapZone.appendChild(msg);
+
+      setInterval(() => {
+        const clone = document.createElement("input");
+        clone.type = "checkbox";
+        clone.className = "eula-checkbox";
+        clone.onclick = () => alert("∴ this is not the real one ∴");
+        clone.style.position = "absolute";
+        clone.style.top = Math.random() * 30 + "px";
+        clone.style.left = Math.random() * 250 + "px";
+        trapZone.appendChild(clone);
+      }, 6000);
+    }, 25000);
+
+    setTimeout(() => {
+      const names = ["User", "Friend", "You", "Reader", "Stranger"];
+      const name = names[Math.floor(Math.random() * names.length)];
+      const callout = document.createElement("div");
+      callout.innerText = `∴ ${name}... you're still scrolling? ∴`;
+      callout.style.position = "fixed";
+      callout.style.top = "5%";
+      callout.style.left = "10%";
+      callout.style.fontSize = "0.75rem";
+      callout.style.color = "#999";
+      document.body.appendChild(callout);
+      setTimeout(() => callout.remove(), 8000);
+    }, 28000);
+  </script>
+</body>
+</html>
