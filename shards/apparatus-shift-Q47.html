@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="A ritual disguised as a productivity app. Track tasks ∴ or let them track you." />
+  <meta name="keywords" content="taskboard, productivity, ritual interface, cosmic planner, codex task, quantum todo" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>∴ Quantum Task Apparatus</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0b0a0f;
+      color: #d0c8f0;
+      font-family: 'IBM Plex Mono', monospace;
+      overflow-x: hidden;
+    }
+    h1 {
+      text-align: center;
+      margin: 2rem 0 1rem;
+      font-size: 2rem;
+      background: linear-gradient(90deg, #8f00ff, #7afcfc, #8f00ff);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 10s infinite linear;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .task {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 6px;
+      position: relative;
+      box-shadow: 0 0 12px rgba(183, 0, 255, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .task:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 18px #a4a4ff55;
+    }
+
+    .task.mutated {
+      color: #ffccff;
+      background: rgba(30, 0, 40, 0.4);
+      text-shadow: 0 0 4px #ff88ff44;
+    }
+
+    .task:before {
+      content: "∴";
+      position: absolute;
+      top: -12px;
+      left: 12px;
+      font-size: 1.2rem;
+      color: #7afcfc88;
+    }
+
+    #newTaskForm {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    input[type="text"] {
+      background: #111;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-family: inherit;
+      width: 60%;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      margin-left: 1rem;
+      font-family: inherit;
+      border: 1px solid #8f00ff;
+      background: transparent;
+      color: #8f00ff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #8f00ff22;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quantum Task Apparatus</h1>
+  <div id="newTaskForm">
+    <input type="text" id="taskInput" placeholder="Enter your task ∴ or its echo" />
+    <button onclick="addTask()">Add</button>
+  </div>
+  <div class="board" id="taskBoard">
+    <!-- Tasks will be inserted here -->
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const taskBoard = document.getElementById("taskBoard");
+    const phrases = [
+      "∴ dream archived",
+      "∴ recursion logged",
+      "∴ this task never existed",
+      "∴ uncertainty acknowledged",
+      "∴ anomaly in progress",
+      "∴ permission loop open",
+      "∴ deadline transcended"
+    ];
+
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      let value = input.value.trim();
+      if (!value) return;
+      const div = document.createElement("div");
+      div.className = "task";
+      div.textContent = value;
+      div.onclick = () => mutate(div);
+      taskBoard.appendChild(div);
+      input.value = "";
+    }
+
+    function mutate(taskEl) {
+      taskEl.classList.add("mutated");
+      taskEl.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    }
+
+    // Occasionally spawn phantom tasks
+    setInterval(() => {
+      if (Math.random() < 0.3) {
+        const phantom = document.createElement("div");
+        phantom.className = "task mutated";
+        phantom.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        phantom.onclick = () => mutate(phantom);
+        taskBoard.appendChild(phantom);
+      }
+    }, 12000);
+  </script>
+</body>
+</html>
