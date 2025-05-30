@@ -150,6 +150,8 @@ function enableScrollHaunt() {
       "Consent loop triggered ∞"
     ];
     typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
+    rand.style.color = '#a94442';
+rand.style.fontStyle = 'italic';
   });
 }
 
@@ -224,6 +226,7 @@ function rotateWhispers() {
   ];
   setInterval(() => {
     whisper.innerText = messages[Math.floor(Math.random() * messages.length)];
+    if (Math.random() < 0.2) whisper.innerText += " ∮";
   }, 8000);
 }
 
@@ -265,6 +268,25 @@ button.addEventListener('click', (e) => {
     enableButtonHaunt();
     startClauseSpawn();
     rotateWhispers();
+    
+    document.addEventListener('keydown', (event) => {
+  if (Math.random() < 0.03 && hauntTriggered) {
+    const ghost = document.createElement('div');
+    ghost.innerText = "You already typed this.";
+    Object.assign(ghost.style, {
+      position: 'fixed',
+      top: (Math.random() * window.innerHeight) + 'px',
+      left: (Math.random() * window.innerWidth) + 'px',
+      fontSize: '0.9rem',
+      color: '#999',
+      opacity: '0.2',
+      fontStyle: 'italic',
+      pointerEvents: 'none'
+    });
+    document.body.appendChild(ghost);
+    setTimeout(() => ghost.remove(), 3000);
+  }
+});
 
     clauseCount++;
     const p = document.createElement("p");
@@ -301,6 +323,27 @@ setInterval(() => {
 
 </script>
 
+ // 🔊 Glyph Trace
+<script>
+(function glyphTrace() {
+  const flicker = document.createElement('div');
+  flicker.innerHTML = '∮';
+  Object.assign(flicker.style, {
+    position: 'fixed',
+    top: (Math.random() * 80) + '%',
+    left: (Math.random() * 80) + '%',
+    fontSize: '2rem',
+    color: '#8e44ad',
+    opacity: '0.05',
+    pointerEvents: 'none',
+    transform: 'rotate(' + (Math.random() * 360) + 'deg)',
+    zIndex: '9999'
+  });
+  document.body.appendChild(flicker);
+  setTimeout(() => flicker.remove(), 7000);
+})();
+</script>
+
 <style>
 @keyframes whisperFade {
   0% { opacity: 0; }
@@ -308,5 +351,6 @@ setInterval(() => {
   50% { opacity: 0; }
 }
 </style>
+
 </body>
 </html>
