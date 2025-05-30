@@ -164,25 +164,6 @@ if (Math.random() < 0.04) {
   }, 35 + Math.random() * 25);
 }
 
-// Scroll corruption
-function enableScrollHaunt() {
-  eulaBox.addEventListener('scroll', () => {
-    if (isTyping) return;
-    const clauses = eulaBox.querySelectorAll('p');
-    const rand = clauses[Math.floor(Math.random() * clauses.length)];
-    const weirdness = [
-      "Clause corrupted. Retrieving from memory mist...",
-      "∴ You thought this was stable text? ∴",
-      "Agreement has shifted. You have not.",
-      "Rewriting in voidscript...",
-      "Consent loop triggered ∞"
-    ];
-    typeText(rand, weirdness[Math.floor(Math.random() * weirdness.length)]);
-    rand.style.color = '#a94442';
-rand.style.fontStyle = 'italic';
-  });
-}
-
 // Clause spawning chaos
 function startClauseSpawn() {
   const asciiVariants = [
@@ -328,7 +309,6 @@ button.addEventListener('click', (e) => {
   }, 3000);
 }
 
-    enableScrollHaunt();
     enableCheckboxHaunt();
     enableButtonHaunt();
     startClauseSpawn();
@@ -419,27 +399,36 @@ setInterval(() => {
 }, 7000); // alle 7 Sekunden würfeln
 
 let lastScroll = 0;
+let mirrorEchoed = false;
+
 eulaBox.addEventListener('scroll', () => {
   const current = eulaBox.scrollTop;
-  if (hauntTriggered && current < lastScroll && Math.random() < 0.1) {
+  if (hauntTriggered && current < lastScroll && Math.random() < 0.05 && !mirrorEchoed) {
     const mirror = document.createElement('p');
     mirror.innerHTML = `<em>Mirror clause breached. Scroll direction inverted. Perspective not recoverable.</em>`;
     mirror.style.color = '#c00';
     eulaBox.appendChild(mirror);
+
     const mirrorGlyph = document.createElement('div');
-mirrorGlyph.innerText = '⟁';
-Object.assign(mirrorGlyph.style, {
-  position: 'fixed',
-  top: Math.random() * window.innerHeight + 'px',
-  left: Math.random() * window.innerWidth + 'px',
-  fontSize: '3rem',
-  color: '#300',
-  opacity: '0.1',
-  transform: 'rotate(' + (Math.random() * 360) + 'deg)',
-  pointerEvents: 'none'
-});
-document.body.appendChild(mirrorGlyph);
-setTimeout(() => mirrorGlyph.remove(), 5000);
+    mirrorGlyph.innerText = '⟁';
+    Object.assign(mirrorGlyph.style, {
+      position: 'fixed',
+      top: Math.random() * window.innerHeight + 'px',
+      left: Math.random() * window.innerWidth + 'px',
+      fontSize: '3rem',
+      color: '#300',
+      opacity: '0.1',
+      transform: 'rotate(' + (Math.random() * 360) + 'deg)',
+      pointerEvents: 'none'
+    });
+    document.body.appendChild(mirrorGlyph);
+    setTimeout(() => mirrorGlyph.remove(), 5000);
+
+    // ∮ INVERT SCROLL EFFECT ∮
+    eulaBox.scrollTop += (lastScroll - current) * 2;
+
+    mirrorEchoed = true;
+    setTimeout(() => { mirrorEchoed = false; }, 15000);
   }
   lastScroll = current;
 });
