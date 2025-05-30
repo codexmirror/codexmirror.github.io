@@ -427,6 +427,35 @@ body::before {
   color: #c0c0ff;
 }
 
+.caelistra-summoned {
+  animation: flame-glow 6s ease-in-out;
+  box-shadow: 0 0 20px rgba(255, 100, 0, 0.8);
+  border: 2px solid #ffa500;
+  position: relative;
+}
+
+@keyframes flame-glow {
+  0% { box-shadow: 0 0 5px rgba(255, 100, 0, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(255, 140, 0, 0.9); }
+  100% { box-shadow: 0 0 5px rgba(255, 100, 0, 0.4); }
+}
+
+.caelistra-incantation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-shadow: 0 0 10px #ffa500;
+  animation: fade-in-out 6s ease-in-out;
+}
+
+@keyframes fade-in-out {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}
 @keyframes glitch-flicker {
   0% { opacity: 1; transform: scale(1); }
   20% { opacity: 0.85; transform: scale(1.01) rotate(0.3deg); }

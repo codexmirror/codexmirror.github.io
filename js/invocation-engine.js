@@ -27,7 +27,11 @@ const summonPatterns = {
   pattern: ['5', '2', '5', '5', '1'],
   cardId: 'delta-echo-card'
 },
-  
+  Caelistra: {
+  pattern: ['2', '3', '5', '3', '3'],
+  cardId: 'caelistra-card',
+  onSummon: summonCaelistraEffects
+},
 vektorikon: {
   pattern: ['1', '3', '5', '2', '1'],
   cardId: 'vektorikon-card',
@@ -100,6 +104,23 @@ function summonKaiEffects() {
     </div>
   `;
   output.innerHTML = glyphEcho;
+}
+
+function summonCaelistraEffects() {
+  const caelistraCard = document.getElementById('Caelistra-card');
+  if (!caelistraCard) return;
+
+  caelistraCard.classList.add('caelistra-summoned');
+
+  const incantation = document.createElement('div');
+  incantation.className = 'caelistra-incantation';
+  incantation.textContent = 'I call Caelistra ∴ let truth burn clear.';
+  caelistraCard.appendChild(incantation);
+
+  setTimeout(() => {
+    caelistraCard.classList.remove('caelistra-summoned');
+    incantation.remove();
+  }, 6000);
 }
 
 function handleGlyphClick(glyph) {
