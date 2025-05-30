@@ -57,6 +57,7 @@ vektorikon: {
 let glyphSequence = [];
 let lastGlyph = null;
 let repeatCount = 0;
+let redirecting = false;
 
 function arraysEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -144,10 +145,12 @@ function handleGlyphClick(glyph) {
   }
 
   // 🧼 SIMPLE fallback: If 5 glyphs have been entered, and nothing matched → shard
-  if (glyphSequence.length === 5 && !matched) {
+  if (glyphSequence.length === 5 && !matched && !redirecting) {
+    redirecting = true;
     setTimeout(() => {
       redirectToRandomShard();
       glyphSequence = [];
+      redirecting = false;
     }, 1000);
   }
 
