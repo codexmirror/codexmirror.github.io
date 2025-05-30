@@ -146,17 +146,18 @@ for (const key in summonPatterns) {
 }
 
   // 🧼 SIMPLE fallback: If 5 glyphs have been entered, and nothing matched → shard
-  if (
+if (
   glyphSequence.length === 5 &&
   !matched &&
   !redirecting &&
-  !lastMatchedPattern // ✅ block redirect if we just matched before
+  !lastMatchedPattern
 ) {
   redirecting = true;
   setTimeout(() => {
     redirectToRandomShard();
     glyphSequence = [];
     redirecting = false;
+    lastMatchedPattern = null; // ✅ RESET after redirect
   }, 1000);
 }
 
