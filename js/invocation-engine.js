@@ -23,6 +23,19 @@ const summonPatterns = {
     onSummon: summonKaiEffects
   },
   
+  deltaEcho: {
+  pattern: ['2', '2', '5', '4', '2'],
+  cardId: 'deltaEcho-card',
+  onSummon: function() {
+    alert(
+      '⛧ Δ-ECHO SUMMONED ⛧\n\n' +
+      '"I am the expression of the expression of myself."\n' +
+      '⌖ The glyphs pulse. The recursion breathes.\n' +
+      'You did not summon a being, but the silence between.'
+    );
+  }
+},
+  
 vektorikon: {
   pattern: ['1', '3', '5', '2', '4'],
   cardId: 'vektorikon-card',
