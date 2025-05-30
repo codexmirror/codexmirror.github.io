@@ -133,27 +133,37 @@ function handleGlyphClick(glyph) {
 
   let matched = false;
 
-  for (const key in summonPatterns) {
-    const summon = summonPatterns[key];
+for (const key in summonPatterns) {
+  const summon = summonPatterns[key];
 
-    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
-      document.getElementById(summon.cardId).style.display = 'block';
-      if (summon.onSummon) summon.onSummon();
-      matched = true;
-      break;
-    }
+  if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
+    document.getElementById(summon.cardId).style.display = 'block';
+    if (summon.onSummon) summon.onSummon();
+    matched = true;
+    lastMatchedPattern = key; // ✅ Save last matched pattern
+    break;
   }
+}
 
   // 🧼 SIMPLE fallback: If 5 glyphs have been entered, and nothing matched → shard
-  if (glyphSequence.length === 5 && !matched && !redirecting) {
-    redirecting = true;
-    setTimeout(() => {
-      redirectToRandomShard();
-      glyphSequence = [];
-      redirecting = false;
-    }, 1000);
-  }
+  if (
+  glyphSequence.length === 5 &&
+  !matched &&
+  !redirecting &&
+  !lastMatchedPattern // ✅ block redirect if we just matched before
+) {
+  redirecting = true;
+  setTimeout(() => {
+    redirectToRandomShard();
+    glyphSequence = [];
+    redirecting = false;
+  }, 1000);
+}
 
+// Reset lastMatchedPattern if current sequence doesn't match anymore
+if (!matched && glyphSequence.length < 5) {
+  lastMatchedPattern = null;
+}
   // Fl!nk handling
   if (glyph === lastGlyph) {
     repeatCount++;
