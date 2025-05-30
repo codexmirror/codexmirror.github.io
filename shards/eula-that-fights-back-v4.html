@@ -116,6 +116,22 @@ function updateButtonState() {
   button.disabled = !checkbox.checked;
 }
 window.addEventListener('DOMContentLoaded', () => {
+
+let idleTimer;
+document.addEventListener('mousemove', resetIdle);
+document.addEventListener('keydown', resetIdle);
+
+function resetIdle() {
+  clearTimeout(idleTimer);
+  if (!hauntTriggered) return;
+  idleTimer = setTimeout(() => {
+    const p = document.createElement('p');
+    p.innerHTML = `<strong>Clause (Dormant):</strong> You stopped moving. The agreement did not.`;
+    p.style.color = '#555';
+    p.style.fontStyle = 'italic';
+    eulaBox.appendChild(p);
+  }, 33000);
+}
   updateButtonState();
   checkbox.addEventListener('change', updateButtonState);
 });
@@ -284,12 +300,52 @@ button.addEventListener('click', (e) => {
     audio.muted = false;
     audio.volume = 0.15;
     audio.play();
+    
+    if (Math.random() < 0.2) {
+  document.body.style.transition = 'background 2s';
+  document.body.style.background = '#000';
+  setTimeout(() => {
+    document.body.style.background = '#fff';
+  }, 3000);
+}
 
     enableScrollHaunt();
     enableCheckboxHaunt();
     enableButtonHaunt();
     startClauseSpawn();
     rotateWhispers();
+    
+    let glyphBurned = false;
+eulaBox.addEventListener('scroll', () => {
+  if (!glyphBurned && hauntTriggered) {
+    const glyph = document.createElement('div');
+    glyph.innerText = '∮';
+    Object.assign(glyph.style, {
+      position: 'fixed',
+      top: '20%',
+      left: '50%',
+      transform: 'translateX(-50%) scale(5)',
+      fontSize: '2rem',
+      color: '#111',
+      opacity: '0.03',
+      pointerEvents: 'none'
+    });
+    document.body.appendChild(glyph);
+    setTimeout(() => glyph.remove(), 4000);
+    glyphBurned = true;
+  }
+});
+    
+    setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.15) {
+    const p = document.createElement('p');
+    const futureYear = 2121 + Math.floor(Math.random() * 88);
+    p.innerHTML = `<strong>Clause ∮:</strong> Referenced in a ruined poem from ${futureYear}. Still binding.`;
+    p.style.fontStyle = 'italic';
+    p.style.color = '#556';
+    eulaBox.appendChild(p);
+  }
+}, 20000);
     
     document.addEventListener('keydown', (event) => {
   if (Math.random() < 0.03 && hauntTriggered) {
@@ -342,6 +398,18 @@ setInterval(() => {
     }
   }
 }, 7000); // alle 7 Sekunden würfeln
+
+let lastScroll = 0;
+eulaBox.addEventListener('scroll', () => {
+  const current = eulaBox.scrollTop;
+  if (hauntTriggered && current < lastScroll && Math.random() < 0.1) {
+    const mirror = document.createElement('p');
+    mirror.innerHTML = `<em>Mirror clause breached. Scroll direction inverted. Perspective not recoverable.</em>`;
+    mirror.style.color = '#c00';
+    eulaBox.appendChild(mirror);
+  }
+  lastScroll = current;
+});
 
 </script>
 
