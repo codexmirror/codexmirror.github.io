@@ -134,6 +134,7 @@ function resetIdle() {
 }
   updateButtonState();
   checkbox.addEventListener('change', () => {
+  updateButtonState(); // <- This restores button enablement
   if (checkbox.checked) {
     const gnostic = document.createElement('p');
     gnostic.innerHTML = `<strong>Clause ∵:</strong> Time of consent is now encoded: <em>${new Date().toISOString()}</em>.`;
