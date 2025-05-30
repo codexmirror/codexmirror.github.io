@@ -99,7 +99,15 @@
 .eula {
   animation: scrollRift 12s infinite;
 }
+button:hover {
+  cursor: none;
+}
 
+@keyframes pulseFog {
+  0% { text-shadow: none; }
+  50% { text-shadow: 0 0 8px rgba(100, 100, 255, 0.3); }
+  100% { text-shadow: none; }
+}
 
   
 </style>
@@ -243,6 +251,7 @@ But consent was implied.
     const p = document.createElement("p");
     const variant = asciiVariants[Math.floor(Math.random() * asciiVariants.length)];
     p.innerHTML = "<pre>" + variant.replace("{{n}}", clauseCount) + "</pre>";
+p.style.animation = 'pulseFog 2s ease-in-out';
     eulaBox.appendChild(p);
 
     // Auto-scroll downward a bit to keep new clause visible
@@ -434,6 +443,15 @@ button.addEventListener('click', (e) => {
     eulaBox.appendChild(p);
     checkbox.checked = false;
     updateButtonState();
+    // Clause 14 (Echo) - returns and fades again
+setTimeout(() => {
+  const ghostClause = document.createElement('p');
+  ghostClause.innerHTML = `<strong>Clause 14 (Echo):</strong> Removed. Again. But louder.`;
+  ghostClause.style.fontStyle = 'italic';
+  ghostClause.style.opacity = '0.3';
+  eulaBox.appendChild(ghostClause);
+  setTimeout(() => ghostClause.remove(), 7000);
+}, 45000); // appears 45 seconds after first haunting
   } else {
     const rejectionActs = [
       () => alert("🜃 Consent still invalid. Try again later."),
