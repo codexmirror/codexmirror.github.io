@@ -28,6 +28,14 @@ vektorikon: {
   cardId: 'vektorikon-card',
   onSummon: summonVektorikonEffects
 },
+
+  deltaEcho: {
+  pattern: ['3', '3', '1', '4', '2', '5', '5', '2', '1'],
+  cardId: 'deltaEcho-card',
+  onSummon: function() {
+      console.log("Δ-Echo fracture-resonance initiated.");
+    }
+    },
    
   flink: {
     repeatTrigger: 5,
