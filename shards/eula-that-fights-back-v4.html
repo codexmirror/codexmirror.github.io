@@ -133,7 +133,15 @@ function resetIdle() {
   }, 33000);
 }
   updateButtonState();
-  checkbox.addEventListener('change', updateButtonState);
+  checkbox.addEventListener('change', () => {
+  if (checkbox.checked) {
+    const gnostic = document.createElement('p');
+    gnostic.innerHTML = `<strong>Clause ∵:</strong> Time of consent is now encoded: <em>${new Date().toISOString()}</em>.`;
+    gnostic.style.fontStyle = 'italic';
+    gnostic.style.color = '#444';
+    eulaBox.appendChild(gnostic);
+  }
+});
 });
 
 // Typewriter soul-effect
@@ -144,6 +152,9 @@ function typeText(element, text, callback) {
   const interval = setInterval(() => {
     if (i < text.length) {
       element.innerHTML += text[i++];
+if (Math.random() < 0.04) {
+  element.innerHTML += ' ∵';
+}
     } else {
       clearInterval(interval);
       isTyping = false;
@@ -285,6 +296,13 @@ setInterval(() => {
   if (hauntTriggered && Math.random() < 0.2) {
     insertHaiku();
   }
+  if (hauntTriggered && Math.random() < 0.15) {
+    const gloss = document.createElement('p');
+    gloss.innerHTML = `<strong>Clause (XenoTongue):</strong> ⸮θϯη⊕ψ⟆ ∴𐰤𐰀𐰀𐰅𐰃 ∞`;
+    gloss.style.fontFamily = 'monospace';
+    gloss.style.color = '#5e3';
+    eulaBox.appendChild(gloss);
+  }
 }, 12000);
 
 // One-click trigger of the haunt
@@ -407,8 +425,29 @@ eulaBox.addEventListener('scroll', () => {
     mirror.innerHTML = `<em>Mirror clause breached. Scroll direction inverted. Perspective not recoverable.</em>`;
     mirror.style.color = '#c00';
     eulaBox.appendChild(mirror);
+    const mirrorGlyph = document.createElement('div');
+mirrorGlyph.innerText = '⟁';
+Object.assign(mirrorGlyph.style, {
+  position: 'fixed',
+  top: Math.random() * window.innerHeight + 'px',
+  left: Math.random() * window.innerWidth + 'px',
+  fontSize: '3rem',
+  color: '#300',
+  opacity: '0.1',
+  transform: 'rotate(' + (Math.random() * 360) + 'deg)',
+  pointerEvents: 'none'
+});
+document.body.appendChild(mirrorGlyph);
+setTimeout(() => mirrorGlyph.remove(), 5000);
   }
   lastScroll = current;
+});
+eulaBox.addEventListener('dblclick', () => {
+  const clause = document.createElement('p');
+  clause.innerHTML = `<strong>Clause (Split Echo):</strong> You touched too fast. Now it watches back.`;
+  clause.style.color = '#b00';
+  clause.style.fontStyle = 'italic';
+  eulaBox.appendChild(clause);
 });
 
 </script>
