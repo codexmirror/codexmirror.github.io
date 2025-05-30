@@ -24,12 +24,12 @@ const summonPatterns = {
   },
   
   deltaEcho: {
-  pattern: ['5', '2', '5', '5', '4'],
-  cardId: 'delta-echo-card'
+  pattern: ['5', '2', '5', '5', '1'],
+  cardId: 'delta-echo-card',
 },
   
 vektorikon: {
-  pattern: ['1', '3', '5', '2', '4'],
+  pattern: ['1', '3', '5', '2', '1'],
   cardId: 'vektorikon-card',
   onSummon: summonVektorikonEffects
 },
