@@ -136,12 +136,13 @@ function handleGlyphClick(glyph) {
   for (const key in summonPatterns) {
     const summon = summonPatterns[key];
 
-    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
-      document.getElementById(summon.cardId).style.display = 'block';
-      if (summon.onSummon) summon.onSummon();
-      matched = true;
-      break;
-    }
+  if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
+  document.getElementById(summon.cardId).style.display = 'block';
+  if (summon.onSummon) summon.onSummon();
+  matched = true;
+  glyphSequence = []; // 💥 clear sequence after valid match
+  break;
+}
   }
 
   // 🧼 If no match and sequence is full, do redirect
