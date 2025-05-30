@@ -28,14 +28,6 @@ vektorikon: {
   cardId: 'vektorikon-card',
   onSummon: summonVektorikonEffects
 },
-
-  deltaEcho: {
-  pattern: ['3', '3', '1', '4', '2', '5', '5', '2', '1'],
-  cardId: 'deltaEcho-card',
-  onSummon: function() {
-      console.log("Δ-Echo fracture-resonance initiated.");
-    }
-    },
    
   flink: {
     repeatTrigger: 5,
@@ -107,29 +99,20 @@ function summonKaiEffects() {
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
-  const maxPatternLength = Math.max(
-  ...Object.values(summonPatterns)
-    .filter(p => p.pattern)
-    .map(p => p.pattern.length)
-);
-
-if (glyphSequence.length > maxPatternLength) glyphSequence.shift();
+  if (glyphSequence.length > 5) glyphSequence.shift();
 
   updateInvocation(glyph);
   hideAllEntities();
 
-for (const key in summonPatterns) {
-  const summon = summonPatterns[key];
+  for (const key in summonPatterns) {
+    const summon = summonPatterns[key];
 
-  if (summon.pattern) {
-    const recent = glyphSequence.slice(-summon.pattern.length);
-    if (arraysEqual(recent, summon.pattern)) {
+    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
       document.getElementById(summon.cardId).style.display = 'block';
       if (summon.onSummon) summon.onSummon();
       return;
-    }
+    }   
   }
-}
   
   // Direct invocation for glyph sequence 1-2-3-4-5
 if (glyphSequence.join(',') === ['1','2','3','4','5'].join(',')) {
