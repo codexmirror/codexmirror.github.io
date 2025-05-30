@@ -115,9 +115,11 @@ function handleGlyphClick(glyph) {
   }
   
   // Direct invocation for glyph sequence 1-2-3-4-5
-if (glyphSequence.join(',') === ['1','2','3','4','5'].join(',')) {
-  setTimeout(redirectToRandomShard, 1500);
-  return;
+if (glyphSequence.join('') === '12345') {
+  setTimeout(() => {
+    redirectToRandomShard();
+    glyphSequence = []; // wichtig: Reset NACH dem Redirect
+  }, 1000);
 }
 
   // Fl!nk handling
