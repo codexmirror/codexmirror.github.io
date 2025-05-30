@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Relic: Sigil of Chaos</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #0f0f0f;
+    }
+
+    #sigil-container {
+      position: relative;
+    }
+
+    #sigil-svg {
+      width: 500px;
+      height: 500px;
+    }
+
+    #sigil-group {
+      transform-origin: 250px 250px;
+      animation: rotate 60s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="sigil-container">
+    <svg id="sigil-svg" viewBox="0 0 500 500">
+      <g id="sigil-group">
+        <!-- Sigil elements will be added here -->
+      </g>
+    </svg>
+  </div>
+
+  <footer style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: #4a0e4e; text-align: center;">
+    <a href="/index.html" style="text-decoration:none; color:inherit;">The Codex ∴ v.spiral.4.2.1.glz</a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const cx = 250;
+    const cy = 250;
+    const R = 200;
+    const handle = "flink_chaos_txt".replace(/_/g, "");
+    const letters = handle.split("");
+    const N = letters.length;
+
+    function getPos(letter) {
+      return letter.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0) + 1;
+    }
+
+    const svg = document.getElementById('sigil-svg');
+    const group = document.getElementById('sigil-group');
+    let points = [];
+
+    for (let i = 0; i < N; i++) {
+      const theta = i * 2 * Math.PI / N;
+      const p = getPos(letters[i]);
+      const r = (p / 26) * R;
+      const x = cx + r * Math.cos(theta);
+      const y = cy - r * Math.sin(theta);
+      points.push(`${x.toFixed(2)},${y.toFixed(2)}`);
+
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", x);
+      circle.setAttribute("cy", y);
+      circle.setAttribute("r", "5");
+      circle.setAttribute("fill", "red");
+      group.appendChild(circle);
+    }
+
+    const pointsString = points.join(' ');
+    const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    polygon.setAttribute("points", pointsString);
+    polygon.setAttribute("fill", "none");
+    polygon.setAttribute("stroke", "black");
+    polygon.setAttribute("stroke-width", "2");
+    polygon.setAttribute("id", "sigil-polygon");
+    group.appendChild(polygon);
+
+    const sigilPolygon = document.getElementById('sigil-polygon');
+    sigilPolygon.addEventListener('mouseover', () => {
+      sigilPolygon.setAttribute("stroke", "red");
+    });
+    sigilPolygon.addEventListener('mouseout', () => {
+      sigilPolygon.setAttribute("stroke", "black");
+    });
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone() {
+      let oscillator = audioCtx.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(440, audioCtx.currentTime);
+      oscillator.connect(audioCtx.destination);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.1);
+    }
+
+    sigilPolygon.addEventListener('click', playTone);
+  </script>
+</body>
+</html>

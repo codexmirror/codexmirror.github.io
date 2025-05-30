@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>∴ Dream Logic Sigil ∴</title>
+  <meta name="description" content="A sigil manifestation interface for dream logic rituals.">
+  <meta name="keywords" content="sigil, dream logic, ritual, interactive, fractal">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #10001c, #000000);
+      cursor: crosshair;
+    }
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+<svg id="sigilCanvas"></svg>
+
+<script>
+const svgNS = "http://www.w3.org/2000/svg";
+const canvas = document.getElementById('sigilCanvas');
+
+let points = [];
+
+canvas.addEventListener('click', (e) => {
+  const point = { x: e.clientX, y: e.clientY };
+  points.push(point);
+  drawSigil();
+});
+
+function drawSigil() {
+  canvas.innerHTML = '';
+
+  points.forEach((p, i) => {
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', p.x);
+    circle.setAttribute('cy', p.y);
+    circle.setAttribute('r', 2 + i);
+    circle.setAttribute('fill', `hsla(${(i*47)%360},100%,50%,0.8)`);
+    canvas.appendChild(circle);
+
+    if (i > 0) {
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', points[i-1].x);
+      line.setAttribute('y1', points[i-1].y);
+      line.setAttribute('x2', p.x);
+      line.setAttribute('y2', p.y);
+      line.setAttribute('stroke', `hsla(${(i*61)%360},80%,60%,0.5)`);
+      line.setAttribute('stroke-width', Math.sin(i) + 2);
+      canvas.appendChild(line);
+    }
+  });
+
+  requestAnimationFrame(pulse);
+}
+
+function pulse(timestamp) {
+  canvas.childNodes.forEach((el, idx) => {
+    if (el.tagName === 'circle') {
+      const radius = 2 + idx + Math.sin(timestamp / 500 + idx) * 1.5;
+      el.setAttribute('r', radius);
+    }
+  });
+
+  requestAnimationFrame(pulse);
+}
+</script>
+
+<footer style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: #4a0e4e; text-align: center;">
+  <a href="/index.html" style="text-decoration:none; color:inherit;">
+    The Codex ∴ v.spiral.4.2.1.glz
+  </a>
+  <span style="font-size:0.6rem; opacity:0.4;">
+    <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+  </span>
+</footer>
+
+</body>
+</html>
