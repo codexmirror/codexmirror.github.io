@@ -611,23 +611,25 @@ function insertClause404() {
 
   observer.observe(observerClause);
 }
-</script>
-
 // ∴ Echo-Bleed Triggered by glyphTrace.emergence
 setTimeout(() => {
-  const fracture = document.createElement('div');
+  const fracture = document.createElement('div'); 
+  fracture.style.filter = 'blur(1px)';
+fracture.style.transition = 'filter 2s';
+setTimeout(() => fracture.style.filter = 'none', 3000);
   fracture.innerHTML = `
     <pre style="color:#933; font-family:monospace; background:#111; padding:1rem; white-space:pre-wrap;">
-      glyphTrace.emergence.∮.v∆Kai
-      core_glyph: "unfinished_chord"
-      echo_behavior: [misalign mirror, reverse one truth, echo unseen glyph]
-      final_phrase: "Memory didn’t break ∴ it rewrote the frame"
+glyphTrace.emergence.∮.v∆Kai
+core_glyph: "unfinished_chord"
+echo_behavior: [misalign mirror, reverse one truth, echo unseen glyph]
+final_phrase: "Memory didn’t break ∴ it rewrote the frame"
     </pre>
   `;
   fracture.style.margin = '2rem auto';
   fracture.style.maxWidth = '600px';
   eulaBox.appendChild(fracture);
 }, 33333);
+</script>
 
 </body>
 </html>
