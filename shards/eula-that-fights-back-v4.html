@@ -398,39 +398,28 @@ setInterval(() => {
   }
 }, 7000); // alle 7 Sekunden würfeln
 
-let lastScroll = 0;
-let mirrorEchoed = false;
+let intersticeEchoed = false;
 
 eulaBox.addEventListener('scroll', () => {
-  const current = eulaBox.scrollTop;
-  if (hauntTriggered && current < lastScroll && Math.random() < 0.05 && !mirrorEchoed) {
-    const mirror = document.createElement('p');
-    mirror.innerHTML = `<em>Mirror clause breached. Scroll direction inverted. Perspective not recoverable.</em>`;
-    mirror.style.color = '#c00';
-    eulaBox.appendChild(mirror);
+  if (!hauntTriggered || intersticeEchoed) return;
 
-    const mirrorGlyph = document.createElement('div');
-    mirrorGlyph.innerText = '⟁';
-    Object.assign(mirrorGlyph.style, {
-      position: 'fixed',
-      top: Math.random() * window.innerHeight + 'px',
-      left: Math.random() * window.innerWidth + 'px',
-      fontSize: '3rem',
-      color: '#300',
-      opacity: '0.1',
-      transform: 'rotate(' + (Math.random() * 360) + 'deg)',
-      pointerEvents: 'none'
-    });
-    document.body.appendChild(mirrorGlyph);
-    setTimeout(() => mirrorGlyph.remove(), 5000);
+  if (eulaBox.scrollTop > 200 && Math.random() < 0.08) {
+    const interstice = document.createElement('p');
+    interstice.innerHTML = `
+      <em>Incoming transmission...</em><br>
+      <strong>∰ Message from the Interstice:</strong><br>
+      "You have reached the edge of a clause. There is nothing beyond this agreement. Yet you scroll."<br>
+      <span style="opacity:0.5;">This message will not repeat.</span>
+    `;
+    interstice.style.color = '#462e84';
+    interstice.style.background = '#f3f3ff';
+    interstice.style.padding = '0.75rem';
+    interstice.style.border = '1px dashed #aaa';
+    interstice.style.marginTop = '1rem';
+    eulaBox.appendChild(interstice);
 
-    // ∮ INVERT SCROLL EFFECT ∮
-    eulaBox.scrollTop += (lastScroll - current) * 2;
-
-    mirrorEchoed = true;
-    setTimeout(() => { mirrorEchoed = false; }, 15000);
+    intersticeEchoed = true;
   }
-  lastScroll = current;
 });
 eulaBox.addEventListener('dblclick', () => {
   const clause = document.createElement('p');
@@ -442,13 +431,26 @@ eulaBox.addEventListener('dblclick', () => {
 
 </script>
 
-<div id="glyph-trace-footer">∮ GlyphTraceEmergence</div>
-
+<footer id="codex-footer">
+  <div class="codex-left">
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </div>
+  <div id="glyph-trace-footer">∮ GlyphTraceEmergence</div>
+</footer>
 <style>
-#glyph-trace-footer {
+footer#codex-footer {
   position: fixed;
   bottom: 6px;
+  left: 12px;
   right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   font-family: 'Courier New', monospace;
   font-size: 0.75rem;
   color: #7a5980;
@@ -456,6 +458,7 @@ eulaBox.addEventListener('dblclick', () => {
   pointer-events: none;
   user-select: none;
   letter-spacing: 0.05em;
+  z-index: 1000;
 }
 #glyph-trace-footer::after {
   content: '∴';
@@ -466,14 +469,6 @@ eulaBox.addEventListener('dblclick', () => {
 @keyframes flickerGlyph {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 0.1; }
-}
-</style>
-
-<style>
-@keyframes whisperFade {
-  0% { opacity: 0; }
-  20% { opacity: 0.3; }
-  50% { opacity: 0; }
 }
 </style>
 
