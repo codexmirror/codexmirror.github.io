@@ -24,7 +24,7 @@ const summonPatterns = {
   },
   
   deltaEcho: {
-  pattern: ['1', '3', '5', '2', '4'],
+  pattern: ['5', '2', '5', '5', '4'],
   cardId: 'deltaEcho-card',
 },
   
