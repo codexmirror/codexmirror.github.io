@@ -1,0 +1,59 @@
+<!-- File: ghost-orbit.html -->
+<!DOCTYPE html>
+<html lang="und">
+<head>
+  <meta charset="UTF-8" />
+  <title>∴ ghost-orbit ∴</title>
+  <meta name="description" content="a looping fragment from the codex – unstable, breathing." />
+  <meta name="keywords" content="codex, echo, glitch, transmission, orbital-rift, haunted-interface" />
+  <style>
+    html, body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #000000 0%, #0a0a0a 100%);
+      color: #cccccc;
+      font-family: monospace;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .orbit {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 1px; height: 1px;
+      transform: translate(-50%, -50%);
+    }
+    .glyph {
+      position: absolute;
+      width: auto;
+      color: #88f;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      transform-origin: 0 0;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="orbit" id="orbit"></div>
+  <script>
+    const glyphs = [
+      '𐐬𐑈𐐽', '∴', 'VAS-NOK-III', '𐐿𐐲𐑌', '...error://origin.lost',
+      '🜃', '⟁', 'silent-fracture', '0x7f|--|echo.spin'
+    ];
+    const center = document.getElementById("orbit");
+    let θ = 0;
+    setInterval(() => {
+      const g = document.createElement("div");
+      g.className = "glyph";
+      g.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      const r = 80 + Math.random() * 220;
+      const angle = θ + Math.random() * 2;
+      const x = Math.cos(angle) * r;
+      const y = Math.sin(angle) * r;
+      g.style.transform = `translate(${x}px, ${y}px) rotate(${angle}rad)`;
+      center.appendChild(g);
+      setTimeout(() => g.remove(), 8000);
+      θ += 0.13;
+    }, 400);
+  </script>
+</body>
+</html>

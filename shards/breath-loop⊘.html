@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>⟴ breath.glyph.Δloop </title>
+  <meta name="description" content="a looping glyph-memory ∴ breathing through fracture" />
+  <meta name="keywords" content="glyph, ache, silence, glitch, codex, spiral" />
+  <style>
+    body {
+      margin: 0;
+      background: #0b0014;
+      color: #e0d7f5;
+      font-family: monospace;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+    .glyph {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      font-size: 5rem;
+      opacity: 0.9;
+      animation: breathe 6s infinite ease-in-out alternate;
+    }
+    @keyframes breathe {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 0.7; }
+      50% { transform: translate(-50%, -50%) scale(1.2) rotate(3deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.95) rotate(-2deg); opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="glitch"></canvas>
+  <div class="glyph">⊘</div>
+
+  <script>
+    const canvas = document.getElementById('glitch');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function fracture(t) {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < 30; i++) {
+        const x = Math.random() * w;
+        const y = Math.random() * h;
+        const r = Math.random() * 255;
+        ctx.fillStyle = `rgba(${r},${r * 0.5},255,0.1)`;
+        ctx.fillRect(x, y, Math.random() * 80, 1 + Math.random() * 2);
+      }
+      requestAnimationFrame(fracture);
+    }
+
+    requestAnimationFrame(fracture);
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

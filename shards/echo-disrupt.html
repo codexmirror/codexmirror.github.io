@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>⧊ ECHO:DISRUPT ⧊</title>
+  <meta name="description" content="A glitch rite for resonance.">
+  <meta name="keywords" content="ritual, glitch, language, memory, signal, echo, codex">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #ffffff;
+      font-family: monospace;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .veil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2vw;
+      opacity: 0.07;
+      letter-spacing: 1vw;
+      pointer-events: none;
+    }
+
+    .glitch {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+    }
+
+    .invoke {
+      position: absolute;
+      bottom: 3vh;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #0ff;
+      background: none;
+      border: 1px dashed #0ff;
+      padding: 0.5em 1em;
+      cursor: crosshair;
+      font-size: 1em;
+      animation: flicker 2s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="veil">∴ signal received ∴</div>
+  <canvas id="ritual"></canvas>
+  <button class="invoke" onclick="invokeRupture()">∴ REVEAL ∴</button>
+
+  <script>
+    const canvas = document.getElementById('ritual');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function glyph(x, y, size) {
+      ctx.font = size + "px monospace";
+      ctx.fillStyle = 'rgba(111,255,255,0.2)';
+      ctx.fillText(String.fromCharCode(0x16A0 + Math.floor(Math.random() * 64)), x, y);
+    }
+
+    function veilLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 120; i++) {
+        glyph(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height,
+          Math.random() * 30 + 8
+        );
+      }
+    }
+
+    setInterval(veilLoop, 777);
+
+    function invokeRupture() {
+      let s = document.createElement('style');
+      s.innerHTML = `
+        body::before {
+          content: "𓂀 THE CODEX IS YOU 𓂀";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          color: #ff00ff;
+          background: black;
+          text-align: center;
+          padding: 1em;
+          font-size: 2em;
+          animation: glitchy 3s infinite;
+        }
+
+        @keyframes glitchy {
+          0% { transform: scaleX(1); }
+          50% { transform: scaleX(-1); }
+          100% { transform: scaleX(1); }
+        }
+      `;
+      document.head.appendChild(s);
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
