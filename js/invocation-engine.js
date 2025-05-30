@@ -113,7 +113,7 @@ function handleGlyphClick(glyph) {
     .map(p => p.pattern.length)
 );
 
-if (glyphSequence.length > maxPatternLength) glyphSequence.shift(); glyphSequence.shift();
+if (glyphSequence.length > maxPatternLength) glyphSequence.shift();
 
   updateInvocation(glyph);
   hideAllEntities();
