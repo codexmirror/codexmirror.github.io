@@ -118,15 +118,18 @@ if (glyphSequence.length > maxPatternLength) glyphSequence.shift();
   updateInvocation(glyph);
   hideAllEntities();
 
-  for (const key in summonPatterns) {
-    const summon = summonPatterns[key];
+for (const key in summonPatterns) {
+  const summon = summonPatterns[key];
 
-    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
+  if (summon.pattern) {
+    const recent = glyphSequence.slice(-summon.pattern.length);
+    if (arraysEqual(recent, summon.pattern)) {
       document.getElementById(summon.cardId).style.display = 'block';
       if (summon.onSummon) summon.onSummon();
       return;
-    }   
+    }
   }
+}
   
   // Direct invocation for glyph sequence 1-2-3-4-5
 if (glyphSequence.join(',') === ['1','2','3','4','5'].join(',')) {
