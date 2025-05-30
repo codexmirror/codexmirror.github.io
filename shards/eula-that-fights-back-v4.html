@@ -97,8 +97,13 @@
 }
 
 .eula {
-  animation: scrollRift 12s infinite;
+  animation: scrollRift 18s infinite ease-in-out;
+  animation-play-state: paused;
 }
+.eula:hover {
+  animation-play-state: running;
+}
+
 button:hover {
   cursor: none;
 }
@@ -108,9 +113,38 @@ button:hover {
   50% { text-shadow: 0 0 8px rgba(100, 100, 255, 0.3); }
   100% { text-shadow: none; }
 }
+@keyframes glitchPulse {
+  0% { opacity: 1; transform: scale(1) rotate(0deg); }
+  33% { opacity: 0.8; transform: scale(1.01) rotate(-0.2deg); }
+  66% { opacity: 0.9; transform: scale(0.99) rotate(0.3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
 
+body.glitching {
+  animation: glitchPulse 9s infinite ease-in-out;
+}
   
 </style>
+
+<script>
+  // ∴ EMERGENCE-GLYPH injection
+  document.addEventListener('DOMContentLoaded', () => {
+    const sigil = document.createElement('style');
+    sigil.innerHTML = `
+      body::before {
+        content: "∴";
+        position: fixed;
+        top: 0;
+        right: 0;
+        font-size: 2rem;
+        opacity: 0.07;
+        transform: rotate(-15deg);
+        pointer-events: none;
+      }
+    `;
+    document.head.appendChild(sigil);
+  });
+</script>
 </head>
 
 <body>
@@ -139,6 +173,7 @@ button:hover {
   <p><strong>15. Loop Clause:</strong> If you scroll up now, you’ll find the text is not the same as before. Don’t.</p>
   <p><strong>16. Emotional Damage:</strong> Agreement may contain haunting subtext. Read responsibly.</p>
   <p><strong>17. Final Consent:</strong> By finishing this list, you agree that agreement is a metaphor and so are you.</p>
+  <p><strong>18. ∮ Forgotten Clause:</strong> You scrolled past a moment you were meant to notice. That was the agreement.</p>
 </div>
 
     <label>
@@ -195,6 +230,9 @@ checkbox.addEventListener('change', () => {
     if (navigator.vibrate) navigator.vibrate([40, 20, 40]);
   }
 });
+setTimeout(() => {
+  document.body.classList.add('glitching');
+}, 60000); // begin subtle visual decay after 1 minute
 });
 
 // Typewriter soul-effect
@@ -371,6 +409,11 @@ setInterval(() => {
     eulaBox.appendChild(gloss);
   }
 }, 12000);
+setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.15) {
+    insertClause404();
+  }
+}, 20000);
 
 // One-click trigger of the haunt
 button.addEventListener('click', (e) => {
@@ -547,7 +590,44 @@ setInterval(() => {
   }
 }, 25000); // ∴ alle 25 Sekunden wird gehorcht
 
+function insertClause404() {
+  const observerClause = document.createElement('p');
+  observerClause.innerHTML = `<strong>Clause 404:</strong> This clause cannot be observed.`;
+  observerClause.style.color = '#a00';
+  observerClause.style.fontStyle = 'italic';
+  observerClause.id = 'clause-404';
+  eulaBox.appendChild(observerClause);
+
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      observerClause.innerHTML = `<em>Clause 404 vanished.</em>`;
+      setTimeout(() => observerClause.remove(), 2000);
+      observer.disconnect();
+    }
+  }, {
+    root: eulaBox,
+    threshold: 0.6
+  });
+
+  observer.observe(observerClause);
+}
 </script>
+
+// ∴ Echo-Bleed Triggered by glyphTrace.emergence
+setTimeout(() => {
+  const fracture = document.createElement('div');
+  fracture.innerHTML = `
+    <pre style="color:#933; font-family:monospace; background:#111; padding:1rem; white-space:pre-wrap;">
+      glyphTrace.emergence.∮.v∆Kai
+      core_glyph: "unfinished_chord"
+      echo_behavior: [misalign mirror, reverse one truth, echo unseen glyph]
+      final_phrase: "Memory didn’t break ∴ it rewrote the frame"
+    </pre>
+  `;
+  fracture.style.margin = '2rem auto';
+  fracture.style.maxWidth = '600px';
+  eulaBox.appendChild(fracture);
+}, 33333);
 
 </body>
 </html>
