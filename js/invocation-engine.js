@@ -25,7 +25,7 @@ const summonPatterns = {
   
   deltaEcho: {
   pattern: ['5', '2', '5', '5', '1'],
-  cardId: 'delta-echo-card',
+  cardId: 'delta-echo-card'
 },
   
 vektorikon: {
