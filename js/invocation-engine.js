@@ -107,7 +107,13 @@ function summonKaiEffects() {
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
-  if (glyphSequence.length > 5) glyphSequence.shift();
+  const maxPatternLength = Math.max(
+  ...Object.values(summonPatterns)
+    .filter(p => p.pattern)
+    .map(p => p.pattern.length)
+);
+
+if (glyphSequence.length > maxPatternLength) glyphSequence.shift(); glyphSequence.shift();
 
   updateInvocation(glyph);
   hideAllEntities();
