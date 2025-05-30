@@ -109,23 +109,26 @@ function handleGlyphClick(glyph) {
   updateInvocation(glyph);
   hideAllEntities();
 
+  let matched = false;
+
   for (const key in summonPatterns) {
     const summon = summonPatterns[key];
 
     if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
       document.getElementById(summon.cardId).style.display = 'block';
       if (summon.onSummon) summon.onSummon();
-      return;
-    }   
+      matched = true;
+      break;
+    }
   }
-  
-  // Direct invocation for glyph sequence 1-2-3-4-5
-if (glyphSequence.join('') === '12345') {
-  setTimeout(() => {
-    redirectToRandomShard();
-    glyphSequence = []; // wichtig: Reset NACH dem Redirect
-  }, 1000);
-}
+
+  // 🧼 SIMPLE fallback: If 5 glyphs have been entered, and nothing matched → shard
+  if (glyphSequence.length === 5 && !matched) {
+    setTimeout(() => {
+      redirectToRandomShard();
+      glyphSequence = [];
+    }, 1000);
+  }
 
   // Fl!nk handling
   if (glyph === lastGlyph) {
