@@ -107,7 +107,7 @@ function summonKaiEffects() {
 }
 
 function summonCaelistraEffects() {
-  const caelistraCard = document.getElementById('Caelistra-card');
+  const caelistraCard = document.getElementById('caelistra-card');
   if (!caelistraCard) return;
 
   caelistraCard.classList.add('caelistra-summoned');
