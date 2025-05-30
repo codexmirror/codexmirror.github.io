@@ -65,9 +65,9 @@
 </head>
 
 <body>
-  <audio id="loop-audio" loop autoplay muted>
-    <source src="https://freesound.org/data/previews/250/250629_4486188-lq.mp3" type="audio/mpeg">
-  </audio>
+<audio id="loop-audio" muted>
+  <source src="https://freesound.org/data/previews/250/250629_4486188-lq.mp3" type="audio/mpeg">
+</audio>
   <div class="container">
     <h1>End User License Agreement</h1>
     <p>Please read the following terms and conditions before using this software:</p>
@@ -158,7 +158,16 @@ function startClauseSpawn() {
   setInterval(() => {
     clauseCount++;
     const p = document.createElement("p");
-    const newClause = `<strong>${clauseCount}. Fractal Addendum:</strong> This clause wasn't here. Now it is.`;
+    const asciiArt = `
+<pre>
+  Clause ${clauseCount}: ᓚᘏᗢ  
+  ,     ,
+ (\\____/)
+ ( ͡ ͡° ͜ ʖ ͡ ͡°)
+ /つ☕ 
+ You now owe us one soul.
+</pre>`;
+const newClause = asciiArt;
     p.innerHTML = newClause;
     eulaBox.appendChild(p);
   }, 10000);
@@ -218,6 +227,25 @@ function rotateWhispers() {
   }, 8000);
 }
 
+// Insert Haiku
+function insertHaiku() {
+  const haiku = [
+    "Agree or deny?",
+    "The form consumes your intent.",
+    "Scroll and be devoured."
+  ];
+  const allClauses = eulaBox.querySelectorAll('p');
+  if (allClauses.length > 0) {
+    const target = allClauses[Math.floor(Math.random() * allClauses.length)];
+    typeText(target, haiku.join('<br>'));
+  }
+}
+setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.2) {
+    insertHaiku();
+  }
+}, 12000);
+
 // One-click trigger of the haunt
 button.addEventListener('click', (e) => {
   e.preventDefault();
@@ -258,6 +286,19 @@ button.addEventListener('click', (e) => {
     updateButtonState();
   }
 });
+// 🔊 Haunted Audio Randomizer
+setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.4) {
+    audio.muted = false;
+    audio.volume = 0.15;
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }
+}, 7000); // alle 7 Sekunden würfeln
+
 </script>
 
 <style>
