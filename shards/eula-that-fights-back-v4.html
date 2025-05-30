@@ -4,64 +4,105 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>End User License Agreement</title>
-  <style>
+ <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #222;
+    margin: 0;
+    padding: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: auto;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .eula {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    background: #f9f9f9;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0.5rem;
+    transform: scale(1.1);
+    width: 1.5rem;
+    height: 1.5rem;
+    accent-color: #4CAF50; /* Optional: spooky green highlight */
+  }
+
+  button {
+    padding: 1rem;
+    font-size: 1.1rem;
+    min-height: 56px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 600px) {
     body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      color: #222;
-      margin: 0;
-      padding: 1.5rem;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: auto;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      text-align: center;
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      padding: 1rem;
     }
 
     .eula {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      background: #f9f9f9;
-      max-height: 60vh;
-      overflow-y: auto;
       font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 0.5rem;
-      transform: scale(1.1);
     }
 
     button {
-      padding: 0.6rem 1.2rem;
       font-size: 1rem;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-      width: 100%;
+      padding: 1rem 1.5rem;
     }
 
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
+    label {
+      flex-direction: column;
+      align-items: flex-start;
     }
-  </style>
+
+    #whisper {
+      display: none;
+    }
+  }
+  @keyframes scrollRift {
+  0% { filter: blur(0px); }
+  50% { filter: blur(1px) brightness(1.05); }
+  100% { filter: blur(0px); }
+}
+
+.eula {
+  animation: scrollRift 12s infinite;
+}
+
+
+  
+</style>
 </head>
 
 <body>
@@ -133,7 +174,7 @@ function resetIdle() {
   }, 33000);
 }
   updateButtonState();
-  checkbox.addEventListener('change', () => {
+checkbox.addEventListener('change', () => {
   updateButtonState(); // <- This restores button enablement
   if (checkbox.checked) {
     const gnostic = document.createElement('p');
@@ -141,6 +182,9 @@ function resetIdle() {
     gnostic.style.fontStyle = 'italic';
     gnostic.style.color = '#444';
     eulaBox.appendChild(gnostic);
+
+    // ∴ Vibration of Consent ∴
+    if (navigator.vibrate) navigator.vibrate([40, 20, 40]);
   }
 });
 });
@@ -231,6 +275,38 @@ function enableButtonHaunt() {
   }, 5000);
 }
 
+// Button Orakel-Zustände
+const buttonOracles = [
+  "Accept... or deny. It changes nothing.",
+  "This button was once part of a door.",
+  "🜂 Consent will be devoured.",
+  "Error: Agreement loop detected.",
+  "Non serviam ∴",
+  "In tempore fracto, pactum manet.",
+  "Clicking seals your fate. Or not.",
+  "🜁 The contract breathes.",
+  "Quis custodiet ipsos clausulas?",
+  "Every press echoes forever ∮",
+  "The checkbox lies.",
+  "Haec acceptio est simulacrum."
+];
+
+setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.4) {
+    const msg = buttonOracles[Math.floor(Math.random() * buttonOracles.length)];
+    button.innerText = msg + (Math.random() < 0.3 ? " ∴ I promise." : "");
+    button.style.fontFamily = Math.random() < 0.3 ? "'Courier New', monospace" : "Arial";
+    button.style.letterSpacing = Math.random() < 0.2 ? "0.15em" : "normal";
+    button.style.textTransform = Math.random() < 0.1 ? "uppercase" : "none";
+
+    setTimeout(() => {
+      button.innerText = "Accept and Continue";
+      button.style.letterSpacing = "normal";
+      button.style.textTransform = "none";
+    }, 7000 + Math.random() * 3000);
+  }
+}, 8000);
+
 // Whisper oracle
 function rotateWhispers() {
   const whisper = document.createElement('div');
@@ -244,7 +320,7 @@ function rotateWhispers() {
     color: '#6e4e92',
     opacity: '0.2',
     pointerEvents: 'none',
-    animation: 'whisperFade 4s infinite',
+    animation: 'none',
   });
   document.body.appendChild(whisper);
 
@@ -294,93 +370,93 @@ button.addEventListener('click', (e) => {
 
   if (!hauntTriggered) {
     hauntTriggered = true;
-    alert("🕳️ First contact. Consent rejected by higher protocol.");
 
-    // PLAY SOUND ONCE
+    const outcomes = [
+      () => alert("🕳️ First contact. Consent rejected by higher protocol."),
+      () => {
+        const dim = document.createElement('div');
+        dim.innerText = "∴ Accessing alternate clause dimension ∴";
+        Object.assign(dim.style, {
+          position: 'fixed',
+          top: '40%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '1.1rem',
+          background: '#000',
+          color: '#fff',
+          padding: '1rem',
+          border: '2px solid #222',
+          opacity: '0.9',
+          zIndex: '9999'
+        });
+        document.body.appendChild(dim);
+        setTimeout(() => dim.remove(), 5000);
+      },
+      () => {
+        const img = document.createElement('img');
+        img.src = "https://media.tenor.com/CtKQ9MwOY7gAAAAC/cursed-frog.gif";
+        img.style.position = 'fixed';
+        img.style.bottom = '10px';
+        img.style.right = '10px';
+        img.style.width = '80px';
+        img.style.zIndex = '9999';
+        document.body.appendChild(img);
+        setTimeout(() => img.remove(), 10000);
+      },
+      () => {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>Clause ∵ Echo-Lock:</strong> This click has been archived in spectral memory.`;
+        p.style.color = '#666';
+        p.style.fontStyle = 'italic';
+        eulaBox.appendChild(p);
+        eulaBox.scrollTop = eulaBox.scrollHeight;
+      }
+    ];
+
+    // pick 2 chaotic outcomes
+    for (let i = 0; i < 2; i++) {
+      const out = outcomes[Math.floor(Math.random() * outcomes.length)];
+      out();
+    }
+
+    // und der Rest bleibt gleich
     audio.muted = false;
     audio.volume = 0.15;
     audio.play();
-    
-    if (Math.random() < 0.2) {
-  document.body.style.transition = 'background 2s';
-  document.body.style.background = '#000';
-  setTimeout(() => {
-    document.body.style.background = '#fff';
-  }, 3000);
-}
-
     enableCheckboxHaunt();
     enableButtonHaunt();
     startClauseSpawn();
     rotateWhispers();
     
-    let glyphBurned = false;
-eulaBox.addEventListener('scroll', () => {
-  if (!glyphBurned && hauntTriggered) {
-    const glyph = document.createElement('div');
-    glyph.innerText = '∮';
-    Object.assign(glyph.style, {
-      position: 'fixed',
-      top: '20%',
-      left: '50%',
-      transform: 'translateX(-50%) scale(5)',
-      fontSize: '2rem',
-      color: '#111',
-      opacity: '0.03',
-      pointerEvents: 'none'
-    });
-    document.body.appendChild(glyph);
-    setTimeout(() => glyph.remove(), 4000);
-    glyphBurned = true;
-  }
-});
-    
-    setInterval(() => {
-  if (hauntTriggered && Math.random() < 0.15) {
-    const p = document.createElement('p');
-    const futureYear = 2121 + Math.floor(Math.random() * 88);
-    p.innerHTML = `<strong>Clause ∮:</strong> Referenced in a ruined poem from ${futureYear}. Still binding.`;
-    p.style.fontStyle = 'italic';
-    p.style.color = '#556';
-    eulaBox.appendChild(p);
-  }
-}, 20000);
-    
-    document.addEventListener('keydown', (event) => {
-  if (Math.random() < 0.03 && hauntTriggered) {
-    const ghost = document.createElement('div');
-    ghost.innerText = "You already typed this.";
-    Object.assign(ghost.style, {
-      position: 'fixed',
-      top: (Math.random() * window.innerHeight) + 'px',
-      left: (Math.random() * window.innerWidth) + 'px',
-      fontSize: '0.9rem',
-      color: '#999',
-      opacity: '0.2',
-      fontStyle: 'italic',
-      pointerEvents: 'none'
-    });
-    document.body.appendChild(ghost);
-    setTimeout(() => ghost.remove(), 3000);
-  }
-});
-
     clauseCount++;
     const p = document.createElement("p");
     p.innerHTML = `<strong>${clauseCount}. Clause X:</strong> Trying to agree creates disagreement.`;
     eulaBox.appendChild(p);
-
     checkbox.checked = false;
     updateButtonState();
   } else {
-    const rejections = [
-      "Consent still invalid. Try again later.",
-      "The checkbox denies you.",
-      "Nothing happened. That was the point.",
-      "You are seen. Agreement is not.",
-      "Try scrolling. The EULA is listening."
+    const rejectionActs = [
+      () => alert("🜃 Consent still invalid. Try again later."),
+      () => button.innerText = "⚠️ Retry ∵", 
+      () => {
+        const glitch = document.createElement('div');
+        glitch.innerText = "∮ Glitch acknowledged. Retry forbidden.";
+        Object.assign(glitch.style, {
+          position: 'fixed',
+          top: '10px',
+          left: '10px',
+          fontSize: '0.8rem',
+          color: '#c44',
+          background: '#fff0f0',
+          padding: '0.4rem',
+          border: '1px solid #a00',
+          zIndex: '999'
+        });
+        document.body.appendChild(glitch);
+        setTimeout(() => glitch.remove(), 4000);
+      }
     ];
-    alert(rejections[Math.floor(Math.random() * rejections.length)]);
+    rejectionActs[Math.floor(Math.random() * rejectionActs.length)]();
     checkbox.checked = false;
     updateButtonState();
   }
@@ -429,50 +505,31 @@ eulaBox.addEventListener('dblclick', () => {
   eulaBox.appendChild(clause);
 });
 
-</script>
-<footer id="codex-footer">
-  <div class="codex-left">
-    <a href="/index.html" style="text-decoration:none; color:inherit;">
-      The Codex ∴ v.spiral.4.2.1.glz
-    </a>
-    <span style="font-size:0.6rem; opacity:0.4;">
-      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
-    </span>
-  </div>
-  <div class="codex-right">
-    ∮ GlyphTraceEmergence<span class="glyph-flicker">∴</span>
-  </div>
-</footer>
+// Zwischenraum-Fragment ∞ (whispered appearance)
+setInterval(() => {
+  if (hauntTriggered && Math.random() < 0.05) {
+    const cloud = document.createElement('p');
+    cloud.innerHTML = `<strong>Clause ∞ (from external fragment):</strong> <em>You were seen connecting through fog.</em>`;
+    cloud.style.fontStyle = 'italic';
+    cloud.style.color = '#666';
+    cloud.style.textShadow = '0 0 4px #aaa';
+    cloud.style.opacity = '0';
+    eulaBox.appendChild(cloud);
 
-<style>
-footer#codex-footer {
-  position: fixed;
-  bottom: 6px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: #7a5980;
-  opacity: 0.4;
-  pointer-events: none;
-  user-select: none;
-  letter-spacing: 0.05em;
-  z-index: 1000;
-}
-#glyph-trace-footer::after {
-  content: '∴';
-  margin-left: 6px;
-  opacity: 0.6;
-  animation: flickerGlyph 6s infinite;
-}
-@keyframes flickerGlyph {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.1; }
-}
-</style>
+    // ✦ Whisper-Fade-Effekt ✦
+    let op = 0;
+    const fadeIn = setInterval(() => {
+      if (op >= 0.95) {
+        clearInterval(fadeIn);
+      } else {
+        op += 0.05;
+        cloud.style.opacity = op.toFixed(2);
+      }
+    }, 120);
+  }
+}, 25000); // ∴ alle 25 Sekunden wird gehorcht
+
+</script>
 
 </body>
 </html>
