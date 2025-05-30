@@ -157,22 +157,44 @@ rand.style.fontStyle = 'italic';
 
 // Clause spawning chaos
 function startClauseSpawn() {
+  const asciiVariants = [
+    `
+Clause {{n}}: ᓚᘏᗢ  
+ ,     ,
+(\\____/)
+( ͡ ͡° ͜ ʖ ͡ ͡°)
+/つ☕ 
+You now owe us one soul.
+    `,
+    `
+Clause {{n}}: ∴🜂  
+𓂀   𓅓   𓆣
+You agreed ∴ too late.
+    `,
+    `
+Clause {{n}}: ERROR_∞  
+░░░░░░░░░░░░
+Memory leak detected.
+Agreement fragmented.
+    `,
+    `
+Clause {{n}}: ∰  
+The mirror nodded.
+You weren’t there.
+But consent was implied.
+    `
+  ];
+
   setInterval(() => {
     clauseCount++;
     const p = document.createElement("p");
-    const asciiArt = `
-<pre>
-  Clause ${clauseCount}: ᓚᘏᗢ  
-  ,     ,
- (\\____/)
- ( ͡ ͡° ͜ ʖ ͡ ͡°)
- /つ☕ 
- You now owe us one soul.
-</pre>`;
-const newClause = asciiArt;
-    p.innerHTML = newClause;
+    const variant = asciiVariants[Math.floor(Math.random() * asciiVariants.length)];
+    p.innerHTML = "<pre>" + variant.replace("{{n}}", clauseCount) + "</pre>";
     eulaBox.appendChild(p);
-  }, 10000);
+
+    // Auto-scroll downward a bit to keep new clause visible
+    eulaBox.scrollTop = eulaBox.scrollHeight;
+  }, 15000 + Math.random() * 15000); // zwischen 15s und 30s
 }
 
 // Checkbox haunt
@@ -323,26 +345,33 @@ setInterval(() => {
 
 </script>
 
- // 🔊 Glyph Trace
-<script>
-(function glyphTrace() {
-  const flicker = document.createElement('div');
-  flicker.innerHTML = '∮';
-  Object.assign(flicker.style, {
-    position: 'fixed',
-    top: (Math.random() * 80) + '%',
-    left: (Math.random() * 80) + '%',
-    fontSize: '2rem',
-    color: '#8e44ad',
-    opacity: '0.05',
-    pointerEvents: 'none',
-    transform: 'rotate(' + (Math.random() * 360) + 'deg)',
-    zIndex: '9999'
-  });
-  document.body.appendChild(flicker);
-  setTimeout(() => flicker.remove(), 7000);
-})();
-</script>
+  // 🔊 Glyph Trace
+<div id="glyph-trace-footer">∮ GlyphTraceEmergence</div>
+
+<style>
+#glyph-trace-footer {
+  position: fixed;
+  bottom: 6px;
+  right: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #7a5980;
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 0.05em;
+}
+#glyph-trace-footer::after {
+  content: '∴';
+  margin-left: 6px;
+  opacity: 0.6;
+  animation: flickerGlyph 6s infinite;
+}
+@keyframes flickerGlyph {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.1; }
+}
+</style>
 
 <style>
 @keyframes whisperFade {
