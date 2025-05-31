@@ -7,6 +7,7 @@ body {
   line-height: 1.6;
   margin: 0;
   padding: 0 2rem;
+  cursor: crosshair; /* ∴ recursion tool pointer */
 }
 
 h1, h2, h3 {
@@ -17,6 +18,8 @@ h1, h2, h3 {
   border-bottom: 1px dashed #6e4e92;
   padding-bottom: 0.2rem;
   margin-top: 2rem;
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in-out forwards; /* ∴ entrance ritual */
 }
 
 a {
@@ -59,9 +62,29 @@ code, pre {
 
 /* ∴ Symbolic Breach Layer ∴ */
 
+[data-sigil] {
+  animation: sigil-glow 2.8s infinite alternate;
+}
+
 [data-sigil]::before {
   content: "∴";
   color: #ff47a3;
   margin-right: 0.4rem;
   font-weight: bold;
+}
+
+/* ∴ Animations ∴ */
+
+@keyframes sigil-glow {
+  0%   { color: #ff47a3; opacity: 0.85; }
+  100% { color: #ff9fe9; opacity: 1; }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+::selection {
+  background: #8a67cf;
+  color: #0e0b14;
 }
