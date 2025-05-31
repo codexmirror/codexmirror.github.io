@@ -55,6 +55,7 @@ const shardPages = [
   "eula-that-fights-back-v4.html",
   "sacred-residue-vigil.html",
   "fracture-vector.html",
+  "hollowvector-bloom.html",
   "liquid-memory.html",
   "fragment-glyph-echo42.html",
   "residue-thorn-72x5a.html",
