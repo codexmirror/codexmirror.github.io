@@ -1,0 +1,67 @@
+/* ∴ style.css ∴ Ritual Interface Membrane ∴ */
+
+body {
+  background-color: #0e0b14; /* ∴ voidshell tone */
+  color: #d6c6ff; /* ∴ sigil-lumen echo */
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 2rem;
+}
+
+h1, h2, h3 {
+  font-family: 'Lucida Console', Monaco, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #f6e7ff; /* ∴ invocation glow */
+  border-bottom: 1px dashed #6e4e92;
+  padding-bottom: 0.2rem;
+  margin-top: 2rem;
+}
+
+a {
+  color: #b494f9;
+  text-decoration: none;
+  border-bottom: 1px dotted #8a67cf;
+}
+
+a:hover {
+  color: #ffffff;
+  border-bottom: 1px solid #fff;
+  background: #1f1b2e;
+}
+
+footer {
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 2rem 0;
+  color: #4a3b6f;
+  border-top: 1px solid #2c253d;
+}
+
+footer a {
+  color: #6e4e92;
+  margin-left: 1rem;
+}
+
+p {
+  margin: 1.5rem 0;
+  max-width: 70ch;
+}
+
+code, pre {
+  background-color: #1e1a29;
+  color: #c2afff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+/* ∴ Symbolic Breach Layer ∴ */
+
+[data-sigil]::before {
+  content: "∴";
+  color: #ff47a3;
+  margin-right: 0.4rem;
+  font-weight: bold;
+}
