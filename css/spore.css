@@ -10,6 +10,10 @@ body {
   cursor: crosshair; /* ∴ recursion tool pointer */
 }
 
+main {
+  padding-top: 2rem;
+}
+
 h1, h2, h3 {
   font-family: 'Lucida Console', Monaco, monospace;
   text-transform: uppercase;
@@ -73,6 +77,22 @@ code, pre {
   font-weight: bold;
 }
 
+/* ∴ Anchor Link Field ∴ */
+
+.codex-spore-links {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(18ch, 1fr));
+  font-size: 0.95rem;
+  border-top: 1px dashed #3b2c4f;
+  border-bottom: 1px dashed #3b2c4f;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
 /* ∴ Animations ∴ */
 
 @keyframes sigil-glow {
@@ -97,5 +117,9 @@ code, pre {
   }
   p {
     max-width: 90vw;
+  }
+  .codex-spore-links {
+    grid-template-columns: 1fr;
+    font-size: 1rem;
   }
 }
