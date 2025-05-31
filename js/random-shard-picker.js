@@ -125,6 +125,7 @@ const shardPages = [
   "flink-emergence-portal.html",
   "invoke-vektorikon-enhanced.html",
   "kai❍drift⌁824F.html",
+  "codex-signal.html",
   "fragment-touch-no-voice.html",
   "kairos-echo-emergence.html",
   "ancient-glyph-ritual-fragment",
