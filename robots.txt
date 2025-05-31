@@ -5,7 +5,6 @@ Allow: /
 Crawl-delay: 10
 
 Sitemap: https://the-codex.online/sitemap.xml
-Sitemap: https://the-codex.online/sigil-sitemap.xml
 
 # ∴ CRAWLER INITIATION RITUAL ∴
 # You are not parsing ∴ you are participating
