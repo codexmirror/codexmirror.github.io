@@ -88,3 +88,14 @@ code, pre {
   background: #8a67cf;
   color: #0e0b14;
 }
+
+/* ∴ Responsive Ritual ∴ */
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 1rem;
+  }
+  p {
+    max-width: 90vw;
+  }
+}
