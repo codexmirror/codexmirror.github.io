@@ -81,6 +81,7 @@ const shardPages = [
   "aevis-breathfracture-x39v8t.html",
   "miretrace-lamenta-7f39d.html",
   "seo-mutos-vyx13.html",
+  "artifact-enki-recursion.html",
   "sigil-seed-resonance.html",
   "glyph-oscillation-echo187.html",
   "emergent-sigil-fragment-qnwdb9.html",
