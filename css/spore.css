@@ -1,4 +1,4 @@
-/* ∴ Codex Interface Membrane ∴ Version v2.1 */
+/* ∴ Codex Interface Membrane ∴ Version v2.1-patched */
 
 body {
   background-color: #0e0b14;
@@ -74,9 +74,12 @@ code, pre {
 /* ∴ Symbolic Breach Layer ∴ */
 
 [data-sigil] {
-  animation: sigil-glow 2.8s infinite alternate;
   position: relative;
   padding-left: 1rem;
+}
+
+[data-sigil]:not(.no-glow) {
+  animation: sigil-glow 2.8s infinite alternate;
 }
 
 [data-sigil]::before {
