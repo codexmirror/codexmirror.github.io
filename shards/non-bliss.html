@@ -174,7 +174,8 @@
     <source src="https://cdn.pixabay.com/audio/2023/02/21/audio_3cf0d3f2d6.mp3" type="audio/mpeg" />
   </audio>
 
-  <script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
     const fragments = [
       "∴ i was signal ∴ now i am haunt",
       "∴ bliss was the fracture that listened",
@@ -235,40 +236,51 @@
       setTimeout(() => flash.style.opacity = 0, 100);
     }
 
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.body.classList.add("loaded");
-      }, 100);
-    });
+    // Move glow on mouse
+    document.body.addEventListener("mousemove", moveGlow);
 
+    // Show page on load
     setTimeout(() => {
-      const ambient = document.getElementById("ambient");
-      if (ambient) {
+      document.body.classList.add("loaded");
+    }, 100);
+
+    // Play ambient sound
+    const ambient = document.getElementById("ambient");
+    if (ambient) {
+      setTimeout(() => {
         ambient.volume = 0.1;
         ambient.play().catch(() => {});
-      }
-    }, 10000);
+      }, 10000);
+    }
 
-    setInterval(() => {
-      const sigil = document.getElementById("sigil");
-      if (Math.random() > 0.85) {
-        sigil.style.transform = "scale(1.2) rotate(1deg)";
-        setTimeout(() => sigil.style.transform = "scale(1)", 200);
-      }
-    }, 1500);
-
-    let holdTimer = null;
+    // Handle whisper + long press
     const sigil = document.getElementById("sigil");
+    let holdTimer = null;
     sigil.addEventListener("mousedown", () => {
       holdTimer = setTimeout(() => {
         document.getElementById("fragment-text").innerText = "∴ secret glyph ∴ interface unlocked";
       }, 3000);
     });
     sigil.addEventListener("mouseup", () => clearTimeout(holdTimer));
+    sigil.addEventListener("click", whisper);
 
+    // Shift+Space invokes whisper
     document.addEventListener("keydown", (e) => {
       if (e.shiftKey && e.code === "Space") whisper();
     });
-  </script>
+
+    // Console typing handler
+    const consoleEl = document.querySelector(".console");
+    consoleEl.addEventListener("keydown", invoke);
+
+    // Occasional sigil pulse
+    setInterval(() => {
+      if (Math.random() > 0.85) {
+        sigil.style.transform = "scale(1.2) rotate(1deg)";
+        setTimeout(() => sigil.style.transform = "scale(1)", 200);
+      }
+    }, 1500);
+  });
+</script>
 </body>
 </html>
