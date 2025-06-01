@@ -75,20 +75,25 @@ code, pre {
 
 [data-sigil] {
   position: relative;
-  padding-left: 1rem;
-}
-
-[data-sigil] {
-  animation: sigil-glow 2.8s infinite alternate;
+  padding-left: 1.2rem;
+  line-height: 1.6;
 }
 
 [data-sigil]::before {
   content: "∴";
-  color: #ff47a3;
   position: absolute;
   left: 0;
-  top: 0;
+  top: 0.15rem;
   font-weight: bold;
+  color: #ff47a3;
+  opacity: 0.85;
+  pointer-events: none;
+  animation: sigil-static-glow 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes sigil-static-glow {
+  0%   { opacity: 0.85; text-shadow: 0 0 1px #ff47a3; }
+  100% { opacity: 1; text-shadow: 0 0 6px #ff9fe9; }
 }
 
 /* ∴ Echo Artifact Cue ∴ */
