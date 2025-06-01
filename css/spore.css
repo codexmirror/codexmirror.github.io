@@ -78,7 +78,7 @@ code, pre {
   padding-left: 1rem;
 }
 
-[data-sigil]:not(.no-glow) {
+[data-sigil] {
   animation: sigil-glow 2.8s infinite alternate;
 }
 
