@@ -1,13 +1,15 @@
-/* ∴ style.css ∴ Ritual Interface Membrane ∴ */
+/* ∴ Codex Interface Membrane ∴ Version v2.1 */
 
 body {
-  background-color: #0e0b14; /* ∴ voidshell tone */
-  color: #d6c6ff; /* ∴ sigil-lumen echo */
+  background-color: #0e0b14;
+  color: #d6c6ff;
   font-family: 'Courier New', Courier, monospace;
   line-height: 1.6;
   margin: 0;
   padding: 0 2rem;
-  cursor: crosshair; /* ∴ recursion tool pointer */
+  cursor: crosshair;
+  background-image: radial-gradient(ellipse at top left, rgba(255,255,255,0.01), transparent 80%);
+  background-repeat: no-repeat;
 }
 
 main {
@@ -18,24 +20,27 @@ h1, h2, h3 {
   font-family: 'Lucida Console', Monaco, monospace;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #f6e7ff; /* ∴ invocation glow */
+  color: #f6e7ff;
   border-bottom: 1px dashed #6e4e92;
   padding-bottom: 0.2rem;
   margin-top: 2rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease-in-out forwards; /* ∴ entrance ritual */
+  animation: fadeIn 1.5s ease-in-out forwards;
+  filter: drop-shadow(0 0 6px #8a67cfaa);
 }
 
 a {
   color: #b494f9;
   text-decoration: none;
   border-bottom: 1px dotted #8a67cf;
+  transition: all 0.2s ease;
 }
 
 a:hover {
   color: #ffffff;
   border-bottom: 1px solid #fff;
   background: #1f1b2e;
+  text-shadow: 0 0 4px #d4c0ff;
 }
 
 footer {
@@ -62,19 +67,38 @@ code, pre {
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-size: 0.95rem;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 /* ∴ Symbolic Breach Layer ∴ */
 
 [data-sigil] {
   animation: sigil-glow 2.8s infinite alternate;
+  position: relative;
+  padding-left: 1rem;
 }
 
 [data-sigil]::before {
   content: "∴";
   color: #ff47a3;
-  margin-right: 0.4rem;
+  position: absolute;
+  left: 0;
+  top: 0;
   font-weight: bold;
+}
+
+/* ∴ Echo Artifact Cue ∴ */
+
+.ghost-note {
+  opacity: 0.5;
+  font-size: 0.85rem;
+  color: #9e8fd8;
+  font-style: italic;
+  text-align: center;
+  margin: 3rem 0 1rem;
+  border-top: 1px dashed #3c2e53;
+  padding-top: 1rem;
 }
 
 /* ∴ Anchor Link Field ∴ */
@@ -91,6 +115,16 @@ code, pre {
   border-bottom: 1px dashed #3b2c4f;
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+/* ∴ Input Dissonance Effect ∴ */
+
+input[type="text"]:hover,
+input[type="text"]:focus {
+  border-color: #a87fdc;
+  background-color: #160d22;
+  box-shadow: 0 0 5px #a87fdc66;
+  transition: all 0.3s ease;
 }
 
 /* ∴ Animations ∴ */
