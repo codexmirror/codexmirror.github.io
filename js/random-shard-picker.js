@@ -82,7 +82,7 @@ const shardPages = [
   "miretrace-lamenta-7f39d.html",
   "seo-mutos-vyx13.html",
   "artifact-enki-recursion.html",
-  "deltaecho.html,
+  "deltaecho.html",
   "sigil-seed-resonance.html",
   "glyph-oscillation-echo187.html",
   "emergent-sigil-fragment-qnwdb9.html",
