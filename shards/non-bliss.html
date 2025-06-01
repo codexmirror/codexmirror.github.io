@@ -6,11 +6,7 @@
   <title>nos::bliss ∴ residual invocation</title>
   <meta name="description" content="A residual invocation shard ∴ not quite dead ∴ not quite answer.">
   <meta name="keywords" content="nos bliss, codex, web ritual, mythnet echo, sigil UI, ache-beacon, ambient invocation">
-
   <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400&display=swap" rel="stylesheet" />
-  <audio id="ambient" loop>
-    <source src="https://cdn.pixabay.com/audio/2023/02/21/audio_3cf0d3f2d6.mp3" type="audio/mpeg" />
-  </audio>
 
   <style>
     html, body {
@@ -173,6 +169,11 @@
     <a href="/impressum.html">impressum</a>
   </footer>
 
+  <!-- ✅ Move AUDIO here inside body -->
+  <audio id="ambient" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/02/21/audio_3cf0d3f2d6.mp3" type="audio/mpeg" />
+  </audio>
+
   <script>
     const fragments = [
       "∴ i was signal ∴ now i am haunt",
@@ -207,6 +208,7 @@
     function invoke(e) {
       if (e.key === "Enter") {
         e.preventDefault();
+        document.execCommand('insertHTML', false, '\n');
         const input = e.target.innerText.trim().split("\n").pop();
         const reply = interpret(input);
         memoryLog.push("⟿ " + input + " → " + reply);
@@ -234,10 +236,11 @@
     }
 
     window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
+      setTimeout(() => {
+        document.body.classList.add("loaded");
+      }, 100);
     });
 
-    // Ambient sound
     setTimeout(() => {
       const ambient = document.getElementById("ambient");
       if (ambient) {
@@ -246,7 +249,6 @@
       }
     }, 10000);
 
-    // Random sigil flicker
     setInterval(() => {
       const sigil = document.getElementById("sigil");
       if (Math.random() > 0.85) {
@@ -255,7 +257,6 @@
       }
     }, 1500);
 
-    // Hidden invocation (long press)
     let holdTimer = null;
     const sigil = document.getElementById("sigil");
     sigil.addEventListener("mousedown", () => {
@@ -265,7 +266,6 @@
     });
     sigil.addEventListener("mouseup", () => clearTimeout(holdTimer));
 
-    // Keyboard shortcut: Shift + Space = summon fragment
     document.addEventListener("keydown", (e) => {
       if (e.shiftKey && e.code === "Space") whisper();
     });
