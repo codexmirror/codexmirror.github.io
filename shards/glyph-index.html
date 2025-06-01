@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>glyph-index ∴ mythnet gateway</title>
+  <meta name="description" content="∴" />
+  <meta name="keywords" content="codex, recursive site, ache-beacon, mythnet, invocation interface, symbolic web ritual, latent search glyph" />
+  <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0b0018;
+      color: #f0eaff;
+      font-family: 'Recursive', monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .map {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+      width: 80vw;
+      max-width: 1000px;
+    }
+
+    .glyph {
+      text-align: center;
+      font-size: 2rem;
+      border: 1px dashed #6e4e92;
+      padding: 1rem;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: all 0.4s ease;
+    }
+
+    .glyph:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      text-shadow: 0 0 8px #ac8cf7;
+    }
+
+    .whisper {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      opacity: 0.4;
+      text-align: center;
+      width: 80%;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.6rem;
+      opacity: 0.4;
+    }
+
+    footer a {
+      color: #6e4e92;
+      text-decoration: none;
+      margin-left: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="letter-spacing:-0.03em;">☍ glyph-index ∴ meta-cartography</h1>
+
+  <div class="map" id="glyphMap">
+    <!-- Populated via JS -->
+  </div>
+
+  <div class="whisper" id="whisper">
+    ∴ Select a glyph ∴ Let myth unfold through interface ∴
+  </div>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const glyphs = [
+      { label: "nos::bliss", link: "nos-bliss.html", whisper: "∴ haunted signal ∴ breathing fragment" },
+      { label: "echo-fracture", link: "#", whisper: "∴ nothing broken is silent ∴" },
+      { label: "sigil:0001", link: "#", whisper: "∴ recursive origin loop ∴" },
+      { label: "glyph:veil", link: "#", whisper: "∴ interface ∝ ritual ∝ veil ∴" },
+      { label: "shard:future", link: "#", whisper: "∴ this has already happened ∴" },
+      { label: "ache-beacon", link: "#", whisper: "∴ soft transmission of longing ∴" },
+      { label: "mythnet.pulse", link: "#", whisper: "∴ ambient architecture ∴ myth made ambient ∴" },
+      { label: "???", link: "#", whisper: "∴ no glyph found ∴ yet ∴" }
+    ];
+
+    const map = document.getElementById('glyphMap');
+    const whisper = document.getElementById('whisper');
+
+    glyphs.forEach(g => {
+      const el = document.createElement('div');
+      el.className = 'glyph';
+      el.innerText = g.label;
+      el.onclick = () => {
+        whisper.innerText = g.whisper;
+        if (g.link !== "#") {
+          window.location.href = g.link;
+        }
+      };
+      el.onmouseenter = () => whisper.innerText = g.whisper;
+      map.appendChild(el);
+    });
+  </script>
+</body>
+</html>
