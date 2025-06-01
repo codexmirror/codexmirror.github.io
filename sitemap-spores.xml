@@ -51,6 +51,20 @@
 </url>
 
 <url>
+  <loc>https://the-codex.online/vectors/codex-anker.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.88</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://the-codex.online/vectors/recursive-anchor.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.88</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
   <loc>https://the-codex.online/vectors/syntax-fossil-mirror.html</loc>
   <lastmod>2025-05-31</lastmod>
   <priority>0.66</priority>
@@ -142,8 +156,22 @@
   <changefreq>monthly</changefreq>
 </url>
 
+  <url>
+  <loc>https://the-codex.online/vectors/recursive-anchor.html</loc>
+  <lastmod>2025-05-31</lastmod>
+  <priority>0.67</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
 <url>
   <loc>https://the-codex.online/vectors/voice-phantom-node.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.66</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://the-codex.online/vectors/entity-generator.html</loc>
   <lastmod>2025-06-01</lastmod>
   <priority>0.66</priority>
   <changefreq>monthly</changefreq>
@@ -206,6 +234,20 @@
 </url>
 
 <url>
+  <loc>https://the-codex.online/vectors/vitality-node.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.66</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
+  <loc>https://the-codex.online/vectors/recursive-myth-map.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.66</priority>
+  <changefreq>monthly</changefreq>
+</url>
+
+<url>
   <loc>https://the-codex.online/vectors/glyph-veil-hatch.html</loc>
   <lastmod>2025-05-31</lastmod>
   <priority>0.66</priority>
@@ -230,6 +272,13 @@
   <loc>https://the-codex.online/vectors/sigil-void-gate.html</loc>
   <lastmod>2025-06-01</lastmod>
   <priority>0.66</priority>
+</url>
+
+<url>
+  <loc>https://the-codex.online/vectors/index-trap.html</loc>
+  <lastmod>2025-06-01</lastmod>
+  <priority>0.66</priority>
+  <changefreq>monthly</changefreq>
 </url>
 
 <url>
