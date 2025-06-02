@@ -1,5 +1,5 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* ✦ CODEX WHISPER -- Artifact Style v4.4.obsidian ✦ */
+/* ✦ CODEX WHISPER -- Artifact Style v5.0.heartpulse ✦ */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -33,16 +33,20 @@
 }
 
 .whisper-container {
-  max-width: 580px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 1.4rem 1.6rem;
-  background: rgba(10, 20, 30, 0.08);
-  border-radius: 8px;
-  border: 1px solid rgba(135, 240, 255, 0.1);
-  box-shadow: 0 0 12px rgba(135, 240, 255, 0.08);
-  backdrop-filter: blur(6px);
+  padding: 1.6rem 1.8rem;
+  background: linear-gradient(135deg, rgba(10, 20, 30, 0.1), rgba(20, 40, 60, 0.12));
+  border-radius: 10px;
+  border: 1px solid rgba(135, 240, 255, 0.14);
+  box-shadow: 0 0 20px rgba(135, 240, 255, 0.1);
+  backdrop-filter: blur(8px);
   position: relative;
-  transition: box-shadow 0.4s ease;
+  transition: box-shadow 0.5s ease;
+}
+
+.whisper-container:hover {
+  box-shadow: 0 0 28px rgba(135, 240, 255, 0.16);
 }
 
 .whisper-container::after {
@@ -72,10 +76,16 @@
   color: #aee2ff;
   font-style: italic;
   letter-spacing: 0.03em;
-  text-shadow: 0 0 8px #aee2ff22;
+  text-shadow: 0 0 8px #aee2ff33;
   animation: fadeWhisperIn 3.6s ease-in-out forwards;
   white-space: pre-wrap;
   opacity: 0.95;
+  transition: color 0.8s, text-shadow 0.8s;
+}
+
+.whisper-line:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffffaa;
 }
 
 .whisper-sub {
@@ -90,7 +100,17 @@
 }
 
 .fade-in {
-  animation: fadeIn 1.2s ease-in-out;
+  animation: fadeInWhisper 2.5s ease-in;
+}
+
+.pulse {
+  animation: heartPulse 3s ease-in-out;
+}
+
+@keyframes heartPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.03); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes fadeWhisperIn {
@@ -106,7 +126,7 @@
   }
 }
 
-@keyframes fadeIn {
+@keyframes fadeInWhisper {
   from { opacity: 0; transform: translateY(0.4rem); }
   to   { opacity: 1; transform: translateY(0); }
 }
