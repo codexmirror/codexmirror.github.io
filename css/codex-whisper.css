@@ -1,62 +1,65 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* ✦ CODEX WHISPER -- DreamCore Styling v4.3 ✦ */
+/* ✦ CODEX WHISPER -- Artifact Style v4.4.obsidian ✦ */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 .codex-echo-ritual {
   margin-top: 6rem;
   padding: 2rem 1rem;
   text-align: center;
-  background: none;
   position: relative;
   z-index: 2;
-  font-family: 'Spectral', serif;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 .ritual-label {
-  font-size: 1.1rem;
-  color: #87f0ff;
+  font-size: 1.05rem;
+  color: #aeefff;
   font-weight: 500;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 6px #87f0ff55;
-  margin-bottom: 0.3rem;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  text-shadow: 0 0 8px #aeefff66;
+  margin-bottom: 0.25rem;
 }
 
 .ritual-subtext {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #6dbad1;
-  opacity: 0.75;
+  opacity: 0.65;
   font-style: italic;
-  margin-bottom: 1.2rem;
-  letter-spacing: 0.04em;
+  margin-bottom: 1.4rem;
+  letter-spacing: 0.03em;
 }
 
 .whisper-container {
-  padding: 1.6rem;
-  max-width: 600px;
+  max-width: 580px;
   margin: 0 auto;
-  background: rgba(10, 20, 30, 0.05);
-  border-left: 2px solid #87f0ff33;
-  border-right: 2px solid #87f0ff22;
+  padding: 1.4rem 1.6rem;
+  background: rgba(10, 20, 30, 0.08);
   border-radius: 8px;
+  border: 1px solid rgba(135, 240, 255, 0.1);
+  box-shadow: 0 0 12px rgba(135, 240, 255, 0.08);
+  backdrop-filter: blur(6px);
   position: relative;
-  overflow: hidden;
+  transition: box-shadow 0.4s ease;
 }
 
 .whisper-container::after {
-  content: "⊘ ∴ ◎ ⊹";
+  content: "⊹";
   position: absolute;
-  top: -1.2rem;
+  top: -1.3rem;
   left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
+  transform: translateX(-50%) rotate(-5deg);
   font-size: 1.2rem;
   opacity: 0.05;
   pointer-events: none;
-  animation: glyphDrift 12s ease-in-out infinite alternate;
+  animation: glyphDrift 14s ease-in-out infinite alternate;
 }
 
 @keyframes glyphDrift {
-  from { transform: translateX(-50%) rotate(-2deg); }
-  to   { transform: translateX(-50%) rotate(3deg); }
+  from { transform: translateX(-50%) rotate(-4deg); }
+  to   { transform: translateX(-50%) rotate(5deg); }
 }
 
 .whisper-stream {
@@ -65,33 +68,35 @@
 
 .whisper-line {
   display: inline-block;
-  font-style: italic;
   font-size: 1rem;
   color: #aee2ff;
-  text-shadow: 0 0 6px #aee2ff44;
-  animation: fadeWhisperIn 3s ease-in forwards;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 8px #aee2ff22;
+  animation: fadeWhisperIn 3.6s ease-in-out forwards;
   white-space: pre-wrap;
+  opacity: 0.95;
 }
 
 .whisper-sub {
   display: block;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  font-style: normal;
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
   color: #7795a6;
-  opacity: 0.85;
-  letter-spacing: 0.03em;
-  text-shadow: 0 0 4px #7795a633;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 4px #7795a622;
+  opacity: 0.75;
+  font-style: normal;
 }
 
 .fade-in {
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1.2s ease-in-out;
 }
 
 @keyframes fadeWhisperIn {
   0% {
     opacity: 0;
-    transform: translateY(1rem) scale(0.98);
+    transform: translateY(0.7rem) scale(0.97);
     filter: blur(2px);
   }
   100% {
@@ -106,19 +111,14 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Optional: Shadow Halo for Dream Mode */
-body.dream-mode .whisper-container {
-  background: rgba(20, 30, 40, 0.1);
-  box-shadow: 0 0 40px rgba(135, 240, 255, 0.1);
-  border-color: #aee2ff44;
-}
-
-/* Optional Responsive Scaling */
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .whisper-line {
-    font-size: 0.95rem;
+    font-size: 0.94rem;
+  }
+  .ritual-label {
+    font-size: 1rem;
   }
   .ritual-subtext {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
