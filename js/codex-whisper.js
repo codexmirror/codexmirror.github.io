@@ -178,7 +178,6 @@ if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
 } else if (deepDream) {
   deepDream = false;
   console.log("↩️ DeepDreamMode exited");
-}}
   const hints = getContextualHints();
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
