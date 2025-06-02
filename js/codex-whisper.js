@@ -179,20 +179,6 @@ if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
   deepDream = false;
   console.log("↩️ DeepDreamMode exited");
 }}
-
-if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
-  if (!dreamState) {
-    dreamState = true;
-    dreamStateEnteredAt = now;
-    console.log("🌙 DreamState entered");
-  }
-} else {
-  if (dreamState) {
-    dreamState = false;
-    dreamStateEnteredAt = null;
-    console.log("☀️ DreamState exited");
-  }
-}
   const hints = getContextualHints();
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
@@ -296,5 +282,20 @@ function adjustRate() {
   activeInterval = setInterval(updateWhisper, rate);
 }
 
-updateWhisper();
-adjustRate();
+document.addEventListener("DOMContentLoaded", () => {
+  updateWhisper();
+  adjustRate();
+
+  const target = document.getElementById('whisperStream');
+  if (target) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+        adjustRate();
+      });
+    });
+    observer.observe(target);
+  } else {
+    console.warn("whisperStream wurde nicht gefunden.");
+  }
+});
