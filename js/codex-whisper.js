@@ -268,14 +268,6 @@ function updateWhisper() {
   whisperEl.classList.add('fade-in');
 }
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    isVisible = entry.isIntersecting;
-    adjustRate();
-  });
-});
-observer.observe(document.getElementById('whisperStream'));
-
 function adjustRate() {
   if (activeInterval) clearInterval(activeInterval);
   const rate = isVisible ? 8000 : 18000;
