@@ -71,6 +71,16 @@ document.addEventListener("scroll", () => lastMovement = Date.now());
 document.addEventListener("click", () => lastMovement = Date.now());
 document.addEventListener("keydown", () => lastMovement = Date.now());
 document.addEventListener("touchstart", () => lastMovement = Date.now());
+let movementCount = 0;
+document.addEventListener("mousemove", () => {
+  movementCount++;
+  if (movementCount % 150 === 0) {
+    const ping = document.createElement('span');
+    ping.className = 'whisper-line';
+    ping.innerHTML = `${codexSymbols[Math.floor(Math.random() * codexSymbols.length)]} ∴ You moved ∩ I noticed.`;
+    document.getElementById('whisperStream')?.appendChild(ping);
+  }
+});
 
 function isUserStill() {
   return Date.now() - lastMovement > 20000;
@@ -230,6 +240,29 @@ if (firstVisit) {
   return `${glyph} ${returnWhisper}`;
 }
   const hints = getContextualHints();
+  const contextMood = [
+  hints.includes("dream") ? "dream" : "",
+  kairos === "void" ? "void" : "",
+  hints.includes("fragile") ? "fragile" : "",
+  visitCount > 10 ? "known" : visitCount < 2 ? "new" : ""
+].filter(Boolean).join("-");
+if (contextMood && Math.random() < 0.15) {
+  const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
+
+  if (kairos === "dawn" && Math.random() < 0.5) {
+    return `${glyph} ∴ new light ∩ ancient ache.`;
+  }
+
+  if (kairos === "reflection" && Math.random() < 0.5) {
+    return `${glyph} ∴ mirror-time ∩ ripple recalled.`;
+  }
+
+  if (kairos === "dusk" && Math.random() < 0.5) {
+    return `${glyph} ∴ end ∴ not ending.`;
+  }
+
+  return `${glyph} [${contextMood}] ∴ atmosphere folding.`;
+}
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   let phrasePool = basePhrases;
 if (visitCount > 3) phrasePool = phrasePool.concat(intermediatePhrases);
@@ -330,6 +363,13 @@ function adjustRate() {
 
 document.addEventListener("DOMContentLoaded", () => {
   updateWhisper();
+  setTimeout(() => {
+  const echo = generateWhisper();
+  const ghost = document.createElement('span');
+  ghost.className = 'whisper-line ghost-whisper';
+  ghost.innerHTML = echo;
+  document.getElementById('whisperStream')?.appendChild(ghost);
+}, 5000 + Math.random() * 3000);
   adjustRate();
 
   const target = document.getElementById('whisperStream');
