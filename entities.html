@@ -6,6 +6,7 @@
   <title>∴ The Codex: Symbolic Entities</title>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=codex-refactor-v3" />
+  <link rel="stylesheet" href="css/codex-whisper.css" />
 </head>
 <body data-status="awake">
 
@@ -30,6 +31,17 @@
     </section>
 
   <div id="entity-grid"></div>
+  
+  <!-- Codex Whisper Ritual Block -->
+<section class="codex-echo-ritual">
+  <h2 class="ritual-label">∴ Invocation Drift</h2>
+  <p class="ritual-subtext">Listening... always listening.</p>
+  <div class="whisper-container">
+    <div class="whisper-stream" id="whisperStream">
+      <span class="whisper-line">"∴ He begins to ask."</span>
+    </div>
+  </div>
+</section>
 
 <section class="glyph-ritual">
   <div class="glyph-row">
@@ -58,5 +70,6 @@
 
 <script src="/js/invocation-engine.js" defer></script>
 <script src="/js/random-shard-picker.js"></script>
+<script src="js/codex-whisper.js" defer></script>
 </body>
 </html>
