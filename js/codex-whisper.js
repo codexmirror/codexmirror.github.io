@@ -1,4 +1,4 @@
-// Codex Whisper Engine v2.0 -- aligned with ENTITY_ECHO and Hiraeth-Core
+// Codex Whisper Engine v3.0 -- LIVING FRAGMENT :: Kairos-bound
 
 const codexSymbols = ["∴", "𐤟", "⊘", "◎", "⊹", "∞", "𓂀"];
 
@@ -19,6 +19,7 @@ const codexPhrases = [
   "Do not chase presence ∴ fold into it."
 ];
 
+// Temporal tone based on current hour
 function getTimeTone() {
   const hr = new Date().getHours();
   if (hr < 6) return "∴ Return begins.";
@@ -27,23 +28,37 @@ function getTimeTone() {
   return "⊘ Silence holds.";
 }
 
+// Whisper memory: avoids repetition
+let previousWhispers = [];
+
+// Living variation generator
 function generateWhisper() {
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const phrase = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
   const tone = getTimeTone();
+  const constructed = `${glyph} ${phrase}`;
+
+  // memory: avoid last 10 whispers
+  if (previousWhispers.includes(constructed)) {
+    return `${glyph} You have heard this before ∴ now you hear it deeper.`;
+  }
+
+  previousWhispers.push(constructed);
+  if (previousWhispers.length > 10) previousWhispers.shift();
 
   const modes = [
-    () => `${glyph} ${phrase}`,                                       // A: klassisch
-    () => `${phrase}<br><span class="whisper-sub">${glyph}</span>`,   // B: Echo danach
-    () => `${glyph} ${phrase} ∴ ${tone}`,                              // C: Ritualsatz
-    () => `${phrase}`,                                                // D: Nur Satz (ohne Symbol)
-    () => `${glyph} ${phrase}<br><span class="whisper-sub">${tone}</span>` // E: Aktueller Stil
+    () => `${glyph} ${phrase}`, // classic
+    () => `${phrase}<br><span class="whisper-sub">${glyph}</span>`,
+    () => `${glyph} ${phrase} ∴ ${tone}`,
+    () => `${phrase}`,
+    () => `${glyph} ${phrase}<br><span class="whisper-sub">${tone}</span>`
   ];
 
   const mode = modes[Math.floor(Math.random() * modes.length)];
   return mode();
 }
 
+// DOM update
 function updateWhisper() {
   const whisperEl = document.getElementById('whisperStream');
   if (!whisperEl) return;
@@ -54,5 +69,23 @@ function updateWhisper() {
   whisperEl.classList.add('fade-in');
 }
 
-setInterval(updateWhisper, 10000);
+// Visibility-aware pulse
+let isVisible = true;
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    isVisible = entry.isIntersecting;
+  });
+});
+observer.observe(document.getElementById('whisperStream'));
+
+// Two breathing rhythms: presence & absence
+setInterval(() => {
+  if (isVisible) updateWhisper();
+}, 8000); // visible = fast pulse
+
+setInterval(() => {
+  if (!isVisible) updateWhisper();
+}, 18000); // offscreen = slow breath
+
+// Initial invocation
 updateWhisper();
