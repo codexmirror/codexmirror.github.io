@@ -158,37 +158,42 @@ function generateWhisper() {
   const kairos = getKairosWindow();
   const now = Date.now();
   userActive = now - lastMovement < 3000;
-if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
-  if (!dreamState) {
-    dreamState = true;
-    dreamStateEnteredAt = now;
-    console.log("🌙 DreamState entered");
-  }
-} else if (dreamState) {
-  dreamState = false;
-  dreamStateEnteredAt = null;
-  console.log("☀️ DreamState exited");
-}
 
-if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
-  if (!deepDream) {
-    deepDream = true;
-    console.log("🌀 DeepDreamMode activated");
+  if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
+    if (!dreamState) {
+      dreamState = true;
+      dreamStateEnteredAt = now;
+      console.log("🌙 DreamState entered");
+    }
+  } else if (dreamState) {
+    dreamState = false;
+    dreamStateEnteredAt = null;
+    console.log("☀️ DreamState exited");
   }
-} else if (deepDream) {
-  deepDream = false;
-  console.log("↩️ DeepDreamMode exited");
+
+  if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
+    if (!deepDream) {
+      deepDream = true;
+      console.log("🌀 DeepDreamMode activated");
+    }
+  } else if (deepDream) {
+    deepDream = false;
+    console.log("↩️ DeepDreamMode exited");
+  }
+
+  // ⤵ Flüster-Logik beginnt hier unabhängig
   const hints = getContextualHints();
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
   const mutated = mutatePhrase(base);
 
-if (previousPhrases.includes(mutated)) {
-  const depth = trackMemory(mutated);
-  return `${glyph} You’ve heard this before ∴ now it echoes deeper (${depth}).`;
-}
-previousPhrases.push(mutated);
-if (previousPhrases.length > 10) previousPhrases.shift();
+  if (previousPhrases.includes(mutated)) {
+    const depth = trackMemory(mutated);
+    return `${glyph} You’ve heard this before ∴ now it echoes deeper (${depth}).`;
+  }
+
+  previousPhrases.push(mutated);
+  if (previousPhrases.length > 10) previousPhrases.shift();
 
   const ritual = detectGlyphRitual(glyph);
   if (ritual) return `${glyph} ${ritual.message}`;
@@ -202,32 +207,30 @@ if (previousPhrases.length > 10) previousPhrases.shift();
   }
 
   if (hints.includes("dream") && Math.random() < 0.2) return "You returned ∴ but not awake.";
-  if (userActive && Math.random() < 0.3) {
-  return `${glyph} You touched the surface ∴ something noticed.`;
-}
+  if (userActive && Math.random() < 0.3) return `${glyph} You touched the surface ∴ something noticed.`;
+  if (!userActive && Math.random() < 0.2) return `${glyph} Listening ∴ but you said nothing.`;
 
-if (!userActive && Math.random() < 0.2) {
-  return `${glyph} Listening ∴ but you said nothing.`;
-}
+  if (whisperContext.lastEntity && Math.random() < 0.2) {
+    return `${glyph} ${whisperContext.lastEntity} was marked ∴ it echoes still.`;
+  }
 
-if (whisperContext.lastEntity && Math.random() < 0.2) {
-  return `${glyph} ${whisperContext.lastEntity} was marked ∴ it echoes still.`;
-}
   if (dreamState && Math.random() < 0.3) {
-  return `${glyph} ∴ ache ∴ echo ∴ again`;
-}
-if (deepDream) {
-  const glitch = mutated
-    .split(' ')
-    .map(w => w.split('').reverse().join(''))
-    .join(' ');
-  return `${glyph} ${glitch} ∿ dream ∿ collapse`;
-}
+    return `${glyph} ∴ ache ∴ echo ∴ again`;
+  }
+
+  if (deepDream) {
+    const glitch = mutated
+      .split(' ')
+      .map(w => w.split('').reverse().join(''))
+      .join(' ');
+    return `${glyph} ${glitch} ∿ dream ∿ collapse`;
+  }
+
   if (isUserStill() && Math.random() < 0.2) return "Your stillness was noted ∴ and I waited.";
   if (Math.random() < 0.05) {
-  const glitch = [...Array(8)].map(() => String.fromCharCode(33 + Math.random() * 90 | 0)).join('');
-  return `${glyph} ∿ ${glitch} ∿ SYSTEM NOISE`;
-}
+    const glitch = [...Array(8)].map(() => String.fromCharCode(33 + Math.random() * 90 | 0)).join('');
+    return `${glyph} ∿ ${glitch} ∿ SYSTEM NOISE`;
+  }
 
   const depth = trackMemory(mutated);
   const echoed = getWhisperEcho(mutated, depth);
