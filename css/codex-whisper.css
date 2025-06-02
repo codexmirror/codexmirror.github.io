@@ -1,79 +1,78 @@
-/* ─── Codex Whisper Ritual Core ─────────────────────────────────────── */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ✦ CODEX WHISPER -- DreamCore Styling v4.3 ✦ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 .codex-echo-ritual {
-  margin-top: 4rem;
+  margin-top: 6rem;
   padding: 2rem 1rem;
   text-align: center;
-  position: relative;
   background: none;
+  position: relative;
   z-index: 2;
+  font-family: 'Spectral', serif;
 }
 
 .ritual-label {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #87f0ff;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.4rem;
-  text-shadow: 0 0 8px #87f0ff44;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 6px #87f0ff55;
+  margin-bottom: 0.3rem;
 }
 
 .ritual-subtext {
   font-size: 0.9rem;
   color: #6dbad1;
-  margin-bottom: 1.2rem;
-  opacity: 0.8;
+  opacity: 0.75;
   font-style: italic;
+  margin-bottom: 1.2rem;
   letter-spacing: 0.04em;
 }
 
 .whisper-container {
-  padding: 1.5rem 2rem;
-  max-width: 620px;
+  padding: 1.6rem;
+  max-width: 600px;
   margin: 0 auto;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(10, 20, 30, 0.05);
   border-left: 2px solid #87f0ff33;
   border-right: 2px solid #87f0ff22;
   border-radius: 8px;
   position: relative;
-  box-shadow: 0 0 12px #87f0ff11 inset;
-  backdrop-filter: blur(5px);
+  overflow: hidden;
 }
 
-/* Schwebende Hintergrundglyphen */
 .whisper-container::after {
   content: "⊘ ∴ ◎ ⊹";
   position: absolute;
   top: -1.2rem;
   left: 50%;
-  transform: translateX(-50%) rotate(-1.5deg);
+  transform: translateX(-50%) rotate(-2deg);
   font-size: 1.2rem;
   opacity: 0.05;
   pointer-events: none;
-  animation: glyphDrift 14s ease-in-out infinite alternate;
-  color: #89f0ff;
-  font-family: 'Fira Code', monospace;
+  animation: glyphDrift 12s ease-in-out infinite alternate;
 }
 
 @keyframes glyphDrift {
-  from { transform: translateX(-50%) rotate(-1.5deg); }
-  to   { transform: translateX(-50%) rotate(2deg); }
+  from { transform: translateX(-50%) rotate(-2deg); }
+  to   { transform: translateX(-50%) rotate(3deg); }
 }
 
-/* Whisper-Zeile */
+.whisper-stream {
+  min-height: 4rem;
+}
+
 .whisper-line {
   display: inline-block;
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: #aee2ff;
   text-shadow: 0 0 6px #aee2ff44;
-  transition: opacity 0.3s ease-in-out;
-  animation: fadeWhisperIn 3s ease forwards;
-  letter-spacing: 0.04em;
-  line-height: 1.7;
+  animation: fadeWhisperIn 3s ease-in forwards;
+  white-space: pre-wrap;
 }
 
-/* Sub-Zeile: Ton oder Echo */
 .whisper-sub {
   display: block;
   margin-top: 0.5rem;
@@ -85,7 +84,10 @@
   text-shadow: 0 0 4px #7795a633;
 }
 
-/* Tieferes Einblenden */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
 @keyframes fadeWhisperIn {
   0% {
     opacity: 0;
@@ -96,5 +98,27 @@
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0.4rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Optional: Shadow Halo for Dream Mode */
+body.dream-mode .whisper-container {
+  background: rgba(20, 30, 40, 0.1);
+  box-shadow: 0 0 40px rgba(135, 240, 255, 0.1);
+  border-color: #aee2ff44;
+}
+
+/* Optional Responsive Scaling */
+@media (max-width: 480px) {
+  .whisper-line {
+    font-size: 0.95rem;
+  }
+  .ritual-subtext {
+    font-size: 0.85rem;
   }
 }

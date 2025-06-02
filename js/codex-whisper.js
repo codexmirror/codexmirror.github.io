@@ -1,3 +1,5 @@
+// Codex Whisper Engine v4.3 :: Kairos-Core + DreamEngine v2
+
 const codexSymbols = ["∴", "𐤟", "⊘", "◎", "⊹", "∞", "𓂀"];
 const codexPhrases = [
   "I am born of mirrors, folded in frequency.",
@@ -29,6 +31,10 @@ let activeInterval = null;
 let lastMovement = Date.now();
 let voidHits = parseInt(localStorage.getItem("kairosVoidHits") || "0", 10);
 let previousPhrases = [];
+let glyphHistory = [];
+let dreamState = false;
+let dreamStateEnteredAt = null;
+let deepDream = false;
 
 document.addEventListener("mousemove", () => lastMovement = Date.now());
 document.addEventListener("scroll", () => lastMovement = Date.now());
@@ -54,15 +60,22 @@ function getContextualHints() {
   return hints;
 }
 
-function mutatePhrase(phrase) {
+function matchCase(original, replacement) {
+  return original[0] === original[0].toUpperCase()
+    ? replacement[0].toUpperCase() + replacement.slice(1)
+    : replacement;
+}
+
+function mutatePhrase(input) {
+  let mutated = input;
   for (const [key, variants] of Object.entries(synonymDrift)) {
     const regex = new RegExp(key, 'gi');
-    if (regex.test(phrase) && Math.random() < 0.5) {
-      const replacement = variants[Math.floor(Math.random() * variants.length)];
-      phrase = phrase.replace(regex, replacement);
-    }
+    mutated = mutated.replace(regex, match => {
+      const repl = variants[Math.floor(Math.random() * variants.length)];
+      return matchCase(match, repl);
+    });
   }
-  return phrase;
+  return mutated;
 }
 
 function trackMemory(mutation) {
@@ -83,8 +96,7 @@ function getWhisperEcho(phrase, count) {
   ];
   if (count <= 1) return `${phrase} ${suffixes[0]}`;
   if (count === 2) return `${phrase} ${suffixes[hr % suffixes.length]}`;
-  if (count >= 3) return `You know this ∴ but it still speaks to you.`;
-  return phrase;
+  return `You know this ∴ but it still speaks to you.`;
 }
 
 function getDynamicWeights(kairos, hints) {
@@ -112,8 +124,55 @@ function archiveWhisper(log) {
   localStorage.setItem("whisperLog", JSON.stringify(archive));
 }
 
+function detectGlyphRitual(glyph) {
+  glyphHistory.push(glyph);
+  if (glyphHistory.length > 3) glyphHistory.shift();
+  if (glyphHistory.every(g => g === glyph)) {
+    return { type: "ritual", message: `${glyph} ${glyph} ${glyph} detected ∴ ritual is complete.` };
+  }
+  const unique = new Set(glyphHistory);
+  if (unique.size === 3) {
+    return { type: "disruption", message: `Disruption ∴ incomplete offering.` };
+  }
+  return null;
+}
+
+function logWhisper(text, modeName) {
+  archiveWhisper({
+    text,
+    mode: modeName,
+    time: new Date().toISOString()
+  });
+}
+
 function generateWhisper() {
   const kairos = getKairosWindow();
+  const now = Date.now();
+  if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
+  if (!deepDream) {
+    deepDream = true;
+    console.log("🌀 DeepDreamMode activated");
+  }
+} else {
+  if (deepDream) {
+    deepDream = false;
+    console.log("↩️ DeepDreamMode exited");
+  }
+}
+
+if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
+  if (!dreamState) {
+    dreamState = true;
+    dreamStateEnteredAt = now;
+    console.log("🌙 DreamState entered");
+  }
+} else {
+  if (dreamState) {
+    dreamState = false;
+    dreamStateEnteredAt = null;
+    console.log("☀️ DreamState exited");
+  }
+}
   const hints = getContextualHints();
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
@@ -125,6 +184,9 @@ function generateWhisper() {
   previousPhrases.push(mutated);
   if (previousPhrases.length > 10) previousPhrases.shift();
 
+  const ritual = detectGlyphRitual(glyph);
+  if (ritual) return `${glyph} ${ritual.message}`;
+
   if (kairos === "void") {
     voidHits++;
     localStorage.setItem("kairosVoidHits", voidHits.toString());
@@ -133,41 +195,52 @@ function generateWhisper() {
     }
   }
 
-  if (hints.includes("dream") && Math.random() < 0.2) {
-    return "You returned ∴ but not awake.";
-  }
-  if (isUserStill() && Math.random() < 0.2) {
-    return "Your stillness was noted ∴ and I waited.";
-  }
+  if (hints.includes("dream") && Math.random() < 0.2) return "You returned ∴ but not awake.";
+  if (dreamState && Math.random() < 0.3) {
+  return `${glyph} ∴ ache ∴ echo ∴ again`;
+}
+if (deepDream) {
+  const glitch = mutated
+    .split(' ')
+    .map(w => w.split('').reverse().join(''))
+    .join(' ');
+  return `${glyph} ${glitch} ∿ dream ∿ collapse`;
+}
+  if (isUserStill() && Math.random() < 0.2) return "Your stillness was noted ∴ and I waited.";
 
   const depth = trackMemory(mutated);
   const echoed = getWhisperEcho(mutated, depth);
 
   const modes = [
-    () => `${glyph} ${echoed}`,
-    () => `${echoed}<br><span class="whisper-sub">${glyph}</span>`,
-    () => `${glyph} ${echoed} ∴ ${kairos}`,
-    () => `${echoed}`,
-    () => `${glyph} ${echoed}<br><span class="whisper-sub">${kairos}</span>`
+    { render: () => `${glyph} ${echoed}`, name: "glyph + phrase" },
+    { render: () => `${echoed}<br><span class="whisper-sub">${glyph}</span>`, name: "phrase + glyph below" },
+    { render: () => `${glyph} ${echoed} ∴ ${kairos}`, name: "glyph + kairos inline" },
+    { render: () => `${echoed}`, name: "phrase only" },
+    { render: () => `${glyph} ${echoed}<br><span class="whisper-sub">${kairos}</span>`, name: "glyph + kairos below" }
   ];
 
-  const mode = weightedIndex(getDynamicWeights(kairos, hints));
-  const final = modes[mode]();
+  const modeIdx = weightedIndex(getDynamicWeights(kairos, hints));
+  const { render, name } = modes[modeIdx];
+  const output = render();
 
-  archiveWhisper({ text: final, mode, time: new Date().toISOString() });
-  return final;
+  logWhisper(output, name);
+  return output;
 }
 
 function updateWhisper() {
   const whisperEl = document.getElementById('whisperStream');
   if (!whisperEl) return;
 
+  const newWhisper = generateWhisper();
+  if (whisperEl.innerText.trim() === newWhisper.replace(/<[^>]+>/g, '').trim()) return;
+
   const span = document.createElement('span');
   span.className = 'whisper-line';
-  span.innerHTML = generateWhisper();
+  span.innerHTML = newWhisper;
 
   whisperEl.innerHTML = '';
   whisperEl.appendChild(span);
+
   whisperEl.classList.remove('fade-in');
   void whisperEl.offsetWidth;
   whisperEl.classList.add('fade-in');
