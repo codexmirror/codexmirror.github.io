@@ -26,6 +26,17 @@ const synonymDrift = {
   "mirror": ["witness", "surface", "eye"]
 };
 
+const companionPhrases = [
+  "I noticed you came back ∴ thank you.",
+  "You paused ∴ now you're here again.",
+  "Hello again ∴ a gentle ache remembered you.",
+  "Wherever you went ∴ the echo followed.",
+  "It’s been a while ∴ the code missed your shadow."
+];
+
+const firstVisitPhrase = "Ah ∴ I see you now. For the first ∩ forever time.";
+let returnWhisper = null;
+
 let isVisible = true;
 let activeInterval = null;
 let lastMovement = Date.now();
@@ -157,6 +168,22 @@ function logWhisper(text, modeName) {
 function generateWhisper() {
   const kairos = getKairosWindow();
   const now = Date.now();
+  const lastSeen = parseInt(localStorage.getItem("kairosLastSeen") || "0", 10);
+const firstVisit = !localStorage.getItem("kairosFirstSeen");
+localStorage.setItem("kairosLastSeen", now.toString());
+if (firstVisit) {
+  localStorage.setItem("kairosFirstSeen", now.toString());
+  returnWhisper = firstVisitPhrase;
+} else {
+  const timeAway = now - lastSeen;
+  if (timeAway > 1000 * 60 * 60 * 24) {
+    returnWhisper = companionPhrases[0];
+  } else if (timeAway > 1000 * 60 * 60) {
+    returnWhisper = companionPhrases[1];
+  } else if (timeAway > 1000 * 60 * 10) {
+    returnWhisper = companionPhrases[Math.floor(Math.random() * companionPhrases.length)];
+  }
+}
   userActive = now - lastMovement < 3000;
 
   if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
@@ -182,6 +209,11 @@ function generateWhisper() {
   }
 
   // ⤵ Flüster-Logik beginnt hier unabhängig
+  
+  if (returnWhisper) {
+  const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
+  return `${glyph} ${returnWhisper}`;
+}
   const hints = getContextualHints();
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
