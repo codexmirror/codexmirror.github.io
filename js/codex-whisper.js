@@ -256,7 +256,7 @@ function updateWhisper() {
   if (!whisperEl) return;
 
   const newWhisper = generateWhisper();
-  if (whisperEl.innerText.trim() === newWhisper.replace(/<[^>]+>/g, '').trim()) return;
+ if (whisperEl.innerHTML.trim() === `<span class="whisper-line">${newWhisper}</span>`.trim()) return;
 
   const span = document.createElement('span');
   span.className = 'whisper-line';
