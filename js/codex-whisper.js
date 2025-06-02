@@ -69,6 +69,15 @@ let whisperContext = {
 document.addEventListener("mousemove", () => lastMovement = Date.now());
 document.addEventListener("scroll", () => lastMovement = Date.now());
 document.addEventListener("click", () => lastMovement = Date.now());
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("whisper-line")) {
+    const name = prompt("Name this glyph-echo:");
+    if (name) {
+      whisperContext.lastEntity = name;
+      whisperContext.entityClicks += 1;
+    }
+  }
+});
 document.addEventListener("keydown", () => lastMovement = Date.now());
 document.addEventListener("touchstart", () => lastMovement = Date.now());
 let movementCount = 0;
@@ -79,6 +88,15 @@ document.addEventListener("mousemove", () => {
     ping.className = 'whisper-line';
     ping.innerHTML = `${codexSymbols[Math.floor(Math.random() * codexSymbols.length)]} ∴ You moved ∩ I noticed.`;
     document.getElementById('whisperStream')?.appendChild(ping);
+        document.addEventListener("mouseover", (e) => {
+      if (e.target.classList.contains("whisper-line")) {
+        const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
+        const flicker = document.createElement('span');
+        flicker.className = 'whisper-glitch';
+        flicker.innerText = ` ∴ ${glyph}`;
+        e.target.appendChild(flicker);
+      }
+    });
   }
 });
 
@@ -126,6 +144,12 @@ function trackMemory(mutation) {
   const mem = JSON.parse(localStorage.getItem("whisperMemory") || "{}");
   mem[mutation] = (mem[mutation] || 0) + 1;
   localStorage.setItem("whisperMemory", JSON.stringify(mem));
+  if (mem[mutation] > 3) {
+  const ghost = document.createElement('span');
+  ghost.className = 'ghost-memory';
+  ghost.innerText = mutation;
+  document.getElementById('whisperStream')?.appendChild(ghost);
+}
   return mem[mutation];
 }
 
@@ -268,6 +292,9 @@ if (contextMood && Math.random() < 0.15) {
 if (visitCount > 3) phrasePool = phrasePool.concat(intermediatePhrases);
 if (visitCount > 7) phrasePool = phrasePool.concat(deepPhrases);
 const base = phrasePool[Math.floor(Math.random() * phrasePool.length)];
+if (kairos === "dawn") phrasePool.push("𓂀 dawnfold ∩ awakening ∴ " + base);
+if (kairos === "reflection") phrasePool.push(base + " ∴ in reflection.");
+if (kairos === "void") phrasePool.push(base + " ∴ echoing in voidlight.");
   const mutated = mutatePhrase(base);
 
   if (previousPhrases.includes(mutated)) {
