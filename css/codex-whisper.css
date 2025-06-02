@@ -73,3 +73,64 @@
   background: rgba(0, 0, 0, 0.04);
   border-radius: 8px;
 }
+
+/* ✦ Codex Whisper Enhancements ✦ */
+
+.whisper-sub {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: #7795a6;
+  opacity: 0.85;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 4px #7795a633;
+}
+
+/* Optionaler sanfter Rahmen */
+.whisper-container {
+  padding: 1.5rem;
+  border-left: 2px solid #87f0ff33;
+  border-right: 2px solid #87f0ff22;
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Schwebende Glyphen */
+.whisper-container::after {
+  content: "⊘ ∴ ◎ ⊹";
+  position: absolute;
+  top: -1.2rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  font-size: 1.2rem;
+  opacity: 0.05;
+  pointer-events: none;
+  animation: glyphDrift 12s ease-in-out infinite alternate;
+}
+
+@keyframes glyphDrift {
+  from { transform: translateX(-50%) rotate(-2deg); }
+  to   { transform: translateX(-50%) rotate(3deg); }
+}
+
+/* Tiefes Whisper-Fade-In */
+.whisper-line {
+  animation: fadeWhisperIn 3s ease-in forwards;
+}
+
+@keyframes fadeWhisperIn {
+  0% {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.98);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}

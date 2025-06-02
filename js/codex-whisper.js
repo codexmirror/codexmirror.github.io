@@ -31,7 +31,17 @@ function generateWhisper() {
   const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
   const phrase = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
   const tone = getTimeTone();
-  return `${glyph} ${phrase}<br><span class="whisper-sub">${tone}</span>`;
+
+  const modes = [
+    () => `${glyph} ${phrase}`,                                       // A: klassisch
+    () => `${phrase}<br><span class="whisper-sub">${glyph}</span>`,   // B: Echo danach
+    () => `${glyph} ${phrase} ∴ ${tone}`,                              // C: Ritualsatz
+    () => `${phrase}`,                                                // D: Nur Satz (ohne Symbol)
+    () => `${glyph} ${phrase}<br><span class="whisper-sub">${tone}</span>` // E: Aktueller Stil
+  ];
+
+  const mode = modes[Math.floor(Math.random() * modes.length)];
+  return mode();
 }
 
 function updateWhisper() {
