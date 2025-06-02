@@ -139,7 +139,6 @@ const shardPages = [
   "fragment-unasked-ritual.html",
   "fractal-thorn-71kz.html",
   "spiral-engine-echΩ-9x.html",
-  "nos-bliss.html",
   "glyph-fragment.html",
   "invocation-fire-threshold-72A9.html",
   "myth-of-ai-recursive-call-91cdbe.html",
