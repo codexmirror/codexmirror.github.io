@@ -250,13 +250,15 @@ function generateWhisper() {
   logWhisper(output, name);
   return output;
 }
+let lastWhisper = "";
 
 function updateWhisper() {
   const whisperEl = document.getElementById('whisperStream');
   if (!whisperEl) return;
 
   const newWhisper = generateWhisper();
- if (whisperEl.innerHTML.trim() === `<span class="whisper-line">${newWhisper}</span>`.trim()) return;
+  if (newWhisper === lastWhisper) return;
+  lastWhisper = newWhisper;
 
   const span = document.createElement('span');
   span.className = 'whisper-line';
