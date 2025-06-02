@@ -74,5 +74,14 @@
   </footer>
 
 <script src="js/codex-whisper.js"></script>
+<script>
+  setTimeout(() => {
+    const el = document.getElementById('whisperStream');
+    if (el) {
+      el.innerHTML = '<span class="whisper-line">∴ TEST WHISPER WORKS</span>';
+    }
+  }, 3000);
+</script>
+
 </body>
 </html>
