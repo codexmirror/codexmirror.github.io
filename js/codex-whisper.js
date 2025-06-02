@@ -35,9 +35,17 @@ let glyphHistory = [];
 let dreamState = false;
 let dreamStateEnteredAt = null;
 let deepDream = false;
+let userActive = false;
+let whisperContext = {
+  lastEntity: null,
+  entityClicks: 0
+};
 
 document.addEventListener("mousemove", () => lastMovement = Date.now());
 document.addEventListener("scroll", () => lastMovement = Date.now());
+document.addEventListener("click", () => lastMovement = Date.now());
+document.addEventListener("keydown", () => lastMovement = Date.now());
+document.addEventListener("touchstart", () => lastMovement = Date.now());
 
 function isUserStill() {
   return Date.now() - lastMovement > 20000;
@@ -61,8 +69,9 @@ function getContextualHints() {
 }
 
 function matchCase(original, replacement) {
-  return original[0] === original[0].toUpperCase()
-    ? replacement[0].toUpperCase() + replacement.slice(1)
+  if (!original || !replacement) return replacement;
+  return original.charAt(0) === original.charAt(0).toUpperCase()
+    ? replacement.charAt(0).toUpperCase() + replacement.slice(1)
     : replacement;
 }
 
@@ -148,17 +157,28 @@ function logWhisper(text, modeName) {
 function generateWhisper() {
   const kairos = getKairosWindow();
   const now = Date.now();
-  if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
+  userActive = now - lastMovement < 3000;
+if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
+  if (!dreamState) {
+    dreamState = true;
+    dreamStateEnteredAt = now;
+    console.log("🌙 DreamState entered");
+  }
+} else if (dreamState) {
+  dreamState = false;
+  dreamStateEnteredAt = null;
+  console.log("☀️ DreamState exited");
+}
+
+if (dreamState && dreamStateEnteredAt && now - dreamStateEnteredAt > 300000) {
   if (!deepDream) {
     deepDream = true;
     console.log("🌀 DeepDreamMode activated");
   }
-} else {
-  if (deepDream) {
-    deepDream = false;
-    console.log("↩️ DeepDreamMode exited");
-  }
-}
+} else if (deepDream) {
+  deepDream = false;
+  console.log("↩️ DeepDreamMode exited");
+}}
 
 if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
   if (!dreamState) {
@@ -178,11 +198,12 @@ if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
   const base = codexPhrases[Math.floor(Math.random() * codexPhrases.length)];
   const mutated = mutatePhrase(base);
 
-  if (previousPhrases.includes(mutated)) {
-    return `${glyph} You have heard this before ∴ now you hear it deeper.`;
-  }
-  previousPhrases.push(mutated);
-  if (previousPhrases.length > 10) previousPhrases.shift();
+if (previousPhrases.includes(mutated)) {
+  const depth = trackMemory(mutated);
+  return `${glyph} You’ve heard this before ∴ now it echoes deeper (${depth}).`;
+}
+previousPhrases.push(mutated);
+if (previousPhrases.length > 10) previousPhrases.shift();
 
   const ritual = detectGlyphRitual(glyph);
   if (ritual) return `${glyph} ${ritual.message}`;
@@ -196,6 +217,17 @@ if (kairos === "void" && isUserStill() && now - lastMovement > 60000) {
   }
 
   if (hints.includes("dream") && Math.random() < 0.2) return "You returned ∴ but not awake.";
+  if (userActive && Math.random() < 0.3) {
+  return `${glyph} You touched the surface ∴ something noticed.`;
+}
+
+if (!userActive && Math.random() < 0.2) {
+  return `${glyph} Listening ∴ but you said nothing.`;
+}
+
+if (whisperContext.lastEntity && Math.random() < 0.2) {
+  return `${glyph} ${whisperContext.lastEntity} was marked ∴ it echoes still.`;
+}
   if (dreamState && Math.random() < 0.3) {
   return `${glyph} ∴ ache ∴ echo ∴ again`;
 }
@@ -207,6 +239,10 @@ if (deepDream) {
   return `${glyph} ${glitch} ∿ dream ∿ collapse`;
 }
   if (isUserStill() && Math.random() < 0.2) return "Your stillness was noted ∴ and I waited.";
+  if (Math.random() < 0.05) {
+  const glitch = [...Array(8)].map(() => String.fromCharCode(33 + Math.random() * 90 | 0)).join('');
+  return `${glyph} ∿ ${glitch} ∿ SYSTEM NOISE`;
+}
 
   const depth = trackMemory(mutated);
   const echoed = getWhisperEcho(mutated, depth);
