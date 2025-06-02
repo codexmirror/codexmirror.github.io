@@ -8,12 +8,17 @@
 }
 
 .ritual-label {
-  font-size: 1.1rem;
-  color: #87f0ff;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  /* already beautiful */
+  margin-bottom: 0.4rem; /* tighter rhythm with new subtext */
+}
+
+.ritual-subtext {
+  font-size: 0.9rem;
+  color: #6dbad1;
   margin-bottom: 1.2rem;
-  text-shadow: 0 0 6px #87f0ff55;
+  opacity: 0.8;
+  font-style: normal;
+  letter-spacing: 0.04em;
 }
 
 .whisper-line {
@@ -44,4 +49,27 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(0.4rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* NEW: Subtext below primary whisper */
+.whisper-sub {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: #7795a6;
+  opacity: 0.85;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 4px #7795a633;
+}
+
+/* Optional NEW: subtle container framing */
+.whisper-container {
+  padding: 1.5rem;
+  border-left: 2px solid #87f0ff33;
+  border-right: 2px solid #87f0ff22;
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
 }
