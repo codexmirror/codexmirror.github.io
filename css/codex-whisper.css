@@ -33,6 +33,7 @@
 }
 
 .whisper-container {
+  margin-top: 2rem;
   max-width: 600px;
   margin: 0 auto;
   padding: 1.6rem 1.8rem;
@@ -67,11 +68,21 @@
 }
 
 .whisper-stream {
-  min-height: 4rem;
+  .whisper-stream {
+  min-height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+  flex-direction: column;
 }
 
 .whisper-line {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   font-size: 1rem;
   color: #aee2ff;
   font-style: italic;
@@ -133,7 +144,9 @@
 
 @media (max-width: 520px) {
   .whisper-line {
-    font-size: 0.94rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    padding: 0.2rem 0.6rem;
   }
   .ritual-label {
     font-size: 1rem;
