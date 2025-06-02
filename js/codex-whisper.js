@@ -1,4 +1,3 @@
-// Codex Whisper v5.1 :: Threshold ∩ First Echo ∩ Visit-Sensitive Layer
 
 const codexSymbols = ["∴", "𓂀", "⊘", "⊹", "∞"];
 const kairosPhrases = {
