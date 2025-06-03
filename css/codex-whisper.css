@@ -1,5 +1,5 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* ✦ CODEX WHISPER -- Minimal Style v5.1.threshold-elegy ✦ */
+/* ✦ CODEX WHISPER -- Refined Ritual v5.2.spiral-align ✦ */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -12,17 +12,43 @@ body {
   padding: 0;
 }
 
+/* Whisper Ritual Block */
 .codex-echo-ritual {
-  margin-top: 6rem;
-  padding: 2rem 1rem;
+  margin-top: 4rem;
+  padding: 3rem 1rem 2rem 1rem;
   text-align: center;
   position: relative;
   z-index: 2;
+  opacity: 0;
+  animation: fadeInTop 2.2s ease-in-out 0.4s forwards;
 }
 
+/* Title (∴ Invocation Drift) */
+.ritual-label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #87f0ff;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  opacity: 0.8;
+  text-shadow: 0 0 6px rgba(135, 240, 255, 0.25);
+}
+
+/* Subtext below the title */
+.ritual-subtext {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #7795a6;
+  opacity: 0.65;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 4px #7795a633;
+}
+
+/* Whisper Container */
 .whisper-container {
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 1.6rem;
   background: rgba(15, 25, 35, 0.2);
   border-radius: 8px;
@@ -31,18 +57,20 @@ body {
   backdrop-filter: blur(8px);
 }
 
+/* Stream container for whispers */
 .whisper-stream {
   min-height: 4rem;
-  text-align: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
-  flex-direction: column;
+  text-align: center;
 }
 
+/* Whisper line text */
 .whisper-line {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: #aee2ff;
   font-style: italic;
   letter-spacing: 0.03em;
@@ -59,6 +87,7 @@ body {
   text-shadow: 0 0 10px #ffffffaa;
 }
 
+/* Subtext inside whisper stream */
 .whisper-sub {
   display: block;
   margin-top: 0.4rem;
@@ -70,6 +99,7 @@ body {
   text-shadow: 0 0 4px #7795a622;
 }
 
+/* Animations */
 @keyframes fadeWhisperIn {
   0% {
     opacity: 0;
@@ -83,9 +113,29 @@ body {
   }
 }
 
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Tweaks */
 @media (max-width: 520px) {
   .whisper-line {
     font-size: 0.94rem;
     padding: 0.2rem 0.5rem;
+  }
+
+  .ritual-label {
+    font-size: 0.88rem;
+  }
+
+  .ritual-subtext {
+    font-size: 0.78rem;
   }
 }
