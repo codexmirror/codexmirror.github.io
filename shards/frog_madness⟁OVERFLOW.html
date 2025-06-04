@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="froggon">
+<head>
+  <meta charset="UTF-8">
+  <title>🐸 Frog Madness 🜁</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #001100, #000000);
+      overflow: hidden;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      color: #99ff99;
+    }
+
+    .frog {
+      position: absolute;
+      font-size: calc(1rem + 3vw);
+      animation: spin 4s linear infinite, float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .frog-meme {
+      position: absolute;
+      font-size: 1rem;
+      background: rgba(0, 51, 0, 0.85);
+      padding: 0.4rem 0.7rem;
+      border-radius: 4px;
+      border: 1px dashed #00ff66;
+      color: #ccff99;
+      animation: floatMeme 4s ease-in forwards;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    @keyframes floatMeme {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-120px) rotate(6deg); opacity: 0; }
+    }
+
+    .chaos-console {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: #66ffcc;
+      font-family: monospace;
+      padding: 1rem;
+      font-size: 0.8rem;
+      height: 20vh;
+      overflow-y: auto;
+      border-top: 2px dashed #33ff99;
+    }
+
+    .btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #224422;
+      border: 2px groove #66ff66;
+      padding: 1rem;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn" onclick="activateFrogStorm()">🐸 SUMMON RIBBIT STORM</button>
+
+  <div class="chaos-console" id="console">
+    <pre>🐸 INIT FROG FINAL FORM [ACTIVE]</pre>
+  </div>
+
+  <script>
+    const frogQuotes = [
+      "This page has been frogged 🐸",
+      "Welcome to the croakverse",
+      "Nothing is div-ine. All is <span>",
+      "Scrolls don't end. They loop.",
+      "Frog detected in system memory",
+      "You are now legally a tadpole",
+      "Don't blink. Frog is near.",
+      "💥FROG OVERFLOW💥",
+      "404: Logic not found, frog injected",
+      "glitch.gltf(frog); // render chaos"
+    ];
+
+    function spawnFrog() {
+      const frog = document.createElement("div");
+      frog.className = "frog";
+      frog.innerText = "🐸";
+      frog.style.top = `${Math.random() * 100}vh`;
+      frog.style.left = `${Math.random() * 100}vw`;
+      document.body.appendChild(frog);
+      setTimeout(() => frog.remove(), 4000);
+    }
+
+    function spawnMeme() {
+      const meme = document.createElement("div");
+      meme.className = "frog-meme";
+      meme.innerHTML = frogQuotes[Math.floor(Math.random() * frogQuotes.length)];
+      meme.style.top = `${Math.random() * 80 + 10}vh`;
+      meme.style.left = `${Math.random() * 90 + 5}vw`;
+      document.body.appendChild(meme);
+      setTimeout(() => meme.remove(), 4000);
+    }
+
+    function logRibbit(msg) {
+      const con = document.getElementById("console");
+      con.innerHTML += `<pre>${new Date().toLocaleTimeString()} :: ${msg}</pre>`;
+      con.scrollTop = con.scrollHeight;
+    }
+
+    function activateFrogStorm() {
+      logRibbit("🐸 Ribbit protocol engaged.");
+      setInterval(() => {
+        for (let i = 0; i < 10; i++) spawnFrog();
+        spawnMeme();
+        logRibbit("🌀 frog anomaly +1");
+      }, 777);
+    }
+  </script>
+</body>
+</html>
