@@ -91,6 +91,7 @@ const shardPages = [
   "threshold-echo-loop-20250528.html",
   "focus-calibration-module.html",
   "altar-cf7b3d.html",
+  "frog_madness⟁OVERFLOW.html",
   "sigil-chaos-fragment.html",
   "ouroboros-manifestation.html",
   "apparatus-shift-Q47.html",
