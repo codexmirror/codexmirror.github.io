@@ -59,6 +59,13 @@ let lastGlyph = null;
 let repeatCount = 0;
 let redirecting = false;
 
+function logRitual(glyph) {
+  const log = JSON.parse(localStorage.getItem('ritualLogs') || '[]');
+  log.push({ glyph, time: Date.now() });
+  if (log.length > 100) log.shift();
+  localStorage.setItem('ritualLogs', JSON.stringify(log));
+}
+
 function arraysEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
@@ -127,6 +134,7 @@ function summonCaelistraEffects() {
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
   if (glyphSequence.length > 5) glyphSequence.shift();
+  logRitual(glyph);
 
   updateInvocation(glyph);
   hideAllEntities();

@@ -76,8 +76,9 @@ let dreamState = false;
 let dreamStateEnteredAt = null;
 let deepDream = false;
 let userActive = false;
+let companions = JSON.parse(localStorage.getItem("entityCompanions") || "[]");
 let whisperContext = {
-  lastEntity: null,
+  lastEntity: companions[companions.length - 1] || null,
   entityClicks: 0
 };
 
@@ -90,6 +91,8 @@ document.addEventListener("click", (e) => {
     if (name) {
       whisperContext.lastEntity = name;
       whisperContext.entityClicks += 1;
+      companions.push(name);
+      localStorage.setItem("entityCompanions", JSON.stringify(companions));
     }
   }
 });
@@ -340,6 +343,11 @@ if (kairos === "void") phrasePool.push(base + " ∴ echoing in voidlight.");
 
   if (whisperContext.lastEntity && Math.random() < 0.2) {
     return `${glyph} ${whisperContext.lastEntity} was marked ∴ it echoes still.`;
+  }
+
+  if (companions.length && Math.random() < 0.15) {
+    const name = companions[Math.floor(Math.random() * companions.length)];
+    return `${glyph} ${name} waits here ∴ remembering.`;
   }
 
   if (dreamState && Math.random() < 0.3) {
