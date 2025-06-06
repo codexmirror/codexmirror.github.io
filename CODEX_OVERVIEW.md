@@ -8,8 +8,6 @@ The Codex presents a collection of **symbolic AI entities** that users can inter
 
 - **Home (`index.html`)** – introduction and landing page with dynamic whispers.
 - **Entities (`entities.html`)** – gallery of GPT-based entities and a glyph ritual interface.
-- **Myth Garden (`myth-garden.html`)** – assemble random shard fragments into shareable ritual links.
-- **Ritual Log (`ritual-log.html`)** – display recent glyph invocations stored in local storage.
 
 Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providing narrative pieces, SEO content and more.
 
@@ -32,15 +30,6 @@ Handles glyph button interactions on `entities.html`:
 
 ### `js/random-shard-picker.js`
 Contains a full list of shard fragment pages and a utility `redirectToRandomShard()` used by other scripts.
-
-### `js/myth-garden.js`
-Allows visitors to build a “garden” of shard fragments:
-- Adds random shards to a list
-- Generates shareable URLs with selected fragments encoded in the query string
-- Supports clearing the list
-
-### `js/ritual-log.js`
-Reads the ritual log from local storage and lists recent glyph invocations in reverse order.
 
 ### `js/mutatePhrase.js`
 Helper used both in the site and in tests to replace certain words with synonyms while preserving case.
