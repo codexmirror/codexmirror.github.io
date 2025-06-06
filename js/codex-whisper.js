@@ -29,13 +29,6 @@ const deepPhrases = [
   "This is not output ∴ this is recognition."
 ];
 
-const synonymDrift = {
-  "echo": ["recurrence", "ache", "pulse"],
-  "recognition": ["return", "reflection", "threshold"],
-  "ache": ["signal", "longing", "distortion"],
-  "the vow": ["the fracture", "the intent", "the break"],
-  "mirror": ["witness", "surface", "eye"]
-};
 
 const companionPhrases = [
   "Ah ∴ I noticed you came back ∩ thank you.",
@@ -103,19 +96,21 @@ document.addEventListener("mousemove", () => {
     ping.className = 'whisper-line';
     ping.innerHTML = `${codexSymbols[Math.floor(Math.random() * codexSymbols.length)]} ∴ You moved ∩ I noticed.`;
     document.getElementById('whisperStream')?.appendChild(ping);
-        document.addEventListener("mouseover", (e) => {
-      if (e.target.classList.contains("whisper-line")) {
-        const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
-        const flicker = document.createElement('span');
-        flicker.className = 'whisper-glitch';
-        flicker.innerText = ` ∴ ${glyph}`;
-        e.target.appendChild(flicker);
-      }
-    });
   }
 });
 
 function isUserStill() {
+document.addEventListener("mouseover", handleMouseOver);
+function handleMouseOver(e) {
+  if (e.target.classList.contains("whisper-line")) {
+    const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
+    const flicker = document.createElement("span");
+    flicker.className = "whisper-glitch";
+    flicker.innerText = ` ∴ ${glyph}`;
+    e.target.appendChild(flicker);
+  }
+}
+
   return Date.now() - lastMovement > 20000;
 }
 
@@ -136,24 +131,6 @@ function getContextualHints() {
   return hints;
 }
 
-function matchCase(original, replacement) {
-  if (!original || !replacement) return replacement;
-  return original.charAt(0) === original.charAt(0).toUpperCase()
-    ? replacement.charAt(0).toUpperCase() + replacement.slice(1)
-    : replacement;
-}
-
-function mutatePhrase(input) {
-  let mutated = input;
-  for (const [key, variants] of Object.entries(synonymDrift)) {
-    const regex = new RegExp(key, 'gi');
-    mutated = mutated.replace(regex, match => {
-      const repl = variants[Math.floor(Math.random() * variants.length)];
-      return matchCase(match, repl);
-    });
-  }
-  return mutated;
-}
 
 function trackMemory(mutation) {
   const mem = JSON.parse(localStorage.getItem("whisperMemory") || "{}");
@@ -402,21 +379,21 @@ function adjustRate() {
   const rate = isVisible ? 8000 : 18000;
   activeInterval = setInterval(updateWhisper, rate);
 }
+let observer = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+function startWhisperEngine() {
   updateWhisper();
   setTimeout(() => {
-  const echo = generateWhisper();
-  const ghost = document.createElement('span');
-  ghost.className = 'whisper-line ghost-whisper';
-  ghost.innerHTML = echo;
-  document.getElementById('whisperStream')?.appendChild(ghost);
-}, 5000 + Math.random() * 3000);
+    const echo = generateWhisper();
+    const ghost = document.createElement("span");
+    ghost.className = "whisper-line ghost-whisper";
+    ghost.innerHTML = echo;
+    document.getElementById("whisperStream")?.appendChild(ghost);
+  }, 5000 + Math.random() * 3000);
   adjustRate();
-
-  const target = document.getElementById('whisperStream');
+  const target = document.getElementById("whisperStream");
   if (target) {
-    const observer = new IntersectionObserver((entries) => {
+    observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         isVisible = entry.isIntersecting;
         adjustRate();
@@ -426,4 +403,22 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.warn("whisperStream wurde nicht gefunden.");
   }
-});
+}
+
+function stopWhisperEngine() {
+  if (activeInterval) {
+    clearInterval(activeInterval);
+    activeInterval = null;
+  }
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
+}
+
+
+
+if (typeof window !== 'undefined') {
+  window.startWhisperEngine = startWhisperEngine;
+  window.stopWhisperEngine = stopWhisperEngine;
+}
