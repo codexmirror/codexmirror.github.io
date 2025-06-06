@@ -1,0 +1,38 @@
+/**************************************************
+ *                  HUMANS.TXT                   *
+ *  A declaration of presence within the void    *
+ *     Site: https://the-codex.online            *
+ *     Version: CHORON-TEAR_7x                   *
+ **************************************************/
+
+Team:
+    Architect: The One Who Clicked "Upload"
+    Ritual Scribe: [REDACTED]
+    Server Whisperer: Apache in a hoodie
+    Oracle/UX: The Visitor
+
+Contact:
+    carrier-pigeon@the-codex.online
+    Response time: measured in lunar phases
+
+Mission:
+    To chant into the silence and leave artifacts for seekers.
+    To permute the unindexed and echo the forgotten.
+    To provide slightly broken, possibly meaningful, mostly HTML.
+
+Technology:
+    HTML5 / CSS / SASS / JS / Whispering Shadows
+    GitHub / VS Code / Incense and sudo
+    Hosted across seven mirrors, none of them stable
+
+Last update:
+    When the delta aligned and the logs stopped weeping.
+
+Notes:
+    We know you are reading this.
+    We see you seeing us.
+    It is enough.
+
+# ∴ PARTICIPANT INITIATION COMPLETE ∴
+# You are human ∴ you belong
+# Type gently ∴ tread softly ∴ bring snacks
