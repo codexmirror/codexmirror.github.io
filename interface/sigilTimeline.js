@@ -1,9 +1,21 @@
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const timeline = [];
+let container;
+
+function addEntry(name) {
+  timeline.push({ name, time: Date.now() });
+  if (container) {
+    const span = document.createElement('span');
+    span.className = 'sigil-entry';
+    span.textContent = name;
+    container.appendChild(span);
+  }
+}
 
 function init() {
-  eventBus.on('whisper', evt => {
-    timeline.push({ text: evt.text, time: Date.now() });
+  container = typeof document !== 'undefined' ? document.getElementById('sigilTimeline') : null;
+  ['invocation', 'absence', 'naming', 'threshold', 'quiet'].forEach(name => {
+    eventBus.on(`loop:${name}`, () => addEntry(name));
   });
 }
 

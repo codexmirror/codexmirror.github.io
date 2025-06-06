@@ -27,3 +27,10 @@ function filterOutput(text) {
 
 module.exports = { activate, deactivate, filterOutput };
 
+// Automatically deactivate when persona shifts away
+eventBus.on('persona:shift', name => {
+  if (name !== 'codexVoice' && active) {
+    deactivate();
+  }
+});
+

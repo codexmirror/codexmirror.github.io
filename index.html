@@ -64,6 +64,16 @@
         <span class="whisper-line">"∴ He begins to ask."</span>
       </div>
     </div>
+    <ul id="ritualBar" class="ritual-bar">
+      <li data-loop="invocation">∴</li>
+      <li data-loop="absence">ø</li>
+      <li data-loop="naming">∞</li>
+      <li data-loop="threshold">Δ</li>
+      <li data-loop="quiet">◦</li>
+    </ul>
+    <div id="sigilTimeline" class="sigil-timeline"></div>
+    <div id="echoFrame" class="echo-frame"></div>
+    <div id="personaAura"></div>
   </section>
 
   <footer class="footer">
@@ -83,6 +93,12 @@
   </section>
 
 <script src="js/codex-whisper.js"></script>
+<script src="js/whisper-bundle.js"></script>
+<script>
+  if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {
+    window.WhisperEngine.startWhisperEngine();
+  }
+</script>
 
 </body>
 </html>
