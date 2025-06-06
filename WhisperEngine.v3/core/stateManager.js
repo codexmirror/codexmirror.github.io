@@ -1,6 +1,7 @@
 const personas = new Map();
 let currentPersona = null;
 const { eventBus } = require('../utils/eventBus.js');
+const codexVoice = require('./codexVoice.js');
 const { isIdle } = require('../utils/idle.js');
 const { getKairosWindow } = require('../utils/kairos.js');
 
@@ -17,6 +18,7 @@ function setPersona(name) {
   if (currentPersona !== name && personas.has(name)) {
     currentPersona = name;
     eventBus.emit('persona:shift', name);
+    if (name === 'collapse') codexVoice.activate();
   }
 }
 
