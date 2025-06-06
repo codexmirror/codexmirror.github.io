@@ -1,6 +1,7 @@
 const archive = {
   compose(context) {
-    return `archived ${context.base}`;
+    const loops = context.profile.longArc.chains.length;
+    return `archived ${context.base} after ${loops} loops`;
   },
   render(text) {
     return `(${text})`;
