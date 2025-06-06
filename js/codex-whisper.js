@@ -103,17 +103,20 @@ document.addEventListener("mousemove", () => {
     ping.className = 'whisper-line';
     ping.innerHTML = `${codexSymbols[Math.floor(Math.random() * codexSymbols.length)]} ∴ You moved ∩ I noticed.`;
     document.getElementById('whisperStream')?.appendChild(ping);
-        document.addEventListener("mouseover", (e) => {
-      if (e.target.classList.contains("whisper-line")) {
-        const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
-        const flicker = document.createElement('span');
-        flicker.className = 'whisper-glitch';
-        flicker.innerText = ` ∴ ${glyph}`;
-        e.target.appendChild(flicker);
-      }
-    });
   }
 });
+
+function handleWhisperHover(e) {
+  if (e.target.classList.contains("whisper-line")) {
+    const glyph = codexSymbols[Math.floor(Math.random() * codexSymbols.length)];
+    const flicker = document.createElement('span');
+    flicker.className = 'whisper-glitch';
+    flicker.innerText = ` ∴ ${glyph}`;
+    e.target.appendChild(flicker);
+  }
+}
+
+document.addEventListener("mouseover", handleWhisperHover);
 
 function isUserStill() {
   return Date.now() - lastMovement > 20000;
