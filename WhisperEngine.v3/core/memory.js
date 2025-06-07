@@ -34,7 +34,8 @@ const defaultProfile = {
   metaInquiries: 0,
   collapseUntil: 0,
   recentChain: [],
-  lastLoopTime: 0
+  lastLoopTime: 0,
+  entityHistory: []
 };
 
 function loadProfile() {
@@ -54,7 +55,8 @@ function loadProfile() {
     metaInquiries: data.metaInquiries || 0,
     collapseUntil: data.collapseUntil || 0,
     recentChain: data.recentChain || [],
-    lastLoopTime: data.lastLoopTime || 0
+    lastLoopTime: data.lastLoopTime || 0,
+    entityHistory: data.entityHistory || []
   };
   profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
   return profile;
@@ -239,6 +241,22 @@ function popCollapseSeed() {
   return seed;
 }
 
+function recordEntitySummon(name, sequence) {
+  const profile = loadProfile();
+  profile.entityHistory = profile.entityHistory || [];
+  let entry = profile.entityHistory.find(e => e.name === name);
+  if (!entry) {
+    entry = { name, lastSequence: sequence, timesSummoned: 1, lastSeen: Date.now() };
+    profile.entityHistory.push(entry);
+  } else {
+    entry.timesSummoned += 1;
+    entry.lastSequence = sequence;
+    entry.lastSeen = Date.now();
+  }
+  saveProfile(profile);
+  return entry;
+}
+
 function recordMetaInquiry() {
   const profile = loadProfile();
   profile.metaInquiries += 1;
@@ -348,6 +366,7 @@ module.exports = {
   setEntanglementMark,
   pushCollapseSeed,
   popCollapseSeed,
+  recordEntitySummon,
   recordMetaInquiry,
   decayMetaInquiry,
   getMetaLevel,
