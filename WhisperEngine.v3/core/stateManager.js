@@ -3,7 +3,7 @@ let currentPersona = null;
 const { eventBus } = require('../utils/eventBus.js');
 const codexVoice = require('./codexVoice.js');
 const { isIdle } = require('../utils/idle.js');
-const { getKairosWindow } = require('../utils/kairos.js');
+const kairos = require('../utils/kairos.js');
 
 function selectDefault(profile) {
   if (profile.visits > 5) return 'watcher';
@@ -45,7 +45,7 @@ const stateManager = {
       require('./memory').saveProfile(profile);
       setPersona(selectDefault(profile));
     }
-    if (isIdle(60000) && getKairosWindow() === 'void') {
+    if (isIdle(60000) && kairos.getKairosWindow() === 'void') {
       setPersona('dream');
       return;
     }
