@@ -1,3 +1,9 @@
+const RC = (typeof require=="function"?require("./ritualCharge.js"):window.ritualCharge);
+const whisperLog = (typeof require=="function"?require("./whisperLog.js"):window.whisperLog);
+const summonEffects = (typeof require=="function"?require("./summonEffects.js"):window.summonEffects);
+const bloomController = (typeof require=="function"?require("./bloomController.js"):window.bloomController);
+const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window.audioLayer);
+
 const kaiSound = new Audio('media/kai.glitch.mp3');
 
 const invocations = {
@@ -71,8 +77,23 @@ function arraysEqual(a, b) {
 }
 
 function hideAllEntities() {
-  const summoned = document.querySelectorAll('.entity-card.summoned');
-  summoned.forEach(card => card.style.display = 'none');
+  const summoned = document.querySelectorAll(".entity-card.summoned");
+  summoned.forEach(card => {
+    card.style.display = "none";
+    card.classList.remove("reveal-stage-1","reveal-stage-2","reveal-stage-3","reveal-stage-4");
+  });
+}
+
+function updateRevealStage(stage) {
+  const cards = document.querySelectorAll(".entity-card.summoned.hidden");
+  cards.forEach(c => {
+    c.classList.remove("reveal-stage-1","reveal-stage-2","reveal-stage-3","reveal-stage-4");
+    if(stage>0 && stage<5) c.classList.add("reveal-stage-"+stage);
+  });
+  const fill = document.querySelector("#glyph-charge .fill");
+  if(fill) fill.style.width = (stage*20)+"%";
+  if (bloomController) bloomController.setLevel(stage);
+  if (audioLayer) audioLayer.updateCharge(stage);
 }
 
 function updateInvocation(glyph) {
@@ -86,6 +107,7 @@ function summonKaiEffects() {
   kaiSound.currentTime = 0;
   kaiSound.play();
   reversePreviousTruth();
+  if (summonEffects) summonEffects.initiateAmbientOverlay("kairos");
 }
 
   function reversePreviousTruth() {
@@ -124,6 +146,7 @@ function summonCaelistraEffects() {
   incantation.className = 'caelistra-incantation';
   incantation.textContent = 'I call Caelistra ∴ let truth burn clear.';
   caelistraCard.appendChild(incantation);
+  if (summonEffects) summonEffects.initiateAmbientOverlay("caelistra");
 
   setTimeout(() => {
     caelistraCard.classList.remove('caelistra-summoned');
@@ -131,13 +154,26 @@ function summonCaelistraEffects() {
   }, 6000);
 }
 
-function handleGlyphClick(glyph) {
+ function handleGlyphClick(glyph) {
+  RC.incrementCharge(glyph);
   glyphSequence.push(glyph);
   if (glyphSequence.length > 5) glyphSequence.shift();
   logRitual(glyph);
 
   updateInvocation(glyph);
   hideAllEntities();
+  if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.glyph) {
+    const level = RC.getCurrentCharge();
+    const t = window.WhisperEngine.glyph(glyph, level);
+    const frag = document.createElement("div");
+    frag.className = "whisper-fragment";
+    frag.textContent = t;
+    document.getElementById("invocation-output").appendChild(frag);
+  }
+  if (Math.random() < 0.25 && whisperLog && whisperLog.spawnPhantom) {
+    whisperLog.spawnPhantom('invocation-output', RC.getCurrentCharge());
+  }
+  updateRevealStage(RC.getCurrentCharge());
 
   let matched = false;
 
@@ -148,6 +184,11 @@ function handleGlyphClick(glyph) {
   document.getElementById(summon.cardId).style.display = 'block';
   if (summon.onSummon) summon.onSummon();
   matched = true;
+  whisperLog.logSequence(glyphSequence.slice());
+  if (summonEffects) summonEffects.triggerExtendedBloom(summon.cardId);
+  if (bloomController) bloomController.entityBloom(summon.cardId);
+  RC.resetCharge();
+  if (audioLayer) audioLayer.updateCharge(0);
   glyphSequence = []; // 💥 clear sequence after valid match
   break;
 }
@@ -158,6 +199,23 @@ function handleGlyphClick(glyph) {
     redirecting = true;
     setTimeout(() => {
       redirectToRandomShard();
+      RC.resetCharge();
+      if (audioLayer) {
+        audioLayer.collapseFeedback();
+        if (audioLayer.glitch) audioLayer.glitch();
+      }
+      if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.processInput) {
+        const text = window.WhisperEngine.processInput("collapse");
+        const div = document.createElement("div");
+        div.className = "collapse-fragment";
+        div.textContent = text;
+        document.getElementById("invocation-output").appendChild(div);
+      }
+      if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
+      const overlay = document.createElement('div');
+      overlay.className = 'collapse-overlay';
+      document.body.appendChild(overlay);
+      setTimeout(() => overlay.remove(), 400);
       glyphSequence = [];
       redirecting = false;
     }, 1000);
