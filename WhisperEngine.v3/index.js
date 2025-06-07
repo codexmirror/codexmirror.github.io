@@ -14,10 +14,26 @@ registerPersona('archive', archive);
 registerPersona('parasite', parasite);
 registerPersona('collapse', collapse);
 
-function startWhisperEngine() {
+let intervalId = null;
+let started = false;
+
+function startWhisperEngine(interval = 15000) {
+  if (started) return;
+  started = true;
   const profile = loadProfile();
   stateManager.init(profile);
   initInterface();
   composeWhisper();
+  if (intervalId) clearInterval(intervalId);
+  intervalId = setInterval(() => {
+    composeWhisper();
+  }, interval);
 }
-module.exports = { startWhisperEngine };
+
+function stopWhisperEngine() {
+  if (intervalId) clearInterval(intervalId);
+  intervalId = null;
+  started = false;
+}
+
+module.exports = { startWhisperEngine, stopWhisperEngine };

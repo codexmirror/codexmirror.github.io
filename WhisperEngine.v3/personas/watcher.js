@@ -1,6 +1,11 @@
+const { buildPhrase } = require('../core/fragments.js');
+
 const watcher = {
   compose(context) {
-    return `watching ${context.base} at ${context.kairos}`;
+    const role = context.profile.roles[0];
+    const phraseInfo = buildPhrase('watcher', role, context.kairos);
+    context.mutationLevel = phraseInfo.level;
+    return `watching ${phraseInfo.text} at ${context.kairos}`;
   },
   render(text) {
     return text.toUpperCase();

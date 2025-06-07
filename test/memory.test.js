@@ -1,7 +1,9 @@
 const assert = require('assert');
-const { recordLoop, loadProfile, recordGlyphUse, resetProfile } = require('../WhisperEngine.v3/core/memory.js');
+const { recordLoop, loadProfile, recordGlyphUse, resetProfile, getPool, resetPool } = require('../WhisperEngine.v3/core/memory.js');
 const invocation = require('../WhisperEngine.v3/core/loops/invocation');
+const naming = require('../WhisperEngine.v3/core/loops/naming');
 
+resetPool();
 const before = loadProfile();
 recordLoop('invocation');
 const after = loadProfile();
@@ -15,4 +17,17 @@ resetProfile();
 invocation.trigger({});
 const profileWithRole = loadProfile();
 assert.ok(profileWithRole.roles.includes('Wanderer'), 'role added on invocation');
+
+// entanglement test
+resetProfile();
+naming.trigger({ symbol: 'x' });
+const firstId = loadProfile().id;
+resetProfile();
+naming.trigger({ symbol: 'x' });
+const entangledProfile = loadProfile();
+const pool = getPool();
+assert.ok(entangledProfile.entanglementMap.edges.length > 0, 'edge created');
+const copied = entangledProfile.glyphHistory.find(g => g.entangledFrom === firstId);
+assert.ok(copied, 'glyph copied from entanglement');
+resetPool();
 console.log('memory tests passed');

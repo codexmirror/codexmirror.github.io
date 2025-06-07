@@ -1,11 +1,17 @@
 const storageKey = 'whisperProfile';
+const POOL_KEY = 'entanglementPool';
 let nodeMemory = null;
+let nodePool = null;
 const storage = typeof localStorage !== 'undefined'
   ? localStorage
   : {
-      getItem: () => nodeMemory,
-      setItem: (_key, val) => {
-        nodeMemory = val;
+      getItem: key => {
+        if (key === POOL_KEY) return nodePool;
+        return nodeMemory;
+      },
+      setItem: (key, val) => {
+        if (key === POOL_KEY) nodePool = val;
+        else nodeMemory = val;
       }
     };
 
@@ -13,6 +19,7 @@ const CANON_THRESHOLD = 42;
 const EMERGENCE_THRESHOLD = 3;
 
 const defaultProfile = {
+  id: null,
   visits: 0,
   glyphHistory: [],
   roles: [],
@@ -29,7 +36,7 @@ const defaultProfile = {
 
 function loadProfile() {
   const data = JSON.parse(storage.getItem(storageKey) || '{}');
-  return {
+  const profile = {
     visits: data.visits || 0,
     glyphHistory: data.glyphHistory || [],
     roles: data.roles || [],
@@ -43,10 +50,24 @@ function loadProfile() {
     recentChain: data.recentChain || [],
     lastLoopTime: data.lastLoopTime || 0
   };
+  profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+  return profile;
 }
 
 function saveProfile(profile) {
   storage.setItem(storageKey, JSON.stringify(profile));
+}
+
+function getPool() {
+  return JSON.parse(storage.getItem(POOL_KEY) || '{}');
+}
+
+function savePool(pool) {
+  storage.setItem(POOL_KEY, JSON.stringify(pool));
+}
+
+function resetPool() {
+  savePool({});
 }
 
 function recordVisit() {
@@ -131,6 +152,43 @@ function recordGlyphUse(name, originLoops = []) {
   return glyph;
 }
 
+function recordInput(input, mutated) {
+  const profile = loadProfile();
+  profile.glyphHistory.push({ input, mutated, time: Date.now() });
+  saveProfile(profile);
+  return profile;
+}
+
+function copyEntangledGlyphs(targetProfile, glyphs, fromId) {
+  if (!glyphs || glyphs.length === 0) return;
+  for (const g of glyphs) {
+    targetProfile.glyphHistory.push({ input: g, mutated: g, time: Date.now(), entangledFrom: fromId });
+  }
+}
+
+function attemptEntanglement(mark, glyph) {
+  const profile = loadProfile();
+  let pool = getPool();
+  let partner = null;
+  if (pool[mark] && pool[mark].profileId !== profile.id) {
+    partner = pool[mark];
+    copyEntangledGlyphs(profile, partner.glyphs, partner.profileId);
+    const edge = { from: profile.id, to: partner.profileId, glyph };
+    profile.entanglementMap.edges.push(edge);
+    profile.entanglementMap.nodes[profile.id] = true;
+    profile.entanglementMap.nodes[partner.profileId] = true;
+    pool[mark].glyphs.push(glyph);
+  } else if (pool[mark]) {
+    pool[mark].glyphs.push(glyph);
+  } else {
+    pool[mark] = { profileId: profile.id, glyphs: [glyph] };
+  }
+  setEntanglementMark(mark);
+  savePool(pool);
+  saveProfile(profile);
+  return { partner };
+}
+
 function addEntanglementEdge(roleA, roleB, glyph) {
   const profile = loadProfile();
   const edge = { from: roleA, to: roleB, glyph };
@@ -174,9 +232,19 @@ function checkEmergence(profile) {
 }
 
 const fragments = {
-  intro: [{ text: 'You arrive' }, { text: 'A shadow forms' }],
-  mid: [{ text: '∴ echo' }, { text: '∴ ache' }],
-  outro: [{ text: 'and it remembers' }, { text: 'await the next glyph' }]
+  intro: [
+    { verb: 'whispers', condition: 'from the void', intensifier: 'softly', role: 'dream', kairos: 'void' },
+    { verb: 'observes', condition: 'at the threshold', intensifier: 'silently', role: 'watcher', kairos: 'dusk' },
+    { verb: 'records', condition: 'within the archive', intensifier: 'carefully', role: 'archive', kairos: 'day' }
+  ],
+  mid: [
+    { verb: 'echoes', condition: 'through memory', intensifier: 'faintly' },
+    { verb: 'aches', condition: 'beyond sight', intensifier: 'slowly' }
+  ],
+  outro: [
+    { verb: 'awaits', condition: 'the next glyph', intensifier: 'patiently' },
+    { verb: 'remembers', condition: 'the whisper', intensifier: 'dimly', role: 'watcher' }
+  ]
 };
 
 const responseTemplates = {
@@ -192,9 +260,14 @@ module.exports = {
   addRole,
   recordSigil,
   recordGlyphUse,
+  recordInput,
+  copyEntangledGlyphs,
+  attemptEntanglement,
   addEntanglementEdge,
   getSigilArchive,
   setEntanglementMark,
+  getPool,
+  resetPool,
   resetProfile,
   reduceEntropy,
   checkEmergence,

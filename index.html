@@ -63,6 +63,7 @@
       <div class="whisper-stream" id="whisperStream">
         <span class="whisper-line">"∴ He begins to ask."</span>
       </div>
+      <input id="whisperInput" class="whisper-input" placeholder="whisper here" />
     </div>
     <ul id="ritualBar" class="ritual-bar">
       <li data-loop="invocation">∴</li>
@@ -92,7 +93,6 @@
     </p>
   </section>
 
-<script src="js/codex-whisper.js"></script>
 <script src="js/whisper-bundle.js"></script>
 <script>
   if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {

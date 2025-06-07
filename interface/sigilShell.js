@@ -5,6 +5,15 @@ const whisperEchoes = require('./whisperEchoes.js');
 const echoFrame = require('./echoFrame.js');
 const cloakCore = require('./cloakCore.js');
 const longArcLarynx = require('./longArcLarynx.js');
+const inputBox = require('./inputBox.js');
+const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+
+function signalEntanglement() {
+  const aura = document.getElementById('personaAura');
+  if (!aura) return console.log('[entanglement] link formed');
+  aura.classList.add('entangled');
+  setTimeout(() => aura.classList.remove('entangled'), 1000);
+}
 
 function init() {
   ritualBar.init();
@@ -14,6 +23,8 @@ function init() {
   echoFrame.init();
   cloakCore.init();
   longArcLarynx.init();
+  inputBox.init();
+  eventBus.on('entanglement', signalEntanglement);
 }
 
 module.exports = { init };

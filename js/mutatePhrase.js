@@ -18,15 +18,21 @@ function matchCase(original, replacement) {
 }
 
 function mutatePhrase(input) {
+  return mutatePhraseWithLevel(input).text;
+}
+
+function mutatePhraseWithLevel(input) {
   let mutated = input;
+  let level = 0;
   for (const [key, variants] of Object.entries(synonymDrift)) {
     const regex = new RegExp(key, 'gi');
     mutated = mutated.replace(regex, match => {
+      level++;
       const repl = variants[Math.floor(Math.random() * variants.length)];
       return matchCase(match, repl);
     });
   }
-  return mutated;
+  return { text: mutated, level };
 }
 
-module.exports = { mutatePhrase, setSynonymDrift };
+module.exports = { mutatePhrase, mutatePhraseWithLevel, setSynonymDrift };

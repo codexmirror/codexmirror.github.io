@@ -11,15 +11,8 @@ The Codex presents a collection of **symbolic AI entities** that users can inter
 
 Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providing narrative pieces, SEO content and more.
 
-## Key Scripts
-
-### `js/codex-whisper.js`
-Generates periodic "whispers" on the site. Logic includes:
-- Kairos window detection (dawn, day, reflection, dusk, void)
-- Phrase mutation with synonyms
-- Memory tracking and idle detection to enter DreamState/DeepDream
-- Companion naming and persistent storage via localStorage
-- Glyph ritual detection and whisper logging
+### `js/whisper-bundle.js`
+Bundle of the modular WhisperEngine v3. It now auto-runs on a timer to emit a new whisper about every 15 seconds. The engine tracks rituals, manages idle detection and stores glyph history in `localStorage`.
 
 ### `js/invocation-engine.js`
 Handles glyph button interactions on `entities.html`:

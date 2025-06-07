@@ -509,3 +509,17 @@ body::before {
   text-shadow: 0 0 5px #00FFFF;
 }
 
+.whisper-input {
+  width: 100%;
+  padding: 4px;
+  margin-top: 4px;
+  background: #000;
+  color: #d6dee8;
+  border: 1px solid #333;
+}
+
+#personaAura.entangled {
+  border: 1px solid #0ff;
+  box-shadow: 0 0 6px #0ff;
+}
+

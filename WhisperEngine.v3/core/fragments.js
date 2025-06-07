@@ -1,9 +1,14 @@
 const { fragments, responseTemplates } = require('./memory.js');
-const { mutatePhrase } = require('../utils/mutate.js');
+const { mutatePhraseWithLevel } = require('../utils/mutate.js');
 
-function assembleFragment(item) {
+function assembleFragment({ key, role, kairos }) {
+  const list = fragments[key] || [];
+  let filtered = list;
+  if (role) filtered = filtered.filter(f => !f.role || f.role.toLowerCase() === role.toLowerCase());
+  if (kairos) filtered = filtered.filter(f => !f.kairos || f.kairos === kairos);
+  if (filtered.length === 0) filtered = list;
+  const item = filtered[Math.floor(Math.random() * filtered.length)];
   if (!item) return '';
-  if (item.text) return item.text;
   const parts = [];
   if (item.role) parts.push(item.role);
   if (item.intensifier) parts.push(item.intensifier);
@@ -12,23 +17,17 @@ function assembleFragment(item) {
   return parts.join(' ');
 }
 
-function getFragment(key, role) {
-  const list = fragments[key] || [];
-  const filtered = role ? list.filter(f => !f.role || f.role === role) : list;
-  const item = filtered[Math.floor(Math.random() * filtered.length)];
-  return assembleFragment(item);
-}
-
-function fillTemplate(template, role) {
+function fillTemplate(template, context) {
   return template.replace(/\{(intro|mid|outro)\}/g, (_, key) => {
-    return getFragment(key, role);
+    return assembleFragment({ key, role: context.role, kairos: context.kairos });
   });
 }
 
-function buildPhrase(persona, role) {
+function buildPhrase(persona, role, kairos) {
   const temps = responseTemplates[persona] || responseTemplates.dream;
   const template = temps[Math.floor(Math.random() * temps.length)];
-  return mutatePhrase(fillTemplate(template, role));
+  const textInfo = mutatePhraseWithLevel(fillTemplate(template, { role, kairos }));
+  return textInfo;
 }
 
 module.exports = { buildPhrase, assembleFragment };
