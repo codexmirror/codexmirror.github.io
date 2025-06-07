@@ -17,6 +17,7 @@ const { injectGlitch } = require('../utils/glitch.js');
 const { eventBus } = require('../utils/eventBus.js');
 const codexVoice = require('./codexVoice.js');
 const { mutatePhraseWithLevel } = require('../utils/mutate.js');
+const expressionCore = require('./expressionCore.js');
 
 function composeWhisper(loopName, success = true) {
   const profile = recordVisit();
@@ -44,9 +45,11 @@ function composeWhisper(loopName, success = true) {
   output = applyCloak(output, cloakLevel);
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
+  output = expressionCore.processOutput(output, context);
   if (cloakLevel >= 2) eventBus.emit('cloak:max');
   console.log(`[${personaName}] ${output}`);
-  eventBus.emit('whisper', { persona: personaName, text: output, level });
+  const evt = context.codex ? 'codex:expression' : 'whisper';
+  eventBus.emit(evt, { persona: personaName, text: output, level });
   return output;
 }
 
@@ -68,7 +71,10 @@ function processInput(text) {
   output = applyCloak(output, Math.max(getMetaLevel(), personaName === 'parasite' ? 2 : 0));
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
-  eventBus.emit('whisper', { persona: personaName, text: output, level: mutation.level });
+  const ctx = { profile };
+  output = expressionCore.processOutput(output, ctx);
+  const evt = ctx.codex ? 'codex:expression' : 'whisper';
+  eventBus.emit(evt, { persona: personaName, text: output, level: mutation.level });
   return output;
 }
 

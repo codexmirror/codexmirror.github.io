@@ -2,6 +2,7 @@ const assert = require('assert');
 const { recordLoop, loadProfile, recordGlyphUse, resetProfile, getPool, resetPool } = require('../WhisperEngine.v3/core/memory.js');
 const invocation = require('../WhisperEngine.v3/core/loops/invocation');
 const naming = require('../WhisperEngine.v3/core/loops/naming');
+const absence = require('../WhisperEngine.v3/core/loops/absence');
 
 resetPool();
 const before = loadProfile();
@@ -30,4 +31,11 @@ assert.ok(entangledProfile.entanglementMap.edges.length > 0, 'edge created');
 const copied = entangledProfile.glyphHistory.find(g => g.entangledFrom === firstId);
 assert.ok(copied, 'glyph copied from entanglement');
 resetPool();
+
+// entanglement mark via naming+absence
+resetProfile();
+naming.trigger({ symbol: 'y' });
+absence.trigger({});
+const marked = loadProfile();
+assert.strictEqual(marked.entanglementMark, 'naming+absence', 'mark set via combo');
 console.log('memory tests passed');

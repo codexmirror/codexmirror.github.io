@@ -541,3 +541,10 @@ body::before {
   to { filter: invert(1); }
 }
 
+.codex-line {
+  color: #87f0ff;
+  font-weight: 500;
+  display: block;
+  margin-top: 4px;
+}
+

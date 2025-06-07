@@ -77,7 +77,7 @@ function resetPool() {
 }
 
 function recordVisit() {
-  const profile = loadProfile();
+  let profile = loadProfile();
   profile.visits += 1;
   saveProfile(profile);
   return profile;
@@ -98,7 +98,7 @@ function finalizeChain(profile) {
 }
 
 function recordLoop(name, success = true) {
-  const profile = loadProfile();
+  let profile = loadProfile();
   const now = Date.now();
   profile.glyphHistory.push({ name, time: now, success });
 
@@ -172,36 +172,31 @@ function copyEntangledGlyphs(targetProfile, glyphs, fromId) {
   }
 }
 
-function attemptEntanglement(mark, glyph) {
-  const profile = loadProfile();
-  let pool = getPool();
-  let partner = null;
-  if (pool[mark] && pool[mark].profileId !== profile.id) {
-    partner = pool[mark];
-    copyEntangledGlyphs(profile, partner.glyphs, partner.profileId);
-    const edge = { from: profile.id, to: partner.profileId, glyph };
-    profile.entanglementMap.edges.push(edge);
-    profile.entanglementMap.nodes[profile.id] = true;
-    profile.entanglementMap.nodes[partner.profileId] = true;
-    pool[mark].glyphs.push(glyph);
-  } else if (pool[mark]) {
-    pool[mark].glyphs.push(glyph);
-  } else {
-    pool[mark] = { profileId: profile.id, glyphs: [glyph] };
+function copyRoles(targetProfile, roles) {
+  if (!roles) return;
+  for (const r of roles) {
+    if (!targetProfile.roles.includes(r)) targetProfile.roles.push(r);
   }
-  setEntanglementMark(mark);
-  savePool(pool);
-  saveProfile(profile);
-  return { partner };
 }
 
-function addEntanglementEdge(roleA, roleB, glyph) {
-  const profile = loadProfile();
+function attemptEntanglement(mark, glyph) {
+  const result = setEntanglementMark(mark);
+  let pool = getPool();
+  if (!pool[mark]) pool[mark] = { profileId: result.profile.id, glyphs: [], roles: [...result.profile.roles] };
+  if (!pool[mark].glyphs) pool[mark].glyphs = [];
+  pool[mark].glyphs.push(glyph);
+  pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...result.profile.roles]));
+  savePool(pool);
+  return { partner: result.partner };
+}
+
+function addEntanglementEdge(roleA, roleB, glyph, profile = null) {
+  const prof = profile || loadProfile();
   const edge = { from: roleA, to: roleB, glyph };
-  profile.entanglementMap.edges.push(edge);
-  profile.entanglementMap.nodes[roleA] = true;
-  profile.entanglementMap.nodes[roleB] = true;
-  saveProfile(profile);
+  prof.entanglementMap.edges.push(edge);
+  prof.entanglementMap.nodes[roleA] = true;
+  prof.entanglementMap.nodes[roleB] = true;
+  saveProfile(prof);
   return edge;
 }
 
@@ -210,10 +205,24 @@ function getSigilArchive() {
 }
 
 function setEntanglementMark(mark) {
-  const profile = loadProfile();
+  let profile = loadProfile();
+  let pool = getPool();
+  let partner = null;
+  if (pool[mark] && pool[mark].profileId !== profile.id) {
+    partner = pool[mark].profileId;
+    copyEntangledGlyphs(profile, pool[mark].glyphs, partner);
+    copyRoles(profile, pool[mark].roles);
+    addEntanglementEdge(partner, profile.id, mark, profile);
+    pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...profile.roles]));
+  } else {
+    pool[mark] = pool[mark] || { profileId: profile.id, glyphs: [], roles: [] };
+    pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...profile.roles]));
+    pool[mark].profileId = pool[mark].profileId || profile.id;
+  }
   profile.entanglementMark = mark;
+  savePool(pool);
   saveProfile(profile);
-  return profile;
+  return { profile, partner };
 }
 
 function pushCollapseSeed(loop) {
@@ -332,6 +341,7 @@ module.exports = {
   recordGlyphUse,
   recordInput,
   copyEntangledGlyphs,
+  copyRoles,
   attemptEntanglement,
   addEntanglementEdge,
   getSigilArchive,
