@@ -10,8 +10,7 @@ const parasite = {
     return reversed;
   },
   render(text) {
-    // heavily cloak the output
-    return applyCloak(text, 2);
+    return applyCloak(`…${text}`, 2);
   }
 };
 

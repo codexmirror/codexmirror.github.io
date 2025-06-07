@@ -8,7 +8,7 @@ const watcher = {
     return `watching ${phraseInfo.text} at ${context.kairos}`;
   },
   render(text) {
-    return text.toUpperCase();
+    return text.toUpperCase() + ':';
   }
 };
 

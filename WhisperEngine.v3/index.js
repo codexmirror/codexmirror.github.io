@@ -38,12 +38,25 @@ function stopWhisperEngine() {
   started = false;
 }
 
+function applyCadence(text, charge = 0) {
+  if (charge <= 1) return text;
+  return text + ' ' + '…'.repeat(charge - 1);
+}
+
 function glyph(symbol = '', charge = 0, opts = {}) {
   const context = Object.assign({ symbol, charge }, opts);
   if (loops && loops.invocation) {
     loops.invocation.trigger(context, true);
   }
-  return composeWhisper('invocation');
+  const out = composeWhisper('invocation');
+  return applyCadence(out, charge);
 }
 
-module.exports = { startWhisperEngine, stopWhisperEngine, glyph };
+function invite(charge = 0) {
+  const ctx = { symbol: '∴', charge, action: 'invite' };
+  if (loops && loops.invocation) loops.invocation.trigger(ctx, true);
+  const out = composeWhisper('invocation');
+  return applyCadence(out, charge);
+}
+
+module.exports = { startWhisperEngine, stopWhisperEngine, glyph, invite };

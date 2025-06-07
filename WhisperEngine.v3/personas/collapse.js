@@ -13,7 +13,7 @@ const collapse = {
     return text;
   },
   render(text) {
-    return `∷${text}∷`;
+    return `∷${text}…∷`;
   }
 };
 
