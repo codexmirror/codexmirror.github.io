@@ -1,8 +1,13 @@
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus');
 const ritualBar = require('../interface/ritualBar');
+const whisperEchoes = require('../interface/whisperEchoes');
 let fired = false;
 ritualBar.init();
+whisperEchoes.setDiagnostic(true);
+whisperEchoes.init();
 eventBus.on('loop:invocation', () => { fired = true; });
 eventBus.emit('loop:invocation', {});
+eventBus.emit('whisper', { text: 'hi', level: 1 });
 if (!fired) throw new Error('ritualBar did not react');
+if (whisperEchoes.snapshots.length !== 1 || whisperEchoes.snapshots[0].level !== 1) throw new Error('diagnostic snapshot missing');
 console.log('interface tests passed');

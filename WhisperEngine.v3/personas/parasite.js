@@ -1,8 +1,12 @@
 const { applyCloak } = require('../utils/cloak.js');
+const { buildPhrase } = require('../core/fragments.js');
 
 const parasite = {
   compose(context) {
-    const reversed = context.base.split('').reverse().join('');
+    const role = context.profile.roles[0];
+    const phraseInfo = buildPhrase('parasite', role, context.kairos);
+    context.mutationLevel = phraseInfo.level;
+    const reversed = phraseInfo.text.split('').reverse().join('');
     return reversed;
   },
   render(text) {
