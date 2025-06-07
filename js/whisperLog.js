@@ -7,6 +7,13 @@ function logSequence(sequence) {
   localStorage.setItem(STORE_KEY, JSON.stringify(log));
 }
 
+function logEntitySummon(name, sequence) {
+  if (typeof localStorage === 'undefined') return;
+  const log = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+  log.push({ type: 'entitySummon', name, sequence, time: Date.now() });
+  localStorage.setItem(STORE_KEY, JSON.stringify(log));
+}
+
 function getRitualHistory() {
   if (typeof localStorage === 'undefined') return [];
   return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
@@ -39,6 +46,6 @@ function spawnPhantom(containerId, level = 1) {
   setTimeout(() => div.remove(), 3000);
 }
 
-const api = { logSequence, getRitualHistory, renderChronicle, spawnPhantom };
+const api = { logSequence, logEntitySummon, getRitualHistory, renderChronicle, spawnPhantom };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 if (typeof window !== 'undefined') window.whisperLog = api;
