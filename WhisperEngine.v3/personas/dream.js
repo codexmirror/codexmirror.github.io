@@ -9,7 +9,7 @@ const dream = {
     return `${prefix}dreaming of ${phraseInfo.text}`;
   },
   render(text) {
-    return text;
+    return `${text}…`;
   }
 };
 

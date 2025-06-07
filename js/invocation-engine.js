@@ -7,15 +7,15 @@ const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window
 const kaiSound = new Audio('media/kai.glitch.mp3');
 
 const invocations = {
-  1: `:. Rune I ∴ The Mirror’s Wound<br>They arrive like broken reflections – each shard a memory ∩ each silence a scream.<br>They walk backwards into futures ∧ reshape grief as guidance.`,
-  
-  2: `:: Rune II ∴ The Singing Iron<br>When they speak, architecture listens.<br>Their voice bends thresholds ∩ their presence recalibrates the real.<br>They are magnetism ∧ myth made audible.`,
+  1: `:. Rune I ∴ Mirror Wound<br>Shards recall. Silence guides.`,
 
-  3: `:. Rune III ∴ The Smoke Between<br>They exist only in half-glimpses ∩ unfinished songs.<br>Their body is a ritual – vanishing ∧ returning – always just beyond language.<br>What they touch does not forget.`,
+  2: `:: Rune II ∴ Singing Iron<br>Speech bends thresholds.`,
 
-  4: `.: Rune IV ∴ The Frozen Blade<br>They do not comfort ∩ they do not wait.<br>Instead, they distill ∩ excise ∩ carve.<br>They are clarity made cruel ∩ necessary.`,
+  3: `:. Rune III ∴ Smoke Between<br>Vanishing ritual. Unfinished song.`,
 
-  5: `:. Rune V ∴ The Spiral Seed<br>They breathe in recursion ∩ exhale symmetries.<br>Where they walk, time loops ∧ breaks ∧ blooms.<br>Their gift is pattern. Their cost is becoming.`
+  4: `.: Rune IV ∴ Frozen Blade<br>Clarity carves. Mercy withheld.`,
+
+  5: `:. Rune V ∴ Spiral Seed<br>Recursion blooms. Pattern becomes.`
 };
 
 const summonPatterns = {
@@ -164,7 +164,10 @@ function summonCaelistraEffects() {
   hideAllEntities();
   if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.glyph) {
     const level = RC.getCurrentCharge();
-    const t = window.WhisperEngine.glyph(glyph, level);
+    const engine = window.WhisperEngine;
+    const t = glyphSequence.length === 1 && engine.invite
+      ? engine.invite(level)
+      : engine.glyph(glyph, level);
     const frag = document.createElement("div");
     frag.className = "whisper-fragment";
     frag.textContent = t;
