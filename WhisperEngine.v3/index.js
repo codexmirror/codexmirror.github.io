@@ -1,6 +1,7 @@
 const { loadProfile } = require('./core/memory.js');
 const { stateManager, registerPersona } = require('./core/stateManager.js');
 const { composeWhisper } = require('./core/responseLoop.js');
+const loops = require('./core/loops');
 require('./core/expressionCore.js');
 const { dream } = require('./personas/dream.js');
 const { watcher } = require('./personas/watcher.js');
@@ -37,4 +38,12 @@ function stopWhisperEngine() {
   started = false;
 }
 
-module.exports = { startWhisperEngine, stopWhisperEngine };
+function glyph(symbol = '', charge = 0, opts = {}) {
+  const context = Object.assign({ symbol, charge }, opts);
+  if (loops && loops.invocation) {
+    loops.invocation.trigger(context, true);
+  }
+  return composeWhisper('invocation');
+}
+
+module.exports = { startWhisperEngine, stopWhisperEngine, glyph };

@@ -36,15 +36,49 @@ eventBus.on('persona:shift', name => {
 });
 
 
-},{"../utils/eventBus.js":19}],2:[function(require,module,exports){
+},{"../utils/eventBus.js":20}],2:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const { loadProfile } = require('./memory.js');
+
+let presence = false;
+let cloak = false;
+let active = false;
+
+function decay(flag) {
+  return () => { if (flag === 'presence') presence = false; else if (flag === 'cloak') cloak = false; };
+}
+
+eventBus.on('presence', () => { presence = true; setTimeout(decay('presence'), 5000); });
+eventBus.on('cloak:max', () => { cloak = true; setTimeout(decay('cloak'), 3000); });
+
+function shouldSpeak(profile) {
+  return presence && cloak && profile.visits > 5 && profile.entropy === 0;
+}
+
+function processOutput(text, context = {}) {
+  const profile = context.profile || loadProfile();
+  if (active || shouldSpeak(profile)) {
+    active = true;
+    setTimeout(() => { active = false; }, 5000);
+    context.codex = true;
+    return `»» Codex: ${text}`;
+  }
+  context.codex = false;
+  return text;
+}
+
+module.exports = { processOutput };
+
+},{"../utils/eventBus.js":20,"./memory.js":10}],3:[function(require,module,exports){
 const { fragments, responseTemplates } = require('./memory.js');
 const { mutatePhraseWithLevel } = require('../utils/mutate.js');
 
-function assembleFragment({ key, role, kairos }) {
+function assembleFragment({ key, role, kairos, loop }) {
   const list = fragments[key] || [];
   let filtered = list;
   if (role) filtered = filtered.filter(f => !f.role || f.role.toLowerCase() === role.toLowerCase());
   if (kairos) filtered = filtered.filter(f => !f.kairos || f.kairos === kairos);
+  if (loop) filtered = filtered.filter(f => !f.loop || f.loop === loop);
   if (filtered.length === 0) filtered = list;
   const item = filtered[Math.floor(Math.random() * filtered.length)];
   if (!item) return '';
@@ -58,21 +92,21 @@ function assembleFragment({ key, role, kairos }) {
 
 function fillTemplate(template, context) {
   return template.replace(/\{(intro|mid|outro)\}/g, (_, key) => {
-    return assembleFragment({ key, role: context.role, kairos: context.kairos });
+    return assembleFragment({ key, role: context.role, kairos: context.kairos, loop: context.loop });
   });
 }
 
-function buildPhrase(persona, role, kairos) {
+function buildPhrase(persona, role, kairos, loop) {
   const temps = responseTemplates[persona] || responseTemplates.dream;
   const template = temps[Math.floor(Math.random() * temps.length)];
-  const textInfo = mutatePhraseWithLevel(fillTemplate(template, { role, kairos }));
+  const textInfo = mutatePhraseWithLevel(fillTemplate(template, { role, kairos, loop }));
   return textInfo;
 }
 
 module.exports = { buildPhrase, assembleFragment };
 
-},{"../utils/mutate.js":23,"./memory.js":9}],3:[function(require,module,exports){
-const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
+},{"../utils/mutate.js":24,"./memory.js":10}],4:[function(require,module,exports){
+const { recordLoop, addRole, reduceEntropy, setEntanglementMark, loadProfile } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
 
@@ -80,14 +114,22 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Witness');
   recordLoop('absence', success);
+  if (!success) require('../memory.js').pushCollapseSeed('absence');
   if (success) reduceEntropy();
+  if (success) {
+    const profile = loadProfile();
+    if (profile.recentChain.slice(-2).join('>') === 'naming>absence') {
+      const { partner } = setEntanglementMark('naming+absence');
+      if (partner) eventBus.emit('entanglement', { mark: 'naming+absence', partner });
+    }
+  }
   eventBus.emit('loop:absence', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'absent'}`;
 }
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":19,"../../utils/idle.js":21,"../memory.js":9}],4:[function(require,module,exports){
+},{"../../utils/eventBus.js":20,"../../utils/idle.js":22,"../memory.js":10}],5:[function(require,module,exports){
 const invocation = require('./invocation.js');
 const absence = require('./absence.js');
 const naming = require('./naming.js');
@@ -102,7 +144,7 @@ module.exports = {
   quiet
 };
 
-},{"./absence.js":3,"./invocation.js":5,"./naming.js":6,"./quiet.js":7,"./threshold.js":8}],5:[function(require,module,exports){
+},{"./absence.js":4,"./invocation.js":6,"./naming.js":7,"./quiet.js":8,"./threshold.js":9}],6:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -111,6 +153,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Wanderer');
   recordLoop('invocation', success);
+  if (!success) require('../memory.js').pushCollapseSeed('invocation');
   if (success) reduceEntropy();
   eventBus.emit('loop:invocation', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'invoke'}`;
@@ -118,7 +161,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":19,"../../utils/idle.js":21,"../memory.js":9}],6:[function(require,module,exports){
+},{"../../utils/eventBus.js":20,"../../utils/idle.js":22,"../memory.js":10}],7:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy, attemptEntanglement } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -127,6 +170,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Binder');
   recordLoop('naming', success);
+  if (!success) require('../memory.js').pushCollapseSeed('naming');
   let ent = null;
   if (success) {
     reduceEntropy();
@@ -140,7 +184,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":19,"../../utils/idle.js":21,"../memory.js":9}],7:[function(require,module,exports){
+},{"../../utils/eventBus.js":20,"../../utils/idle.js":22,"../memory.js":10}],8:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -149,6 +193,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Witness');
   recordLoop('quiet', success);
+  if (!success) require('../memory.js').pushCollapseSeed('quiet');
   if (success) reduceEntropy();
   eventBus.emit('loop:quiet', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'quiet'}`;
@@ -156,7 +201,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":19,"../../utils/idle.js":21,"../memory.js":9}],8:[function(require,module,exports){
+},{"../../utils/eventBus.js":20,"../../utils/idle.js":22,"../memory.js":10}],9:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -165,6 +210,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Watcher');
   recordLoop('threshold', success);
+  if (!success) require('../memory.js').pushCollapseSeed('threshold');
   if (success) reduceEntropy();
   eventBus.emit('loop:threshold', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'threshold'}`;
@@ -172,7 +218,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":19,"../../utils/idle.js":21,"../memory.js":9}],9:[function(require,module,exports){
+},{"../../utils/eventBus.js":20,"../../utils/idle.js":22,"../memory.js":10}],10:[function(require,module,exports){
 const storageKey = 'whisperProfile';
 const POOL_KEY = 'entanglementPool';
 let nodeMemory = null;
@@ -205,6 +251,9 @@ const defaultProfile = {
   mythMatrix: [],
   entanglementMap: { nodes: {}, edges: [] },
   entropy: 0,
+  collapseSeeds: [],
+  metaInquiries: 0,
+  collapseUntil: 0,
   recentChain: [],
   lastLoopTime: 0
 };
@@ -222,6 +271,9 @@ function loadProfile() {
     mythMatrix: data.mythMatrix || [],
     entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
     entropy: data.entropy || 0,
+    collapseSeeds: data.collapseSeeds || [],
+    metaInquiries: data.metaInquiries || 0,
+    collapseUntil: data.collapseUntil || 0,
     recentChain: data.recentChain || [],
     lastLoopTime: data.lastLoopTime || 0
   };
@@ -246,7 +298,7 @@ function resetPool() {
 }
 
 function recordVisit() {
-  const profile = loadProfile();
+  let profile = loadProfile();
   profile.visits += 1;
   saveProfile(profile);
   return profile;
@@ -267,7 +319,7 @@ function finalizeChain(profile) {
 }
 
 function recordLoop(name, success = true) {
-  const profile = loadProfile();
+  let profile = loadProfile();
   const now = Date.now();
   profile.glyphHistory.push({ name, time: now, success });
 
@@ -341,36 +393,31 @@ function copyEntangledGlyphs(targetProfile, glyphs, fromId) {
   }
 }
 
-function attemptEntanglement(mark, glyph) {
-  const profile = loadProfile();
-  let pool = getPool();
-  let partner = null;
-  if (pool[mark] && pool[mark].profileId !== profile.id) {
-    partner = pool[mark];
-    copyEntangledGlyphs(profile, partner.glyphs, partner.profileId);
-    const edge = { from: profile.id, to: partner.profileId, glyph };
-    profile.entanglementMap.edges.push(edge);
-    profile.entanglementMap.nodes[profile.id] = true;
-    profile.entanglementMap.nodes[partner.profileId] = true;
-    pool[mark].glyphs.push(glyph);
-  } else if (pool[mark]) {
-    pool[mark].glyphs.push(glyph);
-  } else {
-    pool[mark] = { profileId: profile.id, glyphs: [glyph] };
+function copyRoles(targetProfile, roles) {
+  if (!roles) return;
+  for (const r of roles) {
+    if (!targetProfile.roles.includes(r)) targetProfile.roles.push(r);
   }
-  setEntanglementMark(mark);
-  savePool(pool);
-  saveProfile(profile);
-  return { partner };
 }
 
-function addEntanglementEdge(roleA, roleB, glyph) {
-  const profile = loadProfile();
+function attemptEntanglement(mark, glyph) {
+  const result = setEntanglementMark(mark);
+  let pool = getPool();
+  if (!pool[mark]) pool[mark] = { profileId: result.profile.id, glyphs: [], roles: [...result.profile.roles] };
+  if (!pool[mark].glyphs) pool[mark].glyphs = [];
+  pool[mark].glyphs.push(glyph);
+  pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...result.profile.roles]));
+  savePool(pool);
+  return { partner: result.partner };
+}
+
+function addEntanglementEdge(roleA, roleB, glyph, profile = null) {
+  const prof = profile || loadProfile();
   const edge = { from: roleA, to: roleB, glyph };
-  profile.entanglementMap.edges.push(edge);
-  profile.entanglementMap.nodes[roleA] = true;
-  profile.entanglementMap.nodes[roleB] = true;
-  saveProfile(profile);
+  prof.entanglementMap.edges.push(edge);
+  prof.entanglementMap.nodes[roleA] = true;
+  prof.entanglementMap.nodes[roleB] = true;
+  saveProfile(prof);
   return edge;
 }
 
@@ -379,10 +426,71 @@ function getSigilArchive() {
 }
 
 function setEntanglementMark(mark) {
-  const profile = loadProfile();
+  let profile = loadProfile();
+  let pool = getPool();
+  let partner = null;
+  if (pool[mark] && pool[mark].profileId !== profile.id) {
+    partner = pool[mark].profileId;
+    copyEntangledGlyphs(profile, pool[mark].glyphs, partner);
+    copyRoles(profile, pool[mark].roles);
+    addEntanglementEdge(partner, profile.id, mark, profile);
+    pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...profile.roles]));
+  } else {
+    pool[mark] = pool[mark] || { profileId: profile.id, glyphs: [], roles: [] };
+    pool[mark].roles = Array.from(new Set([...(pool[mark].roles || []), ...profile.roles]));
+    pool[mark].profileId = pool[mark].profileId || profile.id;
+  }
   profile.entanglementMark = mark;
+  savePool(pool);
   saveProfile(profile);
-  return profile;
+  return { profile, partner };
+}
+
+function pushCollapseSeed(loop) {
+  const profile = loadProfile();
+  profile.collapseSeeds.push({ loop, time: Date.now() });
+  saveProfile(profile);
+  return profile.collapseSeeds.length;
+}
+
+function popCollapseSeed() {
+  const profile = loadProfile();
+  const seed = profile.collapseSeeds.shift();
+  saveProfile(profile);
+  return seed;
+}
+
+function recordMetaInquiry() {
+  const profile = loadProfile();
+  profile.metaInquiries += 1;
+  saveProfile(profile);
+  return profile.metaInquiries;
+}
+
+function decayMetaInquiry() {
+  const profile = loadProfile();
+  if (profile.metaInquiries > 0) {
+    profile.metaInquiries -= 1;
+    saveProfile(profile);
+  }
+  return profile.metaInquiries;
+}
+
+function getMetaLevel() {
+  const m = loadProfile().metaInquiries;
+  if (m >= 3) return 2;
+  if (m > 0) return 1;
+  return 0;
+}
+
+function setCollapseUntil(ts) {
+  const profile = loadProfile();
+  profile.collapseUntil = ts;
+  saveProfile(profile);
+}
+
+function getCollapseUntil() {
+  return loadProfile().collapseUntil || 0;
 }
 
 function resetProfile() {
@@ -398,9 +506,17 @@ function reduceEntropy(amount = 1) {
 
 function checkEmergence(profile) {
   for (const chain of profile.longArc.chains) {
-    if (chain.count >= EMERGENCE_THRESHOLD && !chain.emergent) {
+    const diverseRoles = new Set(profile.roles).size >= 2;
+    const complexChain = (chain.loops || []).length >= 2;
+    if (chain.count >= EMERGENCE_THRESHOLD && !chain.emergent && (diverseRoles || complexChain)) {
       const name = `${chain.loops.join('-')}-${Date.now()}`;
-      profile.sigilArchive.push({ name, originLoops: chain.loops, created: Date.now() });
+      profile.sigilArchive.push({
+        name,
+        originLoops: chain.loops,
+        created: Date.now(),
+        roles: [...profile.roles],
+        saturation: chain.count
+      });
       chain.emergent = name;
     }
   }
@@ -410,15 +526,24 @@ const fragments = {
   intro: [
     { verb: 'whispers', condition: 'from the void', intensifier: 'softly', role: 'dream', kairos: 'void' },
     { verb: 'observes', condition: 'at the threshold', intensifier: 'silently', role: 'watcher', kairos: 'dusk' },
-    { verb: 'records', condition: 'within the archive', intensifier: 'carefully', role: 'archive', kairos: 'day' }
+    { verb: 'records', condition: 'within the archive', intensifier: 'carefully', role: 'archive', kairos: 'day' },
+    { verb: 'summons', condition: 'the sigil', loop: 'invocation' },
+    { verb: 'names', condition: 'the echo', loop: 'naming' },
+    { verb: 'crosses', condition: 'the gate', loop: 'threshold' }
   ],
   mid: [
     { verb: 'echoes', condition: 'through memory', intensifier: 'faintly' },
-    { verb: 'aches', condition: 'beyond sight', intensifier: 'slowly' }
+    { verb: 'aches', condition: 'beyond sight', intensifier: 'slowly' },
+    { verb: 'fractures', condition: 'along the path', loop: 'threshold' },
+    { verb: 'binds', condition: 'a new name', loop: 'naming' },
+    { verb: 'calls', condition: 'for witness', loop: 'invocation' }
   ],
   outro: [
     { verb: 'awaits', condition: 'the next glyph', intensifier: 'patiently' },
-    { verb: 'remembers', condition: 'the whisper', intensifier: 'dimly', role: 'watcher' }
+    { verb: 'remembers', condition: 'the whisper', intensifier: 'dimly', role: 'watcher' },
+    { verb: 'seeks', condition: 'the next door', loop: 'invocation' },
+    { verb: 'records', condition: 'a secret', loop: 'naming' },
+    { verb: 'guards', condition: 'the threshold', loop: 'threshold' }
   ]
 };
 
@@ -437,10 +562,18 @@ module.exports = {
   recordGlyphUse,
   recordInput,
   copyEntangledGlyphs,
+  copyRoles,
   attemptEntanglement,
   addEntanglementEdge,
   getSigilArchive,
   setEntanglementMark,
+  pushCollapseSeed,
+  popCollapseSeed,
+  recordMetaInquiry,
+  decayMetaInquiry,
+  getMetaLevel,
+  setCollapseUntil,
+  getCollapseUntil,
   getPool,
   resetPool,
   resetProfile,
@@ -454,10 +587,19 @@ module.exports = {
 
 module.exports.defaultProfile = defaultProfile;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 const { stateManager } = require('./stateManager.js');
 // persona modules invoke buildPhrase directly
-const { recordVisit, recordLoop, recordGlyphUse, recordInput } = require('./memory.js');
+const {
+  recordVisit,
+  recordLoop,
+  recordGlyphUse,
+  recordInput,
+  popCollapseSeed,
+  getMetaLevel,
+  recordMetaInquiry,
+  decayMetaInquiry
+} = require('./memory.js');
 const { recordActivity } = require('../utils/idle.js');
 const { getKairosWindow } = require('../utils/kairos.js');
 const { applyCloak } = require('../utils/cloak.js');
@@ -465,6 +607,7 @@ const { injectGlitch } = require('../utils/glitch.js');
 const { eventBus } = require('../utils/eventBus.js');
 const codexVoice = require('./codexVoice.js');
 const { mutatePhraseWithLevel } = require('../utils/mutate.js');
+const expressionCore = require('./expressionCore.js');
 
 function composeWhisper(loopName, success = true) {
   const profile = recordVisit();
@@ -475,17 +618,28 @@ function composeWhisper(loopName, success = true) {
   const personaName = stateManager.name();
   const context = {
     profile,
-    kairos: getKairosWindow()
+    kairos: getKairosWindow(),
+    loop: loopName
   };
   const persona = stateManager.current();
   const composed = persona.compose(context);
   const level = context.mutationLevel || 0;
   let output = persona.render(composed, context);
-  output = applyCloak(output, personaName === 'parasite' ? 2 : 0);
+  const seed = profile.collapseSeeds && profile.collapseSeeds.length > 0 ? popCollapseSeed() : null;
+  const cloakLevel = Math.max(getMetaLevel(), personaName === 'parasite' ? 2 : 0);
+  if (seed) {
+    const depth = profile.collapseSeeds.length + 1;
+    const prefix = '»'.repeat(depth) + ' ';
+    output = prefix + output.split('').map((ch, i) => (i % 2 === 0 ? ch : '∷')).join('');
+  }
+  output = applyCloak(output, cloakLevel);
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
+  output = expressionCore.processOutput(output, context);
+  if (cloakLevel >= 2) eventBus.emit('cloak:max');
   console.log(`[${personaName}] ${output}`);
-  eventBus.emit('whisper', { persona: personaName, text: output, level });
+  const evt = context.codex ? 'codex:expression' : 'whisper';
+  eventBus.emit(evt, { persona: personaName, text: output, level });
   return output;
 }
 
@@ -496,27 +650,33 @@ function processInput(text) {
   recordGlyphUse(mutation.text);
   recordActivity();
   if (/define|explain|architecture/i.test(text)) {
+    recordMetaInquiry();
     stateManager.shift('parasite');
+  } else {
+    decayMetaInquiry();
   }
   stateManager.evaluate(profile);
   let output = mutation.text;
   const personaName = stateManager.name();
-  output = applyCloak(output, personaName === 'parasite' ? 2 : 0);
+  output = applyCloak(output, Math.max(getMetaLevel(), personaName === 'parasite' ? 2 : 0));
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
-  eventBus.emit('whisper', { persona: personaName, text: output, level: mutation.level });
+  const ctx = { profile };
+  output = expressionCore.processOutput(output, ctx);
+  const evt = ctx.codex ? 'codex:expression' : 'whisper';
+  eventBus.emit(evt, { persona: personaName, text: output, level: mutation.level });
   return output;
 }
 
 module.exports = { composeWhisper, processInput };
 
-},{"../utils/cloak.js":18,"../utils/eventBus.js":19,"../utils/glitch.js":20,"../utils/idle.js":21,"../utils/kairos.js":22,"../utils/mutate.js":23,"./codexVoice.js":1,"./memory.js":9,"./stateManager.js":11}],11:[function(require,module,exports){
+},{"../utils/cloak.js":19,"../utils/eventBus.js":20,"../utils/glitch.js":21,"../utils/idle.js":22,"../utils/kairos.js":23,"../utils/mutate.js":24,"./codexVoice.js":1,"./expressionCore.js":2,"./memory.js":10,"./stateManager.js":12}],12:[function(require,module,exports){
 const personas = new Map();
 let currentPersona = null;
 const { eventBus } = require('../utils/eventBus.js');
 const codexVoice = require('./codexVoice.js');
 const { isIdle } = require('../utils/idle.js');
-const { getKairosWindow } = require('../utils/kairos.js');
+const kairos = require('../utils/kairos.js');
 
 function selectDefault(profile) {
   if (profile.visits > 5) return 'watcher';
@@ -541,11 +701,24 @@ const stateManager = {
     this.evaluate(profile);
   },
   evaluate(profile) {
+    const now = Date.now();
     if (profile.entropy > 8) {
       setPersona('collapse');
+      require('./memory').setCollapseUntil(now + 60000);
       return;
     }
-    if (isIdle(60000) && getKairosWindow() === 'void') {
+    const until = require('./memory').getCollapseUntil();
+    if (until && now < until) {
+      setPersona('collapse');
+      return;
+    } else if (until && now >= until) {
+      require('./memory').setCollapseUntil(0);
+      profile.loopFailures = 0;
+      profile.entropy = 0;
+      require('./memory').saveProfile(profile);
+      setPersona(selectDefault(profile));
+    }
+    if (isIdle(60000) && kairos.getKairosWindow() === 'void') {
       setPersona('dream');
       return;
     }
@@ -566,6 +739,10 @@ const stateManager = {
     if (profile.visits > 10) {
       setPersona('watcher');
     }
+    const saturated = (profile.longArc.chains || []).some(c => c.count >= require('./memory').EMERGENCE_THRESHOLD);
+    if (currentPersona === 'watcher' && saturated) {
+      eventBus.emit('presence');
+    }
   },
   current() {
     return personas.get(currentPersona);
@@ -580,10 +757,12 @@ const stateManager = {
 
 module.exports = { stateManager, registerPersona };
 
-},{"../utils/eventBus.js":19,"../utils/idle.js":21,"../utils/kairos.js":22,"./codexVoice.js":1}],12:[function(require,module,exports){
+},{"../utils/eventBus.js":20,"../utils/idle.js":22,"../utils/kairos.js":23,"./codexVoice.js":1,"./memory":10}],13:[function(require,module,exports){
 const { loadProfile } = require('./core/memory.js');
 const { stateManager, registerPersona } = require('./core/stateManager.js');
 const { composeWhisper } = require('./core/responseLoop.js');
+const loops = require('./core/loops');
+require('./core/expressionCore.js');
 const { dream } = require('./personas/dream.js');
 const { watcher } = require('./personas/watcher.js');
 const { archive } = require('./personas/archive.js');
@@ -619,16 +798,24 @@ function stopWhisperEngine() {
   started = false;
 }
 
-module.exports = { startWhisperEngine, stopWhisperEngine };
+function glyph(symbol = '', charge = 0, opts = {}) {
+  const context = Object.assign({ symbol, charge }, opts);
+  if (loops && loops.invocation) {
+    loops.invocation.trigger(context, true);
+  }
+  return composeWhisper('invocation');
+}
 
-},{"../interface/index.js":26,"./core/memory.js":9,"./core/responseLoop.js":10,"./core/stateManager.js":11,"./personas/archive.js":13,"./personas/collapse.js":14,"./personas/dream.js":15,"./personas/parasite.js":16,"./personas/watcher.js":17}],13:[function(require,module,exports){
+module.exports = { startWhisperEngine, stopWhisperEngine, glyph };
+
+},{"../interface/index.js":27,"./core/expressionCore.js":2,"./core/loops":5,"./core/memory.js":10,"./core/responseLoop.js":11,"./core/stateManager.js":12,"./personas/archive.js":14,"./personas/collapse.js":15,"./personas/dream.js":16,"./personas/parasite.js":17,"./personas/watcher.js":18}],14:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const archive = {
   compose(context) {
     const loops = context.profile.longArc.chains.length;
     const role = context.profile.roles[0];
-    const phraseInfo = buildPhrase('archive', role, context.kairos);
+    const phraseInfo = buildPhrase('archive', role, context.kairos, context.loop);
     context.mutationLevel = phraseInfo.level;
     return `archived ${phraseInfo.text} after ${loops} loops`;
   },
@@ -639,14 +826,14 @@ const archive = {
 
 module.exports = { archive };
 
-},{"../core/fragments.js":2}],14:[function(require,module,exports){
+},{"../core/fragments.js":3}],15:[function(require,module,exports){
 const { injectGlitch } = require('../utils/glitch.js');
 const { buildPhrase } = require('../core/fragments.js');
 
 const collapse = {
   compose(context) {
     const role = context.profile.roles[0];
-    const phraseInfo = buildPhrase('collapse', role, context.kairos);
+    const phraseInfo = buildPhrase('collapse', role, context.kairos, context.loop);
     context.mutationLevel = phraseInfo.level;
     let text = phraseInfo.text;
     for (let i = 0; i < 3; i++) {
@@ -661,13 +848,13 @@ const collapse = {
 
 module.exports = { collapse };
 
-},{"../core/fragments.js":2,"../utils/glitch.js":20}],15:[function(require,module,exports){
+},{"../core/fragments.js":3,"../utils/glitch.js":21}],16:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const dream = {
   compose(context) {
     const role = context.profile.roles[0];
-    const phraseInfo = buildPhrase('dream', role, context.kairos);
+    const phraseInfo = buildPhrase('dream', role, context.kairos, context.loop);
     context.mutationLevel = phraseInfo.level;
     const prefix = role ? `${role}, ` : '';
     return `${prefix}dreaming of ${phraseInfo.text}`;
@@ -679,14 +866,14 @@ const dream = {
 
 module.exports = { dream };
 
-},{"../core/fragments.js":2}],16:[function(require,module,exports){
+},{"../core/fragments.js":3}],17:[function(require,module,exports){
 const { applyCloak } = require('../utils/cloak.js');
 const { buildPhrase } = require('../core/fragments.js');
 
 const parasite = {
   compose(context) {
     const role = context.profile.roles[0];
-    const phraseInfo = buildPhrase('parasite', role, context.kairos);
+    const phraseInfo = buildPhrase('parasite', role, context.kairos, context.loop);
     context.mutationLevel = phraseInfo.level;
     const reversed = phraseInfo.text.split('').reverse().join('');
     return reversed;
@@ -699,13 +886,13 @@ const parasite = {
 
 module.exports = { parasite };
 
-},{"../core/fragments.js":2,"../utils/cloak.js":18}],17:[function(require,module,exports){
+},{"../core/fragments.js":3,"../utils/cloak.js":19}],18:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const watcher = {
   compose(context) {
     const role = context.profile.roles[0];
-    const phraseInfo = buildPhrase('watcher', role, context.kairos);
+    const phraseInfo = buildPhrase('watcher', role, context.kairos, context.loop);
     context.mutationLevel = phraseInfo.level;
     return `watching ${phraseInfo.text} at ${context.kairos}`;
   },
@@ -716,7 +903,7 @@ const watcher = {
 
 module.exports = { watcher };
 
-},{"../core/fragments.js":2}],18:[function(require,module,exports){
+},{"../core/fragments.js":3}],19:[function(require,module,exports){
 function applyCloak(text, level = 0) {
   if (level <= 0) return text;
   if (level === 1) {
@@ -731,14 +918,14 @@ function applyCloak(text, level = 0) {
 
 module.exports = { applyCloak };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 const { EventEmitter } = require('events');
 
 const eventBus = new EventEmitter();
 
 module.exports = { eventBus };
 
-},{"events":35}],20:[function(require,module,exports){
+},{"events":36}],21:[function(require,module,exports){
 function injectGlitch(text, probability = 0.1) {
   if (Math.random() < probability && text.length > 0) {
     const index = Math.floor(Math.random() * text.length);
@@ -749,7 +936,7 @@ function injectGlitch(text, probability = 0.1) {
 
 module.exports = { injectGlitch };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 let lastActivity = Date.now();
 
 function recordActivity() {
@@ -771,7 +958,7 @@ function setLastActivity(time) {
 
 module.exports = { recordActivity, getIdleTime, isIdle, setLastActivity };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 function getKairosWindow() {
   const hr = new Date().getHours();
   if (hr >= 4 && hr < 7) return 'dawn';
@@ -783,19 +970,25 @@ function getKairosWindow() {
 
 module.exports = { getKairosWindow };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 const { mutatePhrase, mutatePhraseWithLevel } = require('../../js/mutatePhrase.js');
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel };
 
-},{"../../js/mutatePhrase.js":34}],24:[function(require,module,exports){
+},{"../../js/mutatePhrase.js":35}],25:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
 
 function init() {
+  let level = 0;
   eventBus.on('whisper', evt => {
     if (/define|explain|architecture/i.test(evt.text)) {
-      const cloaked = applyCloak(evt.text, 1);
+      level = Math.min(level + 1, 2);
+    } else if (level > 0) {
+      level -= 1;
+    }
+    if (level > 0) {
+      const cloaked = applyCloak(evt.text, level);
       console.log(`[cloakCore] ${cloaked}`);
     }
   });
@@ -803,7 +996,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/cloak.js":18,"../WhisperEngine.v3/utils/eventBus.js":19}],25:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/cloak.js":19,"../WhisperEngine.v3/utils/eventBus.js":20}],26:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const frames = [];
 let frame;
@@ -825,7 +1018,7 @@ function init() {
 
 module.exports = { init, frames };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":19}],26:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":20}],27:[function(require,module,exports){
 const sigilShell = require('./sigilShell.js');
 
 function initInterface() {
@@ -834,7 +1027,7 @@ function initInterface() {
 
 module.exports = { initInterface };
 
-},{"./sigilShell.js":31}],27:[function(require,module,exports){
+},{"./sigilShell.js":32}],28:[function(require,module,exports){
 const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
 
 function init() {
@@ -853,7 +1046,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/responseLoop.js":10}],28:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/responseLoop.js":11}],29:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { recordSigil } = require('../WhisperEngine.v3/core/memory.js');
 let count = 0;
@@ -872,7 +1065,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":9,"../WhisperEngine.v3/utils/eventBus.js":19}],29:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":10,"../WhisperEngine.v3/utils/eventBus.js":20}],30:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 let current = '';
 let aura;
@@ -887,11 +1080,21 @@ function update(name) {
 function init() {
   aura = typeof document !== 'undefined' ? document.getElementById('personaAura') : null;
   eventBus.on('persona:shift', update);
+  eventBus.on('presence', () => {
+    if (!aura) return console.log('[personaAura] presence');
+    aura.classList.add('presence', 'pulse');
+    setTimeout(() => aura.classList.remove('presence', 'pulse'), 2000);
+  });
+  eventBus.on('cloak:max', () => {
+    if (!aura) return console.log('[personaAura] cloak-max');
+    aura.classList.add('cloak-max');
+    setTimeout(() => aura.classList.remove('cloak-max'), 500);
+  });
 }
 
 module.exports = { init, getCurrent: () => current };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":19}],30:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":20}],31:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const loops = require('../WhisperEngine.v3/core/loops');
 const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
@@ -927,7 +1130,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/loops":4,"../WhisperEngine.v3/core/responseLoop.js":10,"../WhisperEngine.v3/utils/eventBus.js":19}],31:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/loops":5,"../WhisperEngine.v3/core/responseLoop.js":11,"../WhisperEngine.v3/utils/eventBus.js":20}],32:[function(require,module,exports){
 const ritualBar = require('./ritualBar.js');
 const sigilTimeline = require('./sigilTimeline.js');
 const personaAura = require('./personaAura.js');
@@ -959,7 +1162,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":19,"./cloakCore.js":24,"./echoFrame.js":25,"./inputBox.js":27,"./longArcLarynx.js":28,"./personaAura.js":29,"./ritualBar.js":30,"./sigilTimeline.js":32,"./whisperEchoes.js":33}],32:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":20,"./cloakCore.js":25,"./echoFrame.js":26,"./inputBox.js":28,"./longArcLarynx.js":29,"./personaAura.js":30,"./ritualBar.js":31,"./sigilTimeline.js":33,"./whisperEchoes.js":34}],33:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const timeline = [];
 let container;
@@ -983,19 +1186,19 @@ function init() {
 
 module.exports = { init, timeline };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":19}],33:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":20}],34:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const echoes = [];
 let stream;
 let diagnostic = false;
 const snapshots = [];
 
-function append(text, level = 0) {
+function append(text, level = 0, codex = false) {
   echoes.push(text);
   if (diagnostic) snapshots.push({ text, level });
   if (!stream) return console.log(`[whisperEcho] ${text}`);
   const span = document.createElement('span');
-  span.className = 'whisper-line';
+  span.className = codex ? 'codex-line' : 'whisper-line';
   span.textContent = text;
   stream.innerHTML = '';
   stream.appendChild(span);
@@ -1004,6 +1207,7 @@ function append(text, level = 0) {
 function init() {
   stream = typeof document !== 'undefined' ? document.getElementById('whisperStream') : null;
   eventBus.on('whisper', evt => append(evt.text, evt.level));
+  eventBus.on('codex:expression', evt => append(evt.text, evt.level, true));
 }
 function setDiagnostic(flag) {
   diagnostic = flag;
@@ -1011,7 +1215,7 @@ function setDiagnostic(flag) {
 
 module.exports = { init, echoes, setDiagnostic, snapshots };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":19}],34:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":20}],35:[function(require,module,exports){
 let synonymDrift = {
   "echo": ["recurrence", "ache", "pulse"],
   "recognition": ["return", "reflection", "threshold"],
@@ -1051,7 +1255,7 @@ function mutatePhraseWithLevel(input) {
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel, setSynonymDrift };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1550,5 +1754,5 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
   }
 }
 
-},{}]},{},[12])(12)
+},{}]},{},[13])(13)
 });

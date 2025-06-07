@@ -1,0 +1,58 @@
+.reveal-stage-1 { opacity: 0.25; }
+.reveal-stage-2 { opacity: 0.5; filter: drop-shadow(0 0 4px #ccc); }
+.reveal-stage-3 { opacity: 0.75; filter: drop-shadow(0 0 6px #ddd); }
+.reveal-stage-4 { opacity: 1; filter: drop-shadow(0 0 8px #fff); }
+
+.entity-sigil-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: sigilIgnite 1.2s forwards;
+}
+
+@keyframes sigilIgnite {
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(1.2); }
+}
+
+.glyph-charge-bar { height: 4px; background: #333; margin: 6px 0; position: relative; overflow: hidden; }
+.glyph-charge-bar .fill { height: 100%; width: 0; background: #e0e; transition: width 0.3s linear; }
+
+.whisper-fragment { font-style: italic; opacity: 0.8; animation: fragmentFade 2s forwards; }
+@keyframes fragmentFade {
+  from { opacity: 0.8; }
+  to { opacity: 0; }
+}
+
+/* Ambient bloom levels */
+body[class*="bloom-level-"] { transition: background-color 0.5s ease; }
+body.bloom-level-1 { background-color: #0a0a12; }
+body.bloom-level-2 { background-color: #0a0a14; }
+body.bloom-level-3 { background-color: #0a0a18; }
+body.bloom-level-4 { background-color: #0a0a1e; }
+body.bloom-level-5 { background-color: #0a0a24; }
+
+.bloom-pulse { animation: bloomPulse 1s ease-out; }
+@keyframes bloomPulse {
+  from { box-shadow: 0 0 4px #99f; }
+  to { box-shadow: 0 0 12px #ccf; }
+}
+
+/* Glyph drift */
+.glyph-row.drifting .glyph-btn { animation: glyphDrift 6s ease-in-out infinite alternate; }
+@keyframes glyphDrift {
+  0% { transform: translate(0,0) rotate(0deg); }
+  100% { transform: translate(3px,-3px) rotate(1deg); }
+}
+
+#invocation-output { position: relative; }
+.phantom-echo { position: absolute; left:50%; transform: translateX(-50%); font-style: italic; color:#bbb; opacity:0.8; pointer-events:none; animation: echoFade 3s forwards; }
+.phantom-echo.intensity-1 { opacity: 0.4; }
+.phantom-echo.intensity-2 { opacity: 0.6; }
+.phantom-echo.intensity-3 { opacity: 0.8; }
+.phantom-echo.intensity-4 { opacity: 1; font-weight: bold; }
+.phantom-echo.intensity-5 { opacity: 1; font-weight: bold; text-shadow: 0 0 6px #f9f; }
+@keyframes echoFade { from { opacity:0.8; } to { opacity:0; transform: translate(-50%,-20px);} }
+.collapse-overlay { position: fixed; inset:0; pointer-events:none; background: rgba(255,255,255,0.2); animation: collapseFlash 0.4s forwards; }
+@keyframes collapseFlash { from { opacity:1; } to { opacity:0; } }
+.collapse-fragment { font-style: italic; color:#c33; opacity:0.9; }
