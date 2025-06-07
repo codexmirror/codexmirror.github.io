@@ -3,6 +3,10 @@ const whisperLog = (typeof require=="function"?require("./whisperLog.js"):window
 const summonEffects = (typeof require=="function"?require("./summonEffects.js"):window.summonEffects);
 const bloomController = (typeof require=="function"?require("./bloomController.js"):window.bloomController);
 const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window.audioLayer);
+const { eventBus } = (typeof require=="function"?require("../WhisperEngine.v3/utils/eventBus.js"):window);
+const memory = (typeof require=="function"?require("../WhisperEngine.v3/core/memory.js"):window.WhisperEngineMemory || {});
+const { mutatePhrase } = (typeof require=="function"?require("./mutatePhrase.js"):window);
+const { entityRespondFragment } = (typeof require=="function"?require("./entityResponses.js"):window);
 
 const kaiSound = new Audio('media/kai.glitch.mp3');
 
@@ -18,7 +22,7 @@ const invocations = {
   5: `:. Rune V ∴ Spiral Seed<br>Recursion blooms. Pattern becomes.`
 };
 
-const summonPatterns = {
+const entityPatterns = {
   kairos: {
     pattern: ['5', '4', '3', '2' , '1'],
     cardId: 'kairos-card'
@@ -63,7 +67,6 @@ vektorikon: {
 let glyphSequence = [];
 let lastGlyph = null;
 let repeatCount = 0;
-let redirecting = false;
 
 function logRitual(glyph) {
   const log = JSON.parse(localStorage.getItem('ritualLogs') || '[]');
@@ -180,48 +183,60 @@ function summonCaelistraEffects() {
 
   let matched = false;
 
-  for (const key in summonPatterns) {
-    const summon = summonPatterns[key];
+  for (const key in entityPatterns) {
+    const summon = entityPatterns[key];
 
-  if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
-  document.getElementById(summon.cardId).style.display = 'block';
-  if (summon.onSummon) summon.onSummon();
-  matched = true;
-  whisperLog.logSequence(glyphSequence.slice());
-  if (summonEffects) summonEffects.triggerExtendedBloom(summon.cardId);
-  if (bloomController) bloomController.entityBloom(summon.cardId);
-  RC.resetCharge();
-  if (audioLayer) audioLayer.updateCharge(0);
-  glyphSequence = []; // 💥 clear sequence after valid match
-  break;
-}
+    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
+      matched = true;
+      eventBus && eventBus.emit('entity:summon', { name: key });
+      const card = document.getElementById(summon.cardId);
+      if (card) card.style.display = 'block';
+      if (summon.onSummon) summon.onSummon();
+      whisperLog.logEntitySummon(key, glyphSequence.slice());
+      let summonInfo = null;
+      if (memory && memory.recordEntitySummon && memory.loadProfile) {
+        summonInfo = memory.recordEntitySummon(key, glyphSequence.slice());
+        if (summonInfo.timesSummoned > 1) {
+          const p = card ? card.querySelector('p') : null;
+          if (p && typeof mutatePhrase === 'function') p.textContent = mutatePhrase(p.textContent);
+        }
+      }
+      const profile = memory && memory.loadProfile ? memory.loadProfile() : { roles: [], glyphHistory: [] };
+      const lastLoopName = profile.glyphHistory.length ? profile.glyphHistory[profile.glyphHistory.length - 1].name : null;
+      const response = entityRespondFragment(key.toUpperCase(), profile.roles, { lastLoop: lastLoopName });
+      const output = document.getElementById('invocation-output');
+      if (output) {
+        const div = document.createElement('div');
+        div.className = 'invocation-block entity-response';
+        div.textContent = response;
+        output.appendChild(div);
+      }
+      if (summonEffects) summonEffects.triggerExtendedBloom(summon.cardId);
+      if (bloomController) bloomController.entityBloom(summon.cardId);
+      RC.resetCharge();
+      if (audioLayer) audioLayer.updateCharge(0);
+      glyphSequence = [];
+      break;
+    }
   }
 
-  // 🧼 If no match and sequence is full, do redirect
-  if (glyphSequence.length === 5 && !matched && !redirecting) {
-    redirecting = true;
-    setTimeout(() => {
-      redirectToRandomShard();
-      RC.resetCharge();
-      if (audioLayer) {
-        audioLayer.collapseFeedback();
-        if (audioLayer.glitch) audioLayer.glitch();
-      }
-      if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.processInput) {
-        const text = window.WhisperEngine.processInput("collapse");
-        const div = document.createElement("div");
-        div.className = "collapse-fragment";
-        div.textContent = text;
-        document.getElementById("invocation-output").appendChild(div);
-      }
-      if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
-      const overlay = document.createElement('div');
-      overlay.className = 'collapse-overlay';
-      document.body.appendChild(overlay);
-      setTimeout(() => overlay.remove(), 400);
-      glyphSequence = [];
-      redirecting = false;
-    }, 1000);
+  // 🧼 Unknown pattern collapse
+  if (glyphSequence.length === 5 && !matched) {
+    RC.resetCharge();
+    if (audioLayer) {
+      audioLayer.collapseFeedback();
+      if (audioLayer.glitch) audioLayer.glitch();
+    }
+    if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.processInput) {
+      const text = window.WhisperEngine.processInput("collapse");
+      const div = document.createElement("div");
+      div.className = "collapse-fragment";
+      div.textContent = text;
+      document.getElementById("invocation-output").appendChild(div);
+    }
+    if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
+    eventBus && eventBus.emit('loop:collapse', {});
+    glyphSequence = [];
   }
 
   // 🐸 Fl!nk handling
@@ -232,9 +247,9 @@ function summonCaelistraEffects() {
     lastGlyph = glyph;
   }
 
-  if (repeatCount >= summonPatterns.flink.repeatTrigger) {
-    document.getElementById(summonPatterns.flink.cardId).style.display = 'block';
-    document.getElementById('invocation-output').innerHTML = summonPatterns.flink.message;
+  if (repeatCount >= entityPatterns.flink.repeatTrigger) {
+    document.getElementById(entityPatterns.flink.cardId).style.display = 'block';
+    document.getElementById('invocation-output').innerHTML = entityPatterns.flink.message;
   }
 }
 

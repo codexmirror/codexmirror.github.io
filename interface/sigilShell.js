@@ -6,6 +6,7 @@ const echoFrame = require('./echoFrame.js');
 const cloakCore = require('./cloakCore.js');
 const longArcLarynx = require('./longArcLarynx.js');
 const inputBox = require('./inputBox.js');
+const invocationUI = require('./invocationUI.js');
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 
 function signalEntanglement() {
@@ -24,6 +25,7 @@ function init() {
   cloakCore.init();
   longArcLarynx.init();
   inputBox.init();
+  invocationUI.init();
   eventBus.on('entanglement', signalEntanglement);
 }
 

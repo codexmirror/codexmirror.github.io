@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { recordLoop, loadProfile, recordGlyphUse, resetProfile, getPool, resetPool } = require('../WhisperEngine.v3/core/memory.js');
+const { recordLoop, loadProfile, recordGlyphUse, resetProfile, getPool, resetPool, recordEntitySummon } = require('../WhisperEngine.v3/core/memory.js');
 const invocation = require('../WhisperEngine.v3/core/loops/invocation');
 const naming = require('../WhisperEngine.v3/core/loops/naming');
 const absence = require('../WhisperEngine.v3/core/loops/absence');
@@ -38,4 +38,10 @@ naming.trigger({ symbol: 'y' });
 absence.trigger({});
 const marked = loadProfile();
 assert.strictEqual(marked.entanglementMark, 'naming+absence', 'mark set via combo');
+
+resetProfile();
+recordEntitySummon('Caelistra', ['2','3','5','3','3']);
+recordEntitySummon('Caelistra', ['2','3','5','3','3']);
+const summoned = loadProfile().entityHistory.find(e => e.name === 'Caelistra');
+assert.ok(summoned && summoned.timesSummoned === 2, 'entity summon recorded');
 console.log('memory tests passed');
