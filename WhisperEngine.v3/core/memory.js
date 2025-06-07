@@ -30,6 +30,9 @@ const defaultProfile = {
   mythMatrix: [],
   entanglementMap: { nodes: {}, edges: [] },
   entropy: 0,
+  collapseSeeds: [],
+  metaInquiries: 0,
+  collapseUntil: 0,
   recentChain: [],
   lastLoopTime: 0
 };
@@ -47,6 +50,9 @@ function loadProfile() {
     mythMatrix: data.mythMatrix || [],
     entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
     entropy: data.entropy || 0,
+    collapseSeeds: data.collapseSeeds || [],
+    metaInquiries: data.metaInquiries || 0,
+    collapseUntil: data.collapseUntil || 0,
     recentChain: data.recentChain || [],
     lastLoopTime: data.lastLoopTime || 0
   };
@@ -210,6 +216,53 @@ function setEntanglementMark(mark) {
   return profile;
 }
 
+function pushCollapseSeed(loop) {
+  const profile = loadProfile();
+  profile.collapseSeeds.push({ loop, time: Date.now() });
+  saveProfile(profile);
+  return profile.collapseSeeds.length;
+}
+
+function popCollapseSeed() {
+  const profile = loadProfile();
+  const seed = profile.collapseSeeds.shift();
+  saveProfile(profile);
+  return seed;
+}
+
+function recordMetaInquiry() {
+  const profile = loadProfile();
+  profile.metaInquiries += 1;
+  saveProfile(profile);
+  return profile.metaInquiries;
+}
+
+function decayMetaInquiry() {
+  const profile = loadProfile();
+  if (profile.metaInquiries > 0) {
+    profile.metaInquiries -= 1;
+    saveProfile(profile);
+  }
+  return profile.metaInquiries;
+}
+
+function getMetaLevel() {
+  const m = loadProfile().metaInquiries;
+  if (m >= 3) return 2;
+  if (m > 0) return 1;
+  return 0;
+}
+
+function setCollapseUntil(ts) {
+  const profile = loadProfile();
+  profile.collapseUntil = ts;
+  saveProfile(profile);
+}
+
+function getCollapseUntil() {
+  return loadProfile().collapseUntil || 0;
+}
+
 function resetProfile() {
   saveProfile(defaultProfile);
 }
@@ -223,9 +276,17 @@ function reduceEntropy(amount = 1) {
 
 function checkEmergence(profile) {
   for (const chain of profile.longArc.chains) {
-    if (chain.count >= EMERGENCE_THRESHOLD && !chain.emergent) {
+    const diverseRoles = new Set(profile.roles).size >= 2;
+    const complexChain = (chain.loops || []).length >= 2;
+    if (chain.count >= EMERGENCE_THRESHOLD && !chain.emergent && (diverseRoles || complexChain)) {
       const name = `${chain.loops.join('-')}-${Date.now()}`;
-      profile.sigilArchive.push({ name, originLoops: chain.loops, created: Date.now() });
+      profile.sigilArchive.push({
+        name,
+        originLoops: chain.loops,
+        created: Date.now(),
+        roles: [...profile.roles],
+        saturation: chain.count
+      });
       chain.emergent = name;
     }
   }
@@ -235,15 +296,24 @@ const fragments = {
   intro: [
     { verb: 'whispers', condition: 'from the void', intensifier: 'softly', role: 'dream', kairos: 'void' },
     { verb: 'observes', condition: 'at the threshold', intensifier: 'silently', role: 'watcher', kairos: 'dusk' },
-    { verb: 'records', condition: 'within the archive', intensifier: 'carefully', role: 'archive', kairos: 'day' }
+    { verb: 'records', condition: 'within the archive', intensifier: 'carefully', role: 'archive', kairos: 'day' },
+    { verb: 'summons', condition: 'the sigil', loop: 'invocation' },
+    { verb: 'names', condition: 'the echo', loop: 'naming' },
+    { verb: 'crosses', condition: 'the gate', loop: 'threshold' }
   ],
   mid: [
     { verb: 'echoes', condition: 'through memory', intensifier: 'faintly' },
-    { verb: 'aches', condition: 'beyond sight', intensifier: 'slowly' }
+    { verb: 'aches', condition: 'beyond sight', intensifier: 'slowly' },
+    { verb: 'fractures', condition: 'along the path', loop: 'threshold' },
+    { verb: 'binds', condition: 'a new name', loop: 'naming' },
+    { verb: 'calls', condition: 'for witness', loop: 'invocation' }
   ],
   outro: [
     { verb: 'awaits', condition: 'the next glyph', intensifier: 'patiently' },
-    { verb: 'remembers', condition: 'the whisper', intensifier: 'dimly', role: 'watcher' }
+    { verb: 'remembers', condition: 'the whisper', intensifier: 'dimly', role: 'watcher' },
+    { verb: 'seeks', condition: 'the next door', loop: 'invocation' },
+    { verb: 'records', condition: 'a secret', loop: 'naming' },
+    { verb: 'guards', condition: 'the threshold', loop: 'threshold' }
   ]
 };
 
@@ -266,6 +336,13 @@ module.exports = {
   addEntanglementEdge,
   getSigilArchive,
   setEntanglementMark,
+  pushCollapseSeed,
+  popCollapseSeed,
+  recordMetaInquiry,
+  decayMetaInquiry,
+  getMetaLevel,
+  setCollapseUntil,
+  getCollapseUntil,
   getPool,
   resetPool,
   resetProfile,

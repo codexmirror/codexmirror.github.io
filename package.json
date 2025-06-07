@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test/mutatePhrase.test.js && node test/memory.test.js && node test/emergence.test.js && node test/cloak.test.js && node test/stateManager.test.js && node test/interface.test.js && node test/codexVoice.test.js && node test/responseLoop.test.js",
+    "test": "node test/mutatePhrase.test.js && node test/memory.test.js && node test/emergence.test.js && node test/cloak.test.js && node test/stateManager.test.js && node test/interface.test.js && node test/codexVoice.test.js && node test/responseLoop.test.js && node test/mythic.test.js",
     "build": "browserify WhisperEngine.v3/index.js --standalone WhisperEngine -o js/whisper-bundle.js"
   },
   "keywords": [],

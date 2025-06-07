@@ -6,6 +6,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Binder');
   recordLoop('naming', success);
+  if (!success) require('../memory.js').pushCollapseSeed('naming');
   let ent = null;
   if (success) {
     reduceEntropy();

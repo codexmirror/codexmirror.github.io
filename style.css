@@ -523,3 +523,21 @@ body::before {
   box-shadow: 0 0 6px #0ff;
 }
 
+#personaAura.presence.pulse {
+  animation: auraPulse 2s ease-out;
+}
+
+@keyframes auraPulse {
+  0% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+#personaAura.cloak-max {
+  animation: cloakFlicker 0.5s infinite alternate;
+}
+
+@keyframes cloakFlicker {
+  from { filter: none; }
+  to { filter: invert(1); }
+}
+

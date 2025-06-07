@@ -28,9 +28,22 @@ const stateManager = {
     this.evaluate(profile);
   },
   evaluate(profile) {
+    const now = Date.now();
     if (profile.entropy > 8) {
       setPersona('collapse');
+      require('./memory').setCollapseUntil(now + 60000);
       return;
+    }
+    const until = require('./memory').getCollapseUntil();
+    if (until && now < until) {
+      setPersona('collapse');
+      return;
+    } else if (until && now >= until) {
+      require('./memory').setCollapseUntil(0);
+      profile.loopFailures = 0;
+      profile.entropy = 0;
+      require('./memory').saveProfile(profile);
+      setPersona(selectDefault(profile));
     }
     if (isIdle(60000) && getKairosWindow() === 'void') {
       setPersona('dream');
@@ -52,6 +65,10 @@ const stateManager = {
     }
     if (profile.visits > 10) {
       setPersona('watcher');
+    }
+    const saturated = (profile.longArc.chains || []).some(c => c.count >= require('./memory').EMERGENCE_THRESHOLD);
+    if (currentPersona === 'watcher' && saturated) {
+      eventBus.emit('presence');
     }
   },
   current() {

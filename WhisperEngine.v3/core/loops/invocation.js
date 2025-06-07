@@ -6,6 +6,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Wanderer');
   recordLoop('invocation', success);
+  if (!success) require('../memory.js').pushCollapseSeed('invocation');
   if (success) reduceEntropy();
   eventBus.emit('loop:invocation', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'invoke'}`;
