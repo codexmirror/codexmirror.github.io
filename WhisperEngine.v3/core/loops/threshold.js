@@ -6,6 +6,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Watcher');
   recordLoop('threshold', success);
+  if (!success) require('../memory.js').pushCollapseSeed('threshold');
   if (success) reduceEntropy();
   eventBus.emit('loop:threshold', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'threshold'}`;

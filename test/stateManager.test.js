@@ -1,5 +1,5 @@
 const { stateManager, registerPersona } = require('../WhisperEngine.v3/core/stateManager');
-const { defaultProfile } = require('../WhisperEngine.v3/core/memory');
+const { defaultProfile, setCollapseUntil } = require('../WhisperEngine.v3/core/memory');
 const { setLastActivity } = require('../WhisperEngine.v3/utils/idle');
 const kairos = require('../WhisperEngine.v3/utils/kairos');
 
@@ -18,6 +18,7 @@ profile.entropy = 9;
 stateManager.evaluate(profile);
 if (stateManager.name() !== 'collapse') throw new Error('collapse persona expected');
 
+setCollapseUntil(0);
 kairos.getKairosWindow = () => 'void';
 setLastActivity(Date.now() - 61000);
 profile.entropy = 0;

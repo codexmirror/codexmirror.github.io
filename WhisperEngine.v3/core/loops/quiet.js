@@ -6,6 +6,7 @@ function trigger(context, success = true) {
   recordActivity();
   addRole('Witness');
   recordLoop('quiet', success);
+  if (!success) require('../memory.js').pushCollapseSeed('quiet');
   if (success) reduceEntropy();
   eventBus.emit('loop:quiet', { context, success });
   return `${context.symbol || '∴'} ${context.action || 'quiet'}`;
