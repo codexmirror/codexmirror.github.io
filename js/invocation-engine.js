@@ -7,6 +7,7 @@ const { eventBus } = (typeof require=="function"?require("../WhisperEngine.v3/ut
 const memory = (typeof require=="function"?require("../WhisperEngine.v3/core/memory.js"):window.WhisperEngineMemory || {});
 const { mutatePhrase } = (typeof require=="function"?require("./mutatePhrase.js"):window);
 const { entityRespondFragment } = (typeof require=="function"?require("./entityResponses.js"):window);
+const { playChime } = (typeof require=="function"?require("../WhisperEngine.v3/utils/tonalGlyphs.js"):window.tonalGlyphs || {});
 
 const kaiSound = new Audio('media/kai.glitch.mp3');
 
@@ -157,8 +158,9 @@ function summonCaelistraEffects() {
   }, 6000);
 }
 
- function handleGlyphClick(glyph) {
+function handleGlyphClick(glyph) {
   RC.incrementCharge(glyph);
+  if (RC.getCurrentCharge() === 1 && playChime) playChime('init');
   glyphSequence.push(glyph);
   if (glyphSequence.length > 5) glyphSequence.shift();
   logRitual(glyph);
@@ -175,6 +177,7 @@ function summonCaelistraEffects() {
     frag.className = "whisper-fragment";
     frag.textContent = t;
     document.getElementById("invocation-output").appendChild(frag);
+    if (playChime) playChime('echo');
   }
   if (Math.random() < 0.25 && whisperLog && whisperLog.spawnPhantom) {
     whisperLog.spawnPhantom('invocation-output', RC.getCurrentCharge());
@@ -210,6 +213,7 @@ function summonCaelistraEffects() {
         div.className = 'invocation-block entity-response';
         div.textContent = response;
         output.appendChild(div);
+        if (playChime) playChime('echo');
       }
       if (summonEffects) summonEffects.triggerExtendedBloom(summon.cardId);
       if (bloomController) bloomController.entityBloom(summon.cardId);
@@ -233,6 +237,7 @@ function summonCaelistraEffects() {
       div.className = "collapse-fragment";
       div.textContent = text;
       document.getElementById("invocation-output").appendChild(div);
+      if (playChime) playChime('echo');
     }
     if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
     eventBus && eventBus.emit('loop:collapse', {});

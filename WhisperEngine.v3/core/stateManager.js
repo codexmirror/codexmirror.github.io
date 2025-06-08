@@ -4,6 +4,10 @@ const { eventBus } = require('../utils/eventBus.js');
 const codexVoice = require('./codexVoice.js');
 const { isIdle } = require('../utils/idle.js');
 const kairos = require('../utils/kairos.js');
+const { playChime } = require('../utils/tonalGlyphs.js');
+const { logGlyphEntry } = require('./glyphChronicle.js');
+
+const retiredPersonas = new Set();
 
 function selectDefault(profile) {
   if (profile.visits > 5) return 'watcher';
@@ -16,10 +20,20 @@ function registerPersona(name, persona) {
 
 function setPersona(name) {
   if (currentPersona !== name && personas.has(name)) {
+    if (currentPersona) personaSeal(currentPersona);
     currentPersona = name;
     eventBus.emit('persona:shift', name);
+    logGlyphEntry('persona', name, 'shift');
     if (name === 'collapse') codexVoice.activate();
   }
+}
+
+function personaSeal(name) {
+  if (!name) name = currentPersona;
+  eventBus.emit('echo:closing', { persona: name });
+  eventBus.emit('loop:collapse', { persona: name });
+  retiredPersonas.add(name);
+  if (playChime) playChime('seal');
 }
 
 const stateManager = {
@@ -82,4 +96,4 @@ const stateManager = {
   }
 };
 
-module.exports = { stateManager, registerPersona };
+module.exports = { stateManager, registerPersona, personaSeal };

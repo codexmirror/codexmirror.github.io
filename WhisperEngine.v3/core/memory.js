@@ -35,7 +35,8 @@ const defaultProfile = {
   collapseUntil: 0,
   recentChain: [],
   lastLoopTime: 0,
-  entityHistory: []
+  entityHistory: [],
+  bloomHistory: []
 };
 
 function loadProfile() {
@@ -56,7 +57,8 @@ function loadProfile() {
     collapseUntil: data.collapseUntil || 0,
     recentChain: data.recentChain || [],
     lastLoopTime: data.lastLoopTime || 0,
-    entityHistory: data.entityHistory || []
+    entityHistory: data.entityHistory || [],
+    bloomHistory: data.bloomHistory || []
   };
   profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
   return profile;
@@ -257,6 +259,18 @@ function recordEntitySummon(name, sequence) {
   return entry;
 }
 
+function recordBloom(info) {
+  const profile = loadProfile();
+  profile.bloomHistory = profile.bloomHistory || [];
+  profile.bloomHistory.push(info);
+  saveProfile(profile);
+  return info;
+}
+
+function getBloomHistory() {
+  return loadProfile().bloomHistory || [];
+}
+
 function recordMetaInquiry() {
   const profile = loadProfile();
   profile.metaInquiries += 1;
@@ -367,6 +381,8 @@ module.exports = {
   pushCollapseSeed,
   popCollapseSeed,
   recordEntitySummon,
+  recordBloom,
+  getBloomHistory,
   recordMetaInquiry,
   decayMetaInquiry,
   getMetaLevel,
