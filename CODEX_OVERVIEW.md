@@ -24,6 +24,14 @@ Handles glyph button interactions on `entities.html`:
 ### `js/random-shard-picker.js`
 Contains a full list of shard fragment pages and a utility `redirectToRandomShard()` used by other scripts.
 
+## Engine Layout
+
+WhisperEngine.v3 orchestrates the site. Key pieces:
+- `core/` – memory, loops and expression helpers
+- `personas/` – dream, watcher, archive, parasite, collapse
+- `utils/` – kairos timing and mutation helpers
+- `interface/` – binds UI elements through `interface/index.js`
+
 ### `js/mutatePhrase.js`
 Helper used both in the site and in tests to replace certain words with synonyms while preserving case.
 
@@ -33,9 +41,16 @@ Core styles live in `style.css` with additional rules for the whisper interface 
 
 ## Testing
 
-A single Node-based test (`test/mutatePhrase.test.js`) validates the `mutatePhrase` function. Running `npm test --silent` executes this test.
+A suite of Node tests covers memory, loops, interface events and ritual sequences. Run `npm test` to execute them all. `npm run build` bundles the WhisperEngine.
 
 ## Usage Notes
 
 Most state is stored in the browser via `localStorage`; there is no server component in this repository. The site is purely static.
+
+## Design Documents
+
+Detailed plans live in `docs/`:
+- `WhisperEngine_v3_design.md`
+- `invocation_engine_design.md`
+- `invocation_drift_phase2.md`
 
