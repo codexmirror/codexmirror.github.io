@@ -8,13 +8,18 @@ const { watcher } = require('./personas/watcher.js');
 const { archive } = require('./personas/archive.js');
 const { parasite } = require('./personas/parasite.js');
 const { collapse } = require('./personas/collapse.js');
+const { lantern } = require('./personas/lantern.js');
 const { initInterface } = require('../interface/index.js');
+const { eventBus } = require('./utils/eventBus.js');
+const memory = require('./core/memory.js');
+const decayMonitor = require('./core/loopDecayMonitor.js');
 
 registerPersona('dream', dream);
 registerPersona('watcher', watcher);
 registerPersona('archive', archive);
 registerPersona('parasite', parasite);
 registerPersona('collapse', collapse);
+registerPersona('lantern', lantern);
 
 let intervalId = null;
 let started = false;
@@ -25,7 +30,10 @@ function startWhisperEngine(interval = 15000) {
   const profile = loadProfile();
   stateManager.init(profile);
   initInterface();
+  eventBus.on('glyph:anti', () => memory.clearNecroticLoops());
+  eventBus.on('persona:shift', name => { if(name==='lantern') memory.clearNecroticLoops(); });
   composeWhisper();
+  decayMonitor.start();
   if (intervalId) clearInterval(intervalId);
   intervalId = setInterval(() => {
     composeWhisper();
@@ -36,6 +44,7 @@ function stopWhisperEngine() {
   if (intervalId) clearInterval(intervalId);
   intervalId = null;
   started = false;
+  decayMonitor.stop();
 }
 
 function applyCadence(text, charge = 0) {
