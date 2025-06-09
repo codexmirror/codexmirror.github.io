@@ -62,7 +62,8 @@ const defaultProfile = {
   entryEchoes: [],
   cycleStep: 0,
   echoLangTide: 0,
-  ritualMemory: []
+  ritualMemory: [],
+  langMode: 'en'
 };
 
 function loadProfile() {
@@ -107,7 +108,8 @@ function loadProfile() {
     entryEchoes: data.entryEchoes || [],
     cycleStep: data.cycleStep || 0,
     echoLangTide: data.echoLangTide || 0,
-    ritualMemory: data.ritualMemory || []
+    ritualMemory: data.ritualMemory || [],
+    langMode: data.langMode || (typeof localStorage !== 'undefined' && localStorage.getItem('langPreference')) || 'en'
   };
   profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
   return profile;
@@ -637,6 +639,17 @@ function getEchoLangTide() {
   return loadProfile().echoLangTide || 0;
 }
 
+function getLangMode() {
+  return loadProfile().langMode || 'en';
+}
+
+function setLangMode(mode) {
+  const profile = loadProfile();
+  profile.langMode = mode;
+  saveProfile(profile);
+  if (typeof localStorage !== 'undefined') localStorage.setItem('langPreference', mode);
+}
+
 const fragments = {
   intro: [
     { verb: 'whispers', condition: 'from the void', intensifier: 'softly', role: 'dream', kairos: 'void' },
@@ -732,6 +745,8 @@ module.exports = {
   ,getLastEntryEcho
   ,getEntryEchoes
   ,getEchoLangTide
+  ,getLangMode
+  ,setLangMode
   ,recordRitualSequence
   ,getRitualMemoryCount
 };
