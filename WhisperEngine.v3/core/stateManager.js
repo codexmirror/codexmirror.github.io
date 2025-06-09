@@ -6,6 +6,7 @@ const { isIdle } = require('../utils/idle.js');
 const kairos = require('../utils/kairos.js');
 const { playChime } = require('../utils/tonalGlyphs.js');
 const { logGlyphEntry } = require('./glyphChronicle.js');
+const memory = require('./memory.js');
 
 const retiredPersonas = new Set();
 
@@ -22,6 +23,8 @@ function setPersona(name) {
   if (currentPersona !== name && personas.has(name)) {
     if (currentPersona) personaSeal(currentPersona);
     currentPersona = name;
+    memory.recordPersonaShift(name);
+    memory.checkPhantomInfluence();
     eventBus.emit('persona:shift', name);
     logGlyphEntry('persona', name, 'shift');
     if (name === 'collapse') codexVoice.activate();
@@ -70,6 +73,10 @@ const stateManager = {
     }
     if (profile.loopFailures > 5) {
       setPersona('archive');
+      return;
+    }
+    if ((profile.collapseSeeds || []).length >= 3 || (profile.ritualDebris || []).length >= 3) {
+      setPersona('lantern');
       return;
     }
     const recent = profile.glyphHistory.slice(-3);

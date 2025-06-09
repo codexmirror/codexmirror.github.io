@@ -1,0 +1,14 @@
+let added = false;
+const el = { classList: { add: c => { added = true; } } };
+const prevLS = global.localStorage;
+const prevDoc = global.document;
+const prevWin = global.window;
+global.localStorage = { getItem: () => JSON.stringify({ roles:['parasite'], recursionDepth:3 }) };
+global.document = { querySelectorAll: () => [el] };
+global.window = {};
+require('../js/shard-reverberation.js');
+if(!added) throw new Error('reverberation not applied');
+global.localStorage = prevLS;
+global.document = prevDoc;
+global.window = prevWin;
+console.log('shard reverberation tests passed');

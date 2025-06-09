@@ -8,8 +8,14 @@ const memory = (typeof require=="function"?require("../WhisperEngine.v3/core/mem
 const { mutatePhrase } = (typeof require=="function"?require("./mutatePhrase.js"):window);
 const { entityRespondFragment } = (typeof require=="function"?require("./entityResponses.js"):window);
 const { playChime } = (typeof require=="function"?require("../WhisperEngine.v3/utils/tonalGlyphs.js"):window.tonalGlyphs || {});
+const mirrorSyntax = (typeof require=="function"?require("../WhisperEngine.v3/utils/mirrorSyntax.js"):window.mirrorSyntax || {});
+const jamController = (typeof require=="function"?require("../WhisperEngine.v3/utils/jamController.js"):window.jamController || {});
+const clownHandler = (typeof require=="function"?require("../interface/clownHandler.js"):window.clownHandler || {});
+const confessionMode = (typeof require=="function"?require("../WhisperEngine.v3/core/confessionMode.js"):window.confessionMode || {});
 
 const kaiSound = new Audio('media/kai.glitch.mp3');
+
+let invokeTimes = [];
 
 const invocations = {
   1: `:. Rune I ∴ Mirror Wound<br>Shards recall. Silence guides.`,
@@ -65,6 +71,14 @@ vektorikon: {
   }
 };
 
+const antiPatterns = {
+  undo: { pattern: ['1','1','1','1','1'] }
+};
+
+const specialPatterns = {
+  ascent: { pattern: ['3','1','4','1','5'] }
+};
+
 let glyphSequence = [];
 let lastGlyph = null;
 let repeatCount = 0;
@@ -101,7 +115,11 @@ function updateRevealStage(stage) {
 }
 
 function updateInvocation(glyph) {
-  const block = `<div class="invocation-block">${invocations[glyph]}</div>`;
+  let cls = 'invocation-block';
+  if (memory && memory.isGlyphRotted && memory.isGlyphRotted(glyph)) {
+    cls += ' rotted';
+  }
+  const block = `<div class="${cls}">${invocations[glyph]}</div>`;
   document.getElementById('invocation-output').innerHTML = block;
 }
 
@@ -159,13 +177,50 @@ function summonCaelistraEffects() {
 }
 
 function handleGlyphClick(glyph) {
+  const now = Date.now();
+  invokeTimes = invokeTimes.filter(t => now - t < 10000);
+  if (memory.getRefusalUntil && memory.getRefusalUntil() > now) return;
+  invokeTimes.push(now);
+  if (invokeTimes.length > 10) {
+    memory.activateRefusal();
+    eventBus && eventBus.emit('ritual:refusal');
+    return;
+  }
+  if (jamController.register && jamController.register(glyph)) {
+    document.body && document.body.classList.add('jam');
+    setTimeout(() => document.body && document.body.classList.remove('jam'), 500);
+    return;
+  }
   RC.incrementCharge(glyph);
   if (RC.getCurrentCharge() === 1 && playChime) playChime('init');
+  if (memory && memory.recordGlyphDrift) memory.recordGlyphDrift(lastGlyph, glyph);
+  const drifted = memory && memory.getDriftVariant ? memory.getDriftVariant(glyph, lastGlyph) : glyph;
   glyphSequence.push(glyph);
   if (glyphSequence.length > 5) glyphSequence.shift();
   logRitual(glyph);
 
-  updateInvocation(glyph);
+  for (const key in antiPatterns) {
+    const anti = antiPatterns[key];
+    if (anti.pattern && arraysEqual(glyphSequence, anti.pattern)) {
+      if (memory && memory.resetRecursion) memory.resetRecursion();
+      if (memory && memory.recordLoop) memory.recordLoop('anti', true);
+      RC.resetCharge();
+      glyphSequence = [];
+      eventBus && eventBus.emit('glyph:anti', { name: key });
+      return;
+    }
+  }
+
+  for (const key in specialPatterns) {
+    const sp = specialPatterns[key];
+    if (sp.pattern && arraysEqual(glyphSequence, sp.pattern)) {
+      if (key === 'ascent') require('../WhisperEngine.v3/core/ascentMode.js').start();
+      glyphSequence = [];
+      break;
+    }
+  }
+
+  updateInvocation(drifted);
   hideAllEntities();
   if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.glyph) {
     const level = RC.getCurrentCharge();
@@ -224,6 +279,25 @@ function handleGlyphClick(glyph) {
     }
   }
 
+  if (!matched) {
+    for (const key in entityPatterns) {
+      const summon = entityPatterns[key];
+      const rev = summon.pattern.slice().reverse();
+      if (arraysEqual(glyphSequence, rev)) {
+        matched = true;
+        eventBus && eventBus.emit('entity:mirrorfold', { name: key });
+        const out = mirrorSyntax.invert(entityPatterns[key].pattern.join(' '));
+        const div = document.createElement('div');
+        div.className = 'invocation-block entity-response';
+        div.textContent = out;
+        document.getElementById('invocation-output').appendChild(div);
+        RC.resetCharge();
+        glyphSequence = [];
+        break;
+      }
+    }
+  }
+
   // 🧼 Unknown pattern collapse
   if (glyphSequence.length === 5 && !matched) {
     RC.resetCharge();
@@ -241,6 +315,8 @@ function handleGlyphClick(glyph) {
     }
     if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
     eventBus && eventBus.emit('loop:collapse', {});
+    clownHandler.trigger();
+    confessionMode.open('this glyph was light ∩ now it drips');
     glyphSequence = [];
   }
 
@@ -250,6 +326,18 @@ function handleGlyphClick(glyph) {
   } else {
     repeatCount = 1;
     lastGlyph = glyph;
+  }
+
+  if (memory.isGlyphRotted && memory.isGlyphRotted(glyph)) {
+    memory.pushDebtSigil(glyph);
+  }
+
+  if (repeatCount > 3) {
+    memory.recordScarLoop([glyph]);
+  }
+
+  if (Math.random() < 0.01) {
+    memory.triggerMirrorBloom();
   }
 
   if (repeatCount >= entityPatterns.flink.repeatTrigger) {
@@ -263,4 +351,14 @@ document.querySelectorAll('.glyph-btn').forEach(btn => {
     const glyph = btn.dataset.glyph;
     handleGlyphClick(glyph);
   });
+});
+
+eventBus && eventBus.on('glyph:drag', evt => {
+  if (evt && evt.glyph) handleGlyphClick(evt.glyph);
+});
+eventBus && eventBus.on('entity:summon', evt => {
+  if (evt && evt.name === 'lantern') confessionMode.close();
+});
+eventBus && eventBus.on('persona:shift', name => {
+  if (name === 'lantern') confessionMode.close();
 });
