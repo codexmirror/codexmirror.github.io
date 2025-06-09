@@ -46,7 +46,10 @@ function adapt({ echo, prev, tide }) {
     frag.dataset.src = silence > 60000 ? '/shards/ghosts/echo-question.html'
       : '/shards/loop-flicker/echo-question.html';
     const existing = document.querySelectorAll('.phantom-echo');
-    if (existing.length > 2) existing[0].remove();
+    if (existing.length >= 3) {
+      existing[0].classList.add('fade-out');
+      setTimeout(() => existing[0].remove(), 300);
+    }
     document.body.appendChild(frag);
     setTimeout(() => frag.remove(), 4000);
     const last = document.body.dataset.lang;

@@ -52,6 +52,7 @@ body.bloom-level-5 { background-color: #0a0a24; }
 .phantom-echo.intensity-3 { opacity: 0.8; }
 .phantom-echo.intensity-4 { opacity: 1; font-weight: bold; }
 .phantom-echo.intensity-5 { opacity: 1; font-weight: bold; text-shadow: 0 0 6px #f9f; }
+.phantom-echo.fade-out { opacity: 0 !important; transition: opacity 0.3s ease; }
 @keyframes echoFade { from { opacity:0.8; } to { opacity:0; transform: translate(-50%,-20px);} }
 .collapse-overlay { position: fixed; inset:0; pointer-events:none; background: rgba(255,255,255,0.2); animation: collapseFlash 0.4s forwards; }
 @keyframes collapseFlash { from { opacity:1; } to { opacity:0; } }

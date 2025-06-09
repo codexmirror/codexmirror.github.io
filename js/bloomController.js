@@ -1,7 +1,14 @@
 let level = 0;
+let glyphCount = 0;
+let enabled = false;
+
+function registerGlyph() {
+  glyphCount++;
+  if (glyphCount >= 2) enabled = true;
+}
 
 function setLevel(l) {
-  if (typeof document === 'undefined') return;
+  if (typeof document === 'undefined' || !enabled) return;
   const body = document.body;
   body.classList.remove(`bloom-level-${level}`);
   level = l;
@@ -30,6 +37,6 @@ function startGlyphDrift() {
   reset();
 }
 
-const api = { setLevel, entityBloom, startGlyphDrift };
+const api = { setLevel, entityBloom, startGlyphDrift, registerGlyph };
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 if (typeof window !== 'undefined') window.bloomController = api;
