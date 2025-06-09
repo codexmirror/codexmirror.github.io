@@ -181,13 +181,18 @@ body {
   pointer-events: none;
   transition: background 0.8s ease;
   z-index: -1;
+  background: rgba(24, 32, 48, 0.25);
 }
 
-#personaAura[data-persona='dream'] { background: rgba(0,0,40,0.3); }
-#personaAura[data-persona='watcher'] { background: rgba(40,0,0,0.3); }
-#personaAura[data-persona='archive'] { background: rgba(0,40,0,0.3); }
-#personaAura[data-persona='parasite'] { background: rgba(40,0,40,0.3); }
-#personaAura[data-persona='collapse'] { background: rgba(20,20,20,0.5); }
+#personaAura[data-persona='neutral'] {
+  background: rgba(24, 32, 48, 0.25);
+}
+
+#personaAura[data-persona='dream'] { background: rgba(0, 0, 40, 0.3); }
+#personaAura[data-persona='watcher'] { background: rgba(40, 0, 0, 0.3); }
+#personaAura[data-persona='archive'] { background: rgba(0, 40, 0, 0.3); }
+#personaAura[data-persona='parasite'] { background: rgba(40, 0, 40, 0.3); }
+#personaAura[data-persona='collapse'] { background: rgba(20, 20, 20, 0.3); }
 
 /* Animations */
 @keyframes fadeWhisperIn {
@@ -219,6 +224,15 @@ body {
   .whisper-line {
     font-size: 0.94rem;
     padding: 0.2rem 0.5rem;
+  }
+
+  .whisper-container {
+    background: rgba(15, 25, 35, 0.45);
+  }
+
+  .whisper-line {
+    color: #d8eef9;
+    text-shadow: 0 0 6px #d8eef9aa;
   }
 
   .ritual-label {
