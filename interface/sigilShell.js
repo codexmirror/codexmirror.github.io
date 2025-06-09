@@ -9,6 +9,8 @@ const inputBox = require('./inputBox.js');
 const invocationUI = require('./invocationUI.js');
 const auraTracker = require('../WhisperEngine.v3/utils/auraTracker.js');
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const echoMask = require('./echoMask.js');
+const kairosWindow = require('./kairosWindow.js');
 
 function signalEntanglement() {
   const aura = document.getElementById('personaAura');
@@ -28,6 +30,8 @@ function init() {
   inputBox.init();
   invocationUI.init();
   auraTracker.init();
+  echoMask.init();
+  kairosWindow.init();
   eventBus.on('entanglement', signalEntanglement);
   eventBus.on('entity:possess', () => {
     if (typeof document === 'undefined') return;
