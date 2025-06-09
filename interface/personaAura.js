@@ -26,6 +26,7 @@ function init() {
   ['invocation','absence','naming','threshold','quiet','recursive'].forEach(l => {
     eventBus.on(`loop:${l}`, activate);
   });
+  setTimeout(() => { if (!activated) activate(); }, 5000);
   eventBus.on('presence', () => {
     if (!aura || !activated) return;
     aura.classList.add('presence', 'pulse');

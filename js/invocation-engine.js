@@ -201,6 +201,7 @@ function handleGlyphClick(glyph) {
   if (memory && memory.recordGlyphDrift) memory.recordGlyphDrift(lastGlyph, glyph);
   const drifted = memory && memory.getDriftVariant ? memory.getDriftVariant(glyph, lastGlyph) : glyph;
   glyphSequence.push(glyph);
+  if (bloomController && bloomController.registerGlyph) bloomController.registerGlyph();
   if (glyphSequence.length > 5) glyphSequence.shift();
   logRitual(glyph);
 

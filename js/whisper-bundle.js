@@ -1792,11 +1792,11 @@ const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
 
 // Aura tints per persona
 const auraColors = {
-  invocation: '#87f0ff',
-  naming: '#a3ffb9',
-  threshold: '#ffbf81',
-  absence: '#cccccc',
-  quiet: '#bbbbbb'
+  invocation: 'rgba(135, 240, 255, 0.28)',
+  naming: 'rgba(163, 255, 185, 0.28)',
+  threshold: 'rgba(255, 191, 129, 0.28)',
+  absence: 'rgba(204, 204, 204, 0.28)',
+  quiet: 'rgba(187, 187, 187, 0.28)'
 };
 
 let interacted = false;
@@ -1807,7 +1807,9 @@ function adapt({ echo, prev, tide }) {
   const { hour, silence } = echo;
   document.body.dataset.echoHour = hour;
   const aura = document.getElementById('personaAura');
-  if (aura) aura.style.backgroundColor = auraColors[stateManager.name()] || auraColors.invocation;
+  if (aura && interacted) {
+    aura.style.backgroundColor = auraColors[stateManager.name()] || auraColors.invocation;
+  }
 
   if (prev) {
     if (prev.firstGlyph === echo.firstGlyph && prev.hour === hour) {
@@ -1832,7 +1834,10 @@ function adapt({ echo, prev, tide }) {
     frag.dataset.src = silence > 60000 ? '/shards/ghosts/echo-question.html'
       : '/shards/loop-flicker/echo-question.html';
     const existing = document.querySelectorAll('.phantom-echo');
-    if (existing.length > 2) existing[0].remove();
+    if (existing.length >= 3) {
+      existing[0].classList.add('fade-out');
+      setTimeout(() => existing[0].remove(), 300);
+    }
     document.body.appendChild(frag);
     setTimeout(() => frag.remove(), 4000);
     const last = document.body.dataset.lang;
@@ -1931,24 +1936,39 @@ module.exports = { init };
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 let current = '';
 let aura;
+let activated = false;
 
 function update(name) {
   current = name;
-  if (!aura) return console.log(`[personaAura] ${name}`);
-  aura.setAttribute('data-persona', name);
-  aura.textContent = name;
+  if (!aura || !activated) return;
+  requestAnimationFrame(() => {
+    aura.setAttribute('data-persona', name);
+    aura.textContent = name;
+  });
+}
+
+function activate() {
+  if (!activated) {
+    activated = true;
+    if (current) update(current);
+  }
 }
 
 function init() {
   aura = typeof document !== 'undefined' ? document.getElementById('personaAura') : null;
+  if (aura) aura.setAttribute('data-persona', 'neutral');
   eventBus.on('persona:shift', update);
+  ['invocation','absence','naming','threshold','quiet','recursive'].forEach(l => {
+    eventBus.on(`loop:${l}`, activate);
+  });
+  setTimeout(() => { if (!activated) activate(); }, 5000);
   eventBus.on('presence', () => {
-    if (!aura) return console.log('[personaAura] presence');
+    if (!aura || !activated) return;
     aura.classList.add('presence', 'pulse');
     setTimeout(() => aura.classList.remove('presence', 'pulse'), 2000);
   });
   eventBus.on('cloak:max', () => {
-    if (!aura) return console.log('[personaAura] cloak-max');
+    if (!aura || !activated) return;
     aura.classList.add('cloak-max');
     setTimeout(() => aura.classList.remove('cloak-max'), 500);
   });
