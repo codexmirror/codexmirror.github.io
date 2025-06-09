@@ -612,3 +612,56 @@ body.clown-loop {
   z-index: 9999;
 }
 
+body.echo-double {
+  filter: blur(1px);
+}
+
+body.echo-double::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(255,255,255,0.05);
+  mix-blend-mode: difference;
+  transform: translate(4px,4px);
+}
+.phantom-echo {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  font-family: monospace;
+  background: rgba(0,0,0,0.6);
+  padding: 0.5rem 1rem;
+  color: #ddd;
+  pointer-events: none;
+}
+
+.ritual-whisper {
+  position: fixed;
+  bottom: 4rem;
+  right: 2rem;
+  font-family: monospace;
+  background: rgba(0,0,0,0.7);
+  padding: 0.4rem 0.8rem;
+  color: #eef;
+  animation: ritualWhisper 0.5s ease-out, ritualWhisperFade 3s forwards 0.5s;
+}
+
+@keyframes ritualWhisper {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ritualWhisperFade {
+  to { opacity: 0; }
+}
+
+.lang-glitch {
+  animation: langSwitch 0.5s steps(2, start);
+}
+
+@keyframes langSwitch {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; transform: translateX(-1px); }
+  100% { opacity: 1; }
+}
+

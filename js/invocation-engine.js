@@ -12,6 +12,7 @@ const mirrorSyntax = (typeof require=="function"?require("../WhisperEngine.v3/ut
 const jamController = (typeof require=="function"?require("../WhisperEngine.v3/utils/jamController.js"):window.jamController || {});
 const clownHandler = (typeof require=="function"?require("../interface/clownHandler.js"):window.clownHandler || {});
 const confessionMode = (typeof require=="function"?require("../WhisperEngine.v3/core/confessionMode.js"):window.confessionMode || {});
+const ritualFragments = (typeof require=="function"?require("./ritualFragments.js"):window.ritualFragments || {});
 
 const kaiSound = new Audio('media/kai.glitch.mp3');
 
@@ -112,6 +113,10 @@ function updateRevealStage(stage) {
   if(fill) fill.style.width = (stage*20)+"%";
   if (bloomController) bloomController.setLevel(stage);
   if (audioLayer) audioLayer.updateCharge(stage);
+  eventBus && eventBus.emit('ritual:pulse', { level: stage });
+  if (ritualFragments.showFragment && [2,4,5].includes(stage)) {
+    ritualFragments.showFragment(stage);
+  }
 }
 
 function updateInvocation(glyph) {
@@ -205,6 +210,10 @@ function handleGlyphClick(glyph) {
       if (memory && memory.resetRecursion) memory.resetRecursion();
       if (memory && memory.recordLoop) memory.recordLoop('anti', true);
       RC.resetCharge();
+      const count = memory.recordRitualSequence(glyphSequence.slice());
+      eventBus && eventBus.emit('ritual:memory', { count });
+      eventBus && eventBus.emit('ritual:complete');
+      updateRevealStage(0);
       glyphSequence = [];
       eventBus && eventBus.emit('glyph:anti', { name: key });
       return;
@@ -274,6 +283,10 @@ function handleGlyphClick(glyph) {
       if (bloomController) bloomController.entityBloom(summon.cardId);
       RC.resetCharge();
       if (audioLayer) audioLayer.updateCharge(0);
+      const count = memory.recordRitualSequence(glyphSequence.slice());
+      eventBus && eventBus.emit('ritual:memory', { count });
+      eventBus && eventBus.emit('ritual:complete');
+      updateRevealStage(0);
       glyphSequence = [];
       break;
     }
@@ -292,6 +305,10 @@ function handleGlyphClick(glyph) {
         div.textContent = out;
         document.getElementById('invocation-output').appendChild(div);
         RC.resetCharge();
+        const count = memory.recordRitualSequence(glyphSequence.slice());
+        eventBus && eventBus.emit('ritual:memory', { count });
+        eventBus && eventBus.emit('ritual:complete');
+        updateRevealStage(0);
         glyphSequence = [];
         break;
       }
@@ -317,6 +334,11 @@ function handleGlyphClick(glyph) {
     eventBus && eventBus.emit('loop:collapse', {});
     clownHandler.trigger();
     confessionMode.open('this glyph was light ∩ now it drips');
+    const count = memory.recordRitualSequence(glyphSequence.slice());
+    eventBus && eventBus.emit('ritual:memory', { count });
+    eventBus && eventBus.emit('ritual:failure');
+    eventBus && eventBus.emit('ritual:complete');
+    updateRevealStage(0);
     glyphSequence = [];
   }
 
