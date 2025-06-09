@@ -26,11 +26,8 @@
 
 /* Ambient bloom levels */
 body[class*="bloom-level-"] { transition: background-color 0.5s ease; }
-body.bloom-level-1 { background-color: #0a0a12; }
-body.bloom-level-2 { background-color: #0a0a14; }
-body.bloom-level-3 { background-color: #0a0a18; }
-body.bloom-level-4 { background-color: #0a0a1e; }
-body.bloom-level-5 { background-color: #0a0a24; }
+body.bloom-level-7 { background-color: #0a0a24; }
+body.bloom-level-8 { background-color: #0a0a28; }
 
 .bloom-pulse { animation: bloomPulse 1s ease-out; }
 @keyframes bloomPulse {

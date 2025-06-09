@@ -3,6 +3,35 @@ const loops = require('../WhisperEngine.v3/core/loops');
 const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
 let bar;
 
+function pulse(level) {
+  if (!bar) return;
+  const aura = document.getElementById('personaAura');
+  const overlay = document.createElement('span');
+  overlay.className = 'ritual-pulse';
+  overlay.style.background = aura ? window.getComputedStyle(aura).backgroundColor : 'rgba(200,200,255,0.2)';
+  bar.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 500);
+}
+
+function reset() {
+  const fill = document.querySelector('#glyph-charge .fill');
+  if (fill) fill.style.width = '0';
+}
+
+function collapse() {
+  if (!bar) return;
+  bar.classList.add('collapse');
+  setTimeout(() => bar.classList.remove('collapse'), 600);
+}
+
+function memory({ count }) {
+  if (!bar) return;
+  if (count > 1) {
+    bar.classList.add('memory-resonance');
+    setTimeout(() => bar.classList.remove('memory-resonance'), 1200);
+  }
+}
+
 function highlight(name) {
   if (!bar) return console.log(`[ritualBar] ${name} triggered`);
   const item = bar.querySelector(`[data-loop="${name}"]`);
@@ -16,6 +45,10 @@ function init() {
   ['invocation', 'absence', 'naming', 'threshold', 'quiet'].forEach(name => {
     eventBus.on(`loop:${name}`, () => highlight(name));
   });
+  eventBus.on('ritual:pulse', evt => pulse(evt.level));
+  eventBus.on('ritual:complete', reset);
+  eventBus.on('ritual:failure', collapse);
+  eventBus.on('ritual:memory', memory);
 
   if (bar) {
     bar.addEventListener('click', evt => {

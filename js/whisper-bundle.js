@@ -36,7 +36,45 @@ eventBus.on('persona:shift', name => {
 });
 
 
-},{"../utils/eventBus.js":22}],2:[function(require,module,exports){
+},{"../utils/eventBus.js":30}],2:[function(require,module,exports){
+const memory = require('./memory.js');
+const loops = require('./loops');
+const { eventBus } = require('../utils/eventBus.js');
+const { stateManager } = require('./stateManager.js');
+
+function capture() {
+  const profile = memory.recordVisit();
+  const hour = new Date().getHours();
+  const firstGlyph = loops && loops.invocation ? 'invocation' : Object.keys(loops)[0];
+  const silence = Date.now() - (profile.lastLoopTime || 0);
+  const echo = { hour, firstGlyph, silence };
+  const prev = memory.getLastEntryEcho();
+  memory.recordEntryEcho(echo);
+
+  const storedPref = typeof localStorage !== 'undefined' ? localStorage.getItem('langPreference') : null;
+  let mode = storedPref || profile.langMode || 'en';
+  if (silence > 60000 || profile.glyphHistory.length >= 2) {
+    mode = 'drift';
+  }
+  memory.setLangMode(mode);
+
+  const echoes = memory.getEntryEchoes();
+  const recent = echoes.slice(-3);
+  if (recent.length === 3 && recent.every(e => e.firstGlyph === firstGlyph)) {
+    eventBus.emit('kairos:window', { module: '/vectors/threshmask-delta.html' });
+    stateManager.shift('kairos');
+  }
+
+  if (profile.cycleStep === 3) eventBus.emit('ritual:initiation');
+  if (profile.cycleStep === 7) eventBus.emit('ritual:maskenbruch');
+
+  eventBus.emit('visitor:entry', { echo, prev, tide: memory.getEchoLangTide(), mode });
+  return echo;
+}
+
+module.exports = { capture };
+
+},{"../utils/eventBus.js":30,"./loops":9,"./memory.js":16,"./stateManager.js":19}],3:[function(require,module,exports){
 const { eventBus } = require('../utils/eventBus.js');
 const { loadProfile } = require('./memory.js');
 
@@ -69,7 +107,7 @@ function processOutput(text, context = {}) {
 
 module.exports = { processOutput };
 
-},{"../utils/eventBus.js":22,"./memory.js":11}],3:[function(require,module,exports){
+},{"../utils/eventBus.js":30,"./memory.js":16}],4:[function(require,module,exports){
 const { fragments, responseTemplates } = require('./memory.js');
 const { mutatePhraseWithLevel } = require('../utils/mutate.js');
 
@@ -105,7 +143,7 @@ function buildPhrase(persona, role, kairos, loop) {
 
 module.exports = { buildPhrase, assembleFragment };
 
-},{"../utils/mutate.js":26,"./memory.js":11}],4:[function(require,module,exports){
+},{"../utils/mutate.js":35,"./memory.js":16}],5:[function(require,module,exports){
 const threads = [];
 const cross = {};
 
@@ -138,7 +176,58 @@ function decayOldThreads(maxAge = 3600000) {
 
 module.exports = { logGlyphEntry, getThreads, getCross, decayOldThreads };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+
+function evaluate() {
+  const memory = require('./memory.js');
+  const profile = memory.loadProfile();
+  const cutoff = Date.now() - 600000;
+  const recent = (profile.glyphHistory || []).filter(g => g.time > cutoff);
+  let weather = 'normal';
+  if (recent.length > 20) weather = 'storm';
+  else if (recent.length < 5) weather = 'veil';
+  if (profile.glyphWeather !== weather) {
+    profile.glyphWeather = weather;
+    memory.saveProfile(profile);
+    eventBus.emit('weather:change', { weather });
+  }
+  return weather;
+}
+
+module.exports = { evaluate };
+
+},{"../utils/eventBus.js":30,"./memory.js":16}],7:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const memory = require('./memory.js');
+
+let timer = null;
+
+function check() {
+  const level = memory.getNecrosisLevel();
+  if (level > 0) {
+    eventBus.emit('loop:necrosis', { level });
+  }
+  const until = memory.getAscentUntil();
+  if (until && Date.now() > until) {
+    memory.setAscentUntil(0);
+    eventBus.emit('ascent:fail');
+  }
+}
+
+function start(interval = 5000) {
+  if (timer) return;
+  timer = setInterval(check, interval);
+}
+
+function stop() {
+  if (timer) clearInterval(timer);
+  timer = null;
+}
+
+module.exports = { start, stop };
+
+},{"../utils/eventBus.js":30,"./memory.js":16}],8:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy, setEntanglementMark, loadProfile } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -162,22 +251,26 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":22,"../../utils/idle.js":24,"../memory.js":11}],6:[function(require,module,exports){
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],9:[function(require,module,exports){
 const invocation = require('./invocation.js');
 const absence = require('./absence.js');
 const naming = require('./naming.js');
 const threshold = require('./threshold.js');
 const quiet = require('./quiet.js');
+const recursive = require('./recursive.js');
+const nullLoop = require('./null.js');
 
 module.exports = {
   invocation,
   absence,
   naming,
   threshold,
-  quiet
+  quiet,
+  recursive,
+  null: nullLoop
 };
 
-},{"./absence.js":5,"./invocation.js":7,"./naming.js":8,"./quiet.js":9,"./threshold.js":10}],7:[function(require,module,exports){
+},{"./absence.js":8,"./invocation.js":10,"./naming.js":11,"./null.js":12,"./quiet.js":13,"./recursive.js":14,"./threshold.js":15}],10:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -217,7 +310,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger, checkEntityPattern, entityPatterns };
 
-},{"../../utils/eventBus.js":22,"../../utils/idle.js":24,"../glyphChronicle.js":4,"../memory.js":11,"../ritualBloom.js":13,"../stateManager.js":14}],8:[function(require,module,exports){
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../glyphChronicle.js":5,"../memory.js":16,"../ritualBloom.js":18,"../stateManager.js":19}],11:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy, attemptEntanglement } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -240,7 +333,22 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":22,"../../utils/idle.js":24,"../memory.js":11}],9:[function(require,module,exports){
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],12:[function(require,module,exports){
+const { recordLoop, reduceEntropy } = require('../memory.js');
+const { eventBus } = require('../../utils/eventBus.js');
+const { startSilence } = require('../../utils/kairosTimer.js');
+
+function trigger(context = {}) {
+  recordLoop('null', true);
+  reduceEntropy();
+  eventBus.emit('loop:null', { context });
+  startSilence();
+  return '∅';
+}
+
+module.exports = { trigger };
+
+},{"../../utils/eventBus.js":30,"../../utils/kairosTimer.js":34,"../memory.js":16}],13:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -257,7 +365,31 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":22,"../../utils/idle.js":24,"../memory.js":11}],10:[function(require,module,exports){
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],14:[function(require,module,exports){
+const { recordLoop, reduceEntropy, incrementRecursion, resetRecursion, recordGlyphUse } = require('../memory.js');
+const { recordActivity } = require('../../utils/idle.js');
+const { eventBus } = require('../../utils/eventBus.js');
+
+function trigger(context = {}, success = true) {
+  recordActivity();
+  const anchor = context.anchor || null;
+  incrementRecursion(anchor);
+  recordLoop('recursive', success);
+  if (!success) require('../memory.js').pushCollapseSeed('recursive');
+  if (success) reduceEntropy();
+  const glyph = anchor ? `${anchor}|∞` : '∞';
+  recordGlyphUse(glyph);
+  eventBus.emit('loop:recursive', { context, success });
+  return `${glyph} ${context.action || 'recurse'}`;
+}
+
+function reset() {
+  resetRecursion();
+}
+
+module.exports = { trigger, reset };
+
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],15:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -274,11 +406,12 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":22,"../../utils/idle.js":24,"../memory.js":11}],11:[function(require,module,exports){
+},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],16:[function(require,module,exports){
 const storageKey = 'whisperProfile';
 const POOL_KEY = 'entanglementPool';
 let nodeMemory = null;
 let nodePool = null;
+const { eventBus } = require('../utils/eventBus.js');
 const storage = typeof localStorage !== 'undefined'
   ? localStorage
   : {
@@ -291,9 +424,15 @@ const storage = typeof localStorage !== 'undefined'
         else nodeMemory = val;
       }
     };
+let devFirst = false;
+if (typeof localStorage !== 'undefined') {
+  devFirst = !!localStorage.getItem('devFirstTime');
+}
 
 const CANON_THRESHOLD = 42;
 const EMERGENCE_THRESHOLD = 3;
+const ROT_THRESHOLD = 20;
+const glyphWeather = require('./glyphWeather.js');
 
 const defaultProfile = {
   id: null,
@@ -307,13 +446,37 @@ const defaultProfile = {
   mythMatrix: [],
   entanglementMap: { nodes: {}, edges: [] },
   entropy: 0,
+  ritualDebris: [],
+  recursionDepth: 0,
+  mutationAnchors: [],
+  obscuraSigils: [],
+  acheMarkers: [],
+  fractureResidues: [],
+  possessedEntity: null,
+  inversionUntil: 0,
+  glyphWeather: 'veil',
   collapseSeeds: [],
   metaInquiries: 0,
   collapseUntil: 0,
+  glyphDrift: {},
+  necroticLoops: [],
+  personaShifts: [],
+  phantomActive: false,
+  ascentUntil: 0,
   recentChain: [],
   lastLoopTime: 0,
   entityHistory: [],
-  bloomHistory: []
+  bloomHistory: [],
+  sporeDensity: 0,
+  debtSigils: [],
+  scarLoops: {},
+  refusalUntil: 0,
+  mirrorBloomCount: 0,
+  entryEchoes: [],
+  cycleStep: 0,
+  echoLangTide: 0,
+  ritualMemory: [],
+  langMode: 'en'
 };
 
 function loadProfile() {
@@ -329,13 +492,37 @@ function loadProfile() {
     mythMatrix: data.mythMatrix || [],
     entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
     entropy: data.entropy || 0,
+    ritualDebris: data.ritualDebris || [],
+    recursionDepth: data.recursionDepth || 0,
+    mutationAnchors: data.mutationAnchors || [],
+    obscuraSigils: data.obscuraSigils || [],
+    acheMarkers: data.acheMarkers || [],
+    glyphWeather: data.glyphWeather || 'veil',
     collapseSeeds: data.collapseSeeds || [],
     metaInquiries: data.metaInquiries || 0,
     collapseUntil: data.collapseUntil || 0,
+    glyphDrift: data.glyphDrift || {},
+    necroticLoops: data.necroticLoops || [],
+    personaShifts: data.personaShifts || [],
+    phantomActive: data.phantomActive || false,
+    ascentUntil: data.ascentUntil || 0,
     recentChain: data.recentChain || [],
     lastLoopTime: data.lastLoopTime || 0,
     entityHistory: data.entityHistory || [],
-    bloomHistory: data.bloomHistory || []
+    bloomHistory: data.bloomHistory || [],
+    sporeDensity: data.sporeDensity || 0,
+    fractureResidues: data.fractureResidues || [],
+    possessedEntity: data.possessedEntity || null,
+    inversionUntil: data.inversionUntil || 0,
+    debtSigils: data.debtSigils || [],
+    scarLoops: data.scarLoops || {},
+    refusalUntil: data.refusalUntil || 0,
+    mirrorBloomCount: data.mirrorBloomCount || 0,
+    entryEchoes: data.entryEchoes || [],
+    cycleStep: data.cycleStep || 0,
+    echoLangTide: data.echoLangTide || 0,
+    ritualMemory: data.ritualMemory || [],
+    langMode: data.langMode || 'en'
   };
   profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
   return profile;
@@ -359,7 +546,13 @@ function resetPool() {
 
 function recordVisit() {
   let profile = loadProfile();
+  if (devFirst) profile.visits = 0;
   profile.visits += 1;
+  const delta = Math.random() < 0.5 ? -1 : 1;
+  const tide = (profile.echoLangTide || 0) + delta;
+  profile.echoLangTide = Math.max(-5, Math.min(5, tide));
+  profile.cycleStep = (profile.cycleStep || 0) + 1;
+  if (profile.cycleStep > 7) profile.cycleStep = 1;
   saveProfile(profile);
   return profile;
 }
@@ -401,11 +594,21 @@ function recordLoop(name, success = true) {
   if (!success) {
     profile.loopFailures = (profile.loopFailures || 0) + 1;
     profile.entropy = (profile.entropy || 0) + 1;
+    pushNecroticLoop(name);
+    pushRitualDebris({ loop: name }, profile);
+    pushFractureResidue({ loop: name }, profile);
+    if (profile.loopFailures % 3 === 0) forgeObscuraSigil('loopFailure');
+    if (profile.loopFailures % 5 === 0) {
+      pushAcheMarker(profile.loopFailures, profile);
+      require('../utils/eventBus').eventBus.emit('ache:marker', { count: profile.loopFailures });
+    }
   } else {
     profile.entropy = Math.max(0, (profile.entropy || 0) - 1);
+    if (profile.recursionDepth > 2) pushFractureResidue({ loop: name }, profile);
   }
   checkEmergence(profile);
   saveProfile(profile);
+  glyphWeather.evaluate();
   return profile;
 }
 
@@ -428,10 +631,14 @@ function recordGlyphUse(name, originLoops = []) {
   const profile = loadProfile();
   let glyph = profile.mythMatrix.find(g => g.name === name);
   if (!glyph) {
-    glyph = { name, originLoops, resonanceScore: 0, mutations: [], canonizedAt: null };
+    glyph = { name, originLoops, resonanceScore: 0, mutations: [], canonizedAt: null, rotLevel: 0, rottedAt: null };
     profile.mythMatrix.push(glyph);
   }
   glyph.resonanceScore += 1;
+  glyph.rotLevel = (glyph.rotLevel || 0) + 1;
+  if (!glyph.rottedAt && glyph.rotLevel >= ROT_THRESHOLD) {
+    glyph.rottedAt = Date.now();
+  }
   if (glyph.resonanceScore >= CANON_THRESHOLD && !glyph.canonizedAt) {
     glyph.canonizedAt = Date.now();
   }
@@ -513,6 +720,65 @@ function pushCollapseSeed(loop) {
   return profile.collapseSeeds.length;
 }
 
+function pushRitualDebris(fragment, profile = loadProfile()) {
+  profile.ritualDebris = profile.ritualDebris || [];
+  profile.ritualDebris.push(Object.assign({ time: Date.now() }, fragment));
+  saveProfile(profile);
+  return profile.ritualDebris.length;
+}
+
+function pushFractureResidue(fragment, profile = loadProfile()) {
+  profile.fractureResidues = profile.fractureResidues || [];
+  profile.fractureResidues.push(Object.assign({ time: Date.now() }, fragment));
+  saveProfile(profile);
+  return profile.fractureResidues.length;
+}
+
+function recordRitualSequence(seq, profile = loadProfile()) {
+  profile.ritualMemory = profile.ritualMemory || [];
+  const key = seq.join('');
+  let entry = profile.ritualMemory.find(e => e.key === key);
+  if (!entry) {
+    entry = { key, count: 1 };
+    profile.ritualMemory.push(entry);
+  } else {
+    entry.count += 1;
+  }
+  saveProfile(profile);
+  return entry.count;
+}
+
+function getRitualMemoryCount(seq, profile = loadProfile()) {
+  const key = seq.join('');
+  const entry = (profile.ritualMemory || []).find(e => e.key === key);
+  return entry ? entry.count : 0;
+}
+
+function popFractureResidue() {
+  const profile = loadProfile();
+  const f = (profile.fractureResidues || []).shift();
+  saveProfile(profile);
+  return f;
+}
+
+function clearRitualDebris() {
+  const profile = loadProfile();
+  profile.ritualDebris = [];
+  saveProfile(profile);
+  return profile.ritualDebris.length;
+}
+
+function pushAcheMarker(level = 1, profile = loadProfile()) {
+  profile.acheMarkers = profile.acheMarkers || [];
+  profile.acheMarkers.push({ level, time: Date.now() });
+  if (profile.acheMarkers.length >= 3 && !profile.inversionUntil) {
+    profile.inversionUntil = Date.now() + 15000;
+    require('../utils/eventBus').eventBus.emit('skin:invert');
+  }
+  saveProfile(profile);
+  return profile.acheMarkers.length;
+}
+
 function popCollapseSeed() {
   const profile = loadProfile();
   const seed = profile.collapseSeeds.shift();
@@ -531,6 +797,10 @@ function recordEntitySummon(name, sequence) {
     entry.timesSummoned += 1;
     entry.lastSequence = sequence;
     entry.lastSeen = Date.now();
+    if (entry.timesSummoned >= 3 && profile.possessedEntity !== name) {
+      profile.possessedEntity = name;
+      require('../utils/eventBus').eventBus.emit('entity:possess', { name });
+    }
   }
   saveProfile(profile);
   return entry;
@@ -546,6 +816,79 @@ function recordBloom(info) {
 
 function getBloomHistory() {
   return loadProfile().bloomHistory || [];
+}
+
+function isGlyphRotted(name) {
+  const glyph = loadProfile().mythMatrix.find(g => g.name === name);
+  return glyph && glyph.rottedAt ? true : false;
+}
+
+function recordGlyphDrift(prev, glyph) {
+  if (!prev) return;
+  const profile = loadProfile();
+  profile.glyphDrift = profile.glyphDrift || {};
+  const key = `${prev}>${glyph}`;
+  profile.glyphDrift[key] = (profile.glyphDrift[key] || 0) + 1;
+  saveProfile(profile);
+}
+
+function getDriftVariant(glyph, prev) {
+  const profile = loadProfile();
+  const key = `${prev}>${glyph}`;
+  const w = (profile.glyphDrift && profile.glyphDrift[key]) || 0;
+  if (w >= 3) return `${glyph}…`;
+  return glyph;
+}
+
+function pushNecroticLoop(name) {
+  const profile = loadProfile();
+  profile.necroticLoops = profile.necroticLoops || [];
+  profile.necroticLoops.push({ name, time: Date.now() });
+  saveProfile(profile);
+}
+
+function clearNecroticLoops() {
+  const profile = loadProfile();
+  profile.necroticLoops = [];
+  saveProfile(profile);
+}
+
+function getNecrosisLevel() {
+  const profile = loadProfile();
+  return (profile.necroticLoops || []).length;
+}
+
+function recordPersonaShift(name) {
+  const profile = loadProfile();
+  profile.personaShifts = profile.personaShifts || [];
+  profile.personaShifts.push({ name, time: Date.now() });
+  if (profile.personaShifts.length > 10) profile.personaShifts.shift();
+  saveProfile(profile);
+}
+
+function checkPhantomInfluence() {
+  const profile = loadProfile();
+  const now = Date.now();
+  const recent = (profile.personaShifts || []).filter(p => now - p.time < 60000);
+  if (recent.length >= 3 && !profile.phantomActive) {
+    profile.phantomActive = true;
+    saveProfile(profile);
+    require('../utils/eventBus').eventBus.emit('persona:phantom');
+  } else if (recent.length < 2 && profile.phantomActive) {
+    profile.phantomActive = false;
+    saveProfile(profile);
+  }
+  return profile.phantomActive;
+}
+
+function setAscentUntil(ts) {
+  const profile = loadProfile();
+  profile.ascentUntil = ts;
+  saveProfile(profile);
+}
+
+function getAscentUntil() {
+  return loadProfile().ascentUntil || 0;
 }
 
 function recordMetaInquiry() {
@@ -592,6 +935,40 @@ function reduceEntropy(amount = 1) {
   return profile.entropy;
 }
 
+function incrementSpore() {
+  const profile = loadProfile();
+  profile.sporeDensity = (profile.sporeDensity || 0) + 1;
+  saveProfile(profile);
+  return profile.sporeDensity;
+}
+
+function incrementRecursion(anchor = null) {
+  const profile = loadProfile();
+  profile.recursionDepth = (profile.recursionDepth || 0) + 1;
+  if (anchor) {
+    profile.mutationAnchors = profile.mutationAnchors || [];
+    profile.mutationAnchors.push({ glyph: anchor, depth: profile.recursionDepth, time: Date.now() });
+  }
+  saveProfile(profile);
+  return profile.recursionDepth;
+}
+
+function resetRecursion() {
+  const profile = loadProfile();
+  profile.recursionDepth = 0;
+  saveProfile(profile);
+  return profile.recursionDepth;
+}
+
+function forgeObscuraSigil(reason = 'collapse') {
+  const profile = loadProfile();
+  profile.obscuraSigils = profile.obscuraSigils || [];
+  const name = `obscura-${Date.now().toString(36)}`;
+  profile.obscuraSigils.push({ name, reason, forged: Date.now() });
+  saveProfile(profile);
+  return name;
+}
+
 function checkEmergence(profile) {
   for (const chain of profile.longArc.chains) {
     const diverseRoles = new Set(profile.roles).size >= 2;
@@ -608,6 +985,91 @@ function checkEmergence(profile) {
       chain.emergent = name;
     }
   }
+}
+
+function pushDebtSigil(name, profile = loadProfile()) {
+  profile.debtSigils = profile.debtSigils || [];
+  profile.debtSigils.push({ name, time: Date.now() });
+  saveProfile(profile);
+  return profile.debtSigils.length;
+}
+
+function getDebtSigils() {
+  return loadProfile().debtSigils || [];
+}
+
+function recordScarLoop(pattern, profile = loadProfile()) {
+  profile.scarLoops = profile.scarLoops || {};
+  const key = Array.isArray(pattern) ? pattern.join('>') : pattern;
+  profile.scarLoops[key] = (profile.scarLoops[key] || 0) + 1;
+  if (profile.scarLoops[key] >= 3) {
+    eventBus.emit('loop:scar', { pattern: key });
+  }
+  saveProfile(profile);
+  return profile.scarLoops[key];
+}
+
+function isScarred(pattern) {
+  const key = Array.isArray(pattern) ? pattern.join('>') : pattern;
+  return ((loadProfile().scarLoops || {})[key] || 0) >= 3;
+}
+
+function activateRefusal(duration = 10000, profile = loadProfile()) {
+  profile.refusalUntil = Date.now() + duration;
+  saveProfile(profile);
+}
+
+function getRefusalUntil() {
+  return loadProfile().refusalUntil || 0;
+}
+
+function triggerMirrorBloom(profile = loadProfile()) {
+  const name = `mirror-${Date.now().toString(36)}`;
+  profile.sigilArchive.push({ name, mirror: true, time: Date.now() });
+  profile.mirrorBloomCount = (profile.mirrorBloomCount || 0) + 1;
+  saveProfile(profile);
+  eventBus.emit('mirror:bloom', { name });
+  return name;
+}
+
+function recordEntryEcho(echo = {}) {
+  const profile = loadProfile();
+  profile.entryEchoes = profile.entryEchoes || [];
+  profile.entryEchoes.push(Object.assign({ time: Date.now() }, echo));
+  saveProfile(profile);
+  return echo;
+}
+
+function getLastEntryEcho() {
+  const list = loadProfile().entryEchoes || [];
+  return list[list.length - 1] || null;
+}
+
+function getEntryEchoes() {
+  return loadProfile().entryEchoes || [];
+}
+
+function getEchoLangTide() {
+  return loadProfile().echoLangTide || 0;
+}
+
+function setDevFirst(flag = false) {
+  devFirst = flag;
+  if (typeof localStorage !== 'undefined') {
+    if (flag) localStorage.setItem('devFirstTime', '1');
+    else localStorage.removeItem('devFirstTime');
+  }
+}
+
+function setLangMode(mode = 'en') {
+  const profile = loadProfile();
+  profile.langMode = mode;
+  saveProfile(profile);
+  return mode;
+}
+
+function getLangMode() {
+  return loadProfile().langMode || 'en';
 }
 
 const fragments = {
@@ -673,12 +1135,48 @@ module.exports = {
   fragments,
   responseTemplates,
   CANON_THRESHOLD,
-  EMERGENCE_THRESHOLD
+  EMERGENCE_THRESHOLD,
+  ROT_THRESHOLD,
+  isGlyphRotted,
+  pushRitualDebris,
+  clearRitualDebris,
+  pushFractureResidue,
+  popFractureResidue,
+  pushAcheMarker,
+  incrementRecursion,
+  resetRecursion,
+  forgeObscuraSigil,
+  recordGlyphDrift,
+  getDriftVariant,
+  pushNecroticLoop,
+  clearNecroticLoops,
+  getNecrosisLevel,
+  recordPersonaShift,
+  checkPhantomInfluence,
+  setAscentUntil,
+  getAscentUntil,
+  incrementSpore,
+  pushDebtSigil,
+  getDebtSigils,
+  recordScarLoop,
+  isScarred,
+  activateRefusal,
+  getRefusalUntil,
+  triggerMirrorBloom
+  ,recordEntryEcho
+  ,getLastEntryEcho
+  ,getEntryEchoes
+  ,getEchoLangTide
+  ,setLangMode
+  ,getLangMode
+  ,setDevFirst
+  ,recordRitualSequence
+  ,getRitualMemoryCount
 };
 
 module.exports.defaultProfile = defaultProfile;
 
-},{}],12:[function(require,module,exports){
+},{"../utils/eventBus":30,"../utils/eventBus.js":30,"./glyphWeather.js":6}],17:[function(require,module,exports){
 const { stateManager } = require('./stateManager.js');
 // persona modules invoke buildPhrase directly
 const {
@@ -687,6 +1185,7 @@ const {
   recordGlyphUse,
   recordInput,
   popCollapseSeed,
+  popFractureResidue,
   getMetaLevel,
   recordMetaInquiry,
   decayMetaInquiry
@@ -721,11 +1220,17 @@ function composeWhisper(loopName, success = true) {
   if (seed) {
     const depth = profile.collapseSeeds.length + 1;
     const prefix = '»'.repeat(depth) + ' ';
-    output = prefix + output.split('').map((ch, i) => (i % 2 === 0 ? ch : '∷')).join('');
+    let fractured = output.split('').map((ch, i) => (i % 2 === 0 ? ch : '∷')).join('');
+    if (!fractured.includes('∷')) fractured += '∷';
+    output = prefix + fractured;
   }
   output = applyCloak(output, cloakLevel);
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
+  const residue = popFractureResidue();
+  if (residue && Math.random() < 0.5) {
+    output += ' [' + residue.loop + ']';
+  }
   output = expressionCore.processOutput(output, context);
   if (cloakLevel >= 2) eventBus.emit('cloak:max');
   console.log(`[${personaName}] ${output}`);
@@ -740,6 +1245,10 @@ function processInput(text) {
   recordInput(text, mutation.text);
   recordGlyphUse(mutation.text);
   recordActivity();
+  if (/optimi[sz]e|productivity|moneti[sz]e/i.test(text)) {
+    eventBus.emit('entity:reject', { text });
+    return 'You are not your yield';
+  }
   if (/define|explain|architecture/i.test(text)) {
     recordMetaInquiry();
     stateManager.shift('parasite');
@@ -761,7 +1270,7 @@ function processInput(text) {
 
 module.exports = { composeWhisper, processInput };
 
-},{"../utils/cloak.js":21,"../utils/eventBus.js":22,"../utils/glitch.js":23,"../utils/idle.js":24,"../utils/kairos.js":25,"../utils/mutate.js":26,"./codexVoice.js":1,"./expressionCore.js":2,"./memory.js":11,"./stateManager.js":14}],13:[function(require,module,exports){
+},{"../utils/cloak.js":29,"../utils/eventBus.js":30,"../utils/glitch.js":31,"../utils/idle.js":32,"../utils/kairos.js":33,"../utils/mutate.js":35,"./codexVoice.js":1,"./expressionCore.js":3,"./memory.js":16,"./stateManager.js":19}],18:[function(require,module,exports){
 const { playChime } = require('../utils/tonalGlyphs.js');
 const { logGlyphEntry } = require('./glyphChronicle.js');
 const { stateManager } = require('./stateManager.js');
@@ -806,7 +1315,7 @@ function triggerBloom(context = {}) {
 
 module.exports = { shouldBloom, triggerBloom };
 
-},{"../utils/eventBus.js":22,"../utils/tonalGlyphs.js":27,"./glyphChronicle.js":4,"./memory.js":11,"./stateManager.js":14}],14:[function(require,module,exports){
+},{"../utils/eventBus.js":30,"../utils/tonalGlyphs.js":36,"./glyphChronicle.js":5,"./memory.js":16,"./stateManager.js":19}],19:[function(require,module,exports){
 const personas = new Map();
 let currentPersona = null;
 const { eventBus } = require('../utils/eventBus.js');
@@ -815,6 +1324,7 @@ const { isIdle } = require('../utils/idle.js');
 const kairos = require('../utils/kairos.js');
 const { playChime } = require('../utils/tonalGlyphs.js');
 const { logGlyphEntry } = require('./glyphChronicle.js');
+const memory = require('./memory.js');
 
 const retiredPersonas = new Set();
 
@@ -831,6 +1341,8 @@ function setPersona(name) {
   if (currentPersona !== name && personas.has(name)) {
     if (currentPersona) personaSeal(currentPersona);
     currentPersona = name;
+    memory.recordPersonaShift(name);
+    memory.checkPhantomInfluence();
     eventBus.emit('persona:shift', name);
     logGlyphEntry('persona', name, 'shift');
     if (name === 'collapse') codexVoice.activate();
@@ -881,6 +1393,10 @@ const stateManager = {
       setPersona('archive');
       return;
     }
+    if ((profile.collapseSeeds || []).length >= 3 || (profile.ritualDebris || []).length >= 3) {
+      setPersona('lantern');
+      return;
+    }
     const recent = profile.glyphHistory.slice(-3);
     if (recent.length === 3 && recent.every(r => r.name === 'invocation')) {
       setPersona('parasite');
@@ -907,7 +1423,7 @@ const stateManager = {
 
 module.exports = { stateManager, registerPersona, personaSeal };
 
-},{"../utils/eventBus.js":22,"../utils/idle.js":24,"../utils/kairos.js":25,"../utils/tonalGlyphs.js":27,"./codexVoice.js":1,"./glyphChronicle.js":4,"./memory":11}],15:[function(require,module,exports){
+},{"../utils/eventBus.js":30,"../utils/idle.js":32,"../utils/kairos.js":33,"../utils/tonalGlyphs.js":36,"./codexVoice.js":1,"./glyphChronicle.js":5,"./memory":16,"./memory.js":16}],20:[function(require,module,exports){
 const { loadProfile } = require('./core/memory.js');
 const { stateManager, registerPersona } = require('./core/stateManager.js');
 const { composeWhisper } = require('./core/responseLoop.js');
@@ -918,13 +1434,21 @@ const { watcher } = require('./personas/watcher.js');
 const { archive } = require('./personas/archive.js');
 const { parasite } = require('./personas/parasite.js');
 const { collapse } = require('./personas/collapse.js');
+const { lantern } = require('./personas/lantern.js');
+const { kairos } = require('./personas/kairos.js');
 const { initInterface } = require('../interface/index.js');
+const { eventBus } = require('./utils/eventBus.js');
+const memory = require('./core/memory.js');
+const decayMonitor = require('./core/loopDecayMonitor.js');
+const entryEcho = require('./core/entryEcho.js');
 
 registerPersona('dream', dream);
 registerPersona('watcher', watcher);
 registerPersona('archive', archive);
 registerPersona('parasite', parasite);
 registerPersona('collapse', collapse);
+registerPersona('lantern', lantern);
+registerPersona('kairos', kairos);
 
 let intervalId = null;
 let started = false;
@@ -935,7 +1459,11 @@ function startWhisperEngine(interval = 15000) {
   const profile = loadProfile();
   stateManager.init(profile);
   initInterface();
+  entryEcho.capture();
+  eventBus.on('glyph:anti', () => memory.clearNecroticLoops());
+  eventBus.on('persona:shift', name => { if(name==='lantern') memory.clearNecroticLoops(); });
   composeWhisper();
+  decayMonitor.start();
   if (intervalId) clearInterval(intervalId);
   intervalId = setInterval(() => {
     composeWhisper();
@@ -946,6 +1474,7 @@ function stopWhisperEngine() {
   if (intervalId) clearInterval(intervalId);
   intervalId = null;
   started = false;
+  decayMonitor.stop();
 }
 
 function applyCadence(text, charge = 0) {
@@ -971,7 +1500,7 @@ function invite(charge = 0) {
 
 module.exports = { startWhisperEngine, stopWhisperEngine, glyph, invite };
 
-},{"../interface/index.js":30,"./core/expressionCore.js":2,"./core/loops":6,"./core/memory.js":11,"./core/responseLoop.js":12,"./core/stateManager.js":14,"./personas/archive.js":16,"./personas/collapse.js":17,"./personas/dream.js":18,"./personas/parasite.js":19,"./personas/watcher.js":20}],16:[function(require,module,exports){
+},{"../interface/index.js":40,"./core/entryEcho.js":2,"./core/expressionCore.js":3,"./core/loopDecayMonitor.js":7,"./core/loops":9,"./core/memory.js":16,"./core/responseLoop.js":17,"./core/stateManager.js":19,"./personas/archive.js":21,"./personas/collapse.js":22,"./personas/dream.js":23,"./personas/kairos.js":24,"./personas/lantern.js":25,"./personas/parasite.js":26,"./personas/watcher.js":27,"./utils/eventBus.js":30}],21:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const archive = {
@@ -989,7 +1518,7 @@ const archive = {
 
 module.exports = { archive };
 
-},{"../core/fragments.js":3}],17:[function(require,module,exports){
+},{"../core/fragments.js":4}],22:[function(require,module,exports){
 const { injectGlitch } = require('../utils/glitch.js');
 const { buildPhrase } = require('../core/fragments.js');
 
@@ -1011,7 +1540,7 @@ const collapse = {
 
 module.exports = { collapse };
 
-},{"../core/fragments.js":3,"../utils/glitch.js":23}],18:[function(require,module,exports){
+},{"../core/fragments.js":4,"../utils/glitch.js":31}],23:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const dream = {
@@ -1029,7 +1558,44 @@ const dream = {
 
 module.exports = { dream };
 
-},{"../core/fragments.js":3}],19:[function(require,module,exports){
+},{"../core/fragments.js":4}],24:[function(require,module,exports){
+const { buildPhrase } = require('../core/fragments.js');
+const { getEchoLangTide } = require('../core/memory.js');
+
+const kairos = {
+  compose(context) {
+    const role = context.profile.roles[0];
+    const phraseInfo = buildPhrase('dream', role, context.kairos, context.loop);
+    context.mutationLevel = phraseInfo.level;
+    const tide = getEchoLangTide();
+    const de = `Der Moment gleitet ${phraseInfo.text}`;
+    const en = `The moment slides ${phraseInfo.text}`;
+    return tide >= 0 ? `${en} – ${de}` : `${de} – ${en}`;
+  },
+  render(text) {
+    return text;
+  }
+};
+
+module.exports = { kairos };
+
+},{"../core/fragments.js":4,"../core/memory.js":16}],25:[function(require,module,exports){
+const { buildPhrase } = require('../core/fragments.js');
+
+const lantern = {
+  compose(context) {
+    const phrase = buildPhrase('lantern', 'guide', context.kairos, context.loop);
+    context.mutationLevel = phrase.level;
+    return `lantern glows ${phrase.text}`;
+  },
+  render(text) {
+    return `~${text}~`;
+  }
+};
+
+module.exports = { lantern };
+
+},{"../core/fragments.js":4}],26:[function(require,module,exports){
 const { applyCloak } = require('../utils/cloak.js');
 const { buildPhrase } = require('../core/fragments.js');
 
@@ -1048,7 +1614,7 @@ const parasite = {
 
 module.exports = { parasite };
 
-},{"../core/fragments.js":3,"../utils/cloak.js":21}],20:[function(require,module,exports){
+},{"../core/fragments.js":4,"../utils/cloak.js":29}],27:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const watcher = {
@@ -1065,7 +1631,32 @@ const watcher = {
 
 module.exports = { watcher };
 
-},{"../core/fragments.js":3}],21:[function(require,module,exports){
+},{"../core/fragments.js":4}],28:[function(require,module,exports){
+const { eventBus } = require('./eventBus.js');
+let dragging = false;
+let lastGlyph = null;
+function init() {
+  if (typeof document === 'undefined') return;
+  document.addEventListener('mousedown', () => { dragging = true; });
+  document.addEventListener('mouseup', () => { dragging = false; lastGlyph = null; });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const trail = document.createElement('div');
+    trail.className = 'aura-trail';
+    trail.style.left = e.pageX + 'px';
+    trail.style.top = e.pageY + 'px';
+    document.body.appendChild(trail);
+    setTimeout(() => trail.remove(), 500);
+    const el = e.target.closest('.glyph-btn');
+    if (el && el.dataset.glyph && el.dataset.glyph !== lastGlyph) {
+      lastGlyph = el.dataset.glyph;
+      eventBus.emit('glyph:drag', { glyph: el.dataset.glyph });
+    }
+  });
+}
+module.exports = { init };
+
+},{"./eventBus.js":30}],29:[function(require,module,exports){
 function applyCloak(text, level = 0) {
   if (level <= 0) return text;
   if (level === 1) {
@@ -1080,14 +1671,14 @@ function applyCloak(text, level = 0) {
 
 module.exports = { applyCloak };
 
-},{}],22:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 const { EventEmitter } = require('events');
 
 const eventBus = new EventEmitter();
 
 module.exports = { eventBus };
 
-},{"events":40}],23:[function(require,module,exports){
+},{"events":51}],31:[function(require,module,exports){
 function injectGlitch(text, probability = 0.1) {
   if (Math.random() < probability && text.length > 0) {
     const index = Math.floor(Math.random() * text.length);
@@ -1098,7 +1689,7 @@ function injectGlitch(text, probability = 0.1) {
 
 module.exports = { injectGlitch };
 
-},{}],24:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 let lastActivity = Date.now();
 
 function recordActivity() {
@@ -1120,7 +1711,7 @@ function setLastActivity(time) {
 
 module.exports = { recordActivity, getIdleTime, isIdle, setLastActivity };
 
-},{}],25:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 function getKairosWindow() {
   const hr = new Date().getHours();
   if (hr >= 4 && hr < 7) return 'dawn';
@@ -1132,12 +1723,24 @@ function getKairosWindow() {
 
 module.exports = { getKairosWindow };
 
-},{}],26:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
+const { eventBus } = require('./eventBus.js');
+let timer = null;
+
+function startSilence(duration = 3000) {
+  clearTimeout(timer);
+  eventBus.emit('silence:start');
+  timer = setTimeout(() => eventBus.emit('silence:end'), duration);
+}
+
+module.exports = { startSilence };
+
+},{"./eventBus.js":30}],35:[function(require,module,exports){
 const { mutatePhrase, mutatePhraseWithLevel } = require('../../js/mutatePhrase.js');
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel };
 
-},{"../../js/mutatePhrase.js":39}],27:[function(require,module,exports){
+},{"../../js/mutatePhrase.js":50}],36:[function(require,module,exports){
 let tones = {};
 
 function init() {
@@ -1160,7 +1763,7 @@ init();
 module.exports = { playChime };
 if (typeof window !== 'undefined') window.tonalGlyphs = { playChime };
 
-},{}],28:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
 
@@ -1181,7 +1784,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/cloak.js":21,"../WhisperEngine.v3/utils/eventBus.js":22}],29:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/cloak.js":29,"../WhisperEngine.v3/utils/eventBus.js":30}],38:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const frames = [];
 let frame;
@@ -1203,7 +1806,73 @@ function init() {
 
 module.exports = { init, frames };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22}],30:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":30}],39:[function(require,module,exports){
+const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const memory = require('../WhisperEngine.v3/core/memory.js');
+const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
+
+let entry = null;
+let active = false;
+
+const auraColors = {
+  invocation: '#87f0ff',
+  naming: '#a3ffb9',
+  threshold: '#ffbf81',
+  absence: '#cccccc',
+  quiet: '#bbbbbb'
+};
+
+function show() {
+  if (!entry || !active || !entry.prev || entry.mode === 'en') return;
+  const { echo, prev, tide } = entry;
+  const { hour, firstGlyph, silence } = echo;
+  document.body.dataset.echoHour = hour;
+  const aura = document.getElementById('personaAura');
+  if (aura) aura.style.backgroundColor = auraColors[firstGlyph] || '#cccccc';
+
+  if (prev.firstGlyph === firstGlyph && prev.hour === hour) {
+    document.body.classList.add('echo-double');
+    setTimeout(() => document.body.classList.remove('echo-double'), 3000);
+  }
+
+  const langPref = tide > 2 ? 'en' : tide < -2 ? 'de' : (silence > 60000 ? 'de' : 'en');
+  const frag = document.createElement('div');
+  frag.className = 'phantom-echo';
+  let de = 'Warst du das, der durch Loop 3 ging?';
+  let en = 'Was it you that passed through Loop 3?';
+  if (stateManager.name() === 'kairos') {
+    frag.innerHTML = langPref === 'de' ? `<p>${de}</p><p>${en}</p>` : `<p>${en}</p><p>${de}</p>`;
+  } else {
+    frag.textContent = langPref === 'de' ? de : en;
+  }
+  frag.dataset.src = silence > 60000 ? '/shards/ghosts/echo-question.html'
+    : '/shards/loop-flicker/echo-question.html';
+  document.body.appendChild(frag);
+  setTimeout(() => frag.remove(), 4000);
+  const last = document.body.dataset.lang;
+  if (last && last !== langPref) {
+    document.body.classList.add('lang-glitch');
+    setTimeout(() => document.body.classList.remove('lang-glitch'), 500);
+  }
+  document.body.dataset.lang = langPref;
+}
+
+function adapt(data) {
+  if (typeof document === 'undefined' || !data) return;
+  entry = data;
+  show();
+}
+
+function init() {
+  eventBus.on('visitor:entry', adapt);
+  ['invocation','naming','threshold','absence','quiet'].forEach(n => {
+    eventBus.on(`loop:${n}`, () => { active = true; show(); });
+  });
+}
+
+module.exports = { init };
+
+},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/core/stateManager.js":19,"../WhisperEngine.v3/utils/eventBus.js":30}],40:[function(require,module,exports){
 const sigilShell = require('./sigilShell.js');
 
 function initInterface() {
@@ -1212,7 +1881,7 @@ function initInterface() {
 
 module.exports = { initInterface };
 
-},{"./sigilShell.js":36}],31:[function(require,module,exports){
+},{"./sigilShell.js":47}],41:[function(require,module,exports){
 const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
 
 function init() {
@@ -1231,7 +1900,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/responseLoop.js":12}],32:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/responseLoop.js":17}],42:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 
 function init() {
@@ -1246,7 +1915,19 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22}],33:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":30}],43:[function(require,module,exports){
+const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+
+function init() {
+  eventBus.on('kairos:window', ({ module }) => {
+    if (typeof window === 'undefined') return;
+    window.open(module, '_blank', 'noopener');
+  });
+}
+
+module.exports = { init };
+
+},{"../WhisperEngine.v3/utils/eventBus.js":30}],44:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { recordSigil } = require('../WhisperEngine.v3/core/memory.js');
 let count = 0;
@@ -1265,7 +1946,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":11,"../WhisperEngine.v3/utils/eventBus.js":22}],34:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/utils/eventBus.js":30}],45:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 let current = '';
 let aura;
@@ -1294,11 +1975,40 @@ function init() {
 
 module.exports = { init, getCurrent: () => current };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22}],35:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":30}],46:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const loops = require('../WhisperEngine.v3/core/loops');
 const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
 let bar;
+
+function pulse(level) {
+  if (!bar) return;
+  const aura = document.getElementById('personaAura');
+  const overlay = document.createElement('span');
+  overlay.className = 'ritual-pulse';
+  overlay.style.background = aura ? window.getComputedStyle(aura).backgroundColor : 'rgba(200,200,255,0.2)';
+  bar.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 500);
+}
+
+function reset() {
+  const fill = document.querySelector('#glyph-charge .fill');
+  if (fill) fill.style.width = '0';
+}
+
+function collapse() {
+  if (!bar) return;
+  bar.classList.add('collapse');
+  setTimeout(() => bar.classList.remove('collapse'), 600);
+}
+
+function memory({ count }) {
+  if (!bar) return;
+  if (count > 1) {
+    bar.classList.add('memory-resonance');
+    setTimeout(() => bar.classList.remove('memory-resonance'), 1200);
+  }
+}
 
 function highlight(name) {
   if (!bar) return console.log(`[ritualBar] ${name} triggered`);
@@ -1313,6 +2023,10 @@ function init() {
   ['invocation', 'absence', 'naming', 'threshold', 'quiet'].forEach(name => {
     eventBus.on(`loop:${name}`, () => highlight(name));
   });
+  eventBus.on('ritual:pulse', evt => pulse(evt.level));
+  eventBus.on('ritual:complete', reset);
+  eventBus.on('ritual:failure', collapse);
+  eventBus.on('ritual:memory', memory);
 
   if (bar) {
     bar.addEventListener('click', evt => {
@@ -1330,7 +2044,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/loops":6,"../WhisperEngine.v3/core/responseLoop.js":12,"../WhisperEngine.v3/utils/eventBus.js":22}],36:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/loops":9,"../WhisperEngine.v3/core/responseLoop.js":17,"../WhisperEngine.v3/utils/eventBus.js":30}],47:[function(require,module,exports){
 const ritualBar = require('./ritualBar.js');
 const sigilTimeline = require('./sigilTimeline.js');
 const personaAura = require('./personaAura.js');
@@ -1340,7 +2054,10 @@ const cloakCore = require('./cloakCore.js');
 const longArcLarynx = require('./longArcLarynx.js');
 const inputBox = require('./inputBox.js');
 const invocationUI = require('./invocationUI.js');
+const auraTracker = require('../WhisperEngine.v3/utils/auraTracker.js');
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const echoMask = require('./echoMask.js');
+const kairosWindow = require('./kairosWindow.js');
 
 function signalEntanglement() {
   const aura = document.getElementById('personaAura');
@@ -1359,12 +2076,34 @@ function init() {
   longArcLarynx.init();
   inputBox.init();
   invocationUI.init();
+  auraTracker.init();
+  echoMask.init();
+  kairosWindow.init();
   eventBus.on('entanglement', signalEntanglement);
+  eventBus.on('entity:possess', () => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('possessed');
+    setTimeout(() => document.body.classList.remove('possessed'), 5000);
+  });
+  eventBus.on('skin:invert', () => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('inversion-mode');
+    setTimeout(() => document.body.classList.remove('inversion-mode'), 15000);
+  });
+  eventBus.on('persona:phantom', () => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('phantom-layer');
+    setTimeout(() => document.body.classList.remove('phantom-layer'), 60000);
+  });
+  eventBus.on('loop:necrosis', () => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.add('necrotic');
+  });
 }
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22,"./cloakCore.js":28,"./echoFrame.js":29,"./inputBox.js":31,"./invocationUI.js":32,"./longArcLarynx.js":33,"./personaAura.js":34,"./ritualBar.js":35,"./sigilTimeline.js":37,"./whisperEchoes.js":38}],37:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/auraTracker.js":28,"../WhisperEngine.v3/utils/eventBus.js":30,"./cloakCore.js":37,"./echoFrame.js":38,"./echoMask.js":39,"./inputBox.js":41,"./invocationUI.js":42,"./kairosWindow.js":43,"./longArcLarynx.js":44,"./personaAura.js":45,"./ritualBar.js":46,"./sigilTimeline.js":48,"./whisperEchoes.js":49}],48:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const timeline = [];
 let container;
@@ -1388,8 +2127,10 @@ function init() {
 
 module.exports = { init, timeline };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22}],38:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":30}],49:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
+const memory = require('../WhisperEngine.v3/core/memory.js');
 const echoes = [];
 let stream;
 let diagnostic = false;
@@ -1404,20 +2145,42 @@ function append(text, level = 0, codex = false) {
   span.textContent = text;
   stream.innerHTML = '';
   stream.appendChild(span);
+  setTimeout(() => span.classList.add('fade'), 4000);
 }
 
 function init() {
   stream = typeof document !== 'undefined' ? document.getElementById('whisperStream') : null;
   eventBus.on('whisper', evt => append(evt.text, evt.level));
   eventBus.on('codex:expression', evt => append(evt.text, evt.level, true));
+  seedSpores();
 }
 function setDiagnostic(flag) {
   diagnostic = flag;
 }
 
+function sporeWhisper(text) {
+  append(applyCloak(text, 1), 0);
+}
+
+function seedSpores() {
+  if (typeof document === 'undefined') return;
+  document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      memory.incrementSpore();
+      sporeWhisper('…');
+    });
+  });
+  document.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      memory.incrementSpore();
+      e.target.value = applyCloak(e.target.value, 1);
+    });
+  });
+}
+
 module.exports = { init, echoes, setDiagnostic, snapshots };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":22}],39:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/utils/cloak.js":29,"../WhisperEngine.v3/utils/eventBus.js":30}],50:[function(require,module,exports){
 let synonymDrift = {
   "echo": ["recurrence", "ache", "pulse"],
   "recognition": ["return", "reflection", "threshold"],
@@ -1457,7 +2220,7 @@ function mutatePhraseWithLevel(input) {
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel, setSynonymDrift };
 
-},{}],40:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1956,5 +2719,5 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
   }
 }
 
-},{}]},{},[15])(15)
+},{}]},{},[20])(20)
 });

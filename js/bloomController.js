@@ -5,7 +5,7 @@ function setLevel(l) {
   const body = document.body;
   body.classList.remove(`bloom-level-${level}`);
   level = l;
-  body.classList.add(`bloom-level-${level}`);
+  if (l > 6) body.classList.add(`bloom-level-${level}`);
 }
 
 function entityBloom(id) {

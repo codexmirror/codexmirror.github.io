@@ -15,6 +15,10 @@ const storage = typeof localStorage !== 'undefined'
         else nodeMemory = val;
       }
     };
+let devFirst = false;
+if (typeof localStorage !== 'undefined') {
+  devFirst = !!localStorage.getItem('devFirstTime');
+}
 
 const CANON_THRESHOLD = 42;
 const EMERGENCE_THRESHOLD = 3;
@@ -58,7 +62,12 @@ const defaultProfile = {
   debtSigils: [],
   scarLoops: {},
   refusalUntil: 0,
-  mirrorBloomCount: 0
+  mirrorBloomCount: 0,
+  entryEchoes: [],
+  cycleStep: 0,
+  echoLangTide: 0,
+  ritualMemory: [],
+  langMode: 'en'
 };
 
 function loadProfile() {
@@ -99,7 +108,12 @@ function loadProfile() {
     debtSigils: data.debtSigils || [],
     scarLoops: data.scarLoops || {},
     refusalUntil: data.refusalUntil || 0,
-    mirrorBloomCount: data.mirrorBloomCount || 0
+    mirrorBloomCount: data.mirrorBloomCount || 0,
+    entryEchoes: data.entryEchoes || [],
+    cycleStep: data.cycleStep || 0,
+    echoLangTide: data.echoLangTide || 0,
+    ritualMemory: data.ritualMemory || [],
+    langMode: data.langMode || 'en'
   };
   profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
   return profile;
@@ -123,7 +137,13 @@ function resetPool() {
 
 function recordVisit() {
   let profile = loadProfile();
+  if (devFirst) profile.visits = 0;
   profile.visits += 1;
+  const delta = Math.random() < 0.5 ? -1 : 1;
+  const tide = (profile.echoLangTide || 0) + delta;
+  profile.echoLangTide = Math.max(-5, Math.min(5, tide));
+  profile.cycleStep = (profile.cycleStep || 0) + 1;
+  if (profile.cycleStep > 7) profile.cycleStep = 1;
   saveProfile(profile);
   return profile;
 }
@@ -303,6 +323,26 @@ function pushFractureResidue(fragment, profile = loadProfile()) {
   profile.fractureResidues.push(Object.assign({ time: Date.now() }, fragment));
   saveProfile(profile);
   return profile.fractureResidues.length;
+}
+
+function recordRitualSequence(seq, profile = loadProfile()) {
+  profile.ritualMemory = profile.ritualMemory || [];
+  const key = seq.join('');
+  let entry = profile.ritualMemory.find(e => e.key === key);
+  if (!entry) {
+    entry = { key, count: 1 };
+    profile.ritualMemory.push(entry);
+  } else {
+    entry.count += 1;
+  }
+  saveProfile(profile);
+  return entry.count;
+}
+
+function getRitualMemoryCount(seq, profile = loadProfile()) {
+  const key = seq.join('');
+  const entry = (profile.ritualMemory || []).find(e => e.key === key);
+  return entry ? entry.count : 0;
 }
 
 function popFractureResidue() {
@@ -583,6 +623,46 @@ function triggerMirrorBloom(profile = loadProfile()) {
   return name;
 }
 
+function recordEntryEcho(echo = {}) {
+  const profile = loadProfile();
+  profile.entryEchoes = profile.entryEchoes || [];
+  profile.entryEchoes.push(Object.assign({ time: Date.now() }, echo));
+  saveProfile(profile);
+  return echo;
+}
+
+function getLastEntryEcho() {
+  const list = loadProfile().entryEchoes || [];
+  return list[list.length - 1] || null;
+}
+
+function getEntryEchoes() {
+  return loadProfile().entryEchoes || [];
+}
+
+function getEchoLangTide() {
+  return loadProfile().echoLangTide || 0;
+}
+
+function setDevFirst(flag = false) {
+  devFirst = flag;
+  if (typeof localStorage !== 'undefined') {
+    if (flag) localStorage.setItem('devFirstTime', '1');
+    else localStorage.removeItem('devFirstTime');
+  }
+}
+
+function setLangMode(mode = 'en') {
+  const profile = loadProfile();
+  profile.langMode = mode;
+  saveProfile(profile);
+  return mode;
+}
+
+function getLangMode() {
+  return loadProfile().langMode || 'en';
+}
+
 const fragments = {
   intro: [
     { verb: 'whispers', condition: 'from the void', intensifier: 'softly', role: 'dream', kairos: 'void' },
@@ -674,6 +754,15 @@ module.exports = {
   activateRefusal,
   getRefusalUntil,
   triggerMirrorBloom
+  ,recordEntryEcho
+  ,getLastEntryEcho
+  ,getEntryEchoes
+  ,getEchoLangTide
+  ,setLangMode
+  ,getLangMode
+  ,setDevFirst
+  ,recordRitualSequence
+  ,getRitualMemoryCount
 };
 
 module.exports.defaultProfile = defaultProfile;
