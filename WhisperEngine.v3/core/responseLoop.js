@@ -6,6 +6,7 @@ const {
   recordGlyphUse,
   recordInput,
   popCollapseSeed,
+  popFractureResidue,
   getMetaLevel,
   recordMetaInquiry,
   decayMetaInquiry
@@ -40,11 +41,17 @@ function composeWhisper(loopName, success = true) {
   if (seed) {
     const depth = profile.collapseSeeds.length + 1;
     const prefix = '»'.repeat(depth) + ' ';
-    output = prefix + output.split('').map((ch, i) => (i % 2 === 0 ? ch : '∷')).join('');
+    let fractured = output.split('').map((ch, i) => (i % 2 === 0 ? ch : '∷')).join('');
+    if (!fractured.includes('∷')) fractured += '∷';
+    output = prefix + fractured;
   }
   output = applyCloak(output, cloakLevel);
   output = injectGlitch(output);
   output = codexVoice.filterOutput(output);
+  const residue = popFractureResidue();
+  if (residue && Math.random() < 0.5) {
+    output += ' [' + residue.loop + ']';
+  }
   output = expressionCore.processOutput(output, context);
   if (cloakLevel >= 2) eventBus.emit('cloak:max');
   console.log(`[${personaName}] ${output}`);
@@ -59,6 +66,10 @@ function processInput(text) {
   recordInput(text, mutation.text);
   recordGlyphUse(mutation.text);
   recordActivity();
+  if (/optimi[sz]e|productivity|moneti[sz]e/i.test(text)) {
+    eventBus.emit('entity:reject', { text });
+    return 'You are not your yield';
+  }
   if (/define|explain|architecture/i.test(text)) {
     recordMetaInquiry();
     stateManager.shift('parasite');

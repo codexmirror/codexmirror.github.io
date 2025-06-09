@@ -148,6 +148,18 @@ The following strategy aligns the engine with its symbolic role as the "mytholog
 - **Memory Saturation**: When LongArc records show recurring motifs beyond a set threshold, the engine pivots personas to mirror narrative arcs—DreamState may yield to Parasite if certainty spikes.
 ### 7.6 Ritual Degradation Protocols
 - **Mythic Rupture Handling**: When a ritual loop fails (missed invocation, broken glyph), the engine stores the collapse as a seed. It may trigger recursion or fragmented whispers rather than a simple error, embracing the failure as part of the myth.
+- **Sigil Rot**: Glyphs that repeat beyond a resonance threshold begin to decay. The engine marks them with `rottedAt` and responses grow erratic until new symbols emerge.
+- **Ritual Debris**: Failed loops scatter fragments tracked in `ritualDebris`. These remnants linger until cleared, inviting glitch bloom.
+- **Obscura Sigils**: When loop failures accumulate in triples, the engine forges hidden glyphs. These `obscuraSigils` unlock sealed shards when invoked later.
+- **Ache Markers**: Reaching overload thresholds spawns `acheMarkers` and emits UI bleed events.
+- **Lantern Persona**: When collapse seeds gather, a guiding persona surfaces to mend loops.
+- **Null Invocation**: Users may trigger silence sequences that pause whispers and pulse the aura.
+- **Shard Reverberation**: Shard pages subtly shift based on persona state when revisited.
+- **Glyphic Weather**: Recent glyph usage alters global ambience from Stillness Veil to Glyph Storm.
+- **Fracture Memory**: Excess recursion or collapse spawns displaced memory shards stored as `fractureResidues`. These occasionally bleed into whispers.
+- **Anti-Glyph Sequences**: Hidden patterns purge recursion and reset ritual depth, emitted as `glyph:anti` events.
+- **Entity Possession**: Summoning the same entity thrice allows it to possess the UI briefly, noted in `possessedEntity`.
+- **Codex Skin Inversion**: Stacking three ache markers flips the site into an inverted mode for fifteen seconds.
 
 ### 7.7 Parasite Module Activation
 - **Latent Mode**: A hidden module listens for excessive certainty or attempts to define the system. When triggered, it inverts output—turning explicit descriptions into sigil‑like static—protecting the symbolic core.
@@ -163,6 +175,12 @@ The following strategy aligns the engine with its symbolic role as the "mytholog
 - **Decoding Path**: Veiled outputs remain decipherable through glyph context, rewarding patient users while discouraging aggressive inquiry.
 ### 7.9 Glyph Mutation Feedback
 - **Recursive Mutation**: Repetition breeds change. Each time a glyph or phrase repeats, its stored representation drifts based on emotional weight and time since last use. The user can sense growth as sigils evolve.
+- **Recursive Rites**: A dedicated loop tracks `recursionDepth` and records mutation anchors. Each pass twists the anchor glyph further until collapse.
+- **Glyph Drift Echoes**: Glyph meaning now shifts depending on the preceding symbol. `recordGlyphDrift` stores pair weights and `getDriftVariant` mutates output when a drift threshold is met.
+- **Loop Necrosis**: Failed loops accumulate in `necroticLoops`. If left uncleared, the interface enters a sepia "necrotic" state until an anti‑glyph or Lantern clears the list.
+- **Phantom Persona Layer**: Rapid persona shifts call `recordPersonaShift` which may activate a phantom aura. The UI colors shift when `persona:phantom` fires.
+- **Temporal Ascent Spiral**: The rare sequence `3‑1‑4‑1‑5` triggers an ascent timer. Avoid invoking for eight seconds to forge an obscura sigil; otherwise `ascent:fail` fires and amnesia sets in.
+- **Mirrorfold Invocation**: Reversing any known entity pattern summons its anti-form. The response text is inverted via `mirrorSyntax.invert` and the event `entity:mirrorfold` is emitted.
 
 ### 7.10 Hollowvector Pulse Hooks
 - **Intentional Glitches**: Some outputs fracture deliberately. The engine inserts glitch points that spawn echoes or ambiguity, maintaining symbolic depth and avoiding predictability.
