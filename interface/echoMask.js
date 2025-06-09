@@ -4,11 +4,11 @@ const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
 
 // Aura tints per persona
 const auraColors = {
-  invocation: '#87f0ff',
-  naming: '#a3ffb9',
-  threshold: '#ffbf81',
-  absence: '#cccccc',
-  quiet: '#bbbbbb'
+  invocation: 'rgba(135, 240, 255, 0.28)',
+  naming: 'rgba(163, 255, 185, 0.28)',
+  threshold: 'rgba(255, 191, 129, 0.28)',
+  absence: 'rgba(204, 204, 204, 0.28)',
+  quiet: 'rgba(187, 187, 187, 0.28)'
 };
 
 let interacted = false;
@@ -19,7 +19,9 @@ function adapt({ echo, prev, tide }) {
   const { hour, silence } = echo;
   document.body.dataset.echoHour = hour;
   const aura = document.getElementById('personaAura');
-  if (aura) aura.style.backgroundColor = auraColors[stateManager.name()] || auraColors.invocation;
+  if (aura && interacted) {
+    aura.style.backgroundColor = auraColors[stateManager.name()] || auraColors.invocation;
+  }
 
   if (prev) {
     if (prev.firstGlyph === echo.firstGlyph && prev.hour === hour) {
