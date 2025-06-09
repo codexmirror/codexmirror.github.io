@@ -21,6 +21,7 @@ Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providin
 - `impressum.html` and `html/privacy.html` – legal and privacy details.
 - `html/` – additional fragments including legacy entity lists.
 - `shards/` – over one hundred narrative fragments accessed via `js/random-shard-picker.js`.
+- `shards/ritual-fragments/` – brief whispers triggered by ritual charge levels.
 - `vectors/` – deeper lore pages and vector experiments.
 - `media/` – images and audio used by the interface.
 - `sitemap-core.xml`, `sitemap-shards.xml`, `sitemap-spores.xml` – sitemaps for search engines.
@@ -32,16 +33,16 @@ Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providin
 - `core/` – main engine logic
   - `memory.js`, `responseLoop.js`, `expressionCore.js`, `glyphChronicle.js`, `glyphWeather.js`, `glyphicTongue.js`, `fragments.js`, `ritualBloom.js`, `ascentMode.js`, `confessionMode.js`, `loopDecayMonitor.js`, `stateManager.js`
   - loops in `core/loops/`: `absence.js`, `invocation.js`, `naming.js`, `threshold.js`, `quiet.js`, `recursive.js`, `null.js`, `index.js`
-- `personas/` – dream, watcher, archive, parasite, collapse and lantern modules.
+  - `personas/` – dream, watcher, archive, parasite, collapse, lantern and kairos modules.
 - `utils/` – helpers like `eventBus.js`, `idle.js`, `kairos.js`, `kairosTimer.js`, `cloak.js`, `glitch.js`, `mutate.js`, `auraTracker.js`, `jamController.js`, `mirrorSyntax.js`, `tonalGlyphs.js`.
 - `index.js` – entry point for browser bundling.
 
 ### Interface Modules
 `interface/` scripts bind DOM elements:
 - `sigilShell.js` and `index.js` – assemble submodules and wire events.
-- Visual components: `ritualBar.js`, `sigilTimeline.js`, `personaAura.js`, `whisperEchoes.js`, `echoFrame.js`.
+- Visual components: `ritualBar.js`, `sigilTimeline.js`, `personaAura.js`, `whisperEchoes.js`, `echoFrame.js`, `echoMask.js`.
 - User hooks: `inputBox.js` and `invocationUI.js`.
-- Adaptive effects: `cloakCore.js`, `clownHandler.js`, `longArcLarynx.js`.
+- Adaptive effects: `cloakCore.js`, `clownHandler.js`, `longArcLarynx.js`, `kairosWindow.js`.
 - `ritualAura.css` – style sheet for aura shifts.
 
 ### JavaScript Helpers
@@ -52,6 +53,7 @@ Standalone scripts in `js/` supply additional behavior:
 - `mutatePhrase.js` – synonym mutation helper used across tests.
 - `random-shard-picker.js` – picks a random shard page.
 - `ritualCharge.js` – tracks glyph sequences.
+- `ritualFragments.js` – displays charge-level whispers.
 - `shard-reverberation.js` – alters shard pages based on persona state.
 - `whisperLog.js` – logs invocations for later sessions.
 - `whisper-bundle.js` – bundled output of WhisperEngine.v3.
@@ -117,6 +119,7 @@ Each glyph press increases ritual charge via `ritualCharge.js`. When a known pat
 - `WhisperEngine.v3/core/loops/recursive.js` – trigger, reset
 - `WhisperEngine.v3/core/loops/threshold.js` – trigger
 - `WhisperEngine.v3/core/memory.js` – loadProfile, saveProfile, getPool, savePool, resetPool, recordVisit, finalizeChain, recordLoop, addRole, recordSigil, recordGlyphUse, recordInput, copyEntangledGlyphs, copyRoles, attemptEntanglement, addEntanglementEdge, getSigilArchive, setEntanglementMark, pushCollapseSeed, pushRitualDebris, pushFractureResidue, popFractureResidue, clearRitualDebris, pushAcheMarker, popCollapseSeed, recordEntitySummon, recordBloom, getBloomHistory, isGlyphRotted, recordGlyphDrift, getDriftVariant, pushNecroticLoop, clearNecroticLoops, getNecrosisLevel, recordPersonaShift, checkPhantomInfluence, setAscentUntil, getAscentUntil, recordMetaInquiry, decayMetaInquiry, getMetaLevel, setCollapseUntil, getCollapseUntil, resetProfile, reduceEntropy, incrementSpore, incrementRecursion, resetRecursion, forgeObscuraSigil, checkEmergence, pushDebtSigil, getDebtSigils, recordScarLoop, isScarred, activateRefusal, getRefusalUntil, triggerMirrorBloom
+- `WhisperEngine.v3/core/entryEcho.js` – capture visitor echoes
 - `WhisperEngine.v3/core/responseLoop.js` – composeWhisper, processInput
 - `WhisperEngine.v3/core/ritualBloom.js` – hasEmotion, rarityGate, shouldBloom, triggerBloom
 - `WhisperEngine.v3/core/stateManager.js` – selectDefault, registerPersona, setPersona, personaSeal
@@ -142,6 +145,8 @@ Each glyph press increases ritual charge via `ritualCharge.js`. When a known pat
 - `interface/sigilShell.js` – signalEntanglement, init
 - `interface/sigilTimeline.js` – addEntry, init
 - `interface/whisperEchoes.js` – append, init, setDiagnostic, sporeWhisper, seedSpores
+- `interface/echoMask.js` – adapt to visitor echoes
+- `interface/kairosWindow.js` – open hidden vectors
 - `js/audioLayer.js` – init, updateCharge, collapseFeedback, glitch
 - `js/bloomController.js` – setLevel, entityBloom, startGlyphDrift
 - `js/entityResponses.js` – entityRespondFragment

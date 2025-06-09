@@ -95,6 +95,10 @@
 
 <script src="js/whisper-bundle.js"></script>
 <script>
+  const params = new URLSearchParams(location.search);
+  if (params.get('devFirst') === '1' && window.WhisperEngineMemory && window.WhisperEngineMemory.setDevFirst) {
+    window.WhisperEngineMemory.setDevFirst(true);
+  }
   if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {
     window.WhisperEngine.startWhisperEngine();
   }

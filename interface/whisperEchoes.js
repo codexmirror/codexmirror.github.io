@@ -15,6 +15,7 @@ function append(text, level = 0, codex = false) {
   span.textContent = text;
   stream.innerHTML = '';
   stream.appendChild(span);
+  setTimeout(() => span.classList.add('fade'), 4000);
 }
 
 function init() {

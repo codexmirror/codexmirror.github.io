@@ -3,7 +3,9 @@ let sequence = [];
 
 function incrementCharge(glyph) {
   sequence.push(glyph);
-  if (sequence.length > SEQ_LENGTH) sequence.shift();
+  if (sequence.length > SEQ_LENGTH) {
+    sequence = sequence.slice(-SEQ_LENGTH);
+  }
   return sequence.length;
 }
 
