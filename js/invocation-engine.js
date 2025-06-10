@@ -231,6 +231,12 @@ function handleGlyphClick(glyph) {
     const sp = specialPatterns[key];
     if (sp.pattern && arraysEqual(glyphSequence, sp.pattern)) {
       if (key === 'ascent') require('../WhisperEngine.v3/core/ascentMode.js').start();
+      RC.resetCharge();
+      if (audioLayer) audioLayer.updateCharge(0);
+      const count = memory.recordRitualSequence(glyphSequence.slice());
+      emit('ritual:memory', { count });
+      emit('ritual:complete');
+      updateRevealStage(0);
       glyphSequence = [];
       break;
     }
