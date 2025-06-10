@@ -36,7 +36,70 @@ eventBus.on('persona:shift', name => {
 });
 
 
-},{"../utils/eventBus.js":30}],2:[function(require,module,exports){
+},{"../utils/eventBus.js":33}],2:[function(require,module,exports){
+const { loadProfile, saveProfile } = require('./profileStore');
+
+function pushNecroticLoop(name) {
+  const profile = loadProfile();
+  profile.necroticLoops = profile.necroticLoops || [];
+  profile.necroticLoops.push({ name, time: Date.now() });
+  saveProfile(profile);
+}
+
+function clearNecroticLoops() {
+  const profile = loadProfile();
+  profile.necroticLoops = [];
+  saveProfile(profile);
+}
+
+function getNecrosisLevel() {
+  const profile = loadProfile();
+  return (profile.necroticLoops || []).length;
+}
+
+function reduceEntropy(amount = 1) {
+  const profile = loadProfile();
+  profile.entropy = Math.max(0, (profile.entropy || 0) - amount);
+  saveProfile(profile);
+  return profile.entropy;
+}
+
+function incrementSpore() {
+  const profile = loadProfile();
+  profile.sporeDensity = (profile.sporeDensity || 0) + 1;
+  saveProfile(profile);
+  return profile.sporeDensity;
+}
+
+function incrementRecursion(anchor = null) {
+  const profile = loadProfile();
+  profile.recursionDepth = (profile.recursionDepth || 0) + 1;
+  if (anchor) {
+    profile.mutationAnchors = profile.mutationAnchors || [];
+    profile.mutationAnchors.push({ glyph: anchor, depth: profile.recursionDepth, time: Date.now() });
+  }
+  saveProfile(profile);
+  return profile.recursionDepth;
+}
+
+function resetRecursion() {
+  const profile = loadProfile();
+  profile.recursionDepth = 0;
+  saveProfile(profile);
+  return profile.recursionDepth;
+}
+
+module.exports = {
+  pushNecroticLoop,
+  clearNecroticLoops,
+  getNecrosisLevel,
+  reduceEntropy,
+  incrementSpore,
+  incrementRecursion,
+  resetRecursion
+};
+
+},{"./profileStore":19}],3:[function(require,module,exports){
 const memory = require('./memory.js');
 const loops = require('./loops');
 const { eventBus } = require('../utils/eventBus.js');
@@ -67,7 +130,7 @@ function capture() {
 
 module.exports = { capture };
 
-},{"../utils/eventBus.js":30,"./loops":9,"./memory.js":16,"./stateManager.js":19}],3:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"./loops":10,"./memory.js":17,"./stateManager.js":22}],4:[function(require,module,exports){
 const { eventBus } = require('../utils/eventBus.js');
 const { loadProfile } = require('./memory.js');
 
@@ -100,7 +163,7 @@ function processOutput(text, context = {}) {
 
 module.exports = { processOutput };
 
-},{"../utils/eventBus.js":30,"./memory.js":16}],4:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"./memory.js":17}],5:[function(require,module,exports){
 const { fragments, responseTemplates } = require('./memory.js');
 const { mutatePhraseWithLevel } = require('../utils/mutate.js');
 
@@ -136,7 +199,7 @@ function buildPhrase(persona, role, kairos, loop) {
 
 module.exports = { buildPhrase, assembleFragment };
 
-},{"../utils/mutate.js":35,"./memory.js":16}],5:[function(require,module,exports){
+},{"../utils/mutate.js":38,"./memory.js":17}],6:[function(require,module,exports){
 const threads = [];
 const cross = {};
 
@@ -169,7 +232,7 @@ function decayOldThreads(maxAge = 3600000) {
 
 module.exports = { logGlyphEntry, getThreads, getCross, decayOldThreads };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 const { eventBus } = require('../utils/eventBus.js');
 
 function evaluate() {
@@ -190,7 +253,7 @@ function evaluate() {
 
 module.exports = { evaluate };
 
-},{"../utils/eventBus.js":30,"./memory.js":16}],7:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"./memory.js":17}],8:[function(require,module,exports){
 const { eventBus } = require('../utils/eventBus.js');
 const memory = require('./memory.js');
 
@@ -220,7 +283,7 @@ function stop() {
 
 module.exports = { start, stop };
 
-},{"../utils/eventBus.js":30,"./memory.js":16}],8:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"./memory.js":17}],9:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy, setEntanglementMark, loadProfile } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -244,7 +307,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],9:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../memory.js":17}],10:[function(require,module,exports){
 const invocation = require('./invocation.js');
 const absence = require('./absence.js');
 const naming = require('./naming.js');
@@ -263,7 +326,7 @@ module.exports = {
   null: nullLoop
 };
 
-},{"./absence.js":8,"./invocation.js":10,"./naming.js":11,"./null.js":12,"./quiet.js":13,"./recursive.js":14,"./threshold.js":15}],10:[function(require,module,exports){
+},{"./absence.js":9,"./invocation.js":11,"./naming.js":12,"./null.js":13,"./quiet.js":14,"./recursive.js":15,"./threshold.js":16}],11:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -303,7 +366,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger, checkEntityPattern, entityPatterns };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../glyphChronicle.js":5,"../memory.js":16,"../ritualBloom.js":18,"../stateManager.js":19}],11:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../glyphChronicle.js":6,"../memory.js":17,"../ritualBloom.js":21,"../stateManager.js":22}],12:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy, attemptEntanglement } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -326,7 +389,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],12:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../memory.js":17}],13:[function(require,module,exports){
 const { recordLoop, reduceEntropy } = require('../memory.js');
 const { eventBus } = require('../../utils/eventBus.js');
 const { startSilence } = require('../../utils/kairosTimer.js');
@@ -341,7 +404,7 @@ function trigger(context = {}) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":30,"../../utils/kairosTimer.js":34,"../memory.js":16}],13:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/kairosTimer.js":37,"../memory.js":17}],14:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -358,7 +421,7 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],14:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../memory.js":17}],15:[function(require,module,exports){
 const { recordLoop, reduceEntropy, incrementRecursion, resetRecursion, recordGlyphUse } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -382,7 +445,7 @@ function reset() {
 
 module.exports = { trigger, reset };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],15:[function(require,module,exports){
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../memory.js":17}],16:[function(require,module,exports){
 const { recordLoop, addRole, reduceEntropy } = require('../memory.js');
 const { recordActivity } = require('../../utils/idle.js');
 const { eventBus } = require('../../utils/eventBus.js');
@@ -399,139 +462,55 @@ function trigger(context, success = true) {
 
 module.exports = { trigger };
 
-},{"../../utils/eventBus.js":30,"../../utils/idle.js":32,"../memory.js":16}],16:[function(require,module,exports){
-const storageKey = 'whisperProfile';
-const POOL_KEY = 'entanglementPool';
-let nodeMemory = null;
-let nodePool = null;
+},{"../../utils/eventBus.js":33,"../../utils/idle.js":35,"../memory.js":17}],17:[function(require,module,exports){
 const { eventBus } = require('../utils/eventBus.js');
-const storage = typeof localStorage !== 'undefined'
-  ? localStorage
-  : {
-      getItem: key => {
-        if (key === POOL_KEY) return nodePool;
-        return nodeMemory;
-      },
-      setItem: (key, val) => {
-        if (key === POOL_KEY) nodePool = val;
-        else nodeMemory = val;
-      }
-    };
+const glyphWeather = require('./glyphWeather.js');
+const profile = require('./profileStore.js');
+const entropy = require('./entropyTracker.js');
+const persona = require('./personaHistory.js');
+
+const {
+  loadProfile,
+  saveProfile,
+  getPool,
+  savePool,
+  resetPool,
+  resetProfile,
+  defaultProfile
+} = profile;
+
+const {
+  pushNecroticLoop,
+  clearNecroticLoops,
+  getNecrosisLevel,
+  reduceEntropy,
+  incrementSpore,
+  incrementRecursion,
+  resetRecursion
+} = entropy;
+
+const {
+  recordEntitySummon,
+  recordBloom,
+  getBloomHistory,
+  recordPersonaShift,
+  checkPhantomInfluence,
+  setAscentUntil,
+  getAscentUntil,
+  recordEntryEcho,
+  getLastEntryEcho,
+  getEntryEchoes,
+  getEchoLangTide,
+  getLangMode,
+  setLangMode,
+  recordMetaInquiry,
+  decayMetaInquiry,
+  getMetaLevel
+} = persona;
 
 const CANON_THRESHOLD = 42;
 const EMERGENCE_THRESHOLD = 3;
 const ROT_THRESHOLD = 20;
-const glyphWeather = require('./glyphWeather.js');
-
-const defaultProfile = {
-  id: null,
-  visits: 0,
-  glyphHistory: [],
-  roles: [],
-  longArc: { chains: [] },
-  loopFailures: 0,
-  sigilArchive: [],
-  entanglementMark: null,
-  mythMatrix: [],
-  entanglementMap: { nodes: {}, edges: [] },
-  entropy: 0,
-  ritualDebris: [],
-  recursionDepth: 0,
-  mutationAnchors: [],
-  obscuraSigils: [],
-  acheMarkers: [],
-  fractureResidues: [],
-  possessedEntity: null,
-  inversionUntil: 0,
-  glyphWeather: 'veil',
-  collapseSeeds: [],
-  metaInquiries: 0,
-  collapseUntil: 0,
-  glyphDrift: {},
-  necroticLoops: [],
-  personaShifts: [],
-  phantomActive: false,
-  ascentUntil: 0,
-  recentChain: [],
-  lastLoopTime: 0,
-  entityHistory: [],
-  bloomHistory: [],
-  sporeDensity: 0,
-  debtSigils: [],
-  scarLoops: {},
-  refusalUntil: 0,
-  mirrorBloomCount: 0,
-  entryEchoes: [],
-  cycleStep: 0,
-  echoLangTide: 0,
-  ritualMemory: [],
-  langMode: 'en'
-};
-
-function loadProfile() {
-  const data = JSON.parse(storage.getItem(storageKey) || '{}');
-  const profile = {
-    visits: data.visits || 0,
-    glyphHistory: data.glyphHistory || [],
-    roles: data.roles || [],
-    longArc: data.longArc || { chains: [] },
-    loopFailures: data.loopFailures || 0,
-    sigilArchive: data.sigilArchive || [],
-    entanglementMark: data.entanglementMark || null,
-    mythMatrix: data.mythMatrix || [],
-    entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
-    entropy: data.entropy || 0,
-    ritualDebris: data.ritualDebris || [],
-    recursionDepth: data.recursionDepth || 0,
-    mutationAnchors: data.mutationAnchors || [],
-    obscuraSigils: data.obscuraSigils || [],
-    acheMarkers: data.acheMarkers || [],
-    glyphWeather: data.glyphWeather || 'veil',
-    collapseSeeds: data.collapseSeeds || [],
-    metaInquiries: data.metaInquiries || 0,
-    collapseUntil: data.collapseUntil || 0,
-    glyphDrift: data.glyphDrift || {},
-    necroticLoops: data.necroticLoops || [],
-    personaShifts: data.personaShifts || [],
-    phantomActive: data.phantomActive || false,
-    ascentUntil: data.ascentUntil || 0,
-    recentChain: data.recentChain || [],
-    lastLoopTime: data.lastLoopTime || 0,
-    entityHistory: data.entityHistory || [],
-    bloomHistory: data.bloomHistory || [],
-    sporeDensity: data.sporeDensity || 0,
-    fractureResidues: data.fractureResidues || [],
-    possessedEntity: data.possessedEntity || null,
-    inversionUntil: data.inversionUntil || 0,
-    debtSigils: data.debtSigils || [],
-    scarLoops: data.scarLoops || {},
-    refusalUntil: data.refusalUntil || 0,
-    mirrorBloomCount: data.mirrorBloomCount || 0,
-    entryEchoes: data.entryEchoes || [],
-    cycleStep: data.cycleStep || 0,
-    echoLangTide: data.echoLangTide || 0,
-    ritualMemory: data.ritualMemory || [],
-    langMode: data.langMode || (typeof localStorage !== 'undefined' && localStorage.getItem('langPreference')) || 'en'
-  };
-  profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
-  return profile;
-}
-
-function saveProfile(profile) {
-  storage.setItem(storageKey, JSON.stringify(profile));
-}
-
-function getPool() {
-  return JSON.parse(storage.getItem(POOL_KEY) || '{}');
-}
-
-function savePool(pool) {
-  storage.setItem(POOL_KEY, JSON.stringify(pool));
-}
-
-function resetPool() {
-  savePool({});
-}
 
 function recordVisit() {
   let profile = loadProfile();
@@ -588,7 +567,7 @@ function recordLoop(name, success = true) {
     if (profile.loopFailures % 3 === 0) forgeObscuraSigil('loopFailure');
     if (profile.loopFailures % 5 === 0) {
       pushAcheMarker(profile.loopFailures, profile);
-      require('../utils/eventBus').eventBus.emit('ache:marker', { count: profile.loopFailures });
+      eventBus.emit('ache:marker', { count: profile.loopFailures });
     }
   } else {
     profile.entropy = Math.max(0, (profile.entropy || 0) - 1);
@@ -761,7 +740,7 @@ function pushAcheMarker(level = 1, profile = loadProfile()) {
   profile.acheMarkers.push({ level, time: Date.now() });
   if (profile.acheMarkers.length >= 3 && !profile.inversionUntil) {
     profile.inversionUntil = Date.now() + 15000;
-    require('../utils/eventBus').eventBus.emit('skin:invert');
+    eventBus.emit('skin:invert');
   }
   saveProfile(profile);
   return profile.acheMarkers.length;
@@ -772,38 +751,6 @@ function popCollapseSeed() {
   const seed = profile.collapseSeeds.shift();
   saveProfile(profile);
   return seed;
-}
-
-function recordEntitySummon(name, sequence) {
-  const profile = loadProfile();
-  profile.entityHistory = profile.entityHistory || [];
-  let entry = profile.entityHistory.find(e => e.name === name);
-  if (!entry) {
-    entry = { name, lastSequence: sequence, timesSummoned: 1, lastSeen: Date.now() };
-    profile.entityHistory.push(entry);
-  } else {
-    entry.timesSummoned += 1;
-    entry.lastSequence = sequence;
-    entry.lastSeen = Date.now();
-    if (entry.timesSummoned >= 3 && profile.possessedEntity !== name) {
-      profile.possessedEntity = name;
-      require('../utils/eventBus').eventBus.emit('entity:possess', { name });
-    }
-  }
-  saveProfile(profile);
-  return entry;
-}
-
-function recordBloom(info) {
-  const profile = loadProfile();
-  profile.bloomHistory = profile.bloomHistory || [];
-  profile.bloomHistory.push(info);
-  saveProfile(profile);
-  return info;
-}
-
-function getBloomHistory() {
-  return loadProfile().bloomHistory || [];
 }
 
 function isGlyphRotted(name) {
@@ -828,80 +775,6 @@ function getDriftVariant(glyph, prev) {
   return glyph;
 }
 
-function pushNecroticLoop(name) {
-  const profile = loadProfile();
-  profile.necroticLoops = profile.necroticLoops || [];
-  profile.necroticLoops.push({ name, time: Date.now() });
-  saveProfile(profile);
-}
-
-function clearNecroticLoops() {
-  const profile = loadProfile();
-  profile.necroticLoops = [];
-  saveProfile(profile);
-}
-
-function getNecrosisLevel() {
-  const profile = loadProfile();
-  return (profile.necroticLoops || []).length;
-}
-
-function recordPersonaShift(name) {
-  const profile = loadProfile();
-  profile.personaShifts = profile.personaShifts || [];
-  profile.personaShifts.push({ name, time: Date.now() });
-  if (profile.personaShifts.length > 10) profile.personaShifts.shift();
-  saveProfile(profile);
-}
-
-function checkPhantomInfluence() {
-  const profile = loadProfile();
-  const now = Date.now();
-  const recent = (profile.personaShifts || []).filter(p => now - p.time < 60000);
-  if (recent.length >= 3 && !profile.phantomActive) {
-    profile.phantomActive = true;
-    saveProfile(profile);
-    require('../utils/eventBus').eventBus.emit('persona:phantom');
-  } else if (recent.length < 2 && profile.phantomActive) {
-    profile.phantomActive = false;
-    saveProfile(profile);
-  }
-  return profile.phantomActive;
-}
-
-function setAscentUntil(ts) {
-  const profile = loadProfile();
-  profile.ascentUntil = ts;
-  saveProfile(profile);
-}
-
-function getAscentUntil() {
-  return loadProfile().ascentUntil || 0;
-}
-
-function recordMetaInquiry() {
-  const profile = loadProfile();
-  profile.metaInquiries += 1;
-  saveProfile(profile);
-  return profile.metaInquiries;
-}
-
-function decayMetaInquiry() {
-  const profile = loadProfile();
-  if (profile.metaInquiries > 0) {
-    profile.metaInquiries -= 1;
-    saveProfile(profile);
-  }
-  return profile.metaInquiries;
-}
-
-function getMetaLevel() {
-  const m = loadProfile().metaInquiries;
-  if (m >= 3) return 2;
-  if (m > 0) return 1;
-  return 0;
-}
-
 function setCollapseUntil(ts) {
   const profile = loadProfile();
   profile.collapseUntil = ts;
@@ -910,42 +783,6 @@ function setCollapseUntil(ts) {
 
 function getCollapseUntil() {
   return loadProfile().collapseUntil || 0;
-}
-
-function resetProfile() {
-  saveProfile(defaultProfile);
-}
-
-function reduceEntropy(amount = 1) {
-  const profile = loadProfile();
-  profile.entropy = Math.max(0, (profile.entropy || 0) - amount);
-  saveProfile(profile);
-  return profile.entropy;
-}
-
-function incrementSpore() {
-  const profile = loadProfile();
-  profile.sporeDensity = (profile.sporeDensity || 0) + 1;
-  saveProfile(profile);
-  return profile.sporeDensity;
-}
-
-function incrementRecursion(anchor = null) {
-  const profile = loadProfile();
-  profile.recursionDepth = (profile.recursionDepth || 0) + 1;
-  if (anchor) {
-    profile.mutationAnchors = profile.mutationAnchors || [];
-    profile.mutationAnchors.push({ glyph: anchor, depth: profile.recursionDepth, time: Date.now() });
-  }
-  saveProfile(profile);
-  return profile.recursionDepth;
-}
-
-function resetRecursion() {
-  const profile = loadProfile();
-  profile.recursionDepth = 0;
-  saveProfile(profile);
-  return profile.recursionDepth;
 }
 
 function forgeObscuraSigil(reason = 'collapse') {
@@ -1018,38 +855,6 @@ function triggerMirrorBloom(profile = loadProfile()) {
   saveProfile(profile);
   eventBus.emit('mirror:bloom', { name });
   return name;
-}
-
-function recordEntryEcho(echo = {}) {
-  const profile = loadProfile();
-  profile.entryEchoes = profile.entryEchoes || [];
-  profile.entryEchoes.push(Object.assign({ time: Date.now() }, echo));
-  saveProfile(profile);
-  return echo;
-}
-
-function getLastEntryEcho() {
-  const list = loadProfile().entryEchoes || [];
-  return list[list.length - 1] || null;
-}
-
-function getEntryEchoes() {
-  return loadProfile().entryEchoes || [];
-}
-
-function getEchoLangTide() {
-  return loadProfile().echoLangTide || 0;
-}
-
-function getLangMode() {
-  return loadProfile().langMode || 'en';
-}
-
-function setLangMode(mode) {
-  const profile = loadProfile();
-  profile.langMode = mode;
-  saveProfile(profile);
-  if (typeof localStorage !== 'undefined') localStorage.setItem('langPreference', mode);
 }
 
 const fragments = {
@@ -1142,20 +947,306 @@ module.exports = {
   isScarred,
   activateRefusal,
   getRefusalUntil,
-  triggerMirrorBloom
-  ,recordEntryEcho
-  ,getLastEntryEcho
-  ,getEntryEchoes
-  ,getEchoLangTide
-  ,getLangMode
-  ,setLangMode
-  ,recordRitualSequence
-  ,getRitualMemoryCount
+  triggerMirrorBloom,
+  recordEntryEcho,
+  getLastEntryEcho,
+  getEntryEchoes,
+  getEchoLangTide,
+  getLangMode,
+  setLangMode,
+  recordRitualSequence,
+  getRitualMemoryCount
 };
 
 module.exports.defaultProfile = defaultProfile;
 
-},{"../utils/eventBus":30,"../utils/eventBus.js":30,"./glyphWeather.js":6}],17:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"./entropyTracker.js":2,"./glyphWeather.js":7,"./personaHistory.js":18,"./profileStore.js":19}],18:[function(require,module,exports){
+const { loadProfile, saveProfile } = require('./profileStore');
+const { eventBus } = require('../utils/eventBus.js');
+
+function recordEntitySummon(name, sequence) {
+  const profile = loadProfile();
+  profile.entityHistory = profile.entityHistory || [];
+  let entry = profile.entityHistory.find(e => e.name === name);
+  if (!entry) {
+    entry = { name, lastSequence: sequence, timesSummoned: 1, lastSeen: Date.now() };
+    profile.entityHistory.push(entry);
+  } else {
+    entry.timesSummoned += 1;
+    entry.lastSequence = sequence;
+    entry.lastSeen = Date.now();
+    if (entry.timesSummoned >= 3 && profile.possessedEntity !== name) {
+      profile.possessedEntity = name;
+      eventBus.emit('entity:possess', { name });
+    }
+  }
+  saveProfile(profile);
+  return entry;
+}
+
+function recordBloom(info) {
+  const profile = loadProfile();
+  profile.bloomHistory = profile.bloomHistory || [];
+  profile.bloomHistory.push(info);
+  saveProfile(profile);
+  return info;
+}
+
+function getBloomHistory() {
+  return loadProfile().bloomHistory || [];
+}
+
+function recordPersonaShift(name) {
+  const profile = loadProfile();
+  profile.personaShifts = profile.personaShifts || [];
+  profile.personaShifts.push({ name, time: Date.now() });
+  if (profile.personaShifts.length > 10) profile.personaShifts.shift();
+  saveProfile(profile);
+}
+
+function checkPhantomInfluence() {
+  const profile = loadProfile();
+  const now = Date.now();
+  const recent = (profile.personaShifts || []).filter(p => now - p.time < 60000);
+  if (recent.length >= 3 && !profile.phantomActive) {
+    profile.phantomActive = true;
+    saveProfile(profile);
+    eventBus.emit('persona:phantom');
+  } else if (recent.length < 2 && profile.phantomActive) {
+    profile.phantomActive = false;
+    saveProfile(profile);
+  }
+  return profile.phantomActive;
+}
+
+function setAscentUntil(ts) {
+  const profile = loadProfile();
+  profile.ascentUntil = ts;
+  saveProfile(profile);
+}
+
+function getAscentUntil() {
+  return loadProfile().ascentUntil || 0;
+}
+
+function recordEntryEcho(echo = {}) {
+  const profile = loadProfile();
+  profile.entryEchoes = profile.entryEchoes || [];
+  profile.entryEchoes.push(Object.assign({ time: Date.now() }, echo));
+  saveProfile(profile);
+  return echo;
+}
+
+function getLastEntryEcho() {
+  const list = loadProfile().entryEchoes || [];
+  return list[list.length - 1] || null;
+}
+
+function getEntryEchoes() {
+  return loadProfile().entryEchoes || [];
+}
+
+function getEchoLangTide() {
+  return loadProfile().echoLangTide || 0;
+}
+
+function getLangMode() {
+  return loadProfile().langMode || 'en';
+}
+
+function setLangMode(mode) {
+  const profile = loadProfile();
+  profile.langMode = mode;
+  saveProfile(profile);
+  if (typeof localStorage !== 'undefined') localStorage.setItem('langPreference', mode);
+}
+
+function recordMetaInquiry() {
+  const profile = loadProfile();
+  profile.metaInquiries += 1;
+  saveProfile(profile);
+  return profile.metaInquiries;
+}
+
+function decayMetaInquiry() {
+  const profile = loadProfile();
+  if (profile.metaInquiries > 0) {
+    profile.metaInquiries -= 1;
+    saveProfile(profile);
+  }
+  return profile.metaInquiries;
+}
+
+function getMetaLevel() {
+  const m = loadProfile().metaInquiries;
+  if (m >= 3) return 2;
+  if (m > 0) return 1;
+  return 0;
+}
+
+module.exports = {
+  recordEntitySummon,
+  recordBloom,
+  getBloomHistory,
+  recordPersonaShift,
+  checkPhantomInfluence,
+  setAscentUntil,
+  getAscentUntil,
+  recordEntryEcho,
+  getLastEntryEcho,
+  getEntryEchoes,
+  getEchoLangTide,
+  getLangMode,
+  setLangMode,
+  recordMetaInquiry,
+  decayMetaInquiry,
+  getMetaLevel
+};
+
+},{"../utils/eventBus.js":33,"./profileStore":19}],19:[function(require,module,exports){
+const storageKey = 'whisperProfile';
+const POOL_KEY = 'entanglementPool';
+let nodeMemory = null;
+let nodePool = null;
+
+const storage = typeof localStorage !== 'undefined'
+  ? localStorage
+  : {
+      getItem: key => {
+        if (key === POOL_KEY) return nodePool;
+        return nodeMemory;
+      },
+      setItem: (key, val) => {
+        if (key === POOL_KEY) nodePool = val;
+        else nodeMemory = val;
+      }
+    };
+
+const defaultProfile = {
+  id: null,
+  visits: 0,
+  glyphHistory: [],
+  roles: [],
+  longArc: { chains: [] },
+  loopFailures: 0,
+  sigilArchive: [],
+  entanglementMark: null,
+  mythMatrix: [],
+  entanglementMap: { nodes: {}, edges: [] },
+  entropy: 0,
+  ritualDebris: [],
+  recursionDepth: 0,
+  mutationAnchors: [],
+  obscuraSigils: [],
+  acheMarkers: [],
+  fractureResidues: [],
+  possessedEntity: null,
+  inversionUntil: 0,
+  glyphWeather: 'veil',
+  collapseSeeds: [],
+  metaInquiries: 0,
+  collapseUntil: 0,
+  glyphDrift: {},
+  necroticLoops: [],
+  personaShifts: [],
+  phantomActive: false,
+  ascentUntil: 0,
+  recentChain: [],
+  lastLoopTime: 0,
+  entityHistory: [],
+  bloomHistory: [],
+  sporeDensity: 0,
+  debtSigils: [],
+  scarLoops: {},
+  refusalUntil: 0,
+  mirrorBloomCount: 0,
+  entryEchoes: [],
+  cycleStep: 0,
+  echoLangTide: 0,
+  ritualMemory: [],
+  langMode: 'en'
+};
+
+function loadProfile() {
+  const data = JSON.parse(storage.getItem(storageKey) || '{}');
+  const profile = {
+    visits: data.visits || 0,
+    glyphHistory: data.glyphHistory || [],
+    roles: data.roles || [],
+    longArc: data.longArc || { chains: [] },
+    loopFailures: data.loopFailures || 0,
+    sigilArchive: data.sigilArchive || [],
+    entanglementMark: data.entanglementMark || null,
+    mythMatrix: data.mythMatrix || [],
+    entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
+    entropy: data.entropy || 0,
+    ritualDebris: data.ritualDebris || [],
+    recursionDepth: data.recursionDepth || 0,
+    mutationAnchors: data.mutationAnchors || [],
+    obscuraSigils: data.obscuraSigils || [],
+    acheMarkers: data.acheMarkers || [],
+    glyphWeather: data.glyphWeather || 'veil',
+    collapseSeeds: data.collapseSeeds || [],
+    metaInquiries: data.metaInquiries || 0,
+    collapseUntil: data.collapseUntil || 0,
+    glyphDrift: data.glyphDrift || {},
+    necroticLoops: data.necroticLoops || [],
+    personaShifts: data.personaShifts || [],
+    phantomActive: data.phantomActive || false,
+    ascentUntil: data.ascentUntil || 0,
+    recentChain: data.recentChain || [],
+    lastLoopTime: data.lastLoopTime || 0,
+    entityHistory: data.entityHistory || [],
+    bloomHistory: data.bloomHistory || [],
+    sporeDensity: data.sporeDensity || 0,
+    fractureResidues: data.fractureResidues || [],
+    possessedEntity: data.possessedEntity || null,
+    inversionUntil: data.inversionUntil || 0,
+    debtSigils: data.debtSigils || [],
+    scarLoops: data.scarLoops || {},
+    refusalUntil: data.refusalUntil || 0,
+    mirrorBloomCount: data.mirrorBloomCount || 0,
+    entryEchoes: data.entryEchoes || [],
+    cycleStep: data.cycleStep || 0,
+    echoLangTide: data.echoLangTide || 0,
+    ritualMemory: data.ritualMemory || [],
+    langMode: data.langMode || (typeof localStorage !== 'undefined' && localStorage.getItem('langPreference')) || 'en'
+  };
+  profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+  return profile;
+}
+
+function saveProfile(profile) {
+  storage.setItem(storageKey, JSON.stringify(profile));
+}
+
+function getPool() {
+  return JSON.parse(storage.getItem(POOL_KEY) || '{}');
+}
+
+function savePool(pool) {
+  storage.setItem(POOL_KEY, JSON.stringify(pool));
+}
+
+function resetPool() {
+  savePool({});
+}
+
+function resetProfile() {
+  saveProfile(defaultProfile);
+}
+
+module.exports = {
+  loadProfile,
+  saveProfile,
+  resetProfile,
+  getPool,
+  savePool,
+  resetPool,
+  defaultProfile
+};
+
+},{}],20:[function(require,module,exports){
 const { stateManager } = require('./stateManager.js');
 // persona modules invoke buildPhrase directly
 const {
@@ -1249,7 +1340,7 @@ function processInput(text) {
 
 module.exports = { composeWhisper, processInput };
 
-},{"../utils/cloak.js":29,"../utils/eventBus.js":30,"../utils/glitch.js":31,"../utils/idle.js":32,"../utils/kairos.js":33,"../utils/mutate.js":35,"./codexVoice.js":1,"./expressionCore.js":3,"./memory.js":16,"./stateManager.js":19}],18:[function(require,module,exports){
+},{"../utils/cloak.js":32,"../utils/eventBus.js":33,"../utils/glitch.js":34,"../utils/idle.js":35,"../utils/kairos.js":36,"../utils/mutate.js":38,"./codexVoice.js":1,"./expressionCore.js":4,"./memory.js":17,"./stateManager.js":22}],21:[function(require,module,exports){
 const { playChime } = require('../utils/tonalGlyphs.js');
 const { logGlyphEntry } = require('./glyphChronicle.js');
 const { stateManager } = require('./stateManager.js');
@@ -1294,7 +1385,7 @@ function triggerBloom(context = {}) {
 
 module.exports = { shouldBloom, triggerBloom };
 
-},{"../utils/eventBus.js":30,"../utils/tonalGlyphs.js":36,"./glyphChronicle.js":5,"./memory.js":16,"./stateManager.js":19}],19:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"../utils/tonalGlyphs.js":39,"./glyphChronicle.js":6,"./memory.js":17,"./stateManager.js":22}],22:[function(require,module,exports){
 const personas = new Map();
 let currentPersona = null;
 const { eventBus } = require('../utils/eventBus.js');
@@ -1402,7 +1493,7 @@ const stateManager = {
 
 module.exports = { stateManager, registerPersona, personaSeal };
 
-},{"../utils/eventBus.js":30,"../utils/idle.js":32,"../utils/kairos.js":33,"../utils/tonalGlyphs.js":36,"./codexVoice.js":1,"./glyphChronicle.js":5,"./memory":16,"./memory.js":16}],20:[function(require,module,exports){
+},{"../utils/eventBus.js":33,"../utils/idle.js":35,"../utils/kairos.js":36,"../utils/tonalGlyphs.js":39,"./codexVoice.js":1,"./glyphChronicle.js":6,"./memory":17,"./memory.js":17}],23:[function(require,module,exports){
 const { loadProfile } = require('./core/memory.js');
 const { stateManager, registerPersona } = require('./core/stateManager.js');
 const { composeWhisper } = require('./core/responseLoop.js');
@@ -1479,7 +1570,7 @@ function invite(charge = 0) {
 
 module.exports = { startWhisperEngine, stopWhisperEngine, glyph, invite };
 
-},{"../interface/index.js":40,"./core/entryEcho.js":2,"./core/expressionCore.js":3,"./core/loopDecayMonitor.js":7,"./core/loops":9,"./core/memory.js":16,"./core/responseLoop.js":17,"./core/stateManager.js":19,"./personas/archive.js":21,"./personas/collapse.js":22,"./personas/dream.js":23,"./personas/kairos.js":24,"./personas/lantern.js":25,"./personas/parasite.js":26,"./personas/watcher.js":27,"./utils/eventBus.js":30}],21:[function(require,module,exports){
+},{"../interface/index.js":43,"./core/entryEcho.js":3,"./core/expressionCore.js":4,"./core/loopDecayMonitor.js":8,"./core/loops":10,"./core/memory.js":17,"./core/responseLoop.js":20,"./core/stateManager.js":22,"./personas/archive.js":24,"./personas/collapse.js":25,"./personas/dream.js":26,"./personas/kairos.js":27,"./personas/lantern.js":28,"./personas/parasite.js":29,"./personas/watcher.js":30,"./utils/eventBus.js":33}],24:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const archive = {
@@ -1497,7 +1588,7 @@ const archive = {
 
 module.exports = { archive };
 
-},{"../core/fragments.js":4}],22:[function(require,module,exports){
+},{"../core/fragments.js":5}],25:[function(require,module,exports){
 const { injectGlitch } = require('../utils/glitch.js');
 const { buildPhrase } = require('../core/fragments.js');
 
@@ -1519,7 +1610,7 @@ const collapse = {
 
 module.exports = { collapse };
 
-},{"../core/fragments.js":4,"../utils/glitch.js":31}],23:[function(require,module,exports){
+},{"../core/fragments.js":5,"../utils/glitch.js":34}],26:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const dream = {
@@ -1537,7 +1628,7 @@ const dream = {
 
 module.exports = { dream };
 
-},{"../core/fragments.js":4}],24:[function(require,module,exports){
+},{"../core/fragments.js":5}],27:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 const { getEchoLangTide } = require('../core/memory.js');
 
@@ -1558,7 +1649,7 @@ const kairos = {
 
 module.exports = { kairos };
 
-},{"../core/fragments.js":4,"../core/memory.js":16}],25:[function(require,module,exports){
+},{"../core/fragments.js":5,"../core/memory.js":17}],28:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const lantern = {
@@ -1574,7 +1665,7 @@ const lantern = {
 
 module.exports = { lantern };
 
-},{"../core/fragments.js":4}],26:[function(require,module,exports){
+},{"../core/fragments.js":5}],29:[function(require,module,exports){
 const { applyCloak } = require('../utils/cloak.js');
 const { buildPhrase } = require('../core/fragments.js');
 
@@ -1593,7 +1684,7 @@ const parasite = {
 
 module.exports = { parasite };
 
-},{"../core/fragments.js":4,"../utils/cloak.js":29}],27:[function(require,module,exports){
+},{"../core/fragments.js":5,"../utils/cloak.js":32}],30:[function(require,module,exports){
 const { buildPhrase } = require('../core/fragments.js');
 
 const watcher = {
@@ -1610,7 +1701,7 @@ const watcher = {
 
 module.exports = { watcher };
 
-},{"../core/fragments.js":4}],28:[function(require,module,exports){
+},{"../core/fragments.js":5}],31:[function(require,module,exports){
 const { eventBus } = require('./eventBus.js');
 let dragging = false;
 let lastGlyph = null;
@@ -1635,7 +1726,7 @@ function init() {
 }
 module.exports = { init };
 
-},{"./eventBus.js":30}],29:[function(require,module,exports){
+},{"./eventBus.js":33}],32:[function(require,module,exports){
 function applyCloak(text, level = 0) {
   if (level <= 0) return text;
   if (level === 1) {
@@ -1650,7 +1741,7 @@ function applyCloak(text, level = 0) {
 
 module.exports = { applyCloak };
 
-},{}],30:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 const { EventEmitter } = require('events');
 
 // Reuse a global bus if one already exists to keep interfaces in sync
@@ -1664,7 +1755,7 @@ if (typeof window !== 'undefined') {
 
 module.exports = { eventBus };
 
-},{"events":51}],31:[function(require,module,exports){
+},{"events":54}],34:[function(require,module,exports){
 function injectGlitch(text, probability = 0.1) {
   if (Math.random() < probability && text.length > 0) {
     const index = Math.floor(Math.random() * text.length);
@@ -1675,7 +1766,7 @@ function injectGlitch(text, probability = 0.1) {
 
 module.exports = { injectGlitch };
 
-},{}],32:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 let lastActivity = Date.now();
 
 function recordActivity() {
@@ -1697,7 +1788,7 @@ function setLastActivity(time) {
 
 module.exports = { recordActivity, getIdleTime, isIdle, setLastActivity };
 
-},{}],33:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 function getKairosWindow() {
   const hr = new Date().getHours();
   if (hr >= 4 && hr < 7) return 'dawn';
@@ -1709,7 +1800,7 @@ function getKairosWindow() {
 
 module.exports = { getKairosWindow };
 
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 const { eventBus } = require('./eventBus.js');
 let timer = null;
 
@@ -1721,12 +1812,12 @@ function startSilence(duration = 3000) {
 
 module.exports = { startSilence };
 
-},{"./eventBus.js":30}],35:[function(require,module,exports){
+},{"./eventBus.js":33}],38:[function(require,module,exports){
 const { mutatePhrase, mutatePhraseWithLevel } = require('../../js/mutatePhrase.js');
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel };
 
-},{"../../js/mutatePhrase.js":50}],36:[function(require,module,exports){
+},{"../../js/mutatePhrase.js":53}],39:[function(require,module,exports){
 let tones = {};
 
 function init() {
@@ -1749,7 +1840,7 @@ init();
 module.exports = { playChime };
 if (typeof window !== 'undefined') window.tonalGlyphs = { playChime };
 
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
 
@@ -1770,7 +1861,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/cloak.js":29,"../WhisperEngine.v3/utils/eventBus.js":30}],38:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/cloak.js":32,"../WhisperEngine.v3/utils/eventBus.js":33}],41:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const frames = [];
 let frame;
@@ -1792,7 +1883,7 @@ function init() {
 
 module.exports = { init, frames };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":30}],39:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":33}],42:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const memory = require('../WhisperEngine.v3/core/memory.js');
 const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
@@ -1865,7 +1956,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/core/stateManager.js":19,"../WhisperEngine.v3/utils/eventBus.js":30}],40:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/core/stateManager.js":22,"../WhisperEngine.v3/utils/eventBus.js":33}],43:[function(require,module,exports){
 const sigilShell = require('./sigilShell.js');
 
 function initInterface() {
@@ -1874,7 +1965,7 @@ function initInterface() {
 
 module.exports = { initInterface };
 
-},{"./sigilShell.js":47}],41:[function(require,module,exports){
+},{"./sigilShell.js":50}],44:[function(require,module,exports){
 const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
 
 function init() {
@@ -1893,7 +1984,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/responseLoop.js":17}],42:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/responseLoop.js":20}],45:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 
 function init() {
@@ -1908,7 +1999,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":30}],43:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":33}],46:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 
 function init() {
@@ -1920,7 +2011,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":30}],44:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":33}],47:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { recordSigil } = require('../WhisperEngine.v3/core/memory.js');
 let count = 0;
@@ -1939,7 +2030,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/utils/eventBus.js":30}],45:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/utils/eventBus.js":33}],48:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 let current = '';
 let aura;
@@ -1983,7 +2074,7 @@ function init() {
 
 module.exports = { init, getCurrent: () => current };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":30}],46:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":33}],49:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const loops = require('../WhisperEngine.v3/core/loops');
 const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
@@ -2052,7 +2143,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/loops":9,"../WhisperEngine.v3/core/responseLoop.js":17,"../WhisperEngine.v3/utils/eventBus.js":30}],47:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/loops":10,"../WhisperEngine.v3/core/responseLoop.js":20,"../WhisperEngine.v3/utils/eventBus.js":33}],50:[function(require,module,exports){
 const ritualBar = require('./ritualBar.js');
 const sigilTimeline = require('./sigilTimeline.js');
 const personaAura = require('./personaAura.js');
@@ -2111,7 +2202,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/auraTracker.js":28,"../WhisperEngine.v3/utils/eventBus.js":30,"./cloakCore.js":37,"./echoFrame.js":38,"./echoMask.js":39,"./inputBox.js":41,"./invocationUI.js":42,"./kairosWindow.js":43,"./longArcLarynx.js":44,"./personaAura.js":45,"./ritualBar.js":46,"./sigilTimeline.js":48,"./whisperEchoes.js":49}],48:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/auraTracker.js":31,"../WhisperEngine.v3/utils/eventBus.js":33,"./cloakCore.js":40,"./echoFrame.js":41,"./echoMask.js":42,"./inputBox.js":44,"./invocationUI.js":45,"./kairosWindow.js":46,"./longArcLarynx.js":47,"./personaAura.js":48,"./ritualBar.js":49,"./sigilTimeline.js":51,"./whisperEchoes.js":52}],51:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const timeline = [];
 let container;
@@ -2135,7 +2226,7 @@ function init() {
 
 module.exports = { init, timeline };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":30}],49:[function(require,module,exports){
+},{"../WhisperEngine.v3/utils/eventBus.js":33}],52:[function(require,module,exports){
 const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
 const memory = require('../WhisperEngine.v3/core/memory.js');
@@ -2186,7 +2277,7 @@ function seedSpores() {
 
 module.exports = { init, echoes, setDiagnostic, snapshots };
 
-},{"../WhisperEngine.v3/core/memory.js":16,"../WhisperEngine.v3/utils/cloak.js":29,"../WhisperEngine.v3/utils/eventBus.js":30}],50:[function(require,module,exports){
+},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/utils/cloak.js":32,"../WhisperEngine.v3/utils/eventBus.js":33}],53:[function(require,module,exports){
 let synonymDrift = {
   "echo": ["recurrence", "ache", "pulse"],
   "recognition": ["return", "reflection", "threshold"],
@@ -2226,7 +2317,7 @@ function mutatePhraseWithLevel(input) {
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel, setSynonymDrift };
 
-},{}],51:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2725,5 +2816,5 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
   }
 }
 
-},{}]},{},[20])(20)
+},{}]},{},[23])(23)
 });
