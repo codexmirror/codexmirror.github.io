@@ -3,7 +3,13 @@ const whisperLog = (typeof require=="function"?require("./whisperLog.js"):window
 const summonEffects = (typeof require=="function"?require("./summonEffects.js"):window.summonEffects);
 const bloomController = (typeof require=="function"?require("./bloomController.js"):window.bloomController);
 const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window.audioLayer);
-const { eventBus } = (typeof require=="function"?require("../WhisperEngine.v3/utils/eventBus.js"):window);
+let eventBus = (typeof require=="function"?require("../WhisperEngine.v3/utils/eventBus.js").eventBus:window.eventBus);
+function getBus(){
+  if(!eventBus && typeof window!=='undefined') eventBus = window.eventBus;
+  return eventBus;
+}
+function emit(name,payload){ const b=getBus(); b && b.emit(name,payload); }
+function on(name,fn){ const b=getBus(); b && b.on(name,fn); }
 const memory = (typeof require=="function"?require("../WhisperEngine.v3/core/memory.js"):window.WhisperEngineMemory || {});
 const { mutatePhrase } = (typeof require=="function"?require("./mutatePhrase.js"):window);
 const { entityRespondFragment } = (typeof require=="function"?require("./entityResponses.js"):window);
@@ -113,7 +119,7 @@ function updateRevealStage(stage) {
   if(fill) fill.style.width = (stage*20)+"%";
   if (bloomController) bloomController.setLevel(stage);
   if (audioLayer) audioLayer.updateCharge(stage);
-  eventBus && eventBus.emit('ritual:pulse', { level: stage });
+  emit('ritual:pulse', { level: stage });
   if (ritualFragments.showFragment && [2,4,5].includes(stage)) {
     ritualFragments.showFragment(stage);
   }
@@ -188,7 +194,7 @@ function handleGlyphClick(glyph) {
   invokeTimes.push(now);
   if (invokeTimes.length > 10) {
     memory.activateRefusal();
-    eventBus && eventBus.emit('ritual:refusal');
+    emit('ritual:refusal');
     return;
   }
   if (jamController.register && jamController.register(glyph)) {
@@ -212,11 +218,11 @@ function handleGlyphClick(glyph) {
       if (memory && memory.recordLoop) memory.recordLoop('anti', true);
       RC.resetCharge();
       const count = memory.recordRitualSequence(glyphSequence.slice());
-      eventBus && eventBus.emit('ritual:memory', { count });
-      eventBus && eventBus.emit('ritual:complete');
+      emit('ritual:memory', { count });
+      emit('ritual:complete');
       updateRevealStage(0);
       glyphSequence = [];
-      eventBus && eventBus.emit('glyph:anti', { name: key });
+      emit('glyph:anti', { name: key });
       return;
     }
   }
@@ -256,7 +262,7 @@ function handleGlyphClick(glyph) {
 
     if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
       matched = true;
-      eventBus && eventBus.emit('entity:summon', { name: key });
+      emit('entity:summon', { name: key });
       const card = document.getElementById(summon.cardId);
       if (card) card.style.display = 'block';
       if (summon.onSummon) summon.onSummon();
@@ -285,8 +291,8 @@ function handleGlyphClick(glyph) {
       RC.resetCharge();
       if (audioLayer) audioLayer.updateCharge(0);
       const count = memory.recordRitualSequence(glyphSequence.slice());
-      eventBus && eventBus.emit('ritual:memory', { count });
-      eventBus && eventBus.emit('ritual:complete');
+      emit('ritual:memory', { count });
+      emit('ritual:complete');
       updateRevealStage(0);
       glyphSequence = [];
       break;
@@ -299,7 +305,7 @@ function handleGlyphClick(glyph) {
       const rev = summon.pattern.slice().reverse();
       if (arraysEqual(glyphSequence, rev)) {
         matched = true;
-        eventBus && eventBus.emit('entity:mirrorfold', { name: key });
+        emit('entity:mirrorfold', { name: key });
         const out = mirrorSyntax.invert(entityPatterns[key].pattern.join(' '));
         const div = document.createElement('div');
         div.className = 'invocation-block entity-response';
@@ -307,8 +313,8 @@ function handleGlyphClick(glyph) {
         document.getElementById('invocation-output').appendChild(div);
         RC.resetCharge();
         const count = memory.recordRitualSequence(glyphSequence.slice());
-        eventBus && eventBus.emit('ritual:memory', { count });
-        eventBus && eventBus.emit('ritual:complete');
+        emit('ritual:memory', { count });
+        emit('ritual:complete');
         updateRevealStage(0);
         glyphSequence = [];
         break;
@@ -332,13 +338,13 @@ function handleGlyphClick(glyph) {
       if (playChime) playChime('echo');
     }
     if (whisperLog && whisperLog.spawnPhantom) whisperLog.spawnPhantom('invocation-output', 5);
-    eventBus && eventBus.emit('loop:collapse', {});
+    emit('loop:collapse', {});
     clownHandler.trigger();
     confessionMode.open('this glyph was light ∩ now it drips');
     const count = memory.recordRitualSequence(glyphSequence.slice());
-    eventBus && eventBus.emit('ritual:memory', { count });
-    eventBus && eventBus.emit('ritual:failure');
-    eventBus && eventBus.emit('ritual:complete');
+    emit('ritual:memory', { count });
+    emit('ritual:failure');
+    emit('ritual:complete');
     updateRevealStage(0);
     glyphSequence = [];
   }
@@ -376,12 +382,12 @@ document.querySelectorAll('.glyph-btn').forEach(btn => {
   });
 });
 
-eventBus && eventBus.on('glyph:drag', evt => {
+on('glyph:drag', evt => {
   if (evt && evt.glyph) handleGlyphClick(evt.glyph);
 });
-eventBus && eventBus.on('entity:summon', evt => {
+on('entity:summon', evt => {
   if (evt && evt.name === 'lantern') confessionMode.close();
 });
-eventBus && eventBus.on('persona:shift', name => {
+on('persona:shift', name => {
   if (name === 'lantern') confessionMode.close();
 });
