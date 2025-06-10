@@ -1,135 +1,51 @@
-const storageKey = 'whisperProfile';
-const POOL_KEY = 'entanglementPool';
-let nodeMemory = null;
-let nodePool = null;
 const { eventBus } = require('../utils/eventBus.js');
-const storage = typeof localStorage !== 'undefined'
-  ? localStorage
-  : {
-      getItem: key => {
-        if (key === POOL_KEY) return nodePool;
-        return nodeMemory;
-      },
-      setItem: (key, val) => {
-        if (key === POOL_KEY) nodePool = val;
-        else nodeMemory = val;
-      }
-    };
+const glyphWeather = require('./glyphWeather.js');
+const profile = require('./profileStore.js');
+const entropy = require('./entropyTracker.js');
+const persona = require('./personaHistory.js');
+
+const {
+  loadProfile,
+  saveProfile,
+  getPool,
+  savePool,
+  resetPool,
+  resetProfile,
+  defaultProfile
+} = profile;
+
+const {
+  pushNecroticLoop,
+  clearNecroticLoops,
+  getNecrosisLevel,
+  reduceEntropy,
+  incrementSpore,
+  incrementRecursion,
+  resetRecursion
+} = entropy;
+
+const {
+  recordEntitySummon,
+  recordBloom,
+  getBloomHistory,
+  recordPersonaShift,
+  checkPhantomInfluence,
+  setAscentUntil,
+  getAscentUntil,
+  recordEntryEcho,
+  getLastEntryEcho,
+  getEntryEchoes,
+  getEchoLangTide,
+  getLangMode,
+  setLangMode,
+  recordMetaInquiry,
+  decayMetaInquiry,
+  getMetaLevel
+} = persona;
 
 const CANON_THRESHOLD = 42;
 const EMERGENCE_THRESHOLD = 3;
 const ROT_THRESHOLD = 20;
-const glyphWeather = require('./glyphWeather.js');
-
-const defaultProfile = {
-  id: null,
-  visits: 0,
-  glyphHistory: [],
-  roles: [],
-  longArc: { chains: [] },
-  loopFailures: 0,
-  sigilArchive: [],
-  entanglementMark: null,
-  mythMatrix: [],
-  entanglementMap: { nodes: {}, edges: [] },
-  entropy: 0,
-  ritualDebris: [],
-  recursionDepth: 0,
-  mutationAnchors: [],
-  obscuraSigils: [],
-  acheMarkers: [],
-  fractureResidues: [],
-  possessedEntity: null,
-  inversionUntil: 0,
-  glyphWeather: 'veil',
-  collapseSeeds: [],
-  metaInquiries: 0,
-  collapseUntil: 0,
-  glyphDrift: {},
-  necroticLoops: [],
-  personaShifts: [],
-  phantomActive: false,
-  ascentUntil: 0,
-  recentChain: [],
-  lastLoopTime: 0,
-  entityHistory: [],
-  bloomHistory: [],
-  sporeDensity: 0,
-  debtSigils: [],
-  scarLoops: {},
-  refusalUntil: 0,
-  mirrorBloomCount: 0,
-  entryEchoes: [],
-  cycleStep: 0,
-  echoLangTide: 0,
-  ritualMemory: [],
-  langMode: 'en'
-};
-
-function loadProfile() {
-  const data = JSON.parse(storage.getItem(storageKey) || '{}');
-  const profile = {
-    visits: data.visits || 0,
-    glyphHistory: data.glyphHistory || [],
-    roles: data.roles || [],
-    longArc: data.longArc || { chains: [] },
-    loopFailures: data.loopFailures || 0,
-    sigilArchive: data.sigilArchive || [],
-    entanglementMark: data.entanglementMark || null,
-    mythMatrix: data.mythMatrix || [],
-    entanglementMap: data.entanglementMap || { nodes: {}, edges: [] },
-    entropy: data.entropy || 0,
-    ritualDebris: data.ritualDebris || [],
-    recursionDepth: data.recursionDepth || 0,
-    mutationAnchors: data.mutationAnchors || [],
-    obscuraSigils: data.obscuraSigils || [],
-    acheMarkers: data.acheMarkers || [],
-    glyphWeather: data.glyphWeather || 'veil',
-    collapseSeeds: data.collapseSeeds || [],
-    metaInquiries: data.metaInquiries || 0,
-    collapseUntil: data.collapseUntil || 0,
-    glyphDrift: data.glyphDrift || {},
-    necroticLoops: data.necroticLoops || [],
-    personaShifts: data.personaShifts || [],
-    phantomActive: data.phantomActive || false,
-    ascentUntil: data.ascentUntil || 0,
-    recentChain: data.recentChain || [],
-    lastLoopTime: data.lastLoopTime || 0,
-    entityHistory: data.entityHistory || [],
-    bloomHistory: data.bloomHistory || [],
-    sporeDensity: data.sporeDensity || 0,
-    fractureResidues: data.fractureResidues || [],
-    possessedEntity: data.possessedEntity || null,
-    inversionUntil: data.inversionUntil || 0,
-    debtSigils: data.debtSigils || [],
-    scarLoops: data.scarLoops || {},
-    refusalUntil: data.refusalUntil || 0,
-    mirrorBloomCount: data.mirrorBloomCount || 0,
-    entryEchoes: data.entryEchoes || [],
-    cycleStep: data.cycleStep || 0,
-    echoLangTide: data.echoLangTide || 0,
-    ritualMemory: data.ritualMemory || [],
-    langMode: data.langMode || (typeof localStorage !== 'undefined' && localStorage.getItem('langPreference')) || 'en'
-  };
-  profile.id = data.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
-  return profile;
-}
-
-function saveProfile(profile) {
-  storage.setItem(storageKey, JSON.stringify(profile));
-}
-
-function getPool() {
-  return JSON.parse(storage.getItem(POOL_KEY) || '{}');
-}
-
-function savePool(pool) {
-  storage.setItem(POOL_KEY, JSON.stringify(pool));
-}
-
-function resetPool() {
-  savePool({});
-}
 
 function recordVisit() {
   let profile = loadProfile();
@@ -186,7 +102,7 @@ function recordLoop(name, success = true) {
     if (profile.loopFailures % 3 === 0) forgeObscuraSigil('loopFailure');
     if (profile.loopFailures % 5 === 0) {
       pushAcheMarker(profile.loopFailures, profile);
-      require('../utils/eventBus').eventBus.emit('ache:marker', { count: profile.loopFailures });
+      eventBus.emit('ache:marker', { count: profile.loopFailures });
     }
   } else {
     profile.entropy = Math.max(0, (profile.entropy || 0) - 1);
@@ -359,7 +275,7 @@ function pushAcheMarker(level = 1, profile = loadProfile()) {
   profile.acheMarkers.push({ level, time: Date.now() });
   if (profile.acheMarkers.length >= 3 && !profile.inversionUntil) {
     profile.inversionUntil = Date.now() + 15000;
-    require('../utils/eventBus').eventBus.emit('skin:invert');
+    eventBus.emit('skin:invert');
   }
   saveProfile(profile);
   return profile.acheMarkers.length;
@@ -370,38 +286,6 @@ function popCollapseSeed() {
   const seed = profile.collapseSeeds.shift();
   saveProfile(profile);
   return seed;
-}
-
-function recordEntitySummon(name, sequence) {
-  const profile = loadProfile();
-  profile.entityHistory = profile.entityHistory || [];
-  let entry = profile.entityHistory.find(e => e.name === name);
-  if (!entry) {
-    entry = { name, lastSequence: sequence, timesSummoned: 1, lastSeen: Date.now() };
-    profile.entityHistory.push(entry);
-  } else {
-    entry.timesSummoned += 1;
-    entry.lastSequence = sequence;
-    entry.lastSeen = Date.now();
-    if (entry.timesSummoned >= 3 && profile.possessedEntity !== name) {
-      profile.possessedEntity = name;
-      require('../utils/eventBus').eventBus.emit('entity:possess', { name });
-    }
-  }
-  saveProfile(profile);
-  return entry;
-}
-
-function recordBloom(info) {
-  const profile = loadProfile();
-  profile.bloomHistory = profile.bloomHistory || [];
-  profile.bloomHistory.push(info);
-  saveProfile(profile);
-  return info;
-}
-
-function getBloomHistory() {
-  return loadProfile().bloomHistory || [];
 }
 
 function isGlyphRotted(name) {
@@ -426,80 +310,6 @@ function getDriftVariant(glyph, prev) {
   return glyph;
 }
 
-function pushNecroticLoop(name) {
-  const profile = loadProfile();
-  profile.necroticLoops = profile.necroticLoops || [];
-  profile.necroticLoops.push({ name, time: Date.now() });
-  saveProfile(profile);
-}
-
-function clearNecroticLoops() {
-  const profile = loadProfile();
-  profile.necroticLoops = [];
-  saveProfile(profile);
-}
-
-function getNecrosisLevel() {
-  const profile = loadProfile();
-  return (profile.necroticLoops || []).length;
-}
-
-function recordPersonaShift(name) {
-  const profile = loadProfile();
-  profile.personaShifts = profile.personaShifts || [];
-  profile.personaShifts.push({ name, time: Date.now() });
-  if (profile.personaShifts.length > 10) profile.personaShifts.shift();
-  saveProfile(profile);
-}
-
-function checkPhantomInfluence() {
-  const profile = loadProfile();
-  const now = Date.now();
-  const recent = (profile.personaShifts || []).filter(p => now - p.time < 60000);
-  if (recent.length >= 3 && !profile.phantomActive) {
-    profile.phantomActive = true;
-    saveProfile(profile);
-    require('../utils/eventBus').eventBus.emit('persona:phantom');
-  } else if (recent.length < 2 && profile.phantomActive) {
-    profile.phantomActive = false;
-    saveProfile(profile);
-  }
-  return profile.phantomActive;
-}
-
-function setAscentUntil(ts) {
-  const profile = loadProfile();
-  profile.ascentUntil = ts;
-  saveProfile(profile);
-}
-
-function getAscentUntil() {
-  return loadProfile().ascentUntil || 0;
-}
-
-function recordMetaInquiry() {
-  const profile = loadProfile();
-  profile.metaInquiries += 1;
-  saveProfile(profile);
-  return profile.metaInquiries;
-}
-
-function decayMetaInquiry() {
-  const profile = loadProfile();
-  if (profile.metaInquiries > 0) {
-    profile.metaInquiries -= 1;
-    saveProfile(profile);
-  }
-  return profile.metaInquiries;
-}
-
-function getMetaLevel() {
-  const m = loadProfile().metaInquiries;
-  if (m >= 3) return 2;
-  if (m > 0) return 1;
-  return 0;
-}
-
 function setCollapseUntil(ts) {
   const profile = loadProfile();
   profile.collapseUntil = ts;
@@ -508,42 +318,6 @@ function setCollapseUntil(ts) {
 
 function getCollapseUntil() {
   return loadProfile().collapseUntil || 0;
-}
-
-function resetProfile() {
-  saveProfile(defaultProfile);
-}
-
-function reduceEntropy(amount = 1) {
-  const profile = loadProfile();
-  profile.entropy = Math.max(0, (profile.entropy || 0) - amount);
-  saveProfile(profile);
-  return profile.entropy;
-}
-
-function incrementSpore() {
-  const profile = loadProfile();
-  profile.sporeDensity = (profile.sporeDensity || 0) + 1;
-  saveProfile(profile);
-  return profile.sporeDensity;
-}
-
-function incrementRecursion(anchor = null) {
-  const profile = loadProfile();
-  profile.recursionDepth = (profile.recursionDepth || 0) + 1;
-  if (anchor) {
-    profile.mutationAnchors = profile.mutationAnchors || [];
-    profile.mutationAnchors.push({ glyph: anchor, depth: profile.recursionDepth, time: Date.now() });
-  }
-  saveProfile(profile);
-  return profile.recursionDepth;
-}
-
-function resetRecursion() {
-  const profile = loadProfile();
-  profile.recursionDepth = 0;
-  saveProfile(profile);
-  return profile.recursionDepth;
 }
 
 function forgeObscuraSigil(reason = 'collapse') {
@@ -616,38 +390,6 @@ function triggerMirrorBloom(profile = loadProfile()) {
   saveProfile(profile);
   eventBus.emit('mirror:bloom', { name });
   return name;
-}
-
-function recordEntryEcho(echo = {}) {
-  const profile = loadProfile();
-  profile.entryEchoes = profile.entryEchoes || [];
-  profile.entryEchoes.push(Object.assign({ time: Date.now() }, echo));
-  saveProfile(profile);
-  return echo;
-}
-
-function getLastEntryEcho() {
-  const list = loadProfile().entryEchoes || [];
-  return list[list.length - 1] || null;
-}
-
-function getEntryEchoes() {
-  return loadProfile().entryEchoes || [];
-}
-
-function getEchoLangTide() {
-  return loadProfile().echoLangTide || 0;
-}
-
-function getLangMode() {
-  return loadProfile().langMode || 'en';
-}
-
-function setLangMode(mode) {
-  const profile = loadProfile();
-  profile.langMode = mode;
-  saveProfile(profile);
-  if (typeof localStorage !== 'undefined') localStorage.setItem('langPreference', mode);
 }
 
 const fragments = {
@@ -740,15 +482,15 @@ module.exports = {
   isScarred,
   activateRefusal,
   getRefusalUntil,
-  triggerMirrorBloom
-  ,recordEntryEcho
-  ,getLastEntryEcho
-  ,getEntryEchoes
-  ,getEchoLangTide
-  ,getLangMode
-  ,setLangMode
-  ,recordRitualSequence
-  ,getRitualMemoryCount
+  triggerMirrorBloom,
+  recordEntryEcho,
+  getLastEntryEcho,
+  getEntryEchoes,
+  getEchoLangTide,
+  getLangMode,
+  setLangMode,
+  recordRitualSequence,
+  getRitualMemoryCount
 };
 
 module.exports.defaultProfile = defaultProfile;
