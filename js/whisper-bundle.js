@@ -2171,9 +2171,8 @@ function seedSpores() {
     });
   });
   document.querySelectorAll('input').forEach(inp => {
-    inp.addEventListener('input', e => {
+    inp.addEventListener('input', () => {
       memory.incrementSpore();
-      e.target.value = applyCloak(e.target.value, 1);
     });
   });
 }
