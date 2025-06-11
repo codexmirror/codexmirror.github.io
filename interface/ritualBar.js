@@ -2,6 +2,14 @@ const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
 const loops = require('../WhisperEngine.v3/core/loops');
 const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
 let bar;
+let fill;
+
+function getFill() {
+  if (!fill && typeof document !== 'undefined') {
+    fill = document.querySelector('#glyph-charge .fill');
+  }
+  return fill;
+}
 
 function pulse(level) {
   if (!bar) return;
@@ -14,14 +22,19 @@ function pulse(level) {
 }
 
 function reset() {
-  const fill = document.querySelector('#glyph-charge .fill');
-  if (fill) fill.style.width = '0';
+  const el = getFill();
+  if (el) el.style.width = '0';
 }
 
 function collapse() {
   if (!bar) return;
   bar.classList.add('collapse');
   setTimeout(() => bar.classList.remove('collapse'), 600);
+}
+
+function charge(level) {
+  const el = getFill();
+  if (el) el.style.width = `${level * 20}%`;
 }
 
 function memory({ count }) {
@@ -49,6 +62,7 @@ function init() {
   eventBus.on('ritual:complete', reset);
   eventBus.on('ritual:failure', collapse);
   eventBus.on('ritual:memory', memory);
+  eventBus.on('ritual:charge', evt => charge(evt.level));
 
   if (bar) {
     bar.addEventListener('click', evt => {

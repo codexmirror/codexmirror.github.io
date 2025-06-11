@@ -4,6 +4,8 @@ const summonEffects = (typeof require=="function"?require("./summonEffects.js"):
 const bloomController = (typeof require=="function"?require("./bloomController.js"):window.bloomController);
 const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window.audioLayer);
 let eventBus = (typeof require=="function"?require("../WhisperEngine.v3/utils/eventBus.js").eventBus:window.eventBus);
+
+const engine = (typeof require=="function"?require("../WhisperEngine.v3/index.js") : (window && window.WhisperEngine));
 function getBus(){
   if(!eventBus && typeof window!=='undefined') eventBus = window.eventBus;
   return eventBus;
@@ -117,6 +119,7 @@ function updateRevealStage(stage) {
   });
   const fill = document.querySelector("#glyph-charge .fill");
   if(fill) fill.style.width = (stage*20)+"%";
+  emit('ritual:charge', { level: stage });
   if (bloomController) bloomController.setLevel(stage);
   if (audioLayer) audioLayer.updateCharge(stage);
   emit('ritual:pulse', { level: stage });
@@ -244,10 +247,9 @@ function handleGlyphClick(glyph) {
 
   updateInvocation(drifted);
   hideAllEntities();
-  if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.glyph) {
+  if (engine && typeof engine.glyph === 'function') {
     const level = RC.getCurrentCharge();
-    const engine = window.WhisperEngine;
-    const t = glyphSequence.length === 1 && engine.invite
+    const t = glyphSequence.length === 1 && typeof engine.invite === 'function'
       ? engine.invite(level)
       : engine.glyph(glyph, level);
     const frag = document.createElement("div");
@@ -335,8 +337,8 @@ function handleGlyphClick(glyph) {
       audioLayer.collapseFeedback();
       if (audioLayer.glitch) audioLayer.glitch();
     }
-    if (typeof window !== "undefined" && window.WhisperEngine && window.WhisperEngine.processInput) {
-      const text = window.WhisperEngine.processInput("collapse");
+    if (engine && typeof engine.processInput === 'function') {
+      const text = engine.processInput("collapse");
       const div = document.createElement("div");
       div.className = "collapse-fragment";
       div.textContent = text;
