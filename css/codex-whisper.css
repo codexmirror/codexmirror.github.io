@@ -193,6 +193,8 @@ body {
 #personaAura[data-persona='archive'] { background: rgba(0, 40, 0, 0.3); }
 #personaAura[data-persona='parasite'] { background: rgba(40, 0, 40, 0.3); }
 #personaAura[data-persona='collapse'] { background: rgba(20, 20, 20, 0.3); }
+#personaAura[data-persona='lantern'] { background: rgba(255, 240, 100, 0.3); }
+#personaAura[data-persona='echoRoot'] { background: rgba(100, 255, 180, 0.35); }
 
 /* Animations */
 @keyframes fadeWhisperIn {

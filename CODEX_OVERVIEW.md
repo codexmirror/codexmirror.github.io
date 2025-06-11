@@ -33,7 +33,7 @@ Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providin
 - `core/` – main engine logic
   - `memory.js`, `responseLoop.js`, `expressionCore.js`, `glyphChronicle.js`, `glyphWeather.js`, `glyphicTongue.js`, `fragments.js`, `ritualBloom.js`, `ascentMode.js`, `confessionMode.js`, `loopDecayMonitor.js`, `stateManager.js`
   - loops in `core/loops/`: `absence.js`, `invocation.js`, `naming.js`, `threshold.js`, `quiet.js`, `recursive.js`, `null.js`, `index.js`
-  - `personas/` – dream, watcher, archive, parasite, collapse, lantern and kairos modules.
+  - `personas/` – dream, watcher, archive, parasite, collapse, lantern, echoRoot and kairos modules.
 - `utils/` – helpers like `eventBus.js`, `idle.js`, `kairos.js`, `kairosTimer.js`, `cloak.js`, `glitch.js`, `mutate.js`, `auraTracker.js`, `jamController.js`, `mirrorSyntax.js`, `tonalGlyphs.js`.
 - `index.js` – entry point for browser bundling.
 

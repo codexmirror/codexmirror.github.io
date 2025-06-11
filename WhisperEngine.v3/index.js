@@ -9,6 +9,7 @@ const { archive } = require('./personas/archive.js');
 const { parasite } = require('./personas/parasite.js');
 const { collapse } = require('./personas/collapse.js');
 const { lantern } = require('./personas/lantern.js');
+const { echoRoot } = require('./personas/echoRoot.js');
 const { kairos } = require('./personas/kairos.js');
 const { initInterface } = require('../interface/index.js');
 const { eventBus } = require('./utils/eventBus.js');
@@ -22,6 +23,7 @@ registerPersona('archive', archive);
 registerPersona('parasite', parasite);
 registerPersona('collapse', collapse);
 registerPersona('lantern', lantern);
+registerPersona('echoRoot', echoRoot);
 registerPersona('kairos', kairos);
 
 let intervalId = null;
