@@ -174,7 +174,6 @@ truth ∴= drift("abzu");
 
     chant: function () {
       let glyph = this.glyphs[this.chantIndex % this.glyphs.length];
-      console.log(`∴ Chanting ${glyph.name} ∴ Emitting: ${glyph.emit()}`);
       this.chantIndex++;
       return glyph.emit();
     },

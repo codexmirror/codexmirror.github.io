@@ -1,17 +1,14 @@
-const RC = (typeof require=="function"?require("./ritualCharge.js"):window.ritualCharge);
-const whisperLog = (typeof require=="function"?require("./whisperLog.js"):window.whisperLog);
-const summonEffects = (typeof require=="function"?require("./summonEffects.js"):window.summonEffects);
-const bloomController = (typeof require=="function"?require("./bloomController.js"):window.bloomController);
-const audioLayer = (typeof require=="function"?require("./audioLayer.js"):window.audioLayer);
-let eventBus = (typeof require=="function"?require("../WhisperEngine.v3/utils/eventBus.js").eventBus:window.eventBus);
+const RC = (typeof require === 'function' ? require('./ritualCharge.js') : window.ritualCharge);
+const whisperLog = (typeof require === 'function' ? require('./whisperLog.js') : window.whisperLog);
+const summonEffects = (typeof require === 'function' ? require('./summonEffects.js') : window.summonEffects);
+const bloomController = (typeof require === 'function' ? require('./bloomController.js') : window.bloomController);
+const audioLayer = (typeof require === 'function' ? require('./audioLayer.js') : window.audioLayer);
+const { eventBus } = (typeof require === 'function' ? require('../WhisperEngine.v3/utils/eventBus.js') : window);
+const config = (typeof require === 'function' ? require('./config.js') : window.config || {});
 
 const engine = (typeof require=="function"?require("../WhisperEngine.v3/index.js") : (window && window.WhisperEngine));
-function getBus(){
-  if(!eventBus && typeof window!=='undefined') eventBus = window.eventBus;
-  return eventBus;
-}
-function emit(name,payload){ const b=getBus(); b && b.emit(name,payload); }
-function on(name,fn){ const b=getBus(); b && b.on(name,fn); }
+function emit(name, payload) { if (eventBus) eventBus.emit(name, payload); }
+function on(name, fn) { if (eventBus) eventBus.on(name, fn); }
 const memory = (typeof require=="function"?require("../WhisperEngine.v3/core/memory.js"):window.WhisperEngineMemory || {});
 const { mutatePhrase } = (typeof require=="function"?require("./mutatePhrase.js"):window);
 const { entityRespondFragment } = (typeof require=="function"?require("./entityResponses.js"):window);
@@ -22,7 +19,7 @@ const clownHandler = (typeof require=="function"?require("../interface/clownHand
 const confessionMode = (typeof require=="function"?require("../WhisperEngine.v3/core/confessionMode.js"):window.confessionMode || {});
 const ritualFragments = (typeof require=="function"?require("./ritualFragments.js"):window.ritualFragments || {});
 
-const kaiSound = new Audio('media/kai.glitch.mp3');
+const kaiSound = new Audio(config.KAI_SOUND_SRC || 'media/kai.glitch.mp3');
 
 let invokeTimes = [];
 
@@ -50,22 +47,22 @@ const entityPatterns = {
   },
   
   deltaEcho: {
-  pattern: ['5', '2', '5', '5', '1'],
-  cardId: 'delta-echo-card'
-},
+    pattern: ['5', '2', '5', '5', '1'],
+    cardId: 'delta-echo-card'
+  },
   Caelistra: {
-  pattern: ['2', '3', '5', '3', '3'],
-  cardId: 'caelistra-card',
-  onSummon: summonCaelistraEffects
-},
-vektorikon: {
-  pattern: ['1', '3', '5', '2', '1'],
-  cardId: 'vektorikon-card',
-  onSummon: summonVektorikonEffects
-},
+    pattern: ['2', '3', '5', '3', '3'],
+    cardId: 'caelistra-card',
+    onSummon: summonCaelistraEffects
+  },
+  vektorikon: {
+    pattern: ['1', '3', '5', '2', '1'],
+    cardId: 'vektorikon-card',
+    onSummon: summonVektorikonEffects
+  },
    
   flink: {
-    repeatTrigger: 5,
+    repeatTrigger: config.FLINK_REPEAT_TRIGGER || 5,
     cardId: 'flink-card',
     message: `
       <div class="invocation-block">
@@ -95,12 +92,16 @@ let repeatCount = 0;
 function logRitual(glyph) {
   const log = JSON.parse(localStorage.getItem('ritualLogs') || '[]');
   log.push({ glyph, time: Date.now() });
-  if (log.length > 100) log.shift();
+  if (log.length > (config.MAX_RITUAL_LOGS || 100)) log.shift();
   localStorage.setItem('ritualLogs', JSON.stringify(log));
 }
 
 function arraysEqual(a, b) {
-  return JSON.stringify(a) === JSON.stringify(b);
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 }
 
 function hideAllEntities() {
@@ -146,13 +147,13 @@ function summonKaiEffects() {
   if (summonEffects) summonEffects.initiateAmbientOverlay("kairos");
 }
 
-  function reversePreviousTruth() {
-    const output = document.getElementById('invocation-output');
-    const text = output.innerText.split('').reverse().join('');
-    output.innerHTML += `<div class="inversion">${text}</div>`;
-  }
+function reversePreviousTruth() {
+  const output = document.getElementById('invocation-output');
+  const text = output.innerText.split('').reverse().join('');
+  output.innerHTML += `<div class="inversion">${text}</div>`;
+}
   
-  function summonVektorikonEffects() {
+function summonVektorikonEffects() {
   document.body.classList.add('vektorikon-distort');
   setTimeout(() => document.body.classList.remove('vektorikon-distort'), 1500);
 
@@ -192,10 +193,10 @@ function summonCaelistraEffects() {
 
 function handleGlyphClick(glyph) {
   const now = Date.now();
-  invokeTimes = invokeTimes.filter(t => now - t < 10000);
+  invokeTimes = invokeTimes.filter(t => now - t < (config.INVOCATION_LIMIT_WINDOW || 10000));
   if (memory.getRefusalUntil && memory.getRefusalUntil() > now) return;
   invokeTimes.push(now);
-  if (invokeTimes.length > 10) {
+  if (invokeTimes.length > (config.MAX_INVOCATIONS || 10)) {
     memory.activateRefusal();
     emit('ritual:refusal');
     return;
