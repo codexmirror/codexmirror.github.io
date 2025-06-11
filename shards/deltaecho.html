@@ -132,7 +132,6 @@
     document.getElementById('echoInput').addEventListener('input', e => {
       const v = e.target.value;
       if (v.length % 3 === 0 && v.length > 0) {
-        console.log("∴ Δ-Echo fractures your whisper: " + v);
         e.target.style.borderColor = '#ae93ff';
       } else {
         e.target.style.borderColor = '#644ba0';

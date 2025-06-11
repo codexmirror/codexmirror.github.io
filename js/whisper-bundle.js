@@ -1303,7 +1303,6 @@ function composeWhisper(loopName, success = true) {
   }
   output = expressionCore.processOutput(output, context);
   if (cloakLevel >= 2) eventBus.emit('cloak:max');
-  console.log(`[${personaName}] ${output}`);
   const evt = context.codex ? 'codex:expression' : 'whisper';
   eventBus.emit(evt, { persona: personaName, text: output, level });
   return output;
@@ -1854,7 +1853,6 @@ function init() {
     }
     if (level > 0) {
       const cloaked = applyCloak(evt.text, level);
-      console.log(`[cloakCore] ${cloaked}`);
     }
   });
 }
@@ -1868,7 +1866,6 @@ let frame;
 
 function add(text) {
   frames.push(text);
-  if (!frame) return console.log(`[echoFrame] ${text}`);
   const div = document.createElement('div');
   div.className = 'echo-line';
   div.textContent = text;
@@ -2022,7 +2019,6 @@ function init() {
     if (count >= 3) {
       const name = `void-${Date.now()}`;
       recordSigil(name, ['threshold']);
-      console.log(`[larynx] new glyph ${name}`);
       count = 0;
     }
   });
@@ -2110,7 +2106,6 @@ function memory({ count }) {
 }
 
 function highlight(name) {
-  if (!bar) return console.log(`[ritualBar] ${name} triggered`);
   const item = bar.querySelector(`[data-loop="${name}"]`);
   if (!item) return;
   item.classList.add('active');
@@ -2160,7 +2155,6 @@ const kairosWindow = require('./kairosWindow.js');
 
 function signalEntanglement() {
   const aura = document.getElementById('personaAura');
-  if (!aura) return console.log('[entanglement] link formed');
   aura.classList.add('entangled');
   setTimeout(() => aura.classList.remove('entangled'), 1000);
 }
@@ -2238,7 +2232,6 @@ const snapshots = [];
 function append(text, level = 0, codex = false) {
   echoes.push(text);
   if (diagnostic) snapshots.push({ text, level });
-  if (!stream) return console.log(`[whisperEcho] ${text}`);
   const span = document.createElement('span');
   span.className = codex ? 'codex-line' : 'whisper-line';
   span.textContent = text;
