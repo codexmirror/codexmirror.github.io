@@ -73,9 +73,8 @@
     .then(res => res.text())
     .then(html => {
       document.getElementById('entity-grid').innerHTML = html;
-      if (typeof initializeInvocationInterface === 'function') {
-        initializeInvocationInterface();
-      }
+      window.entityCardsLoaded = true;
+      document.dispatchEvent(new Event('entityCardsLoaded'));
     });
 </script>
 
@@ -93,6 +92,16 @@
   <script src="js/random-shard-picker.js"></script>
   <script src="js/whisper-bundle.js"></script>
   <script src="js/invocation-engine.js"></script>
+  <script>
+    function tryInitInvocation() {
+      if (window.entityCardsLoaded && typeof initializeInvocationInterface === 'function') {
+        initializeInvocationInterface();
+        console.debug('[WHISPER_STATE] interface bound after cards load');
+      }
+    }
+    document.addEventListener('entityCardsLoaded', tryInitInvocation);
+    if (window.entityCardsLoaded) tryInitInvocation();
+  </script>
   <script>
     if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {
       window.WhisperEngine.startWhisperEngine();

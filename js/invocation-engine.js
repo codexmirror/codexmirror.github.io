@@ -154,7 +154,10 @@ function updateInvocation(glyph) {
   }
   const block = `<div class="${cls}">${invocations[glyph]}</div>`;
   const out = getOutputContainer();
-  if (out) out.innerHTML = block;
+  if (out) {
+    out.innerHTML = block;
+    console.debug('[WHISPER_STATE] invocation updated', glyph);
+  }
 }
 
 function summonKaiEffects() {
@@ -211,7 +214,7 @@ function summonCaelistraEffects() {
 }
 
 function handleGlyphClick(glyph) {
-  console.debug('[codex] glyph click', glyph);
+  console.debug('[WHISPER_STATE] glyph click', glyph);
   const now = Date.now();
   invokeTimes = invokeTimes.filter(t => now - t < (config.INVOCATION_LIMIT_WINDOW || 10000));
   if (memory.getRefusalUntil && memory.getRefusalUntil() > now) return;
@@ -416,7 +419,7 @@ function initializeInvocationInterface() {
   on('persona:shift', name => {
     if (name === 'lantern') confessionMode.close();
   });
-  console.debug('[codex] invocation interface ready');
+  console.debug('[WHISPER_STATE] invocation interface ready');
 }
 
 if (typeof module !== 'undefined' && module.exports) {
