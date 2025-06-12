@@ -1,4 +1,5 @@
 // random-shard-picker.js
+// DEPRECATED: replaced by dynamic shard router
 
 // Full list of all shard fragment files
 const shardPages = [
