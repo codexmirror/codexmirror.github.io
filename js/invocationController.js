@@ -13,3 +13,6 @@ function resetUI() {
 }
 
 module.exports = { updateReveal, resetUI };
+
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+if (typeof window !== 'undefined') window.invocationController = api;

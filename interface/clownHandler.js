@@ -10,3 +10,6 @@ function active() {
   return activeUntil > Date.now();
 }
 module.exports = { trigger, active };
+if (typeof window !== 'undefined') {
+  window.clownHandler = { trigger, active };
+}
