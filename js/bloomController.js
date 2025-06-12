@@ -24,7 +24,10 @@ function entityBloom(id) {
 }
 
 let driftTimer;
+let driftStarted = false;
 function startGlyphDrift() {
+  if (driftStarted) return;
+  driftStarted = true;
   if (typeof document === 'undefined') return;
   const row = document.querySelector('.glyph-row');
   if (!row) return;

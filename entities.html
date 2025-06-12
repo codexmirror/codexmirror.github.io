@@ -73,6 +73,9 @@
     .then(res => res.text())
     .then(html => {
       document.getElementById('entity-grid').innerHTML = html;
+      if (typeof initializeInvocationInterface === 'function') {
+        initializeInvocationInterface();
+      }
     });
 </script>
 
