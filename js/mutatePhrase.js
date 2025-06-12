@@ -36,3 +36,9 @@ function mutatePhraseWithLevel(input) {
 }
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel, setSynonymDrift };
+
+if (typeof window !== 'undefined') {
+  window.mutatePhrase = mutatePhrase;
+  window.mutatePhraseWithLevel = mutatePhraseWithLevel;
+  window.setSynonymDrift = setSynonymDrift;
+}

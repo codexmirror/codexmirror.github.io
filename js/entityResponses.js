@@ -62,3 +62,7 @@ function entityRespondFragment(entityName, userRoles = [], loopMemory = {}) {
 }
 
 module.exports = { entityRespondFragment };
+
+if (typeof window !== 'undefined') {
+  window.entityRespondFragment = entityRespondFragment;
+}
