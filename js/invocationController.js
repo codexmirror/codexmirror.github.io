@@ -11,5 +11,7 @@ function updateReveal(stage) {
 function resetUI() {
   updateReveal(0);
 }
+const api = { updateReveal, resetUI };
 
-module.exports = { updateReveal, resetUI };
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+if (typeof window !== 'undefined') window.invocationController = api;
