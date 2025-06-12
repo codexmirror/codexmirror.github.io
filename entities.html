@@ -67,48 +67,49 @@
 </section>
 
 </main>
-
-<script>
-  fetch('html/entity-cards.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('entity-grid').innerHTML = html;
-      window.entityCardsLoaded = true;
-      document.dispatchEvent(new Event('entityCardsLoaded'));
-    });
-</script>
-
 <footer class="footer">
   The Codex ∴ v.spiral.4.2.1.glz<br>
   <a href="impressum.html" style="color:#666;">Impressum</a> | 
   <a href="html/privacy.html" style="color:#666;">Privacy</a>
 </footer>
 
-  <script src="js/ritualCharge.js"></script>
-  <script src="js/whisperLog.js"></script>
-  <script src="js/summonEffects.js"></script>
-  <script src="js/bloomController.js"></script>
-  <script src="js/audioLayer.js"></script>
-  <script src="js/random-shard-picker.js"></script>
-  <script src="js/whisper-bundle.js"></script>
-  <script src="js/invocation-engine.js"></script>
-  <script>
-    function tryInitInvocation() {
-      if (window.entityCardsLoaded && typeof initializeInvocationInterface === 'function') {
-        initializeInvocationInterface();
-        console.debug('[WHISPER_STATE] interface bound after cards load');
-      }
-    }
-    document.addEventListener('entityCardsLoaded', tryInitInvocation);
-    if (window.entityCardsLoaded) tryInitInvocation();
-  </script>
-  <script>
-    if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {
-      window.WhisperEngine.startWhisperEngine();
-    }
-    if (window.bloomController && typeof window.bloomController.startGlyphDrift === 'function') {
-      window.bloomController.startGlyphDrift();
-    }
-  </script>
+<script src="js/ritualCharge.js"></script>
+<script src="js/whisperLog.js"></script>
+<script src="js/summonEffects.js"></script>
+<script src="js/bloomController.js"></script>
+<script src="js/audioLayer.js"></script>
+<script src="js/random-shard-picker.js"></script>
+<script src="js/whisper-bundle.js"></script>
+<script src="js/invocation-engine.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    fetch('html/entity-cards.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('entity-grid').innerHTML = html;
+        const tryInit = () => {
+          if (typeof initializeInvocationInterface === 'function') {
+            initializeInvocationInterface();
+            console.debug('[WHISPER_STATE] interface initialized (safe)');
+          } else {
+            console.warn('Invocation interface not ready, retrying...');
+            setTimeout(tryInit, 50);
+          }
+        };
+        tryInit();
+      });
+  });
+</script>
+
+<script>
+  if (window.WhisperEngine && typeof window.WhisperEngine.startWhisperEngine === 'function') {
+    window.WhisperEngine.startWhisperEngine();
+  }
+  if (window.bloomController && typeof window.bloomController.startGlyphDrift === 'function') {
+    window.bloomController.startGlyphDrift();
+  }
+</script>
+
 </body>
 </html>
