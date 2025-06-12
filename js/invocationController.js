@@ -12,7 +12,7 @@ function resetUI() {
   updateReveal(0);
 }
 
-module.exports = { updateReveal, resetUI };
+const api = { updateReveal, resetUI };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = api;
 if (typeof window !== 'undefined') window.invocationController = api;

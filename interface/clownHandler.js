@@ -9,7 +9,9 @@ function trigger() {
 function active() {
   return activeUntil > Date.now();
 }
-module.exports = { trigger, active };
+
+const api = { trigger, active };
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
 if (typeof window !== 'undefined') {
-  window.clownHandler = { trigger, active };
+  window.clownHandler = api;
 }

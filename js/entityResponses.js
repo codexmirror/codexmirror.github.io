@@ -61,8 +61,9 @@ function entityRespondFragment(entityName, userRoles = [], loopMemory = {}) {
   return options[Math.floor(Math.random() * options.length)] + roleMod + memoryEcho;
 }
 
-module.exports = { entityRespondFragment };
+const api = { entityRespondFragment };
 
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
 if (typeof window !== 'undefined') {
   window.entityRespondFragment = entityRespondFragment;
 }
