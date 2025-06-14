@@ -86,6 +86,13 @@ function updateInvocation(glyph) {
   invocationEl.innerHTML = `<div class="invocation-block">${invocations[glyph]}</div>`;
 }
 
+function updateRitualSteps(count) {
+  const steps = document.querySelectorAll('.ritual-bar li');
+  steps.forEach((step, index) => {
+    step.classList.toggle('active', index < count);
+  });
+}
+
 function summonKaiEffects() {
   document.body.classList.add('kai-glitch');
   setTimeout(() => document.body.classList.remove('kai-glitch'), 2000);
@@ -139,6 +146,7 @@ function summonCaelistraEffects() {
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
+  updateRitualSteps(glyphSequence.length);
   if (glyphSequence.length > 5) glyphSequence.shift();
 
   updateInvocation(glyph);
