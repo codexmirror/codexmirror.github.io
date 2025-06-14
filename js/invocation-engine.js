@@ -1,18 +1,10 @@
 const kaiSound = new Audio('media/kai.glitch.mp3');
 kaiSound.load();
-const staticLoop = new Audio('media/static-loop-fracture.mp3');
-staticLoop.volume = 0.6;
-staticLoop.load();
 
 // cache common DOM nodes to avoid repeated lookups on each glyph click
 const invocationEl = typeof document !== 'undefined'
   ? document.getElementById('invocation-output')
   : null;
-  
-const ritualFill = typeof document !== 'undefined'
-  ? document.getElementById('ritual-fill')
-  : null;
-    
 const cardCache = {};
 function getCard(id) {
   if (!cardCache[id] && typeof document !== 'undefined') {
@@ -81,11 +73,7 @@ let repeatCount = 0;
 let redirecting = false;
 
 function arraysEqual(a, b) {
-  if (a.length !== b.length) return false;
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
+  return JSON.stringify(a) === JSON.stringify(b);
 }
 
 function hideAllEntities() {
@@ -99,9 +87,10 @@ function updateInvocation(glyph) {
 }
 
 function updateRitualProgress(count) {
-  if (!ritualFill) return;
+  const fill = document.getElementById('ritual-fill');
+  if (!fill) return;
   const percent = Math.min(count, 5) * 20;
-  ritualFill.style.width = `${percent}%`;
+  fill.style.width = `${percent}%`;
 }
 
 function summonKaiEffects() {
@@ -122,8 +111,9 @@ function summonVektorikonEffects() {
   document.body.classList.add('vektorikon-distort');
   setTimeout(() => document.body.classList.remove('vektorikon-distort'), 1500);
 
-  staticLoop.currentTime = 0;
-  staticLoop.play();
+  const audio = new Audio('media/static-loop-fracture.mp3');
+  audio.volume = 0.6;
+  audio.play();
 
   if (!invocationEl) return;
   const glyphEcho = `
@@ -173,7 +163,6 @@ function handleGlyphClick(glyph) {
       if (summon.onSummon) summon.onSummon();
       matched = true;
       glyphSequence = []; // 💥 clear sequence after valid match
-      updateRitualProgress(0);
       break;
     }
   }
@@ -192,7 +181,6 @@ function handleGlyphClick(glyph) {
     if (invocationEl) invocationEl.innerHTML = summonPatterns.flink.message;
     matched = true;
     glyphSequence = [];
-    updateRitualProgress(0);
   }
 
   // 🧼 If no match and sequence is full, do redirect
@@ -201,15 +189,14 @@ function handleGlyphClick(glyph) {
     setTimeout(() => {
       redirectToRandomShard();
       glyphSequence = [];
-      updateRitualProgress(0);
       redirecting = false;
     }, 1000);
   }
 }
 
-document.addEventListener('click', (e) => {
-  const target = e.target.closest('.glyph-btn');
-  if (target && target.dataset.glyph) {
-    handleGlyphClick(target.dataset.glyph);
-  }
+document.querySelectorAll('.glyph-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const glyph = btn.dataset.glyph;
+    handleGlyphClick(glyph);
+  });
 });
