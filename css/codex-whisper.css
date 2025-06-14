@@ -1,28 +1,29 @@
 .ritual-progress-container {
-  width: 100%;
-  max-width: 260px;
+  width: 90%;
+  max-width: 720px;
   margin: 2rem auto 1rem auto;
-  padding: 2px;
-  background: rgba(255, 20, 20, 0.08);
-  border: 1px solid rgba(255, 60, 60, 0.35);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 50, 50, 0.2);
-  backdrop-filter: blur(2px);
+  padding: 3px;
+  background: rgba(90, 0, 0, 0.15);
+  border: 1px solid rgba(255, 60, 60, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(255, 30, 30, 0.25);
+  backdrop-filter: blur(3px);
 }
 
 .ritual-progress-bar {
   width: 100%;
-  height: 14px;
-  background: rgba(100, 0, 0, 0.1);
-  border-radius: 8px;
+  height: 16px;
+  background: rgba(40, 0, 0, 0.15);
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: inset 0 0 6px rgba(120, 20, 20, 0.25);
 }
 
 .ritual-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff3c3c, #ff5e5e, #ff7979);
-  transition: width 0.4s ease;
-  border-radius: 8px 0 0 8px;
-  box-shadow: inset 0 0 6px rgba(255, 80, 80, 0.4), 0 0 4px rgba(255, 80, 80, 0.2);
+  background: linear-gradient(90deg, #ff2c2c, #ff5050, #ff6e6e);
+  transition: width 0.35s ease-in-out;
+  border-radius: 10px 0 0 10px;
+  box-shadow: inset 0 0 8px rgba(255, 100, 100, 0.4), 0 0 6px rgba(255, 70, 70, 0.25);
 }
