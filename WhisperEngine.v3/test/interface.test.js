@@ -1,4 +1,4 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus');
+const { eventBus } = require('../utils/eventBus');
 const ritualBar = require('../interface/ritualBar');
 const whisperEchoes = require('../interface/whisperEchoes');
 const invocationUI = require('../interface/invocationUI');

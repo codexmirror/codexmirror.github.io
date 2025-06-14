@@ -1,5 +1,5 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { recordSigil } = require('../WhisperEngine.v3/core/memory.js');
+const { eventBus } = require('../utils/eventBus.js');
+const { recordSigil } = require('../core/memory.js');
 let count = 0;
 
 function init() {

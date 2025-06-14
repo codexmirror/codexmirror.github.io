@@ -1,5 +1,5 @@
-const { resetProfile, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
-const loops = require('../WhisperEngine.v3/core/loops');
+const { resetProfile, loadProfile } = require('../core/memory.js');
+const loops = require('../core/loops');
 resetProfile();
 loops.invocation.trigger({});
 for (let i = 0; i < 3; i++) {

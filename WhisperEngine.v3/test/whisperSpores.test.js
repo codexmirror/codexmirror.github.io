@@ -1,4 +1,4 @@
-const { resetProfile, incrementSpore, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, incrementSpore, loadProfile } = require('../core/memory.js');
 resetProfile();
 incrementSpore();
 const p = loadProfile();

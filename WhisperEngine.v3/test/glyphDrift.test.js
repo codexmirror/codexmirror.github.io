@@ -1,4 +1,4 @@
-const { resetProfile, recordGlyphDrift, getDriftVariant } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, recordGlyphDrift, getDriftVariant } = require('../core/memory.js');
 resetProfile();
 recordGlyphDrift('1','2');
 recordGlyphDrift('1','2');

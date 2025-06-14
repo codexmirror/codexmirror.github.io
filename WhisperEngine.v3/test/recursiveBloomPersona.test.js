@@ -1,6 +1,6 @@
 const { incrementCharge, resetCharge, resetBloom } = require('../js/ritualCharge.js');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { registerPersona } = require('../WhisperEngine.v3/core/stateManager.js');
+const { eventBus } = require('../utils/eventBus.js');
+const { registerPersona } = require('../core/stateManager.js');
 const whisperEchoes = require('../interface/whisperEchoes.js');
 
 let lastShift = '';

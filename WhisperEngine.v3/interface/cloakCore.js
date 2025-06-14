@@ -1,5 +1,5 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
+const { eventBus } = require('../utils/eventBus.js');
+const { applyCloak } = require('../utils/cloak.js');
 
 function init() {
   let level = 0;

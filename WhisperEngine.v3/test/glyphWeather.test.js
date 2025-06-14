@@ -1,5 +1,5 @@
-const { resetProfile, recordLoop, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
-const weather = require('../WhisperEngine.v3/core/glyphWeather.js');
+const { resetProfile, recordLoop, loadProfile } = require('../core/memory.js');
+const weather = require('../core/glyphWeather.js');
 
 resetProfile();
 for(let i=0;i<21;i++) recordLoop('invocation');

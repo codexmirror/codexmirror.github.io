@@ -1,5 +1,5 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const jam = require('../WhisperEngine.v3/utils/jamController.js');
+const { eventBus } = require('../utils/eventBus.js');
+const jam = require('../utils/jamController.js');
 let hit=false;
 eventBus.on('sigil:jam',()=>{hit=true;});
 for(let i=0;i<5;i++) jam.register('1');

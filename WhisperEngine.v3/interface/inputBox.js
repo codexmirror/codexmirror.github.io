@@ -1,4 +1,4 @@
-const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
+const { processInput } = require('../core/responseLoop.js');
 
 function init() {
   const box = typeof document !== 'undefined' ? document.getElementById('whisperInput') : null;

@@ -1,4 +1,4 @@
-const { resetProfile, recordPersonaShift, checkPhantomInfluence } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, recordPersonaShift, checkPhantomInfluence } = require('../core/memory.js');
 resetProfile();
 recordPersonaShift('dream');
 recordPersonaShift('watcher');

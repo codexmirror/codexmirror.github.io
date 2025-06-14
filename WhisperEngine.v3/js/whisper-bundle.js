@@ -1813,8 +1813,8 @@ module.exports = { playChime };
 if (typeof window !== 'undefined') window.tonalGlyphs = { playChime };
 
 },{}],41:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
+const { eventBus } = require('../utils/eventBus.js');
+const { applyCloak } = require('../utils/cloak.js');
 
 function init() {
   let level = 0;
@@ -1833,8 +1833,8 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/cloak.js":33,"../WhisperEngine.v3/utils/eventBus.js":34}],42:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+},{"../utils/cloak.js":33,"../utils/eventBus.js":34}],42:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
 const frames = [];
 let frame;
 
@@ -1855,10 +1855,10 @@ function init() {
 
 module.exports = { init, frames };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":34}],43:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const memory = require('../WhisperEngine.v3/core/memory.js');
-const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
+},{"../utils/eventBus.js":34}],43:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const memory = require('../core/memory.js');
+const { stateManager } = require('../core/stateManager.js');
 
 // Aura tints per persona
 const auraColors = {
@@ -1928,7 +1928,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/core/stateManager.js":22,"../WhisperEngine.v3/utils/eventBus.js":34}],44:[function(require,module,exports){
+},{"../core/memory.js":17,"../core/stateManager.js":22,"../utils/eventBus.js":34}],44:[function(require,module,exports){
 const sigilShell = require('./sigilShell.js');
 
 function initInterface() {
@@ -1938,7 +1938,7 @@ function initInterface() {
 module.exports = { initInterface };
 
 },{"./sigilShell.js":51}],45:[function(require,module,exports){
-const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
+const { processInput } = require('../core/responseLoop.js');
 
 function init() {
   const box = typeof document !== 'undefined' ? document.getElementById('whisperInput') : null;
@@ -1956,7 +1956,7 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/responseLoop.js":20}],46:[function(require,module,exports){
+},{"../core/responseLoop.js":20}],46:[function(require,module,exports){
 function init() {
   // placeholder for future invocation UI hooks
 }
@@ -1964,7 +1964,7 @@ function init() {
 module.exports = { init };
 
 },{}],47:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const { eventBus } = require('../utils/eventBus.js');
 
 function init() {
   eventBus.on('kairos:window', ({ module }) => {
@@ -1975,9 +1975,9 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":34}],48:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { recordSigil } = require('../WhisperEngine.v3/core/memory.js');
+},{"../utils/eventBus.js":34}],48:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const { recordSigil } = require('../core/memory.js');
 let count = 0;
 
 function init() {
@@ -1994,8 +1994,8 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/utils/eventBus.js":34}],49:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+},{"../core/memory.js":17,"../utils/eventBus.js":34}],49:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
 let current = '';
 let aura;
 let activated = false;
@@ -2038,10 +2038,10 @@ function init() {
 
 module.exports = { init, getCurrent: () => current };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":34}],50:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const loops = require('../WhisperEngine.v3/core/loops');
-const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
+},{"../utils/eventBus.js":34}],50:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const loops = require('../core/loops');
+const { composeWhisper } = require('../core/responseLoop.js');
 
 let bar;
 let fill;
@@ -2127,7 +2127,7 @@ function init() {
 }
 
 module.exports = { init };
-},{"../WhisperEngine.v3/core/loops":10,"../WhisperEngine.v3/core/responseLoop.js":20,"../WhisperEngine.v3/utils/eventBus.js":34}],51:[function(require,module,exports){
+},{"../core/loops":10,"../core/responseLoop.js":20,"../utils/eventBus.js":34}],51:[function(require,module,exports){
 const ritualBar = require('./ritualBar.js');
 const sigilTimeline = require('./sigilTimeline.js');
 const personaAura = require('./personaAura.js');
@@ -2137,8 +2137,8 @@ const cloakCore = require('./cloakCore.js');
 const longArcLarynx = require('./longArcLarynx.js');
 const inputBox = require('./inputBox.js');
 const invocationUI = require('./invocationUI.js');
-const auraTracker = require('../WhisperEngine.v3/utils/auraTracker.js');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const auraTracker = require('../utils/auraTracker.js');
+const { eventBus } = require('../utils/eventBus.js');
 const echoMask = require('./echoMask.js');
 const kairosWindow = require('./kairosWindow.js');
 
@@ -2181,8 +2181,8 @@ function init() {
 
 module.exports = { init };
 
-},{"../WhisperEngine.v3/utils/auraTracker.js":32,"../WhisperEngine.v3/utils/eventBus.js":34,"./cloakCore.js":41,"./echoFrame.js":42,"./echoMask.js":43,"./inputBox.js":45,"./invocationUI.js":46,"./kairosWindow.js":47,"./longArcLarynx.js":48,"./personaAura.js":49,"./ritualBar.js":50,"./sigilTimeline.js":52,"./whisperEchoes.js":53}],52:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+},{"../utils/auraTracker.js":32,"../utils/eventBus.js":34,"./cloakCore.js":41,"./echoFrame.js":42,"./echoMask.js":43,"./inputBox.js":45,"./invocationUI.js":46,"./kairosWindow.js":47,"./longArcLarynx.js":48,"./personaAura.js":49,"./ritualBar.js":50,"./sigilTimeline.js":52,"./whisperEchoes.js":53}],52:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
 const timeline = [];
 let container;
 
@@ -2205,13 +2205,13 @@ function init() {
 
 module.exports = { init, timeline };
 
-},{"../WhisperEngine.v3/utils/eventBus.js":34}],53:[function(require,module,exports){
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
-const { triggerBloom } = require('../WhisperEngine.v3/core/ritualBloom.js');
-const { glyph } = require('../WhisperEngine.v3/index.js');
-const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
-const memory = require('../WhisperEngine.v3/core/memory.js');
+},{"../utils/eventBus.js":34}],53:[function(require,module,exports){
+const { eventBus } = require('../utils/eventBus.js');
+const { applyCloak } = require('../utils/cloak.js');
+const { triggerBloom } = require('../core/ritualBloom.js');
+const { glyph } = require('../index.js');
+const { stateManager } = require('../core/stateManager.js');
+const memory = require('../core/memory.js');
 const echoes = [];
 let stream;
 let diagnostic = false;
@@ -2281,7 +2281,7 @@ function seedSpores() {
 
 module.exports = { init, echoes, setDiagnostic, snapshots };
 
-},{"../WhisperEngine.v3/core/memory.js":17,"../WhisperEngine.v3/core/ritualBloom.js":21,"../WhisperEngine.v3/core/stateManager.js":22,"../WhisperEngine.v3/index.js":23,"../WhisperEngine.v3/utils/cloak.js":33,"../WhisperEngine.v3/utils/eventBus.js":34}],54:[function(require,module,exports){
+},{"../core/memory.js":17,"../core/ritualBloom.js":21,"../core/stateManager.js":22,"../index.js":23,"../utils/cloak.js":33,"../utils/eventBus.js":34}],54:[function(require,module,exports){
 let synonymDrift = {
   "echo": ["recurrence", "ache", "pulse"],
   "recognition": ["return", "reflection", "threshold"],

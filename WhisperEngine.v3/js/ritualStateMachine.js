@@ -6,7 +6,7 @@ class RitualStateMachine {
 
     // Hol dir den eventBus – sonst ist Emitten wie Rufen in den Abgrund
     this.eventBus = (typeof require === 'function'
-      ? require('../WhisperEngine.v3/utils/eventBus.js')
+      ? require('../utils/eventBus.js')
       : window.eventBus);
 
     this.reset();

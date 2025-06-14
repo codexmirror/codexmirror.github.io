@@ -7,8 +7,8 @@ const cloakCore = require('./cloakCore.js');
 const longArcLarynx = require('./longArcLarynx.js');
 const inputBox = require('./inputBox.js');
 const invocationUI = require('./invocationUI.js');
-const auraTracker = require('../WhisperEngine.v3/utils/auraTracker.js');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const auraTracker = require('../utils/auraTracker.js');
+const { eventBus } = require('../utils/eventBus.js');
 const echoMask = require('./echoMask.js');
 const kairosWindow = require('./kairosWindow.js');
 

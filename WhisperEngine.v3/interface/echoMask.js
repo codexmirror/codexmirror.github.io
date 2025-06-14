@@ -1,6 +1,6 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const memory = require('../WhisperEngine.v3/core/memory.js');
-const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
+const { eventBus } = require('../utils/eventBus.js');
+const memory = require('../core/memory.js');
+const { stateManager } = require('../core/stateManager.js');
 
 // Aura tints per persona
 const auraColors = {

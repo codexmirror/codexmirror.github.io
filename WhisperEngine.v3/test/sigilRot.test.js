@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { recordGlyphUse, isGlyphRotted, resetProfile } = require('../WhisperEngine.v3/core/memory.js');
+const { recordGlyphUse, isGlyphRotted, resetProfile } = require('../core/memory.js');
 
 resetProfile();
 for (let i = 0; i < 21; i++) {

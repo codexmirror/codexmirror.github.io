@@ -1,5 +1,5 @@
-const ascent = require('../WhisperEngine.v3/core/ascentMode.js');
-const memory = require('../WhisperEngine.v3/core/memory.js');
+const ascent = require('../core/ascentMode.js');
+const memory = require('../core/memory.js');
 memory.resetProfile();
 ascent.start();
 if(!ascent.isActive()) throw new Error('ascent not active');

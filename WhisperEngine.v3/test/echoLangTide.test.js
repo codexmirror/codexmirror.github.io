@@ -1,5 +1,5 @@
-const { resetProfile, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
-const { capture } = require('../WhisperEngine.v3/core/entryEcho.js');
+const { resetProfile, loadProfile } = require('../core/memory.js');
+const { capture } = require('../core/entryEcho.js');
 
 resetProfile();
 for(let i=0;i<5;i++) capture();

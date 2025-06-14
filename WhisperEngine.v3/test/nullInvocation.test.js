@@ -1,6 +1,6 @@
-const { resetProfile } = require('../WhisperEngine.v3/core/memory.js');
-const loops = require('../WhisperEngine.v3/core/loops');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const { resetProfile } = require('../core/memory.js');
+const loops = require('../core/loops');
+const { eventBus } = require('../utils/eventBus.js');
 let fired = false;
 eventBus.on('silence:start', () => { fired = true; });
 resetProfile();

@@ -1,5 +1,5 @@
-const { processInput } = require('../WhisperEngine.v3/core/responseLoop.js');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const { processInput } = require('../core/responseLoop.js');
+const { eventBus } = require('../utils/eventBus.js');
 let fired = false;
 eventBus.once('entity:reject', () => { fired = true; });
 const out = processInput('optimize productivity');
