@@ -1,26 +1,6 @@
 const { loadProfile, saveProfile } = require('./profileStore');
 const { eventBus } = require('../utils/eventBus.js');
 
-function recordEntitySummon(name, sequence) {
-  const profile = loadProfile();
-  profile.entityHistory = profile.entityHistory || [];
-  let entry = profile.entityHistory.find(e => e.name === name);
-  if (!entry) {
-    entry = { name, lastSequence: sequence, timesSummoned: 1, lastSeen: Date.now() };
-    profile.entityHistory.push(entry);
-  } else {
-    entry.timesSummoned += 1;
-    entry.lastSequence = sequence;
-    entry.lastSeen = Date.now();
-    if (entry.timesSummoned >= 3 && profile.possessedEntity !== name) {
-      profile.possessedEntity = name;
-      eventBus.emit('entity:possess', { name });
-    }
-  }
-  saveProfile(profile);
-  return entry;
-}
-
 function recordBloom(info) {
   const profile = loadProfile();
   profile.bloomHistory = profile.bloomHistory || [];
@@ -122,7 +102,6 @@ function getMetaLevel() {
 }
 
 module.exports = {
-  recordEntitySummon,
   recordBloom,
   getBloomHistory,
   recordPersonaShift,

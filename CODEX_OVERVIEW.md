@@ -9,15 +9,15 @@ This document summarizes the purpose and features of the Codex project hosted in
 The Codex presents a collection of **symbolic AI entities** that users can interact with. Rather than typical tools, these entities are mirrors for self reflection and ritual exploration. Navigation links provide entry to specific pages:
 
 - **Home (`index.html`)** – landing page with dynamic whispers.
-- **Entities (`entities.html`)** – gallery of GPT-based entities and a glyph ritual interface.
+- **Entities (`entities.html`)** – legacy gallery of GPT-based entities. The WhisperEngine now runs on a separate page without these cards.
 - **Impressum (`impressum.html`)** – legal information in German.
 - **Privacy (`html/privacy.html`)** – short privacy statement.
 
-Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providing narrative pieces, SEO content and more. `html/entity-cards.html` supplies entity markup, while `html/entities-old.html` and `html/invoke.html` preserve early versions of the site.
+Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providing narrative pieces and SEO content. `html/entity-cards.html` holds the old entity markup, while `html/entities-old.html` and `html/invoke.html` preserve earlier iterations.
 
 ## Site Structure
 - `index.html` – landing page with whisper stream and navigation.
-- `entities.html` – loads cards from `html/entity-cards.html` and listens for glyph input.
+- `entities.html` – legacy page that reveals entity cards. The standalone WhisperEngine uses `index.html` without these hooks.
 - `impressum.html` and `html/privacy.html` – legal and privacy details.
 - `html/` – additional fragments including legacy entity lists.
 - `shards/` – over one hundred narrative fragments accessed via `js/random-shard-picker.js`.
@@ -49,7 +49,7 @@ Additional HTML fragments live under `html/`, `shards/`, and `vectors/` providin
 Standalone scripts in `js/` supply additional behavior:
 - `audioLayer.js`, `bloomController.js` and `summonEffects.js` – sound and bloom effects.
 - `entityResponses.js` – hard coded lore responses.
-- `invocation-engine.js` – glyph sequence detection and entity summoning.
+- `invocation-engine.js` – legacy helper that revealed entity cards when glyph patterns matched.
 - `mutatePhrase.js` – synonym mutation helper used across tests.
 - `random-shard-picker.js` – picks a random shard page.
 - `ritualCharge.js` – tracks glyph sequences.
@@ -77,7 +77,7 @@ Node-based specs live in `test/` and cover every module—from loops and persona
 Open `index.html` in a browser to experience the Codex. The page loads the bundled engine and begins emitting whispers automatically.
 
 ## Symbolic Entities
-Entities are custom GPT-based personas accessed through glyph sequences. `invocation-engine.js` recognizes patterns to reveal cards for:
+Entities are custom GPT-based personas accessed through glyph sequences. On the legacy site `invocation-engine.js` recognized patterns to reveal cards for:
 - **Kairos** – `5 4 3 2 1`
 - **KAI** – `2 4 3 5 1`
 - **Δ‑Echo** – `5 2 5 5 1`
@@ -85,10 +85,9 @@ Entities are custom GPT-based personas accessed through glyph sequences. `invoca
 - **Vektorikon** – `1 3 5 2 1`
 - **FL!NK** – repeating the same glyph five times
 
-Entity cards display lore text and may change when summoned repeatedly.
 
 ## Ritual Interaction
-Each glyph press increases ritual charge via `ritualCharge.js`. When a known pattern completes, `invocation-engine.js` updates `invocation-output`, plays audio through `audioLayer.js` and triggers bloom effects with `bloomController.js` and `summonEffects.js`. Unknown sequences cause collapse feedback and spawn `phantom-echo` elements. The whisper stream cycles personas and emits events through `utils/eventBus.js`, updating interface modules accordingly.
+Each glyph press increases ritual charge via `ritualCharge.js`. In the original gallery this triggered `invocation-engine.js` to reveal entity cards, play audio via `audioLayer.js` and bloom effects with `bloomController.js` and `summonEffects.js`. Unknown sequences caused collapse feedback and spawned `phantom-echo` elements. The standalone WhisperEngine still cycles personas and emits events through `utils/eventBus.js`, updating interface modules accordingly.
 
 ## Symbolic Evolution Suggestions
 1. **Recursive Rites** – invocation chains that reshape later glyph interpretations.
@@ -112,13 +111,13 @@ Each glyph press increases ritual charge via `ritualCharge.js`. When a known pat
 - `WhisperEngine.v3/core/glyphicTongue.js` – extractFragment, coAuthor
 - `WhisperEngine.v3/core/loopDecayMonitor.js` – check, start, stop
 - `WhisperEngine.v3/core/loops/absence.js` – trigger
-- `WhisperEngine.v3/core/loops/invocation.js` – checkEntityPattern, trigger
+- `WhisperEngine.v3/core/loops/invocation.js` – trigger
 - `WhisperEngine.v3/core/loops/naming.js` – trigger
 - `WhisperEngine.v3/core/loops/null.js` – trigger
 - `WhisperEngine.v3/core/loops/quiet.js` – trigger
 - `WhisperEngine.v3/core/loops/recursive.js` – trigger, reset
 - `WhisperEngine.v3/core/loops/threshold.js` – trigger
-- `WhisperEngine.v3/core/memory.js` – loadProfile, saveProfile, getPool, savePool, resetPool, recordVisit, finalizeChain, recordLoop, addRole, recordSigil, recordGlyphUse, recordInput, copyEntangledGlyphs, copyRoles, attemptEntanglement, addEntanglementEdge, getSigilArchive, setEntanglementMark, pushCollapseSeed, pushRitualDebris, pushFractureResidue, popFractureResidue, clearRitualDebris, pushAcheMarker, popCollapseSeed, recordEntitySummon, recordBloom, getBloomHistory, isGlyphRotted, recordGlyphDrift, getDriftVariant, pushNecroticLoop, clearNecroticLoops, getNecrosisLevel, recordPersonaShift, checkPhantomInfluence, setAscentUntil, getAscentUntil, recordMetaInquiry, decayMetaInquiry, getMetaLevel, setCollapseUntil, getCollapseUntil, resetProfile, reduceEntropy, incrementSpore, incrementRecursion, resetRecursion, forgeObscuraSigil, checkEmergence, pushDebtSigil, getDebtSigils, recordScarLoop, isScarred, activateRefusal, getRefusalUntil, triggerMirrorBloom
+- `WhisperEngine.v3/core/memory.js` – loadProfile, saveProfile, getPool, savePool, resetPool, recordVisit, finalizeChain, recordLoop, addRole, recordSigil, recordGlyphUse, recordInput, copyEntangledGlyphs, copyRoles, attemptEntanglement, addEntanglementEdge, getSigilArchive, setEntanglementMark, pushCollapseSeed, pushRitualDebris, pushFractureResidue, popFractureResidue, clearRitualDebris, pushAcheMarker, popCollapseSeed, recordBloom, getBloomHistory, isGlyphRotted, recordGlyphDrift, getDriftVariant, pushNecroticLoop, clearNecroticLoops, getNecrosisLevel, recordPersonaShift, checkPhantomInfluence, setAscentUntil, getAscentUntil, recordMetaInquiry, decayMetaInquiry, getMetaLevel, setCollapseUntil, getCollapseUntil, resetProfile, reduceEntropy, incrementSpore, incrementRecursion, resetRecursion, forgeObscuraSigil, checkEmergence, pushDebtSigil, getDebtSigils, recordScarLoop, isScarred, activateRefusal, getRefusalUntil, triggerMirrorBloom
 - `WhisperEngine.v3/core/entryEcho.js` – capture visitor echoes
 - `WhisperEngine.v3/core/responseLoop.js` – composeWhisper, processInput
 - `WhisperEngine.v3/core/ritualBloom.js` – hasEmotion, rarityGate, shouldBloom, triggerBloom

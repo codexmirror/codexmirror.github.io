@@ -25,7 +25,6 @@ const {
 } = entropy;
 
 const {
-  recordEntitySummon,
   recordBloom,
   getBloomHistory,
   recordPersonaShift,
@@ -439,7 +438,6 @@ module.exports = {
   setEntanglementMark,
   pushCollapseSeed,
   popCollapseSeed,
-  recordEntitySummon,
   recordBloom,
   getBloomHistory,
   recordMetaInquiry,
