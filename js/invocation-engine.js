@@ -86,11 +86,11 @@ function updateInvocation(glyph) {
   invocationEl.innerHTML = `<div class="invocation-block">${invocations[glyph]}</div>`;
 }
 
-function updateRitualSteps(count) {
-  const steps = document.querySelectorAll('.ritual-bar li');
-  steps.forEach((step, index) => {
-    step.classList.toggle('active', index < count);
-  });
+function updateRitualProgress(count) {
+  const fill = document.getElementById('ritual-fill');
+  if (!fill) return;
+  const percent = Math.min(count, 5) * 20;
+  fill.style.width = `${percent}%`;
 }
 
 function summonKaiEffects() {
@@ -146,7 +146,7 @@ function summonCaelistraEffects() {
 
 function handleGlyphClick(glyph) {
   glyphSequence.push(glyph);
-  updateRitualSteps(glyphSequence.length);
+  updateRitualProgress(glyphSequence.length);
   if (glyphSequence.length > 5) glyphSequence.shift();
 
   updateInvocation(glyph);
