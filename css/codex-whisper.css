@@ -12,29 +12,23 @@ body {
   padding: 0;
 }
 
-.ritual-progress-container {
-  width: 100%;
-  max-width: 240px;
-  margin: 1.5rem auto;
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 80, 80, 0.4);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 0 8px rgba(255, 50, 50, 0.15);
-}
-
 .ritual-progress-bar {
-  width: 100%;
-  height: 12px;
-  background: transparent;
+  width: 80%;
+  max-width: 600px;
+  height: 14px;
+  background: rgba(200, 0, 0, 0.2);
+  border: 1px solid rgba(255, 50, 50, 0.3);
+  border-radius: 8px;
+  margin: 1rem auto;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.15);
 }
 
 .ritual-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(to right, #ff3c3c, #ff5e5e, #ff7979);
-  transition: width 0.4s ease;
-  border-radius: 0;
+  background: linear-gradient(90deg, #ff2a2a, #ff5e5e);
+  transition: width 0.4s ease-in-out;
 }
 
 /* Whisper Ritual Block */
