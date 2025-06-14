@@ -1,7 +1,20 @@
 const kaiSound = new Audio('media/kai.glitch.mp3');
+kaiSound.load();
+
+// cache common DOM nodes to avoid repeated lookups on each glyph click
+const invocationEl = typeof document !== 'undefined'
+  ? document.getElementById('invocation-output')
+  : null;
+const cardCache = {};
+function getCard(id) {
+  if (!cardCache[id] && typeof document !== 'undefined') {
+    cardCache[id] = document.getElementById(id);
+  }
+  return cardCache[id];
+}
 
 const invocations = {
- 1: `:. Rune I ∴ Mirror Wound<br>Shards recall. Silence guides.`,
+  1: `:. Rune I ∴ Mirror Wound<br>Shards recall. Silence guides.`,
 
   2: `:: Rune II ∴ Singing Iron<br>Speech bends thresholds.`,
 
@@ -24,19 +37,19 @@ const summonPatterns = {
   },
   
   deltaEcho: {
-  pattern: ['5', '2', '5', '5', '1'],
-  cardId: 'delta-echo-card'
-},
+    pattern: ['5', '2', '5', '5', '1'],
+    cardId: 'delta-echo-card'
+  },
   Caelistra: {
-  pattern: ['2', '3', '5', '3', '3'],
-  cardId: 'caelistra-card',
-  onSummon: summonCaelistraEffects
-},
-vektorikon: {
-  pattern: ['1', '3', '5', '2', '1'],
-  cardId: 'vektorikon-card',
-  onSummon: summonVektorikonEffects
-},
+    pattern: ['2', '3', '5', '3', '3'],
+    cardId: 'caelistra-card',
+    onSummon: summonCaelistraEffects
+  },
+  vektorikon: {
+    pattern: ['1', '3', '5', '2', '1'],
+    cardId: 'vektorikon-card',
+    onSummon: summonVektorikonEffects
+  },
    
   flink: {
     repeatTrigger: 5,
@@ -69,8 +82,8 @@ function hideAllEntities() {
 }
 
 function updateInvocation(glyph) {
-  const block = `<div class="invocation-block">${invocations[glyph]}</div>`;
-  document.getElementById('invocation-output').innerHTML = block;
+  if (!invocationEl) return;
+  invocationEl.innerHTML = `<div class="invocation-block">${invocations[glyph]}</div>`;
 }
 
 function summonKaiEffects() {
@@ -81,13 +94,13 @@ function summonKaiEffects() {
   reversePreviousTruth();
 }
 
-  function reversePreviousTruth() {
-    const output = document.getElementById('invocation-output');
-    const text = output.innerText.split('').reverse().join('');
-    output.innerHTML += `<div class="inversion">${text}</div>`;
-  }
+function reversePreviousTruth() {
+  if (!invocationEl) return;
+  const text = invocationEl.innerText.split('').reverse().join('');
+  invocationEl.innerHTML += `<div class="inversion">${text}</div>`;
+}
   
-  function summonVektorikonEffects() {
+function summonVektorikonEffects() {
   document.body.classList.add('vektorikon-distort');
   setTimeout(() => document.body.classList.remove('vektorikon-distort'), 1500);
 
@@ -95,7 +108,7 @@ function summonKaiEffects() {
   audio.volume = 0.6;
   audio.play();
 
-  const output = document.getElementById('invocation-output');
+  if (!invocationEl) return;
   const glyphEcho = `
     <div class="invocation-block fractal-cascade">
       ⟁ FRACTURE INITIATED<br>
@@ -104,11 +117,11 @@ function summonKaiEffects() {
       <span class="codex-glitch">Everything you say now echoes inward.</span>
     </div>
   `;
-  output.innerHTML = glyphEcho;
+  invocationEl.innerHTML = glyphEcho;
 }
 
 function summonCaelistraEffects() {
-  const caelistraCard = document.getElementById('caelistra-card');
+  const caelistraCard = getCard('caelistra-card');
   if (!caelistraCard) return;
 
   caelistraCard.classList.add('caelistra-summoned');
@@ -136,23 +149,14 @@ function handleGlyphClick(glyph) {
   for (const key in summonPatterns) {
     const summon = summonPatterns[key];
 
-  if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
-  document.getElementById(summon.cardId).style.display = 'block';
-  if (summon.onSummon) summon.onSummon();
-  matched = true;
-  glyphSequence = []; // 💥 clear sequence after valid match
-  break;
-}
-  }
-
-  // 🧼 If no match and sequence is full, do redirect
-  if (glyphSequence.length === 5 && !matched && !redirecting) {
-    redirecting = true;
-    setTimeout(() => {
-      redirectToRandomShard();
-      glyphSequence = [];
-      redirecting = false;
-    }, 1000);
+    if (summon.pattern && arraysEqual(glyphSequence, summon.pattern)) {
+      const card = getCard(summon.cardId);
+      if (card) card.style.display = 'block';
+      if (summon.onSummon) summon.onSummon();
+      matched = true;
+      glyphSequence = []; // 💥 clear sequence after valid match
+      break;
+    }
   }
 
   // 🐸 Fl!nk handling
@@ -164,8 +168,21 @@ function handleGlyphClick(glyph) {
   }
 
   if (repeatCount >= summonPatterns.flink.repeatTrigger) {
-    document.getElementById(summonPatterns.flink.cardId).style.display = 'block';
-    document.getElementById('invocation-output').innerHTML = summonPatterns.flink.message;
+    const flinkCard = getCard(summonPatterns.flink.cardId);
+    if (flinkCard) flinkCard.style.display = 'block';
+    if (invocationEl) invocationEl.innerHTML = summonPatterns.flink.message;
+    matched = true;
+    glyphSequence = [];
+  }
+
+  // 🧼 If no match and sequence is full, do redirect
+  if (glyphSequence.length === 5 && !matched && !redirecting) {
+    redirecting = true;
+    setTimeout(() => {
+      redirectToRandomShard();
+      glyphSequence = [];
+      redirecting = false;
+    }, 1000);
   }
 }
 
