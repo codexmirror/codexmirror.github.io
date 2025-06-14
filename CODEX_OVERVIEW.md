@@ -56,10 +56,10 @@ Standalone scripts in `js/` supply additional behavior:
 - `ritualFragments.js` – displays charge-level whispers.
 - `shard-reverberation.js` – alters shard pages based on persona state.
 - `whisperLog.js` – logs invocations for later sessions.
-- `whisper-bundle.js` – bundled output of WhisperEngine.v3.
+- `WhisperEngine.v3/js/whisper-bundle.js` – bundled output of WhisperEngine.v3.
 
 ### Styling
-Core styles live in `style.css` with additional rules in `css/codex-whisper.css` and `css/spore.css`.
+Core styles live in `style.css` with additional rules in `WhisperEngine.v3/codex-whisper.css` and `css/spore.css`.
 
 ### Data & Persistence
 All memory lives in the browser via `localStorage`. `WhisperEngine.v3/core/memory.js` stores the profile, glyph history and ritual debris. `whisperLog.js` records sequences for later sessions. No server component is required.

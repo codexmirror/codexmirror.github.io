@@ -1,5 +1,5 @@
-const loops = require('../WhisperEngine.v3/core/loops');
-const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop');
+const loops = require('../core/loops');
+const { composeWhisper } = require('../core/responseLoop');
 async function dispatchLoop(script, immediate = true) {
   for (const step of script) {
     if (loops[step.loop]) {

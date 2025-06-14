@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { recordLoop, loadProfile, resetProfile, clearRitualDebris } = require('../WhisperEngine.v3/core/memory.js');
+const { recordLoop, loadProfile, resetProfile, clearRitualDebris } = require('../core/memory.js');
 
 resetProfile();
 clearRitualDebris();

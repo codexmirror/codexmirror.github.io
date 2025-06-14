@@ -1,9 +1,9 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const { applyCloak } = require('../WhisperEngine.v3/utils/cloak.js');
-const { triggerBloom } = require('../WhisperEngine.v3/core/ritualBloom.js');
-const { glyph } = require('../WhisperEngine.v3/index.js');
-const { stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
-const memory = require('../WhisperEngine.v3/core/memory.js');
+const { eventBus } = require('../utils/eventBus.js');
+const { applyCloak } = require('../utils/cloak.js');
+const { triggerBloom } = require('../core/ritualBloom.js');
+const { glyph } = require('../index.js');
+const { stateManager } = require('../core/stateManager.js');
+const memory = require('../core/memory.js');
 const echoes = [];
 let stream;
 let diagnostic = false;

@@ -1,5 +1,5 @@
-const { processInput } = require('../WhisperEngine.v3/core/responseLoop');
-const { registerPersona, stateManager } = require('../WhisperEngine.v3/core/stateManager');
+const { processInput } = require('../core/responseLoop');
+const { registerPersona, stateManager } = require('../core/stateManager');
 
 // register a simple persona for testing
 registerPersona('dream', {

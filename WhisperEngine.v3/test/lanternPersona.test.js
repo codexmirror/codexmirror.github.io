@@ -1,5 +1,5 @@
-const { registerPersona, stateManager } = require('../WhisperEngine.v3/core/stateManager.js');
-const { resetProfile, loadProfile, pushCollapseSeed } = require('../WhisperEngine.v3/core/memory.js');
+const { registerPersona, stateManager } = require('../core/stateManager.js');
+const { resetProfile, loadProfile, pushCollapseSeed } = require('../core/memory.js');
 
 registerPersona('lantern', { compose: () => '', render: t => t });
 resetProfile();

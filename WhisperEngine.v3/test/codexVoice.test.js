@@ -1,5 +1,5 @@
 const assert = require('assert');
-const voice = require('../WhisperEngine.v3/core/codexVoice');
+const voice = require('../core/codexVoice');
 
 voice.activate(50);
 const out = voice.filterOutput('hello');

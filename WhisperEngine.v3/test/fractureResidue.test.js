@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { resetProfile, pushFractureResidue, popFractureResidue } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, pushFractureResidue, popFractureResidue } = require('../core/memory.js');
 resetProfile();
 pushFractureResidue({ loop: 'invocation' });
 const frag = popFractureResidue();

@@ -1,4 +1,4 @@
-const { resetProfile, recordRitualSequence, getRitualMemoryCount } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, recordRitualSequence, getRitualMemoryCount } = require('../core/memory.js');
 resetProfile();
 const seq = ['1','2','3','4','5'];
 let c1 = recordRitualSequence(seq);

@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { resetProfile, resetRecursion, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
-const recursive = require('../WhisperEngine.v3/core/loops/recursive.js');
+const { resetProfile, resetRecursion, loadProfile } = require('../core/memory.js');
+const recursive = require('../core/loops/recursive.js');
 
 resetProfile();
 resetRecursion();

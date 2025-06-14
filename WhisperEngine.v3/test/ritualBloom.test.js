@@ -1,6 +1,6 @@
 const assert = require('assert');
-const { triggerBloom } = require('../WhisperEngine.v3/core/ritualBloom.js');
-const { loadProfile, resetProfile } = require('../WhisperEngine.v3/core/memory.js');
+const { triggerBloom } = require('../core/ritualBloom.js');
+const { loadProfile, resetProfile } = require('../core/memory.js');
 
 resetProfile();
 triggerBloom({ sequence: ['fractured','path'], driftScore: 0.8, emotion: 'fractured' });

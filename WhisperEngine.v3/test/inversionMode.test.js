@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { resetProfile, pushAcheMarker, loadProfile } = require('../WhisperEngine.v3/core/memory.js');
+const { resetProfile, pushAcheMarker, loadProfile } = require('../core/memory.js');
 resetProfile();
 for(let i=0;i<3;i++) pushAcheMarker(i+1);
 const p = loadProfile();

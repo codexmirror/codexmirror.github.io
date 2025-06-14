@@ -1,4 +1,4 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
+const { eventBus } = require('../utils/eventBus.js');
 
 function init() {
   eventBus.on('kairos:window', ({ module }) => {

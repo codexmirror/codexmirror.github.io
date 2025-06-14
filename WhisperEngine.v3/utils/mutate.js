@@ -1,3 +1,3 @@
-const { mutatePhrase, mutatePhraseWithLevel } = require('../../js/mutatePhrase.js');
+const { mutatePhrase, mutatePhraseWithLevel } = require('../js/mutatePhrase.js');
 
 module.exports = { mutatePhrase, mutatePhraseWithLevel };

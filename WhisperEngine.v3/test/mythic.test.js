@@ -1,6 +1,6 @@
-const { resetProfile, loadProfile, getMetaLevel } = require('../WhisperEngine.v3/core/memory');
-const { processInput, composeWhisper } = require('../WhisperEngine.v3/core/responseLoop');
-const { registerPersona, stateManager } = require('../WhisperEngine.v3/core/stateManager');
+const { resetProfile, loadProfile, getMetaLevel } = require('../core/memory');
+const { processInput, composeWhisper } = require('../core/responseLoop');
+const { registerPersona, stateManager } = require('../core/stateManager');
 const { dispatchLoop } = require('./dispatchLoop');
 
 resetProfile();

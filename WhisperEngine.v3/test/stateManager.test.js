@@ -1,7 +1,7 @@
-const { stateManager, registerPersona } = require('../WhisperEngine.v3/core/stateManager');
-const { defaultProfile, setCollapseUntil } = require('../WhisperEngine.v3/core/memory');
-const { setLastActivity } = require('../WhisperEngine.v3/utils/idle');
-const kairos = require('../WhisperEngine.v3/utils/kairos');
+const { stateManager, registerPersona } = require('../core/stateManager');
+const { defaultProfile, setCollapseUntil } = require('../core/memory');
+const { setLastActivity } = require('../utils/idle');
+const kairos = require('../utils/kairos');
 
 // register minimal personas
 ['dream','watcher','archive','parasite','collapse'].forEach(name => {

@@ -1,6 +1,6 @@
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus.js');
-const loops = require('../WhisperEngine.v3/core/loops');
-const { composeWhisper } = require('../WhisperEngine.v3/core/responseLoop.js');
+const { eventBus } = require('../utils/eventBus.js');
+const loops = require('../core/loops');
+const { composeWhisper } = require('../core/responseLoop.js');
 
 let bar;
 let fill;

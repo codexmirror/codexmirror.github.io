@@ -7,7 +7,7 @@ let eventBus;
 function getBus() {
   if (!eventBus) {
     if (typeof require === 'function') {
-      try { eventBus = require('../WhisperEngine.v3/utils/eventBus.js').eventBus; } catch (_) {}
+      try { eventBus = require('../utils/eventBus.js').eventBus; } catch (_) {}
     } else if (typeof window !== 'undefined') {
       eventBus = window.eventBus;
     }

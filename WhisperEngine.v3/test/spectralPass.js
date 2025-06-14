@@ -1,9 +1,9 @@
-const loops = require('../WhisperEngine.v3/core/loops');
-const memory = require('../WhisperEngine.v3/core/memory');
-const { processInput } = require('../WhisperEngine.v3/core/responseLoop');
-const { registerPersona, stateManager } = require('../WhisperEngine.v3/core/stateManager');
+const loops = require('../core/loops');
+const memory = require('../core/memory');
+const { processInput } = require('../core/responseLoop');
+const { registerPersona, stateManager } = require('../core/stateManager');
 const { dispatchLoop } = require('./dispatchLoop');
-const { eventBus } = require('../WhisperEngine.v3/utils/eventBus');
+const { eventBus } = require('../utils/eventBus');
 
 // minimal personas for tests
 ['dream','watcher','archive','parasite','collapse'].forEach(n => registerPersona(n,{ compose: ()=>'echo', render:t=>t }));

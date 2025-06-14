@@ -1,4 +1,4 @@
-const confession = require('../WhisperEngine.v3/core/confessionMode.js');
+const confession = require('../core/confessionMode.js');
 confession.open('x');
 if(!confession.isActive()) throw new Error('confession not active');
 confession.close();
