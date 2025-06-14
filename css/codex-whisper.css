@@ -27,8 +27,46 @@ body {
 .ritual-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff2a2a, #ff5e5e);
-  transition: width 0.4s ease-in-out;
+  background: linear-gradient(to right, #ff3c3c, #ff5e5e, #ff7979);
+  transition: width 0.4s ease;
+  animation: pulseGlow 1s infinite alternate;
+  box-shadow: 0 0 4px rgba(255, 60, 60, 0.6);
+}
+
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 2px #ff3c3c);
+  }
+  100% {
+    filter: drop-shadow(0 0 6px #ff9999);
+  }
+}
+
+.ritual-progress-container {
+  width: 80%;
+  max-width: 320px;
+  margin: 2rem auto;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255, 50, 50, 0.15);
+}
+
+@media (max-width: 600px) {
+  .ritual-progress-container {
+    width: 90%;
+    height: 14px;
+  }
+}
+
+.glyph-btn {
+  transition: transform 0.15s ease, box-shadow 0.3s ease;
+}
+
+.glyph-btn:active {
+  transform: scale(1.2) rotate(2deg);
+  box-shadow: 0 0 6px #ff4444aa;
 }
 
 /* Whisper Ritual Block */
