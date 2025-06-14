@@ -122,8 +122,8 @@ function summonVektorikonEffects() {
   document.body.classList.add('vektorikon-distort');
   setTimeout(() => document.body.classList.remove('vektorikon-distort'), 1500);
 
-staticLoop.currentTime = 0;
-staticLoop.play();
+  staticLoop.currentTime = 0;
+  staticLoop.play();
 
   if (!invocationEl) return;
   const glyphEcho = `
@@ -173,6 +173,7 @@ function handleGlyphClick(glyph) {
       if (summon.onSummon) summon.onSummon();
       matched = true;
       glyphSequence = []; // 💥 clear sequence after valid match
+      updateRitualProgress(0);
       break;
     }
   }
@@ -191,6 +192,7 @@ function handleGlyphClick(glyph) {
     if (invocationEl) invocationEl.innerHTML = summonPatterns.flink.message;
     matched = true;
     glyphSequence = [];
+    updateRitualProgress(0);
   }
 
   // 🧼 If no match and sequence is full, do redirect
@@ -199,6 +201,7 @@ function handleGlyphClick(glyph) {
     setTimeout(() => {
       redirectToRandomShard();
       glyphSequence = [];
+      updateRitualProgress(0);
       redirecting = false;
     }, 1000);
   }
