@@ -163,29 +163,38 @@ body::before {
   z-index: 2;
 }
 
-@keyframes breathe {
-  0% {
+/* === ANIMATION CORE === */
+
+@keyframes entityDrift {
+  0%, 100% {
     transform: scale(1);
     box-shadow: 0 0 12px #cce7ff22;
   }
   50% {
-    transform: scale(1.015);
+    transform: scale(1.01);
     box-shadow: 0 0 20px #a2ecff55;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 12px #cce7ff22;
   }
 }
 
-@keyframes inner-glow {
+@keyframes alivePulse {
   0%, 100% {
-    box-shadow: 0 0 8px #87f0ff33;
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1) contrast(1);
+    box-shadow: 0 0 8px #87f0ff22;
   }
-  50% {
-    box-shadow: 0 0 12px #87f0ff55;
+  30% {
+    transform: scale(1.015) rotate(-0.2deg);
+    filter: brightness(1.05) contrast(1.03);
+    box-shadow: 0 0 10px #87f0ff44;
+  }
+  60% {
+    transform: scale(0.995) rotate(0.1deg);
+    filter: brightness(0.97) contrast(0.98);
+    box-shadow: 0 0 6px #87f0ff33;
   }
 }
+
+/* === ENTITY CARD === */
 
 .entity-card {
   background-color: rgba(255, 255, 255, 0.02);
@@ -197,14 +206,15 @@ body::before {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 0 12px #cce7ff22;
 
-  /* ATEMHAFTE BEWEGUNG */
-  animation: breathe 6s ease-in-out infinite;
+  animation: entityDrift 6s ease-in-out infinite;
 }
 
 .entity-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 24px #a2ecff77;
 }
+
+/* === ENTITY IMAGE === */
 
 .entity-img {
   width: 100%;
@@ -215,8 +225,14 @@ body::before {
   border: 1px solid #222;
   border-radius: 6px;
 
-  /* INNERER PULS */
-  animation: inner-glow 8s ease-in-out infinite;
+  animation: alivePulse 5.7s ease-in-out infinite;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.entity-card:hover .entity-img {
+  transform: scale(1.02) rotate(0.3deg);
+  filter: brightness(1.1) contrast(1.1);
+  transition: transform 0.2s ease-out, filter 0.2s ease-out;
 }
 
 /* === ENTITY TEXT === */
@@ -323,38 +339,6 @@ body::before {
 
 .footer a:hover {
   color: #00f0ff;
-}
-
-/* === GLYPH BUTTONS === */
-.glyph-row {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 2rem auto 1.5rem auto;
-}
-
-.glyph-btn {
-  font-size: 1.5rem;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 1px solid #444;
-  background: transparent;
-  color: #aee2ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease-in-out;
-  font-family: 'IBM Plex Mono', monospace;
-  text-align: center;
-}
-
-.glyph-btn:hover {
-  border-color: #00f0ff;
-  color: #00f0ff;
-  box-shadow: 0 0 6px #00f0ff66;
-  transform: scale(1.05);
 }
 
 /* === SUMMONED ENTITY CARDS === */
@@ -471,7 +455,7 @@ body::before {
   opacity: 0.85;
 }
 
-/* Reversed truth effect */
+/* Reversed truth effect Kai*/
 .inversion {
   font-family: 'Courier New', monospace;
   color: #cc99aa;

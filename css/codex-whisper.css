@@ -1,29 +1,62 @@
+/* Ritual Bar */
 .ritual-progress-container {
-  width: 90%;
-  max-width: 720px;
-  margin: 2rem auto 1rem auto;
-  padding: 3px;
-  background: rgba(90, 0, 0, 0.15);
-  border: 1px solid rgba(255, 60, 60, 0.3);
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(255, 30, 30, 0.25);
-  backdrop-filter: blur(3px);
+  width: 84%;
+  max-width: 620px;
+  margin: 1.5rem auto 0.75rem auto;
+  padding: 2px;
+  background: rgba(30, 0, 0, 0.2);
+  border: 1px solid rgba(255, 50, 50, 0.25);
+  border-radius: 9px;
+  box-shadow: 0 0 8px rgba(255, 40, 40, 0.18);
+  backdrop-filter: blur(2px);
 }
 
 .ritual-progress-bar {
-  width: 100%;
-  height: 16px;
-  background: rgba(40, 0, 0, 0.15);
-  border-radius: 10px;
+  height: 12px;
+  background: rgba(50, 0, 0, 0.12);
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: inset 0 0 6px rgba(120, 20, 20, 0.25);
+  box-shadow: inset 0 0 4px rgba(120, 20, 20, 0.22);
 }
 
 .ritual-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ff2c2c, #ff5050, #ff6e6e);
+  background: linear-gradient(90deg, #ff2c2c, #ff5050, #ffa0a0);
   transition: width 0.35s ease-in-out;
-  border-radius: 10px 0 0 10px;
-  box-shadow: inset 0 0 8px rgba(255, 100, 100, 0.4), 0 0 6px rgba(255, 70, 70, 0.25);
+  border-radius: 8px 0 0 8px;
+  box-shadow: inset 0 0 6px rgba(255, 80, 80, 0.3), 0 0 4px rgba(255, 60, 60, 0.18);
+}
+
+/* === GLYPH BUTTONS === */
+.glyph-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 1.5rem auto 1rem auto;
+}
+
+.glyph-btn {
+  font-size: 1.3rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+  color: #aee2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease-in-out;
+  font-family: 'IBM Plex Mono', monospace;
+  text-align: center;
+  box-shadow: 0 0 4px rgba(0, 255, 255, 0.08);
+}
+
+.glyph-btn:hover {
+  border-color: #00f0ff;
+  color: #00f0ff;
+  box-shadow: 0 0 6px #00f0ff66, inset 0 0 4px #00f0ff33;
+  transform: scale(1.08) rotate(2deg);
 }
