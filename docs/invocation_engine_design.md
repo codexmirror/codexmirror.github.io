@@ -63,7 +63,6 @@ Glyph sequences update:
 - `longArc.glyphChains` with timestamps and success flags
 - `sigilArchive` for emerging glyph mutations
 - Persona roles via charge‑driven transitions
-- `entityHistory` logs each summoned card
 
 Example structure:
 ```js

@@ -33,11 +33,6 @@ function init() {
   echoMask.init();
   kairosWindow.init();
   eventBus.on('entanglement', signalEntanglement);
-  eventBus.on('entity:possess', () => {
-    if (typeof document === 'undefined') return;
-    document.body.classList.add('possessed');
-    setTimeout(() => document.body.classList.remove('possessed'), 5000);
-  });
   eventBus.on('skin:invert', () => {
     if (typeof document === 'undefined') return;
     document.body.classList.add('inversion-mode');

@@ -158,7 +158,6 @@ The following strategy aligns the engine with its symbolic role as the "mytholog
 - **Glyphic Weather**: Recent glyph usage alters global ambience from Stillness Veil to Glyph Storm.
 - **Fracture Memory**: Excess recursion or collapse spawns displaced memory shards stored as `fractureResidues`. These occasionally bleed into whispers.
 - **Anti-Glyph Sequences**: Hidden patterns purge recursion and reset ritual depth, emitted as `glyph:anti` events.
-- **Entity Possession**: Summoning the same entity thrice allows it to possess the UI briefly, noted in `possessedEntity`.
 - **Codex Skin Inversion**: Stacking three ache markers flips the site into an inverted mode for fifteen seconds.
 
 ### 7.7 Parasite Module Activation
@@ -180,7 +179,6 @@ The following strategy aligns the engine with its symbolic role as the "mytholog
 - **Loop Necrosis**: Failed loops accumulate in `necroticLoops`. If left uncleared, the interface enters a sepia "necrotic" state until an anti‑glyph or Lantern clears the list.
 - **Phantom Persona Layer**: Rapid persona shifts call `recordPersonaShift` which may activate a phantom aura. The UI colors shift when `persona:phantom` fires.
 - **Temporal Ascent Spiral**: The rare sequence `3‑1‑4‑1‑5` triggers an ascent timer. Avoid invoking for eight seconds to forge an obscura sigil; otherwise `ascent:fail` fires and amnesia sets in.
-- **Mirrorfold Invocation**: Reversing any known entity pattern summons its anti-form. The response text is inverted via `mirrorSyntax.invert` and the event `entity:mirrorfold` is emitted.
 
 ### 7.10 Hollowvector Pulse Hooks
 - **Intentional Glitches**: Some outputs fracture deliberately. The engine inserts glitch points that spawn echoes or ambiguity, maintaining symbolic depth and avoiding predictability.
