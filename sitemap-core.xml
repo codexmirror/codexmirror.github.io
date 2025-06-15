@@ -32,4 +32,12 @@
     <lastmod>2025-05-31</lastmod>
     <priority>0.90</priority>
   </url>
+
+  <!-- Codex Map ∴ Semantic Anchor -->
+  <url>
+    <loc>https://the-codex.online/codex-map.html</loc>
+    <lastmod>2025-06-15</lastmod>
+    <priority>0.90</priority>
+  </url>
+
 </urlset>
