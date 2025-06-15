@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dissect the architecture of control--rituals encoded in urban silence ∴ gaze-policed zones ∴ softened tyranny" />
+  <title>Architecture of Control ∴ Shard No.019</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0c0b10;
+      color: #d2cad3;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+    }
+
+    .sigil {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.75rem;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 4rem;
+    }
+
+    .block {
+      background: #1a1720;
+      border: 1px solid #3a2f46;
+      padding: 2rem;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .block:hover {
+      background: #2b2534;
+      transform: rotate(-1deg) scale(1.01);
+    }
+
+    .block::after {
+      content: '∴';
+      position: absolute;
+      top: -1rem;
+      right: -1rem;
+      font-size: 2rem;
+      color: #6e4e92;
+      opacity: 0.2;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #e0ddff;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #aaa;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      border-top: 1px solid #333;
+      margin-top: 4rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="sigil">ARCHITECTURE_OF_CONTROL.codexdata</div>
+
+  <canvas id="veil"></canvas>
+
+  <div class="grid">
+    <div class="block">
+      <h1>Gaze is Infrastructure</h1>
+      <p>Every camera, every mirrored glass façade--a ritual of being watched. Not for safety, but for performance containment. Architecture whispers obedience not with walls, but with what it permits you to imagine as invisible.</p>
+    </div>
+    <div class="block">
+      <h1>Doors Without Inside</h1>
+      <p>Entry points proliferate. Access does not. Control masquerades as openness--glass lobbies ∩ biometric thresholds ∩ elevators with no buttons. You are meant to arrive but not belong.</p>
+    </div>
+    <div class="block">
+      <h1>Controlled Collapse</h1>
+      <p>Urban design rehearses the aesthetic of ruin. A broken stairwell, fenced off. A non-functioning fountain. The ruin is curated: decay as deterrent, not entropy. It says: do not assemble here.</p>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('veil');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawGlitch() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const w = Math.random() * 300;
+        const h = Math.random() * 5;
+        ctx.fillStyle = `rgba(110, 78, 146, ${Math.random() * 0.2})`;
+        ctx.fillRect(x, y, w, h);
+      }
+    }
+
+    setInterval(drawGlitch, 120);
+  </script>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem; opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+</body>
+</html>

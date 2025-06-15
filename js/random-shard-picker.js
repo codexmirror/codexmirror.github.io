@@ -24,6 +24,7 @@ const shardPages = [
   "kai-rupture-yzj28May1938.html",
   "mire-fray-glint41a.html",
   "threshold-echo.html",
+  "architecture-control.html",
   "kai-fracture.html",
   "css-dungeon-generator.html",
   "fragment-recursive-codex-bloom.html",
