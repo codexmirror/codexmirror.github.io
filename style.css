@@ -76,22 +76,12 @@ body::before {
   margin-bottom: 1rem;
 }
 
-.codex-preamble .term {
-  color: #87f0ff;
-  font-style: italic;
-}
-
 .codex-sigil {
   font-style: italic;
   color: #99ccff;
   font-weight: 500;
   font-size: 1.05rem;
   text-shadow: 0 0 4px #99ccff88;
-}
-
-.codex-sigil .highlight {
-  font-weight: 600;
-  color: #87f0ff;
 }
 
 /* === NAVBAR === */
@@ -467,7 +457,7 @@ body::before {
   letter-spacing: 0.05em;
 }
 
-/* 🜍 ENTROPY MODE STYLING THREADBASTARD */
+/* 🜍 STYLING THREADBASTARD */
 
 .entropy-mode {
   filter: hue-rotate(33deg) contrast(1.4) saturate(1.2);
@@ -582,159 +572,11 @@ body::before {
   text-shadow: 0 0 5px #00FFFF;
 }
 
-.whisper-input {
-  width: 100%;
-  padding: 4px;
-  margin-top: 4px;
-  background: #000;
-  color: #d6dee8;
-  border: 1px solid #333;
-}
-
-#personaAura.entangled {
-  border: 1px solid #0ff;
-  box-shadow: 0 0 6px #0ff;
-}
-
-#personaAura.presence.pulse {
-  animation: auraPulse 2s ease-out;
-}
-
-@keyframes auraPulse {
-  0% { opacity: 1; }
-  100% { opacity: 0.4; }
-}
-
-#personaAura.cloak-max {
-  animation: cloakFlicker 0.5s infinite alternate;
-}
-
-@keyframes cloakFlicker {
-  from { filter: none; }
-  to { filter: invert(1); }
-}
 
 .codex-line {
   color: #87f0ff;
   font-weight: 500;
   display: block;
   margin-top: 4px;
-}
-
-.invocation-block.rotted {
-  text-decoration: line-through;
-  opacity: 0.6;
-  filter: grayscale(1);
-}
-
-body.possessed {
-  animation: possessFlicker 1s steps(2, end) infinite;
-}
-
-@keyframes possessFlicker {
-  0% { filter: hue-rotate(0deg); }
-  50% { filter: hue-rotate(180deg); }
-  100% { filter: hue-rotate(0deg); }
-}
-
-body.inversion-mode {
-  background: #111;
-  color: #f0e0ff;
-  filter: invert(1) hue-rotate(180deg);
-}
-
-body.phantom-layer {
-  background-color: #1a0a1a;
-}
-
-body.necrotic {
-  filter: sepia(1) brightness(0.7);
-}
-
-body.jam {
-  animation: jamBlink 0.3s steps(2, start) 3;
-}
-
-@keyframes jamBlink {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-body.clown-loop {
-  font-family: 'Comic Sans MS', cursive;
-  transform: rotate(2deg);
-}
-
-.aura-trail {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: rgba(200,200,255,0.6);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.confession {
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  padding: 10px 20px;
-  z-index: 9999;
-}
-
-body.echo-double {
-  filter: blur(1px);
-}
-
-body.echo-double::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: rgba(255,255,255,0.05);
-  mix-blend-mode: difference;
-  transform: translate(4px,4px);
-}
-.phantom-echo {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  font-family: monospace;
-  background: rgba(0,0,0,0.6);
-  padding: 0.5rem 1rem;
-  color: #ddd;
-  pointer-events: none;
-}
-
-.ritual-whisper {
-  position: fixed;
-  bottom: 4rem;
-  right: 2rem;
-  font-family: monospace;
-  background: rgba(0,0,0,0.7);
-  padding: 0.4rem 0.8rem;
-  color: #eef;
-  animation: ritualWhisper 0.5s ease-out, ritualWhisperFade 3s forwards 0.5s;
-}
-
-@keyframes ritualWhisper {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes ritualWhisperFade {
-  to { opacity: 0; }
-}
-
-.lang-glitch {
-  animation: langSwitch 0.5s steps(2, start);
-}
-
-@keyframes langSwitch {
-  0% { opacity: 1; }
-  50% { opacity: 0.2; transform: translateX(-1px); }
-  100% { opacity: 1; }
 }
 

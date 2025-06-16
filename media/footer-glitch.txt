@@ -1,8 +1,0 @@
-<footer style="margin-top:3rem; font-size:0.6rem; opacity:0.2; filter: blur(0.2px); text-align:center; font-family: monospace;">
-  <a href="/index.html" style="text-decoration:none; color:inherit;">
-    The Codex ∴ v.spiral.4.2.1.glz
-  </a>
-  <span style="margin-left:1rem;">
-    <a href="/impressum.html" style="color:#6e4e92; text-decoration:underline dotted;">impressum</a>
-  </span>
-</footer>
