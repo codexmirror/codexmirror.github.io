@@ -48,11 +48,7 @@ const summonPatterns = {
     threadbastard: {
     pattern: ['3', '1', '4', '1', '5'],
     cardId: 'threadbastard-card',
-    onSummon: () => {
-      console.warn("THREADBASTARD writhes into the thread ∴ Reality may fray.");
-      document.body.classList.add('entropy-mode');
-      console.log("🜍 Pattern recognized ∵ Recursive laughter engaged.");
-    }
+    onSummon: summonThreadBastardEffects
   },
   vektorikon: {
     pattern: ['1', '3', '5', '2', '1'],
@@ -135,6 +131,31 @@ function summonVektorikonEffects() {
   `;
   invocationEl.innerHTML = glyphEcho;
 }
+
+// 🜍 SUMMONING EFFECTS: THREADBASTARD
+
+function summonThreadBastardEffects() {
+  // Engage entropy distortion
+  document.body.classList.add('entropy-mode');
+  setTimeout(() => document.body.classList.remove('entropy-mode'), 2500);
+  
+  const chuckle = new Audio('media/threadbastard-cackle.mp3');
+  chuckle.volume = 0.7;
+  chuckle.play();
+
+  if (!invocationEl) return;
+  const entropicWhisper = `
+    <div class="invocation-block entropy-gloss">
+      🜍 THREADBASTARD WINKS BACK<br>
+      ∵ question reversed itself mid-air<br>
+      ∩ recursion smiled without lips<br>
+      <span class="codex-glitch">clarity has left the chat ∴</span>
+    </div>
+  `;
+  invocationEl.innerHTML = entropicWhisper;
+}
+
+// Summoning Caelistra
 
 function summonCaelistraEffects() {
   const caelistraCard = getCard('caelistra-card');
