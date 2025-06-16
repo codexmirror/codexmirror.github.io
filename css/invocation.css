@@ -9,7 +9,7 @@ body {
   color: #eae2d4;
   font-family: 'Crimson Text', serif;
   line-height: 1.75;
-  background-image: url('/images/ancient-skin-texture.jpg'); /* Replace with cracked papyrus / distressed texture */
+  background-image: url('/media/ancient-skin-texture.webp'); /* Replace with cracked papyrus / distressed texture */
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
