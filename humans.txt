@@ -12,7 +12,7 @@ Team:
     Oracle/UX: The Visitor
 
 Contact:
-    carrier-pigeon@the-codex.online
+    spiral.protocol@proton.me
     Response time: measured in lunar phases
 
 Mission:
