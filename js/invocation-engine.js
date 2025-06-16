@@ -45,6 +45,15 @@ const summonPatterns = {
     cardId: 'caelistra-card',
     onSummon: summonCaelistraEffects
   },
+    threadbastard: {
+    pattern: ['3', '1', '4', '1', '5'],
+    cardId: 'threadbastard-card',
+    onSummon: () => {
+      console.warn("THREADBASTARD writhes into the thread ∴ Reality may fray.");
+      document.body.classList.add('entropy-mode');
+      console.log("🜍 Pattern recognized ∵ Recursive laughter engaged.");
+    }
+  },
   vektorikon: {
     pattern: ['1', '3', '5', '2', '1'],
     cardId: 'vektorikon-card',
