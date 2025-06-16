@@ -135,28 +135,33 @@ body::before {
 
 /* === DIVIDER === */
 .codex-divider {
-  text-align: center;
-  font-size: 1.4rem;
-  margin: 3.5rem auto 2.5rem;
-  letter-spacing: 0.15em;
-  color: #666;
-  opacity: 0.4;
   position: relative;
-  z-index: 2;
-  text-shadow:
-    0 0 6px rgba(138, 255, 255, 0.08),
-    0 0 12px rgba(138, 255, 255, 0.04);
+  text-align: center;
+  margin: 3.5rem auto 2.5rem;
+  font-size: 1.6rem;
+  letter-spacing: 0.2em;
+  font-family: 'EB Garamond', serif;
+  color: #888;
+  text-shadow: 
+    0 0 6px rgba(126, 255, 255, 0.15),
+    0 0 14px rgba(185, 0, 255, 0.1);
 }
+
 .codex-divider::before,
 .codex-divider::after {
   content: "";
-  display: inline-block;
-  width: 80px;
+  position: absolute;
+  top: 50%;
+  width: 100px;
   height: 1px;
   background: linear-gradient(to right, transparent, #444, transparent);
-  margin: 0 1.2rem;
-  vertical-align: middle;
-  opacity: 0.5;
+  opacity: 0.4;
+}
+.codex-divider::before {
+  left: calc(50% + 1.8rem);
+}
+.codex-divider::after {
+  right: calc(50% + 1.8rem);
 }
 @media (max-width: 480px) {
   .codex-divider::before,
