@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confession CAPTCHA</title>
+  <link id="favicon" rel="icon" href="default.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      background-color: black;
+      color: lime;
+      overflow: hidden;
+    }
+    input, button {
+      padding: 10px;
+      font-weight: bold;
+    }
+    #result {
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+    marquee {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: black;
+      color: #0f0;
+      font-size: small;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛐 CONFESSION CAPTCHA 🛐</h1>
+  <p id="haunt-intro" style="min-height: 2em;"></p>
+  <input id="confession" type="text" placeholder="I once..." style="width: 300px;">
+  <br><br>
+  <button onclick="judgeSin()">Verify</button>
+  <p id="result"></p>
+  <audio id="croak" src="croak.mp3"></audio>
+  <audio id="ambient" src="ambient_whispers.mp3" loop></audio>
+
+  <marquee scrollamount="5">
+    CROAK OR BE CROAKED • WE REMEMBER YOUR SINS • THE FROGS HAVE EARS • NO SALVATION IN HTML
+  </marquee>
+
+  <canvas id="glyphCanvas"></canvas>
+
+  <script>
+    const guiltWords = ["stole", "lied", "cheated", "betrayed", "cried", "hurt", "ghosted", "screamed", "regret", "haunt"];
+    const blessings = [
+      "Go in guilt, my child 🐸",
+      "Sin noted. Try again next time 🌀",
+      "Your secrets are stored in frogspace 🧪",
+      "The toad pope accepts your pain 🙏",
+      "Croak on, little liar."
+    ];
+    const echoes = ["...they know", "...the frogs are watching", "...we remember", "...too late to hide"];
+    const icons = ["judging_eye.ico", "default.ico", "frog.gif", "404.ico"];
+    const favicon = document.getElementById("favicon");
+    const ambient = document.getElementById("ambient");
+
+    setInterval(() => {
+      favicon.href = icons[Math.floor(Math.random() * icons.length)];
+    }, 5000);
+
+    window.addEventListener("blur", () => ambient.play());
+    window.addEventListener("focus", () => ambient.pause());
+
+    setInterval(() => {
+      const sins = JSON.parse(localStorage.getItem("confessions") || "[]");
+      if (sins.length > 0 && Math.random() < 0.3) {
+        document.getElementById("confession").placeholder = sins[Math.floor(Math.random() * sins.length)];
+      }
+    }, 8000);
+
+    function typeHaunt() {
+      const introText = "To prove you're human, share a sin";
+      let i = 0;
+      function typer() {
+        if (i < introText.length) {
+          document.getElementById("haunt-intro").innerHTML += introText.charAt(i);
+          i++;
+          setTimeout(typer, Math.random() * 150);
+        }
+      }
+      typer();
+    }
+
+    function judgeSin() {
+      const confession = document.getElementById("confession").value.toLowerCase();
+      const result = document.getElementById("result");
+      const isGuilty = guiltWords.some(word => confession.includes(word));
+      let sins = JSON.parse(localStorage.getItem("confessions") || "[]");
+      let guiltIndex = parseInt(localStorage.getItem("guiltIndex") || "0");
+
+      if (confession.length < 10) {
+        result.innerText = "Too weak. Try again with real pain.";
+        document.body.style.backgroundColor = "#2f0000";
+        return;
+      }
+
+      if (isGuilty) {
+        const bless = blessings[Math.floor(Math.random() * blessings.length)];
+        result.innerText = bless;
+        document.body.style.backgroundColor = "#003300";
+        favicon.href = "judging_eye.ico";
+        const croak = document.getElementById("croak");
+        croak.volume = Math.min(1, 0.2 + 0.1 * guiltIndex);
+        croak.play().catch(() => {});
+        sins.push(confession);
+        if (sins.length > 3) sins.shift();
+        localStorage.setItem("confessions", JSON.stringify(sins));
+
+        guiltIndex++;
+        localStorage.setItem("guiltIndex", guiltIndex.toString());
+
+        setTimeout(() => {
+          result.innerText += "\n" + echoes[Math.floor(Math.random() * echoes.length)];
+        }, 1500);
+
+        if (sins.length === 3) {
+          const randomPast = sins[Math.floor(Math.random() * sins.length)];
+          setTimeout(() => {
+            result.innerText += `\n(we remember: "${randomPast}")`;
+          }, 3000);
+        }
+      } else {
+        result.innerText = "Fake sin detected. Be serious.";
+        document.body.style.backgroundColor = "#333333";
+      }
+    }
+
+    window.onload = () => {
+      typeHaunt();
+      initGlyphRain();
+    };
+
+    function initGlyphRain() {
+      const canvas = document.getElementById("glyphCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const columns = canvas.width / 20;
+      const drops = Array.from({ length: columns }, () => 1);
+
+      function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#0F0";
+        ctx.font = "16px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+          ctx.fillText(text, i * 20, drops[i] * 20);
+
+          if (drops[i] * 20 > canvas.height && Math.random() > 0.975)
+            drops[i] = 0;
+
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 50);
+    }
+  </script>
+</body>
+</html>

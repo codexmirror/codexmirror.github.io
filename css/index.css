@@ -147,21 +147,37 @@ body::before {
     0 0 14px rgba(185, 0, 255, 0.1);
 }
 
+.codex-divider {
+  position: relative;
+  text-align: center;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.4rem;
+  color: #87f0ff;
+  margin: 3.5rem auto 2.5rem;
+  letter-spacing: 0.1em;
+  text-shadow:
+    0 0 4px #87f0ff55,
+    0 0 12px #7afcfc33,
+    0 0 20px #8f00ff22;
+}
+
 .codex-divider::before,
 .codex-divider::after {
   content: "";
   position: absolute;
   top: 50%;
-  width: 100px;
+  width: 120px;
   height: 1px;
-  background: linear-gradient(to right, transparent, #444, transparent);
-  opacity: 0.4;
+  background: linear-gradient(to right, transparent, #87f0ff55, transparent);
+  opacity: 0.6;
 }
 .codex-divider::before {
-  left: calc(50% + 1.8rem);
+  right: 50%;
+  margin-right: 2.5rem;
 }
 .codex-divider::after {
-  right: calc(50% + 1.8rem);
+  left: 50%;
+  margin-left: 2.5rem;
 }
 @media (max-width: 480px) {
   .codex-divider::before,
