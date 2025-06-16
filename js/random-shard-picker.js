@@ -124,6 +124,7 @@ const shardPages = [
   "sigma-axiom-err79.html",
   "kai-rupture-24B8.html",
   "luma-echo-f4Z1e.html",
+  "viridis_031-harlekin-fieldlog_2025-06-16.html",
   "sigma-reflect-voice-5F3A.html",
   "fragment-7-silence-symbols.html",
   "grimoire-of-the-hand-33X.html",
