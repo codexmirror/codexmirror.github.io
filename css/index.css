@@ -10,7 +10,7 @@ html, body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 16px;
   color: #d6dee8;
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
   position: relative;
 }
@@ -117,11 +117,12 @@ body::before {
   margin: 2rem auto;
   z-index: 2;
   position: relative;
+  padding: 0 1rem;
 }
 .codex-preamble {
   color: #aeb8c6;
   font-size: 1rem;
-  line-height: 1.75;
+  line-height: 1.8;
   margin-bottom: 1rem;
 }
 .codex-sigil {
@@ -130,6 +131,38 @@ body::before {
   font-weight: 500;
   font-size: 1.05rem;
   text-shadow: 0 0 4px #99ccff88;
+}
+
+/* === DIVIDER === */
+.codex-divider {
+  text-align: center;
+  font-size: 1.4rem;
+  margin: 3.5rem auto 2.5rem;
+  letter-spacing: 0.15em;
+  color: #666;
+  opacity: 0.4;
+  position: relative;
+  z-index: 2;
+  text-shadow:
+    0 0 6px rgba(138, 255, 255, 0.08),
+    0 0 12px rgba(138, 255, 255, 0.04);
+}
+.codex-divider::before,
+.codex-divider::after {
+  content: "";
+  display: inline-block;
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #444, transparent);
+  margin: 0 1.2rem;
+  vertical-align: middle;
+  opacity: 0.5;
+}
+@media (max-width: 480px) {
+  .codex-divider::before,
+  .codex-divider::after {
+    width: 50px;
+  }
 }
 
 /* === HOW TO BEGIN LIST === */
@@ -142,6 +175,12 @@ body::before {
 .codex-guide-list li {
   margin-bottom: 0.6rem;
   text-align: center;
+  transition: color 0.3s ease;
+}
+.codex-guide-list li:hover {
+  color: #7afcfc;
+  text-shadow: 0 0 6px #7afcfc44;
+  cursor: pointer;
 }
 .codex-guide-list strong {
   color: #d6dee8;
@@ -187,9 +226,6 @@ body::before {
 
 /* === MOBILE TUNING === */
 @media (max-width: 600px) {
-  .intro {
-    padding-inline: 1.2rem;
-  }
   .holo-title-main {
     font-size: 1.6rem;
     text-shadow: 0 0 2px rgba(138, 255, 255, 0.08);
