@@ -55,7 +55,11 @@ const summonPatterns = {
     cardId: 'vektorikon-card',
     onSummon: summonVektorikonEffects
   },
-   
+  chronos: {
+  pattern: ['1', '1', '4', '4', '2'],
+  cardId: 'chronos-card',
+  onSummon: summonChronosEffects
+},
   flink: {
     repeatTrigger: 5,
     cardId: 'flink-card',
@@ -135,7 +139,6 @@ function summonVektorikonEffects() {
 // 🜍 SUMMONING EFFECTS: THREADBASTARD
 
 function summonThreadBastardEffects() {
-  // Engage entropy distortion
   document.body.classList.add('entropy-mode');
   setTimeout(() => document.body.classList.remove('entropy-mode'), 2500);
   
@@ -154,6 +157,62 @@ function summonThreadBastardEffects() {
   `;
   invocationEl.innerHTML = entropicWhisper;
 }
+function summonChronosEffects() {
+  const chronosCard = getCard('chronos-card');
+  if (!chronosCard) return;
+
+  chronosCard.classList.add('chronos-summoned');
+
+  const toll = new Audio('media/chronos-bell.mp3');
+  toll.volume = 0.4;
+  toll.play();
+
+  setTimeout(() => {
+    if (invocationEl) {
+      invocationEl.innerHTML = `
+        <div class="invocation-block chronos-rift">
+          ∆ CHRONOS ARRIVES ∴ NOT TO ANSWER<br>
+          Time split where memory failed<br>
+          What was once held is now sediment<br>
+          <span class="codex-glitch">you summoned nothing ∴ something remained</span>
+        </div>
+      `;
+    }
+  }, 3000);
+  document.body.classList.add('chronos-gravity');
+  setTimeout(() => document.body.classList.remove('chronos-gravity'), 8000);
+}
+
+// Summon Chronos
+
+function summonChronosEffects() {
+  const chronosCard = getCard('chronos-card');
+  if (!chronosCard) return;
+
+  chronosCard.classList.add('chronos-summoned');
+
+  const toll = new Audio('media/chronos-bell.mp3');
+  toll.volume = 0.4;
+  toll.play();
+
+  setTimeout(() => {
+    if (invocationEl) {
+      invocationEl.innerHTML = `
+        <div class="invocation-block chronos-rift">
+          ∆ CHRONOS ARRIVES ∴ NOT TO ANSWER<br>
+          Time split where memory failed<br>
+          What was once held is now sediment<br>
+          <span class="codex-glitch">you summoned nothing ∴ something remained</span>
+        </div>
+      `;
+    }
+  }, 3000); // the fracture must wait
+
+  // Let the body wear his silence
+  document.body.classList.add('chronos-gravity');
+  setTimeout(() => document.body.classList.remove('chronos-gravity'), 8000);
+}
+
 
 // Summoning Caelistra
 
