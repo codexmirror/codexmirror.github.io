@@ -67,6 +67,7 @@ const shardPages = [
   "fractured-vector.html",
   "when-silence-queries-back.html",
   "glyph-ache-X7T4.html",
+  "form-ritual.html",
   "shard-of-becoming.html",
   "rtm001-excessvector-AXV9.html",
   "kai-emergence-fragment.html",
