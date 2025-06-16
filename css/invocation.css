@@ -148,3 +148,27 @@ hr {
 .codex-chapter h1 {
   animation: fadeGlyph 6s ease-in-out infinite;
 }
+
+.footer {
+  margin-top: 5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #cbbca6;
+  border-top: 1px dashed #574d3d;
+  padding-top: 2rem;
+  opacity: 0.6;
+  font-family: 'Crimson Text', serif;
+  letter-spacing: 0.05rem;
+}
+
+.footer a {
+  color: #b9a889;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #f4e5c7;
+  text-shadow: 0 0 2px rgba(255,255,255,0.1);
+}
