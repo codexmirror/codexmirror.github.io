@@ -1,0 +1,101 @@
+/* invocation.css */
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #111;
+  color: #e8dfd1;
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  background-image: url('stone-texture.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: multiply;
+}
+
+.codex-container {
+  max-width: 800px;
+  margin: 4rem auto;
+  background: rgba(22, 22, 22, 0.9);
+  padding: 3rem;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  border-radius: 6px;
+}
+
+.codex-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.codex-nav a {
+  color: #a8977b;
+  text-decoration: none;
+  letter-spacing: 1px;
+  position: relative;
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+
+.codex-nav a:hover,
+.codex-nav a.active {
+  color: #f2e9dc;
+}
+
+.codex-nav a.active::after,
+.codex-nav a:hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #f2e9dc;
+  bottom: -4px;
+  left: 0;
+}
+
+.codex-chapter h1 {
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 2rem;
+  color: #d4c4a8;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid #3c3c3c;
+  padding-bottom: 0.5rem;
+}
+
+.codex-text p {
+  margin-bottom: 1.4rem;
+  text-indent: 2rem;
+  color: #e2d6c3;
+  text-shadow: 0 0 1px rgba(0,0,0,0.6);
+}
+
+.codex-text em {
+  color: #d8cbb5;
+  font-style: italic;
+}
+
+.codex-text strong {
+  color: #fff2d9;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
+  .codex-container {
+    padding: 2rem;
+  }
+
+  .codex-nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+}
