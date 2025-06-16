@@ -6,7 +6,7 @@
   <link id="favicon" rel="icon" href="default.ico" type="image/x-icon">
   <style>
     body {
-      font-family: 'Comic Sans MS', sans-serif;
+      font-family: 'Georgia', serif;
       text-align: center;
       margin-top: 50px;
       background-color: black;
@@ -36,6 +36,24 @@
       z-index: -1;
       pointer-events: none;
     }
+    #shared-sins {
+      position: fixed;
+      right: 0;
+      top: 100px;
+      width: 250px;
+      background: rgba(0,0,0,0.5);
+      color: lime;
+      font-size: 12px;
+      text-align: left;
+      padding: 10px;
+      overflow-y: auto;
+      max-height: 60vh;
+      font-family: monospace;
+    }
+    #shared-sins ul {
+      list-style: none;
+      padding: 0;
+    }
   </style>
 </head>
 <body>
@@ -53,6 +71,11 @@
   </marquee>
 
   <canvas id="glyphCanvas"></canvas>
+
+  <div id="shared-sins">
+    <strong>🫣 Other Confessions:</strong>
+    <ul id="sin-log"></ul>
+  </div>
 
   <script>
     const guiltWords = ["stole", "lied", "cheated", "betrayed", "cried", "hurt", "ghosted", "screamed", "regret", "haunt"];
@@ -95,6 +118,22 @@
       typer();
     }
 
+    function updateSinLog() {
+      const sinList = document.getElementById("sin-log");
+      sinList.innerHTML = "";
+      let sins = JSON.parse(localStorage.getItem("confessions") || "[]");
+      let fakes = ["I betrayed my inbox.", "I ghosted my conscience.", "I lied to a CAPTCHA.", "I regret everything and nothing.", "I screamed into the input field."];
+      sins.concat(fakes).slice(-6).forEach((sin, idx) => {
+        const li = document.createElement("li");
+        const ghostID = "user" + (1000 + idx);
+        li.innerHTML = `<span title="${ghostID}">${sin}</span>`;
+        li.style.opacity = "0.6";
+        li.onmouseover = () => li.style.opacity = "1";
+        li.onmouseout = () => li.style.opacity = "0.6";
+        sinList.appendChild(li);
+      });
+    }
+
     function judgeSin() {
       const confession = document.getElementById("confession").value.toLowerCase();
       const result = document.getElementById("result");
@@ -117,7 +156,7 @@
         croak.volume = Math.min(1, 0.2 + 0.1 * guiltIndex);
         croak.play().catch(() => {});
         sins.push(confession);
-        if (sins.length > 3) sins.shift();
+        if (sins.length > 10) sins.shift();
         localStorage.setItem("confessions", JSON.stringify(sins));
 
         guiltIndex++;
@@ -127,12 +166,14 @@
           result.innerText += "\n" + echoes[Math.floor(Math.random() * echoes.length)];
         }, 1500);
 
-        if (sins.length === 3) {
+        if (sins.length >= 3) {
           const randomPast = sins[Math.floor(Math.random() * sins.length)];
           setTimeout(() => {
             result.innerText += `\n(we remember: "${randomPast}")`;
           }, 3000);
         }
+
+        updateSinLog();
       } else {
         result.innerText = "Fake sin detected. Be serious.";
         document.body.style.backgroundColor = "#333333";
@@ -142,6 +183,7 @@
     window.onload = () => {
       typeHaunt();
       initGlyphRain();
+      updateSinLog();
     };
 
     function initGlyphRain() {
