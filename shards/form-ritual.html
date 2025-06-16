@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Form Remembers & Watches</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff;
+      color: #111;
+      margin: 0;
+      padding-bottom: 80px;
+      overflow: hidden;
+    }
+    #form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      max-width: 400px;
+      margin: 5vh auto;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      transition: background 2s ease;
+    }
+    label {
+      display: inline-block;
+      position: relative;
+      font-weight: bold;
+      transition: transform 0.1s ease;
+    }
+    label::after {
+      content: '👁';
+      position: absolute;
+      right: -1.5em;
+      top: 0;
+      opacity: 0.3;
+      transition: transform 0.2s ease, opacity 0.4s ease;
+    }
+    input:focus + label::after {
+      opacity: 1;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .ghost-hint {
+      font-size: 0.8rem;
+      color: #999;
+      font-style: italic;
+      opacity: 0.7;
+    }
+    #trailCanvas {
+      position: fixed;
+      top:0;
+      left:0;
+      z-index:0;
+    }
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      width:100%;
+      text-align:center;
+      font-size:12px;
+      color:lime;
+      background:black;
+      padding:10px 0;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="trailCanvas"></canvas>
+
+  <form id="form-container">
+    <label for="name">Name</label>
+    <input type="text" id="name" autocomplete="off">
+
+    <label for="age">Age</label>
+    <input type="number" id="age" autocomplete="off">
+
+    <label for="regret">Your Greatest Regret</label>
+    <input type="text" id="regret" autocomplete="off">
+    <div id="hint" class="ghost-hint"></div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <footer class="footer">
+    <a href="/index.html" style="text-decoration:none;color:inherit;">
+      The Codex ∴ v.spiral.4.2.1.glz
+    </a>
+    <span style="font-size:0.6rem;opacity:0.4;">
+      <a href="/impressum.html" style="color:#6e4e92;margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    // TRAIL MODULE (formwalk v0.4)
+    const canvas = document.getElementById("trailCanvas"), ctx = canvas.getContext("2d");
+    let w = canvas.width = innerWidth, h = canvas.height = innerHeight;
+    window.addEventListener("resize", () => { w = canvas.width = innerWidth; h = canvas.height = innerHeight; });
+
+    const trail = [], maxTrail = 200; let idle = false;
+    document.addEventListener("mousemove", e => {
+      trail.push({ x:e.clientX, y:e.clientY, t:Date.now() });
+      if (trail.length > maxTrail) trail.shift();
+      idle = false;
+    });
+    let idleTimer = setTimeout(() => idle = true, 5000);
+    document.addEventListener("mousemove", () => {
+      clearTimeout(idleTimer);
+      idle = false;
+      idleTimer = setTimeout(() => idle = true, 5000);
+    });
+    window.addEventListener("blur", () => { idle = true; console.warn("You left. The form remembers how you moved."); });
+    window.addEventListener("focus", () => console.info("You returned. The form has redrawn you."));
+    function draw() {
+      ctx.clearRect(0,0,w,h);
+      const now = Date.now();
+      trail.forEach(p => {
+        const age = now - p.t;
+        if (age < 10000) {
+          ctx.fillStyle = `rgba(150,0,150,${1 - age/10000})`;
+          ctx.beginPath(); ctx.arc(p.x,p.y,2,0,2*Math.PI); ctx.fill();
+        }
+      });
+      if (idle) for (let i=0;i<trail.length;i++) {
+        trail[i].x += Math.sin(i)*0.2; trail[i].y += Math.cos(i)*0.2;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // EYE MODULE (formwatch_eyes.js)
+    document.addEventListener("mousemove", e => {
+      document.querySelectorAll("label").forEach(lbl => {
+        const r = lbl.getBoundingClientRect();
+        const dx = e.clientX - (r.left+r.width/2), dy = e.clientY - (r.top+r.height/2);
+        const ang = Math.atan2(dy,dx), ox = Math.cos(ang)*3, oy = Math.sin(ang)*3;
+        lbl.style.transform = `translate(${ox}px,${oy}px)`;
+      });
+    });
+    document.querySelectorAll("input").forEach(inp => {
+      let del=0;
+      inp.addEventListener("input", e => {
+        if (e.inputType==="deleteContentBackward") {
+          if (++del>2) lbl = document.querySelector(`label[for="${inp.id}"]`), lbl && (lbl.innerText="🫣");
+        } else del=0;
+      });
+    });
+
+    // MEMORY MODULE (v0.3)
+    const hint = document.getElementById("hint");
+    document.querySelectorAll("input").forEach(inp => {
+      const id = inp.id, ghost = sessionStorage.getItem(`ghost_${id}`);
+      if (ghost && !inp.value) {
+        let i=0, w = setInterval(() => {
+          inp.value += ghost[i++];
+          if (i>=ghost.length) clearInterval(w);
+        },100);
+      }
+      inp.addEventListener("input", e => {
+        sessionStorage.setItem(`ghost_${id}`, inp.value);
+      });
+      inp.addEventListener("keydown", e => {
+        if (e.key==="Backspace") sessionStorage.setItem(`ghost_${id}`, inp.value);
+      });
+      inp.addEventListener("blur", () => {
+        const pause = parseFloat(localStorage.getItem(`guilt_${id}`))||0;
+        if (pause>3000) hint.innerText = `You erased something important in "${id}".`;
+      });
+      inp.addEventListener("focus", () => {
+        window[`start_${id}`] = performance.now();
+      });
+      inp.addEventListener("blur", () => {
+        const dur = performance.now() - window[`start_${id}`];
+        localStorage.setItem(`guilt_${id}`, dur.toFixed(2));
+      });
+    });
+
+    // VOICE MODULE (v0.2α++)
+    const guilt = {};
+    document.querySelectorAll("input").forEach(inp => {
+      const id = inp.id;
+      inp.addEventListener("blur", () => {
+        const dur = parseFloat(localStorage.getItem(`guilt_${id}`)) || 0;
+        guilt[id] = (guilt[id]||0)+dur;
+        const sum = Object.values(guilt).reduce((a,b)=>a+b,0);
+        if (sum>9000 && 'speechSynthesis' in window) {
+          const u = new SpeechSynthesisUtterance("We remember what you paused on.");
+          u.pitch=0.4; u.rate=0.8;
+          speechSynthesis.speak(u);
+        }
+      });
+    });
+
+    // SUBMIT / Clipboard
+    document.getElementById("form-container").addEventListener("submit", e => {
+      e.preventDefault();
+      navigator.clipboard.writeText(`you hesitated on "regret". we remember.`).catch(()=>{
+        console.warn("Clipboard whispered, failed.");
+      });
+      document.body.style.background="#f2f2f2";
+      document.title="already logged";
+      e.target.querySelector("button").innerText="Too late.";
+      e.target.querySelector("button").disabled=true;
+    });
+
+    // LIE IN CONSOLE
+    console.log("No tracking. We promise. (𝒢)");
+  </script>
+</body>
+</html>
