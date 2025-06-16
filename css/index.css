@@ -75,9 +75,10 @@ body::before {
   text-shadow: 0 0 5px #87f0ff88;
 }
 
-/* === TITLE & HEADERS === */
-.holo-title {
-  font-size: 2rem;
+/* Holo Title */
+
+.holo-title-main {
+  font-size: 2rem; /* scaled down from 2.4rem */
   text-align: center;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -87,9 +88,19 @@ body::before {
   -webkit-text-fill-color: transparent;
   animation: codexPulse 8s ease-in-out infinite;
   text-shadow:
-    0 0 4px rgba(138, 255, 255, 0.1),
-    0 0 6px rgba(183, 0, 255, 0.2),
-    0 0 10px rgba(183, 0, 255, 0.05);
+    0 0 4px rgba(138, 255, 255, 0.15),
+    0 0 8px rgba(183, 0, 255, 0.25),
+    0 0 12px rgba(183, 0, 255, 0.1);
+}
+
+/* Optional override for very small screens */
+@media (max-width: 600px) {
+  .holo-title-main {
+    font-size: 1.6rem;
+    text-shadow: 0 0 2px rgba(138, 255, 255, 0.08);
+    background: none;
+    -webkit-text-fill-color: #aee2ff;
+  }
 }
 @keyframes codexPulse {
   0% { background-position: 0% 50%; }
