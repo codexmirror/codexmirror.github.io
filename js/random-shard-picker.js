@@ -92,6 +92,7 @@ const shardPages = [
   "sigil-veilpulse-b5ac9f.html",
   "threshold-echo-loop-20250528.html",
   "focus-calibration-module.html",
+  "confession-captcha.html",
   "altar-cf7b3d.html",
   "frog_madness_overflow.html",
   "sigil-chaos-fragment.html",
