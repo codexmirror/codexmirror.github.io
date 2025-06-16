@@ -75,10 +75,10 @@ body::before {
   text-shadow: 0 0 5px #87f0ff88;
 }
 
-/* Holo Title */
-
+/* === HOLO TITLE === */
 .holo-title-main {
-  font-size: 2rem; /* scaled down from 2.4rem */
+  font-family: 'EB Garamond', serif;
+  font-size: 2rem;
   text-align: center;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -93,27 +93,21 @@ body::before {
     0 0 12px rgba(183, 0, 255, 0.1);
 }
 
-/* Optional override for very small screens */
-@media (max-width: 600px) {
-  .holo-title-main {
-    font-size: 1.6rem;
-    text-shadow: 0 0 2px rgba(138, 255, 255, 0.08);
-    background: none;
-    -webkit-text-fill-color: #aee2ff;
-  }
-}
 @keyframes codexPulse {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+/* === HEADINGS === */
 .codex-h2 {
+  font-family: 'EB Garamond', serif;
   font-size: 1.25rem;
   font-weight: 600;
   text-align: center;
   color: #d6dee8;
   margin: 2.5rem 0 1.25rem;
-  text-shadow: 0 0 3px #99ccff22;
+  text-shadow: 0 0 6px #99ccff33, 0 0 12px #5f00ff11;
 }
 
 /* === SECTION STRUCTURE === */
@@ -153,6 +147,12 @@ body::before {
   color: #d6dee8;
 }
 
+/* === SEO SECTION === */
+.codex-seo-frame {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
 /* === FOOTER === */
 .footer {
   font-family: "IBM Plex Mono", monospace;
@@ -175,20 +175,28 @@ body::before {
 
 /* === GLYPH CLASS === */
 .glyph {
-  color: #87f0ff;
+  color: #d57bff;
   font-weight: 600;
   padding: 0 0.25rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.glyph:hover {
+  color: #ffccff;
+  text-shadow: 0 0 6px #ffccff88;
 }
 
 /* === MOBILE TUNING === */
 @media (max-width: 600px) {
-  .holo-title {
+  .intro {
+    padding-inline: 1.2rem;
+  }
+  .holo-title-main {
     font-size: 1.6rem;
     text-shadow: 0 0 2px rgba(138, 255, 255, 0.08);
     background: none;
     -webkit-text-fill-color: #aee2ff;
   }
   .codex-h2 {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
   }
 }
