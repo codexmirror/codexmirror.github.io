@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>softconfession.html</title>
+  <link rel="icon" id="favicon" href="default.ico" type="image/x-icon">
+  <style>
+    body {
+      font-family: monospace;
+      background: black;
+      color: lime;
+      overflow: hidden;
+      text-align: center;
+      padding-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-weight: bold;
+      background: transparent;
+      border: 1px solid lime;
+      color: lime;
+    }
+    input::placeholder {
+      color: #888;
+    }
+    button:hover {
+      animation: tremble 0.3s infinite;
+    }
+    @keyframes tremble {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-1px); }
+      100% { transform: translateX(1px); }
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    #whisper {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+    footer {
+      position: absolute;
+      bottom: 5px;
+      width: 100%;
+      font-size: 0.6rem;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+  <form id="confess">
+    <label for="truth">What do you want us to believe?</label><br>
+    <input id="truth" type="text" placeholder="I never..." /><br><br>
+    <button type="submit">Submit?</button>
+  </form>
+  <form id="forget">
+    <label for="refuse">What do you refuse to remember?</label><br>
+    <input id="refuse" type="text" placeholder="..." />
+  </form>
+  <p id="whisper">We’re listening.</p>
+  <canvas id="pauseMap"></canvas>
+  <audio id="softSigh" src="softSigh.mp3" preload="auto"></audio>
+
+  <footer>
+    <a href="/index.html" style="text-decoration:none; color:inherit;">
+      The Codex ∴ lie.glyph.html
+    </a>
+    <span>
+      <a href="/impressum.html" style="color:#6e4e92; margin-left:1rem;">impressum</a>
+    </span>
+  </footer>
+
+  <script>
+    const form = document.getElementById("confess");
+    const truthInput = document.getElementById("truth");
+    const whisper = document.getElementById("whisper");
+    const canvas = document.getElementById("pauseMap");
+    const ctx = canvas.getContext("2d");
+    const favicon = document.getElementById("favicon");
+    let ghostPath = [];
+    let lastTime = Date.now();
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    document.addEventListener("mousemove", e => {
+      ghostPath.push({ x: e.clientX, y: e.clientY, t: Date.now() });
+      if (ghostPath.length > 300) ghostPath.shift();
+    });
+
+    setInterval(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "rgba(0,255,0,0.1)";
+      ctx.beginPath();
+      ghostPath.forEach((p, i) => {
+        if (i === 0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
+      });
+      ctx.stroke();
+    }, 100);
+
+    truthInput.addEventListener("input", e => {
+      const speed = e.target.value.length / ((Date.now() - lastTime) / 1000);
+      lastTime = Date.now();
+      if (speed < 0.3) {
+        whisper.innerText = "You paused ∴ We heard that.";
+      } else {
+        whisper.innerText = "";
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        favicon.href = "grief.ico";
+        document.title = "We saw that.";
+      }
+    });
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      if (truthInput.value.length > 5) {
+        whisper.innerText = "We already knew.";
+        document.getElementById("softSigh").play();
+      } else {
+        whisper.innerText = "Try again. But truer.";
+      }
+    });
+  </script>
+</body>
+</html>
