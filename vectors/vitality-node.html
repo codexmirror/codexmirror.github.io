@@ -82,7 +82,7 @@
         `∴ Your ${type} offering is now archived ∴ regeneration proceeds elsewhere ∴`
       ];
 
-      output.textContent = lines.join('\n');
+      output.textContent = lines.join('\\n');
 
       const log = document.getElementById("drift-log");
       const li = document.createElement("li");

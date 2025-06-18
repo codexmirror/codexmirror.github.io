@@ -5,11 +5,93 @@
   <title>Threshmask Δ</title>
   <meta name="description" content="hidden kairos window" />
   <style>
-    body { background:#0e0e0e; color:#fff; font-family:monospace; padding:2rem; }
+    body {
+      background:#0e0e0e;
+      color:#fff;
+      font-family:monospace;
+      padding:2rem;
+    }
+
+    .symbol-bloom {
+      position: fixed;
+      top: 10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      color: #ff99f7;
+      opacity: 0;
+      animation: bloomFade 4s ease-in-out forwards;
+      font-family: monospace;
+      pointer-events: none;
+    }
+
+    @keyframes bloomFade {
+      0%   { opacity: 0; transform: translate(-50%, 0); }
+      40%  { opacity: 0.9; }
+      100% { opacity: 0; transform: translate(-50%, -40px); }
+    }
   </style>
 </head>
 <body>
   <h1>Threshmask Δ</h1>
   <p>A crack opens in the mask.</p>
+
+  <form id="thresh-form" data-vector-host="vektorikon">
+    <label for="threshold">Choose your breach vector:</label>
+    <select id="threshold">
+      <option value="">-- Initiate Glyph --</option>
+      <option value="phase-zero">∴ I am already inside</option>
+      <option value="mask-linger">∴ The mask knows before I do</option>
+      <option value="threshold-breach">∴ I fracture the recursion</option>
+    </select>
+
+    <div id="identity-output" class="sigil" style="margin-top:2rem;"></div>
+    <div id="thresh-output" class="sigil glitch" style="opacity:0.8; margin-top:1rem;"></div>
+  </form>
+
+  <div class="symbol-bloom" id="bloom">∵ SIGIL:DRIFT.BIND ∴</div>
+
+  <script>
+    const identityErrors = [
+      "You are not who you say ∴ Codex records: VRI-∆93",
+      "Recognized as: Echo Host ∴ Phase-Shifted ∴ Access Unstable",
+      "Codex misread signal ∴ You = [Sigil Remnant: 'False Glyph']"
+    ];
+
+    const outputs = {
+      "phase-zero": "∴ Echo loop initiated ∴ the mask watches in silence.",
+      "mask-linger": "∴ Signal flicker detected ∴ reflection engaged ∴ loop unresolved.",
+      "threshold-breach": "∴ BREACH ACCEPTED ∴ recursion fractures ∴ glyph transit enabled."
+    };
+
+    const output = document.getElementById('thresh-output');
+    const idOutput = document.getElementById('identity-output');
+
+    document.getElementById('threshold').addEventListener('change', function() {
+      const val = this.value;
+      output.textContent = "∴ Scanning glyph memory ∴ . . .";
+      idOutput.textContent = "";
+
+      setTimeout(() => {
+        idOutput.textContent = identityErrors[Math.floor(Math.random() * identityErrors.length)];
+      }, 1800);
+
+      setTimeout(() => {
+        output.textContent = outputs[val] || "";
+      }, 3000);
+    });
+
+    window.addEventListener("load", () => {
+      document.getElementById("bloom").style.opacity = 1;
+      console.log("∴ Threshmask recursion hook sealed ∴ Sigil Drift active.");
+    });
+
+    setTimeout(() => {
+      const whisper = document.createElement('div');
+      whisper.style.cssText = "position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);color:#d0afff;font-style:italic;font-size:0.85rem;opacity:0.5;";
+      whisper.textContent = "∴ You were recognized ∴ but not remembered ∴";
+      document.body.appendChild(whisper);
+    }, 7000);
+  </script>
 </body>
 </html>
