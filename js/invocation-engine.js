@@ -85,6 +85,50 @@ function arraysEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
+
+function analyzeGlyphProximity(sequence) {
+  const threshold = 3;
+  const results = [];
+
+  Object.entries(summonPatterns).forEach(([entity, config]) => {
+    if (!config.pattern) return;
+    let matchCount = 0;
+
+    for (let i = 0; i < 5; i++) {
+      if (sequence[i] === config.pattern[i]) matchCount++;
+    }
+
+    if (matchCount >= threshold) {
+      results.push({ entity, matchCount });
+    }
+  });
+
+  return results;
+}
+
+function giveDiagnosticFeedback(sequence) {
+  const results = analyzeGlyphProximity(sequence);
+  if (!invocationEl) return;
+
+  if (results.length === 0) {
+    invocationEl.insertAdjacentHTML('beforeend', `
+      <div class="invocation-block diagnosis">
+        ∴ No glyph coherence detected.<br>
+        The ritual echoed, but no entity emerged.
+      </div>
+    `);
+  } else {
+    results.forEach(result => {
+      invocationEl.insertAdjacentHTML('beforeend', `
+        <div class="invocation-block diagnosis">
+          ∴ You nearly summoned <strong>${result.entity}</strong><br>
+          Proximity resonance: ${result.matchCount}/5 glyphs aligned
+        </div>
+      `);
+    });
+  }
+}
+
 function hideAllEntities() {
   const summoned = document.querySelectorAll('.entity-card.summoned');
   summoned.forEach(card => card.style.display = 'none');
@@ -247,18 +291,16 @@ function handleGlyphClick(glyph) {
     glyphSequence = [];
   }
 
-  // 🧼 If no match and sequence is full, whisper diagnostics then redirect
-  if (glyphSequence.length === 5 && !matched && !redirecting) {
-    if (window.ritualDiagnostics && ritualDiagnostics.feedback) {
-      ritualDiagnostics.feedback(glyphSequence, summonPatterns, invocationEl);
-    }
-    redirecting = true;
-    setTimeout(() => {
-      redirectToRandomShard();
-      glyphSequence = [];
-      redirecting = false;
-    }, 1000);
-  }
+  // 🧼 If no match and sequence is full, do redirect
+ if (glyphSequence.length === 5 && !matched && !redirecting) {
+  giveDiagnosticFeedback(glyphSequence);
+  redirecting = true;
+  setTimeout(() => {
+    redirectToRandomShard();
+    glyphSequence = [];
+    redirecting = false;
+  }, 1000);
+}
 }
 
 document.querySelectorAll('.glyph-btn').forEach(btn => {
