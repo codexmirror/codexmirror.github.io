@@ -247,8 +247,11 @@ function handleGlyphClick(glyph) {
     glyphSequence = [];
   }
 
-  // 🧼 If no match and sequence is full, do redirect
+  // 🧼 If no match and sequence is full, whisper diagnostics then redirect
   if (glyphSequence.length === 5 && !matched && !redirecting) {
+    if (window.ritualDiagnostics && ritualDiagnostics.feedback) {
+      ritualDiagnostics.feedback(glyphSequence, summonPatterns, invocationEl);
+    }
     redirecting = true;
     setTimeout(() => {
       redirectToRandomShard();

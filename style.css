@@ -580,3 +580,7 @@ body::before {
   margin-top: 4px;
 }
 
+.diagnosis {
+  color: #ffb3ec;
+  border-color: #ffb3ec;
+}
