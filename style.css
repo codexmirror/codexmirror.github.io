@@ -580,11 +580,11 @@ body::before {
   margin-top: 4px;
 }
 
-.invocation-block.diagnosis {
-  font-style: italic;
-  color: #bbb;
-  border-left: 2px solid #666;
-  padding-left: 0.6em;
+.invocation-block .diagnosis {
+  display: block;
   margin-top: 0.5em;
+  font-style: italic;
+  color: #999;
+  opacity: 0.9;
 }
 

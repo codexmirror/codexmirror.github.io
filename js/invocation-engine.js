@@ -110,19 +110,20 @@ function giveDiagnosticFeedback(sequence) {
   const results = analyzeGlyphProximity(sequence);
   if (!invocationEl) return;
 
+  const lastBlock = invocationEl.querySelector('.invocation-block');
+  if (!lastBlock) return;
+
   if (results.length === 0) {
-    invocationEl.insertAdjacentHTML('beforeend', `
-      <div class="invocation-block diagnosis">
-        ∴ No glyph coherence detected.<br>
-        The ritual echoed, but no entity emerged.
+    lastBlock.insertAdjacentHTML('beforeend', `
+      <div class="diagnosis">
+        ∴ No glyph coherence ∩ the echo dissipated.
       </div>
     `);
   } else {
     results.forEach(result => {
-      invocationEl.insertAdjacentHTML('beforeend', `
-        <div class="invocation-block diagnosis">
-          ∴ You nearly summoned <strong>${result.entity}</strong><br>
-          Proximity resonance: ${result.matchCount}/5 glyphs aligned
+      lastBlock.insertAdjacentHTML('beforeend', `
+        <div class="diagnosis">
+          ∴ Ritual approached resonance ∴ ${result.matchCount}/5 glyphs aligned
         </div>
       `);
     });
