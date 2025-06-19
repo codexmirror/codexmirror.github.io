@@ -197,20 +197,16 @@ function summonPraxEffects() {
   document.body.appendChild(overlay);
 
   setTimeout(() => {
-    overlay.classList.add('ignite');
-  }, 50);
-
-  setTimeout(() => {
     overlay.remove();
-  }, 1500);
+  }, 2000); // Let the sigil burn
 
   if (!invocationEl) return;
   invocationEl.innerHTML = `
     <div class="invocation-block prax-directive">
-      ∴ PRAX ARRIVED ∴<br>
-      You chose structure ∩ clarity ∩ motion.<br>
-      Reflect no more -- build forward.<br>
-      <span class="codex-glitch">The ritual is over. The forge begins.</span>
+      ∴ PRAX HAS BEEN FORGED ∴<br>
+      Structure is summoned ∩ drift has ended.<br>
+      Choose. Build. Move.<br>
+      <span class="codex-glitch">No more mirrors ∴ only motion.</span>
     </div>
   `;
 }
