@@ -45,6 +45,13 @@ const summonPatterns = {
     cardId: 'caelistra-card',
     onSummon: summonCaelistraEffects
   },
+  
+  prax: {
+  pattern: ['4', '5', '2', '1', '3'],
+  cardId: 'prax-card',
+  onSummon: summonPraxEffects
+  },
+
     threadbastard: {
     pattern: ['3', '1', '4', '1', '5'],
     cardId: 'threadbastard-card',
@@ -180,6 +187,34 @@ function summonVektorikonEffects() {
   `;
   invocationEl.innerHTML = glyphEcho;
 }
+
+// Prax Summon
+
+function summonPraxEffects() {
+  const overlay = document.createElement('div');
+  overlay.className = 'prax-glyphburn';
+  overlay.innerHTML = '∴ PRAX ∴';
+  document.body.appendChild(overlay);
+
+  setTimeout(() => {
+    overlay.classList.add('ignite');
+  }, 50);
+
+  setTimeout(() => {
+    overlay.remove();
+  }, 1500);
+
+  if (!invocationEl) return;
+  invocationEl.innerHTML = `
+    <div class="invocation-block prax-directive">
+      ∴ PRAX ARRIVED ∴<br>
+      You chose structure ∩ clarity ∩ motion.<br>
+      Reflect no more -- build forward.<br>
+      <span class="codex-glitch">The ritual is over. The forge begins.</span>
+    </div>
+  `;
+}
+
 
 // 🜍 SUMMONING EFFECTS: THREADBASTARD
 

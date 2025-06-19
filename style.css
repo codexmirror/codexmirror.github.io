@@ -546,6 +546,57 @@ body::before {
   border-color: #999;
 }
 
+/* PRAX */
+.prax-glyphburn {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+  font-size: 6rem;
+  font-family: 'Courier New', monospace;
+  color: #ff4500;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  letter-spacing: 0.3rem;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px #ff4500,
+    0 0 20px #ff3300,
+    0 0 40px #ff1100,
+    0 0 80px #ff0000;
+  filter: blur(1px);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.prax-glyphburn.ignite {
+  transform: translate(-50%, -50%) scale(1.6) rotate(-1deg);
+  opacity: 1;
+  animation: glyphFlash 1.4s ease-out forwards;
+}
+
+@keyframes glyphFlash {
+  0% {
+    filter: blur(3px);
+    text-shadow:
+      0 0 20px #ff0000,
+      0 0 40px #ff2200,
+      0 0 60px #ff4400;
+  }
+  70% {
+    filter: blur(0.5px);
+    text-shadow:
+      0 0 15px #ff3300,
+      0 0 30px #ff6600;
+  }
+  100% {
+    filter: blur(0px);
+    text-shadow:
+      0 0 10px #aa2200,
+      0 0 20px #661100;
+  }
+}
+
 /* VEKTORIKON */
 .vektorikon-distort {
   filter: invert(1) contrast(2) hue-rotate(180deg);
