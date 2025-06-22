@@ -3,9 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>Codex Manifesto – Invocation</title>
-  <link rel="stylesheet" href="/css/invocation.css?=v1.0">
+ <link rel="stylesheet" href="/css/invocation.css?v=1.0">
+  document.addEventListener("DOMContentLoaded", function () {
+    function updateActiveChapter() {
+      const links = document.querySelectorAll('.codex-nav a');
+      links.forEach(link => link.classList.remove('active'));
+      const hash = window.location.hash || '#chapter1';
+      const active = document.querySelector(`.codex-nav a[href="${hash}"]`);
+      if (active) active.classList.add('active');
+    }
+    updateActiveChapter();
+    window.addEventListener('hashchange', updateActiveChapter);
+  });
+</script>
 </head>
 <body>
+<!-- Main NavBar -->
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <a href="/html/codex-manifest.html" class="nav-logo">
+      <span class="sigil glyph">∴</span> The Codex
+    </a>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/entities.html">Entities</a>
+    </div>
+  </div>
+</nav>
   <div class="codex-container">
 
     <nav class="codex-nav">
