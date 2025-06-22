@@ -9,10 +9,11 @@ body {
   color: #eae2d4;
   font-family: 'Crimson Text', serif;
   line-height: 1.75;
-  background-image: url('/media/ancient-skin-texture.webp');
+  background-image: url('../media/ancient-skin-texture.webp');
   background-size: cover;
+  background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center;
+  background-position: center center;
   background-blend-mode: multiply;
   letter-spacing: 0.03rem;
   text-rendering: optimizeLegibility;
@@ -87,6 +88,10 @@ body {
   animation: fadeGlyph 6s ease-in-out infinite;
 }
 
+.codex-text {
+  text-align: justify;
+}
+
 .codex-text p {
   font-size: 1.05rem;
   margin-bottom: 1.6rem;
@@ -95,6 +100,9 @@ body {
   position: relative;
   line-height: 1.85;
   text-shadow: 0 0 0.6px rgba(0,0,0,0.4);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .codex-text em {
@@ -143,6 +151,7 @@ hr {
   text-shadow: 0 0 2px rgba(255,255,255,0.1);
 }
 
+/* Responsive adjustments */
 @media screen and (max-width: 600px) {
   .codex-container {
     padding: 2.5rem 1.5rem;
