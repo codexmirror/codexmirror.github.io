@@ -9,7 +9,7 @@ body {
   color: #eae2d4;
   font-family: 'Crimson Text', serif;
   line-height: 1.75;
-  background-image: url('../media/ancient-skin-texture.webp');
+  background-image: url('https://the-codex.online/media/ancient-skin-texture.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -17,6 +17,14 @@ body {
   background-blend-mode: multiply;
   letter-spacing: 0.03rem;
   text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
 }
 
 .codex-container {
@@ -30,6 +38,66 @@ body {
   backdrop-filter: blur(1px);
 }
 
+/* === NAVBAR === */
+.navbar {
+  background-color: #0a0a0a;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #111;
+  z-index: 999;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.2rem;
+  color: #87f0ff;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-shadow: 0 0 4px #87f0ff66;
+}
+
+.nav-logo .sigil {
+  color: #ccccff;
+  font-size: 1.4rem;
+  text-shadow: 0 0 8px #ccccff88;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem;
+  color: #aeb8c6;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #87f0ff;
+  text-shadow: 0 0 5px #87f0ff88;
+}
+
+.nav-links a:visited {
+  color: #aeb8c6;
+}
+
+/* === CODEX NAV === */
 .codex-nav ul {
   list-style: none;
   display: flex;
@@ -171,62 +239,6 @@ hr {
     text-indent: 1.2rem;
     font-size: 1rem;
   }
-}
-/* === NAVBAR === */
-.navbar {
-  background-color: #0a0a0a;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #111;
-  z-index: 5;
-  position: relative;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-logo {
-  font-size: 1.2rem;
-  color: #87f0ff;
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  text-shadow: 0 0 4px #87f0ff66;
-}
-
-.nav-logo .sigil {
-  color: #ccccff;
-  font-size: 1.4rem;
-  text-shadow: 0 0 8px #ccccff88;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.nav-links a {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.95rem;
-  color: #aeb8c6;
-  text-decoration: none;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  transition: all 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #87f0ff;
-  text-shadow: 0 0 5px #87f0ff88;
-}
-
-.nav-links a:visited {
-  color: #aeb8c6;
 }
 
 /* Future echo pulse */
