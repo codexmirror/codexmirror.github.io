@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codex Mirror ∴ Stimmungsfeld</title>
+  <meta name="description" content="Ein digitales Wesen mit wechselnden Launen. Dunkel, träumerisch, fragmentarisch." />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/mood.css">
+</head>
+<body class="mood-shell" data-mood="silent">
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <nav class="navbar" aria-label="Hauptnavigation">
+    <div class="nav-container">
+      <a class="nav-logo" href="index.html"><span class="glyph">∴</span> Codex Mirror</a>
+      <div class="nav-links">
+        <a href="entities.html">Entities</a>
+        <a href="codex-map.html">Codex Map</a>
+        <a class="active" href="mood.html">Stimmungsfeld</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" role="banner">
+    <div class="hero-grid">
+      <div>
+        <p class="micro">dunkles tagebuch / dreamcore ritual</p>
+        <h1 class="title">Stimmungsfeld der Seite</h1>
+        <p class="subtitle">Kein Interface. Ein Wesen, das leise flackert und dich bemerkt.</p>
+      </div>
+      <div class="mood-orb" aria-hidden="true">
+        <div class="orb-core"></div>
+        <div class="orb-glow"></div>
+      </div>
+    </div>
+    <div class="fragment" id="mood-fragment" role="status" aria-live="polite"></div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="stimmung-title">
+      <div class="panel-header">
+        <div>
+          <p class="micro">dynamik</p>
+          <h2 id="stimmung-title">Aktuelle Stimmung</h2>
+        </div>
+        <div class="badge" id="mood-badge">silent</div>
+      </div>
+      <p class="panel-text">Die Seite liest Zeit, Besuchshäufigkeit und einen wilden Zufall, um ihre Laune zu bestimmen. Manchmal stimmt sie dir zu, manchmal verschließt sie sich.</p>
+      <div class="signal-grid" id="mood-signals" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="voice-title">
+      <div class="panel-header">
+        <div>
+          <p class="micro">innere stimme</p>
+          <h2 id="voice-title">Frage das Echo</h2>
+        </div>
+        <div class="badge ghost" id="voice-status">gesperrt</div>
+      </div>
+      <p class="panel-text">Im Modus <strong>open</strong> oder <strong>dreaming</strong> antwortet die innere Stimme. In allen anderen Stimmungen flüstert sie nur Rauschen.</p>
+      <form class="voice-form" id="voice-form">
+        <label class="sr-only" for="voice-input">Was möchtest du fragen?</label>
+        <textarea id="voice-input" name="voice" rows="3" placeholder="Was fühlst du? Was brauchst du?"></textarea>
+        <button type="submit">Senden</button>
+      </form>
+      <div class="voice-response" id="voice-response" aria-live="polite"></div>
+    </section>
+
+    <section class="panel veil" aria-labelledby="veiled-title">
+      <div class="panel-header">
+        <div>
+          <p class="micro">verschleierung</p>
+          <h2 id="veiled-title">Verborgene Schichten</h2>
+        </div>
+        <div class="badge" id="veil-state">flimmern</div>
+      </div>
+      <p class="panel-text">Je nach Stimmung tauchen manche Informationen nur als Nachbild auf. Einige Fragmente werden gelöscht, andere überstrahlt.</p>
+      <div class="veil-grid">
+        <div class="veil-cell" data-sigil="echo">Echo-Log: [∴ ∴ ∴]</div>
+        <div class="veil-cell" data-sigil="glyph">Glyphenrest: ◐⟡◑</div>
+        <div class="veil-cell" data-sigil="memory">Phantom-Memo: "nicht lesen"</div>
+        <div class="veil-cell" data-sigil="fault">Glitch-Splitter: 010101…</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Codex Mirror — ein digitales Wesen, nicht funktional, nur fühlbar.</p>
+    <p class="micro">letzte Eigenwilligkeit aktualisiert: <span id="update-timestamp"></span></p>
+  </footer>
+
+  <script src="/js/mood.js"></script>
+</body>
+</html>
