@@ -195,6 +195,27 @@ body::before {
   color: #d6dee8;
 }
 
+.mood-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  padding: 0.65rem 1.1rem;
+  border: 1px solid #2b2b2b;
+  border-radius: 999px;
+  color: #d6dee8;
+  text-decoration: none;
+  box-shadow: 0 0 12px rgba(138, 255, 255, 0.16);
+  transition: all 0.25s ease;
+}
+
+.mood-link:hover {
+  color: #0b0b0b;
+  background: linear-gradient(120deg, #7afcfc, #8f00ff);
+  box-shadow: 0 0 24px rgba(138, 255, 255, 0.32);
+  border-color: transparent;
+}
+
 /* === SEO SECTION === */
 .codex-seo-frame {
   margin-top: 3rem;
