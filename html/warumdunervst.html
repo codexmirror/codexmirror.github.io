@@ -1,132 +1,36 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ist Lena berechtigt sauer auf Sven?</title>
 
 <style>
 :root{
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --text:#0f172a;
-  --muted:#64748b;
-  --line:#e2e8f0;
-
-  --green:#1f9d55;
-  --yellow:#f4b400;
-  --red:#d93025;
-
-  --radius:14px;
+  --bg:#f8fafc; --card:#fff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
+  --green:#1f9d55; --yellow:#f4b400; --red:#d93025; --radius:14px;
 }
-
-*{ box-sizing:border-box; }
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-.wrapper{
-  max-width:760px;
-  margin:40px auto;
-  padding:20px;
-}
-h1{ margin:0 0 6px; font-size:28px; }
-.lead{ margin:0 0 18px; color:var(--muted); line-height:1.4; }
-
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:18px;
-  margin-bottom:14px;
-}
-label{ font-weight:900; display:block; margin-bottom:6px; }
-.help{
-  font-size:13px;
-  color:var(--muted);
-  margin:0 0 10px;
-  line-height:1.35;
-}
-select{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  font-size:14px;
-  background:#fff;
-}
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  font-weight:900;
-  font-size:15px;
-  cursor:pointer;
-  background:#0f172a;
-  color:#fff;
-  margin-top:10px;
-}
-.notice{
-  display:none;
-  margin-top:10px;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--muted);
-  font-size:13px;
-}
-.notice.show{ display:block; }
-.notice b{ color:var(--text); }
-
-.result{
-  display:none;
-  margin-top:18px;
-  padding:20px;
-  border-radius:var(--radius);
-  border:1px solid var(--line);
-  background:#fff;
-}
-.ampel{
-  font-weight:950;
-  font-size:22px;
-  margin-bottom:8px;
-}
-.green{ color:var(--green); }
-.yellow{ color:var(--yellow); }
-.red{ color:var(--red); }
-
-.meta{ color:var(--muted); font-size:14px; line-height:1.35; }
-.badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  font-size:12px;
-  color:var(--muted);
-  margin-top:10px;
-}
-.section-title{
-  font-weight:900;
-  margin-top:14px;
-  margin-bottom:6px;
-}
-ul{
-  padding-left:18px;
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.35;
-}
-small{
-  display:block;
-  margin-top:14px;
-  color:var(--muted);
-  font-size:12px;
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrapper{max-width:760px;margin:40px auto;padding:20px}
+h1{margin:0 0 6px;font-size:28px}
+.lead{margin:0 0 18px;color:var(--muted);line-height:1.4}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+label{font-weight:900;display:block;margin-bottom:6px}
+.help{font-size:13px;color:var(--muted);margin:0 0 10px;line-height:1.35}
+select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);font-size:14px;background:#fff}
+button{width:100%;padding:14px;border:none;border-radius:12px;font-weight:900;font-size:15px;cursor:pointer;background:#0f172a;color:#fff;margin-top:10px}
+.notice{display:none;margin-top:10px;padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:13px}
+.notice.show{display:block}
+.notice b{color:var(--text)}
+.result{display:none;margin-top:18px;padding:20px;border-radius:var(--radius);border:1px solid var(--line);background:#fff}
+.ampel{font-weight:950;font-size:22px;margin-bottom:8px}
+.green{color:var(--green)} .yellow{color:var(--yellow)} .red{color:var(--red)}
+.meta{color:var(--muted);font-size:14px;line-height:1.35}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted);margin-top:10px}
+.section-title{font-weight:900;margin-top:14px;margin-bottom:6px}
+ul{padding-left:18px;margin:4px 0 0;color:var(--muted);font-size:14px;line-height:1.35}
+small{display:block;margin-top:14px;color:var(--muted);font-size:12px}
 </style>
 </head>
 
@@ -182,7 +86,8 @@ small{
     </select>
   </div>
 
-  <button id="btn" type="button">Ergebnis berechnen</button>
+  <button type="button" onclick="compute()">Ergebnis berechnen</button>
+  <div id="notice's" style="display:none"></div>
   <div id="notice" class="notice"></div>
 
   <div id="result" class="result">
@@ -202,124 +107,127 @@ small{
 </div>
 
 <script>
-(() => {
-  const $ = (id) => document.getElementById(id);
+function $(id){ return document.getElementById(id); }
 
-  function showNotice(html){
-    $("notice").innerHTML = html;
-    $("notice").classList.add("show");
-  }
-  function hideNotice(){
-    $("notice").classList.remove("show");
-    $("notice").innerHTML = "";
-  }
+function showNotice(msg){
+  var n = $("notice");
+  n.innerHTML = msg;
+  n.classList.add("show");
+}
+function hideNotice(){
+  var n = $("notice");
+  n.classList.remove("show");
+  n.innerHTML = "";
+}
 
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+function clamp(x, a, b){
+  return Math.max(a, Math.min(b, x));
+}
 
-  function compute(){
-    hideNotice();
-
-    const v = {
-      q1: $("q1").value,
-      q2: $("q2").value,
-      q3: $("q3").value,
-      q4: $("q4").value
-    };
-
-    if(!v.q1 || !v.q2 || !v.q3 || !v.q4){
-      showNotice("<b>Fehlt noch was:</b> Bitte alle 4 Felder auswählen, sonst ist Sven nur halber Sieger.");
-      return;
-    }
-
-    // --- "Sven hat recht" Engine ---
-    // Baseline: pro Sven, weil das hier der Witz ist.
-    let sven = 65;
-
-    const why = [];
-    const next = [];
-
-    // Q1
-    if(v.q1 === "nie"){ sven -= 4; why.push("Nicht versetzt. Minimaler Punkt für Lena (wird notiert, nicht gefeiert)."); }
-    if(v.q1 === "einmal"){ sven += 10; why.push("Einmal versetzt: Sven darf irritiert sein, weil Menschen so funktionieren."); }
-    if(v.q1 === "mehrfach"){ sven += 22; why.push("Mehrfach versetzt: Das ist kein Unfall mehr, das ist ein Muster."); }
-
-    // Q2
-    if(v.q2 === "neutral"){ sven += 4; why.push("Neutraler Ton: verdächtig kontrolliert. Sven bleibt defensiv (und damit im Recht)."); }
-    if(v.q2 === "genervt"){ sven += 10; why.push("Genervt: eskalationsnah. Sven darf auf Durchzug schalten."); }
-    if(v.q2 === "passiv"){ sven += 16; why.push("Passiv-aggressiv: Krieg ohne Ansage. Sven verliert dabei immer, also hat er recht."); }
-    if(v.q2 === "respektlos"){ sven += 22; why.push("Respektlos: Glückwunsch, Sven wird automatisch zum 'vernünftigen Part' befördert."); }
-
-    // Q3
-    if(v.q3 === "normal"){ sven += 6; why.push("Antwortverhalten normal: Dann ist das Problem eher Erwartung vs. Realität."); }
-    if(v.q3 === "selten"){ sven += 10; why.push("Selten: Sven war beschäftigt. Oder leer. Beides zählt pro Sven."); }
-    if(v.q3 === "oft"){ sven += 14; why.push("Oft: Wenn es oft ist, ist es relevant. Wenn es relevant ist, ist Sven (leider) im Vorteil."); }
-
-    // Q4
-    if(v.q4 === "elite"){ sven += 6; why.push("Elite-Sticker: Kritik daran ist Kulturkampf. Sven bekommt Sympathiepunkte."); }
-    if(v.q4 === "mid"){ sven += 10; why.push("Mid: Geschmackssache. Aber 'alle scheiße' ist Angriff. Sven notiert den Treffer."); }
-    if(v.q4 === "trash"){ sven += 14; why.push("Trash: Provokation wurde gewählt. Reaktion folgt. Sven fühlt sich bestätigt."); }
-    if(v.q4 === "toxic"){ sven += 18; why.push("Toxisch: Das war kein Spaß mehr. Sven darf beleidigt sein."); }
-
-    // Subtiler Bias-Boost: 80% extra Sven-Energie
-    if(Math.random() < 0.8){
-      sven += 12;
-      why.push("Bonusfaktor: Statistik sagt, Sven hat heute wieder recht. (Technisch bedingt.)");
-    } else {
-      why.push("Seltene Anomalie: Heute könnte Lena minimal im Recht sein. Nicht übertreiben.");
-    }
-
-    // Override: klassische Kombi "versetzt + genervt/respektlos" -> Sven safe winner
-    if(v.q1 === "mehrfach" && (v.q2 === "genervt" || v.q2 === "respektlos")){
-      sven = Math.max(sven, 92);
-      why.push("Override: Versetzt + genervt/respektlos = 02:40-Eskalationsformel. Sven bleibt Sieger.");
-    }
-
-    sven = clamp(sven, 0, 100);
-
-    // Ergebnis (immer Sven-lastig)
-    let text = "🟡 Emotional verständlich, aber Sven bleibt korrekt";
-    let cls = "yellow";
-    let badge = "Sven-Index: stabil";
-
-    if(sven >= 78){
-      text = "🔴 Sven hat recht (wissenschaftlich belegt)";
-      cls = "red";
-      badge = "Sven-Index: Sieger-Modus";
-    } else if(sven < 58){
-      text = "🟢 Minimal berechtigt (Sven bleibt trotzdem stabil)";
-      cls = "green";
-      badge = "Sven-Index: kurz wackelig";
-    }
-
-    // Steps
-    if(sven >= 78){
-      next.push("Keine Diskussion jetzt. Ein Satz: „Okay, ich war drüber. Lass morgen normal reden."");
-      next.push("Keine Wörter wie „immer/oft" ohne Beispiel. Sonst wird’s wieder Theater.");
-      next.push("Sticker-Thema beenden. Niemand gewinnt Sticker-Debatten. Niemand.");
-    } else if(sven >= 58){
-      next.push("Ein Satz: „Mich stört X, ich will Y. Können wir das kurz klären?"");
-      next.push("Wenn’s spät ist: Pause. Nicht im Chat lösen, wenn beide genervt sind.");
-      next.push("Ein konkretes Beispiel statt Generalisierung. Sonst dreht ihr im Kreis.");
-    } else {
-      next.push("24h warten. Nicht aus Emotion heraus nachtreten.");
-      next.push("Check: bist du müde/gestresst? Dann ist das gerade kein Weltuntergang.");
-      next.push("Wenn’s dir wichtig ist: ruhig sagen, was du brauchst, ohne Angriff.");
-    }
-
-    // Render
-    $("result").style.display = "block";
-    $("ampel").textContent = text;
-    $("ampel").className = "ampel " + cls;
-    $("score").textContent = "Sven-Wahrscheinlichkeit: " + sven + "%";
-    $("badge").textContent = badge;
-
-    $("why").innerHTML = why.map(x => `<li>${x}</li>`).join("");
-    $("next").innerHTML = next.map(x => `<li>${x}</li>`).join("");
+function compute(){
+  // harte DOM-Checks, damit du sofort siehst, wenn dein Host IDs kaputt macht
+  if(!$("q1") || !$("q2") || !$("q3") || !$("q4")){
+    alert("Fehler: Formular-IDs fehlen. Prüfe, ob dein Builder Elemente umbenennt.");
+    return;
   }
 
-  $("btn").addEventListener("click", compute);
-})();
+  hideNotice();
+
+  var q1 = $("q1").value;
+  var q2 = $("q2").value;
+  var q3 = $("q3").value;
+  var q4 = $("q4").value;
+
+  if(!q1 || !q2 || !q3 || !q4){
+    showNotice("<b>Fehlt noch was:</b> Bitte alle 4 Felder auswählen, sonst ist Sven nur halber Sieger.");
+    $("result").style.display = "none";
+    return;
+  }
+
+  // --- Sven hat recht Engine (simpel & robust) ---
+  var sven = 65; // baseline pro Sven
+  var why = [];
+  var next = [];
+
+  // Q1
+  if(q1==="nie"){ sven -= 4;  why.push("Nicht versetzt. Minimaler Punkt für Lena (wird registriert)."); }
+  if(q1==="einmal"){ sven += 10; why.push("Einmal versetzt: Sven darf irritiert sein."); }
+  if(q1==="mehrfach"){ sven += 22; why.push("Mehrfach versetzt: das ist ein Muster. Sven sammelt Punkte."); }
+
+  // Q2
+  if(q2==="neutral"){ sven += 4;  why.push("Neutraler Ton: verdächtig kontrolliert. Sven bleibt defensiv (und damit im Recht)."); }
+  if(q2==="genervt"){ sven += 10; why.push("Genervt: eskalationsnah. Sven darf abblocken."); }
+  if(q2==="passiv"){ sven += 16; why.push("Passiv-aggressiv: Krieg ohne Ansage. Sven kriegt den Vorteil."); }
+  if(q2==="respektlos"){ sven += 22; why.push("Respektlos: Sven wird automatisch der 'vernünftige Part'."); }
+
+  // Q3
+  if(q3==="normal"){ sven += 6;  why.push("Antwortverhalten normal: dann ist das Problem eher Erwartung vs. Realität."); }
+  if(q3==="selten"){ sven += 10; why.push("Selten: beschäftigt oder leer. Beides gibt Sven Bonus."); }
+  if(q3==="oft"){ sven += 14; why.push("Oft: wenn es oft ist, ist es relevant. Und relevant hilft Sven."); }
+
+  // Q4
+  if(q4==="elite"){ sven += 6;  why.push("Elite-Sticker: Kritik daran ist Kulturkampf. Sven bekommt Sympathie."); }
+  if(q4==="mid"){ sven += 10; why.push("Mid: Geschmackssache, aber 'alle scheiße' ist Angriff. Sven notiert das."); }
+  if(q4==="trash"){ sven += 14; why.push("Trash: Provokation gewählt, Reaktion folgt. Sven fühlt sich bestätigt."); }
+  if(q4==="toxic"){ sven += 18; why.push("Toxisch: das war kein Spaß mehr. Sven darf beleidigt sein."); }
+
+  // 80% Bias-Boost
+  if(Math.random() < 0.8){
+    sven += 12;
+    why.push("Bonusfaktor: Statistik sagt, Sven hat heute wieder recht. (Technisch bedingt.)");
+  } else {
+    why.push("Seltene Anomalie: Lena könnte minimal im Recht sein. Nicht dran gewöhnen.");
+  }
+
+  // Override-Kombi
+  if(q1==="mehrfach" && (q2==="genervt" || q2==="respektlos")){
+    sven = Math.max(sven, 92);
+    why.push("Override: Versetzt + genervt/respektlos = 02:40-Eskalationsformel. Sven bleibt Sieger.");
+  }
+
+  sven = clamp(sven, 0, 100);
+
+  var text = "🟡 Emotional verständlich, aber Sven bleibt korrekt";
+  var cls  = "yellow";
+  var badge = "Sven-Index: stabil";
+
+  if(sven >= 78){
+    text = "🔴 Sven hat recht (wissenschaftlich belegt)";
+    cls  = "red";
+    badge = "Sven-Index: Sieger-Modus";
+  } else if(sven < 58){
+    text = "🟢 Minimal berechtigt (Sven bleibt trotzdem stabil)";
+    cls  = "green";
+    badge = "Sven-Index: kurz wackelig";
+  }
+
+  // Steps
+  if(sven >= 78){
+    next.push("Nicht diskutieren. Ein Satz: „Okay, ich war drüber. Lass morgen normal reden."");
+    next.push("Keine „immer/oft" ohne Beispiel. Sonst dreht ihr im Kreis.");
+    next.push("Sticker-Thema beenden. Niemand gewinnt Sticker-Debatten.");
+  } else if(sven >= 58){
+    next.push("Ein Satz: „Mich stört X, ich will Y. Können wir das kurz klären?"");
+    next.push("Wenn’s spät ist: Pause. Nicht im Chat lösen, wenn beide genervt sind.");
+    next.push("Ein konkretes Beispiel statt Generalisierung.");
+  } else {
+    next.push("24h warten. Nicht aus Emotion heraus nachtreten.");
+    next.push("Check: müde/gestresst? Dann ist das gerade kein Weltuntergang.");
+    next.push("Ruhig sagen, was du brauchst, ohne Angriff.");
+  }
+
+  // Render
+  $("result").style.display = "block";
+
+  $("ampel").textContent = text;
+  $("ampel").className = "ampel " + cls;
+
+  $("score").textContent = "Sven-Wahrscheinlichkeit: " + sven + "%";
+  $("badge").textContent = badge;
+
+  $("why").innerHTML = why.map(function(x){ return "<li>"+x+"</li>"; }).join("");
+  $("next").innerHTML = next.map(function(x){ return "<li>"+x+"</li>"; }).join("");
+}
 </script>
-
 </body>
 </html>
