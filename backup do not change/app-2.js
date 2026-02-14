@@ -78,7 +78,12 @@
   function clipWords(text, maxWords) {
     const words = text.trim().split(/\s+/);
     if (words.length <= maxWords) return text;
-    const shortened = words.slice(0, maxWords).join(" ").replace(/[,:;.!?]+$/, "");
+    const fillerWords = new Set(["und", "oder", "für"]);
+    const trimmedWords = words.slice(0, maxWords);
+    const lastWordRaw = trimmedWords[trimmedWords.length - 1] || "";
+    const lastWord = lastWordRaw.toLowerCase().replace(/[,:;.!?]+$/, "");
+    if (fillerWords.has(lastWord) && trimmedWords.length > 1) trimmedWords.pop();
+    const shortened = trimmedWords.join(" ").replace(/[,:;.!?]+$/, "");
     return shortened + "…";
   }
 
@@ -233,7 +238,7 @@
     if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
 
     const unique = Array.from(new Set(steps));
-    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde/i.test(step));
+    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|schriftlich/i.test(step));
     if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
 
     return unique.slice(0, 3).map((item) => clipWords(item, 14));
@@ -430,7 +435,12 @@
         mittel: "Ein Punkt sollte noch geklärt werden.",
         niedrig: "Mehrere Punkte sind unklar – Ergebnis konservativ."
       };
-      confidenceEl.textContent = `Sicherheit: ${result.confidence} – ${confidenceTextMap[result.confidence]}`;
+      if (result.confidence) {
+        const detail = confidenceTextMap[result.confidence] || "Angaben teils unklar – Ergebnis konservativ.";
+        confidenceEl.textContent = `Sicherheit: ${result.confidence} – ${detail}`;
+      } else {
+        confidenceEl.textContent = "";
+      }
       renderList(whyList, result.why.map(decorateWhyItem));
       renderList(stepsList, result.steps);
       renderList(pitfallsList, result.pitfalls);
