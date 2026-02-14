@@ -1,138 +1,260 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grundstücks-Check – Ersteinschätzung (BauGB)</title>
-  <meta name="description" content="In 3–5 Minuten zur strukturierten Ersteinschätzung – Schwerpunkt Außenbereich (BauGB). Keine Datenerfassung im MVP." />
-  <link rel="stylesheet" href="/css/grundstueck.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grundstücks-Check</title>
+
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e2e8f0;
+
+  --green:#1f9d55;
+  --yellow:#f4b400;
+  --red:#d93025;
+
+  --radius:14px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.wrapper{
+  max-width:720px;
+  margin:40px auto;
+  padding:20px;
+}
+
+h1{
+  margin:0 0 10px;
+  font-size:28px;
+  line-height:1.2;
+}
+
+p.lead{
+  margin:0 0 30px;
+  color:var(--muted);
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-bottom:18px;
+}
+
+label{
+  font-weight:600;
+  display:block;
+  margin-bottom:8px;
+}
+
+select{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  font-size:15px;
+  background:#fff;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  background:#0f172a;
+  color:#fff;
+  margin-top:10px;
+}
+
+.result{
+  margin-top:30px;
+  padding:20px;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  display:none;
+}
+
+.ampel{
+  font-weight:800;
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.green{color:var(--green)}
+.yellow{color:var(--yellow)}
+.red{color:var(--red)}
+
+ul{
+  padding-left:18px;
+  margin:10px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+small{
+  display:block;
+  margin-top:20px;
+  color:var(--muted);
+  font-size:13px;
+}
+</style>
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <header class="header" role="banner">
-    <div class="container header__row">
-      <div class="brand" aria-label="Grundstücks-Check">
-        <span class="brand__mark" aria-hidden="true">∴</span>
-        <span class="brand__name">Grundstücks-Check</span>
-      </div>
+<div class="wrapper">
 
-      <nav class="nav" aria-label="Navigation">
-        <a href="#details">So funktioniert’s</a>
-        <a href="#details">Hinweis</a>
-      </nav>
-    </div>
-  </header>
+  <h1>Grundstücks-Check</h1>
+  <p class="lead">6 Fragen → Ampel-Ergebnis. Keine Datenerfassung.</p>
 
-  <main id="main">
-    <!-- HERO: nur das Wesentliche -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <p class="kicker">Deutschland-only · Außenbereich-first · BauGB-Logik</p>
+  <div class="card">
+    <label>Lage</label>
+    <select id="lage">
+      <option value="">Bitte wählen</option>
+      <option value="innen">Innenbereich</option>
+      <option value="aussen">Außenbereich</option>
+      <option value="unklar">Unklar</option>
+    </select>
+  </div>
 
-          <h1 id="hero-title">Darf man auf diesem Grundstück bauen oder wohnen?</h1>
+  <div class="card">
+    <label>Bebauungsplan</label>
+    <select id="bplan">
+      <option value="">Bitte wählen</option>
+      <option value="ja">Ja</option>
+      <option value="nein">Nein</option>
+      <option value="unbekannt">Unbekannt</option>
+    </select>
+  </div>
 
-          <p class="subline">
-            6 Fragen → Ampel + kurze Begründung. Dauer: 3–5 Minuten.
-          </p>
+  <div class="card">
+    <label>Grundstückstyp</label>
+    <select id="typ">
+      <option value="">Bitte wählen</option>
+      <option value="wald">Waldfläche</option>
+      <option value="land">Landwirtschaftlich</option>
+      <option value="freizeit">Freizeitgrundstück</option>
+      <option value="bauluecke">Baulücke</option>
+      <option value="sonst">Sonstiges</option>
+    </select>
+  </div>
 
-          <div class="chips" aria-label="Highlights">
-            <span class="chip">Ampel-Ergebnis</span>
-            <span class="chip">Fehlannahmen</span>
-            <span class="chip">ohne Datenerfassung</span>
-          </div>
+  <div class="card">
+    <label>Nutzung</label>
+    <select id="nutzung">
+      <option value="">Bitte wählen</option>
+      <option value="wohnen">Dauerhaft wohnen</option>
+      <option value="wochenend">Wochenend</option>
+      <option value="tiny">Tiny House</option>
+      <option value="priv">Landwirtschaftlich privilegiert</option>
+      <option value="gewerbe">Gewerblich</option>
+    </select>
+  </div>
 
-          <div class="actions">
-            <a class="btn btn--primary" href="#start">Grundstück prüfen</a>
-            <a class="btn btn--ghost" href="#details">Mehr Details</a>
-          </div>
+  <div class="card">
+    <label>Bestand</label>
+    <select id="bestand">
+      <option value="">Bitte wählen</option>
+      <option value="genehmigt">Genehmigt</option>
+      <option value="unklar">Unklar</option>
+      <option value="unbebaut">Unbebaut</option>
+    </select>
+  </div>
 
-          <p class="micro">
-            Keine Rechtsberatung. Du bekommst eine strukturierte Ersteinschätzung – nicht mehr, nicht weniger.
-          </p>
-        </div>
+  <div class="card">
+    <label>Erschließung</label>
+    <select id="erschliessung">
+      <option value="">Bitte wählen</option>
+      <option value="voll">Voll</option>
+      <option value="teilweise">Teilweise</option>
+      <option value="unklar">Unklar / nicht vorhanden</option>
+    </select>
+  </div>
 
-        <!-- Minimaler Preview-Block statt "viel Text" -->
-        <aside class="hero__panel" aria-label="Ampel-Vorschau">
-          <div class="panel__title">Ergebnis</div>
-          <div class="traffic" aria-hidden="true">
-            <span class="dot dot--g"></span>
-            <span class="dot dot--y"></span>
-            <span class="dot dot--r"></span>
-          </div>
-          <p class="panel__text">Klar. Neutral. Mit nächsten Schritten.</p>
-        </aside>
-      </div>
-    </section>
+  <button onclick="compute()">Ergebnis berechnen</button>
 
-    <!-- START: kleiner CTA-Block -->
-    <section id="start" class="start" aria-labelledby="start-title">
-      <div class="container">
-        <div class="start__card">
-          <div>
-            <h2 id="start-title">Start</h2>
-            <p class="muted">Der Entscheidungs-Flow kommt als nächster Schritt. Hier nur Landingpage.</p>
-          </div>
-          <a class="btn btn--primary" href="#" aria-label="Check starten (Platzhalter)">Jetzt starten</a>
-        </div>
-      </div>
-    </section>
+  <div id="result" class="result">
+    <div id="ampel" class="ampel"></div>
+    <div id="score"></div>
+    <ul id="begruendung"></ul>
+  </div>
 
-    <!-- DETAILS: Tiefe per Accordion, nicht als Wand aus Text -->
-    <section id="details" class="details" aria-labelledby="details-title">
-      <div class="container">
-        <h2 id="details-title">Details</h2>
+  <small>Hinweis: Keine Rechtsberatung. Strukturierte Ersteinschätzung nach typischen BauGB-Kriterien.</small>
 
-        <div class="accordion" role="region" aria-label="Details und Hinweise">
-          <details class="acc">
-            <summary class="acc__sum">Wie der Check funktioniert (3–5 Min)</summary>
-            <div class="acc__body">
-              <ol class="list">
-                <li><strong>Einordnen:</strong> Innen-/Außenbereich + B-Plan.</li>
-                <li><strong>Konkretisieren:</strong> Typ, Nutzung, Bestand, Erschließung.</li>
-                <li><strong>Ergebnis:</strong> Ampel + Gründe + Fehlannahmen + nächste Schritte.</li>
-              </ol>
-            </div>
-          </details>
+</div>
 
-          <details class="acc">
-            <summary class="acc__sum">Hinweis (keine Rechtsberatung)</summary>
-            <div class="acc__body">
-              <p class="muted">
-                Dies ist keine Rechtsberatung. Der Check liefert eine strukturierte Ersteinschätzung anhand typischer planungsrechtlicher Kriterien (BauGB) und ersetzt keine Prüfung durch Behörden/Fachleute.
-              </p>
-            </div>
-          </details>
+<script>
+function compute(){
 
-          <details class="acc">
-            <summary class="acc__sum">Daten & Tracking</summary>
-            <div class="acc__body">
-              <ul class="list">
-                <li>Kein Login.</li>
-                <li>Keine personenbezogenen Felder.</li>
-                <li>Kein Tracking-Pixel im MVP.</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-  </main>
+  let score = 50;
 
-  <footer class="footer" role="contentinfo">
-    <div class="container footer__row">
-      <nav class="footer__links" aria-label="Footer Links">
-        <a href="#" rel="nofollow">Impressum (Platzhalter)</a>
-        <a href="#" rel="nofollow">Datenschutz (Platzhalter)</a>
-      </nav>
-      <small class="muted">© <span id="year"></span> Grundstücks-Check</small>
-    </div>
-  </footer>
+  const lage = document.getElementById("lage").value;
+  const bplan = document.getElementById("bplan").value;
+  const typ = document.getElementById("typ").value;
+  const nutzung = document.getElementById("nutzung").value;
+  const bestand = document.getElementById("bestand").value;
+  const erschliessung = document.getElementById("erschliessung").value;
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  if(lage==="innen") score+=30;
+  if(lage==="aussen") score-=25;
+
+  if(bplan==="ja") score+=15;
+
+  if(typ==="wald") score-=20;
+  if(typ==="freizeit") score-=15;
+  if(typ==="bauluecke") score+=10;
+
+  if(nutzung==="priv") score+=20;
+  if(nutzung==="gewerbe") score-=5;
+
+  if(nutzung==="wohnen" && lage==="aussen") score-=20;
+  if(nutzung==="tiny" && lage==="aussen") score-=20;
+  if(nutzung==="tiny" && lage!=="aussen") score-=5;
+  if(nutzung==="wochenend" && lage==="aussen") score-=10;
+
+  if(bestand==="genehmigt") score+=10;
+
+  if(erschliessung==="voll") score+=10;
+  if(erschliessung==="teilweise") score+=5;
+  if(erschliessung==="unklar") score-=15;
+
+  if(score>100) score=100;
+  if(score<0) score=0;
+
+  let ampel="Gelb";
+  let klasse="yellow";
+
+  if(score>=70){ ampel="Grün"; klasse="green";}
+  if(score<40){ ampel="Rot"; klasse="red";}
+
+  document.getElementById("result").style.display="block";
+  document.getElementById("ampel").textContent=ampel;
+  document.getElementById("ampel").className="ampel "+klasse;
+  document.getElementById("score").textContent="Score: "+score+"/100";
+
+  const begr = document.getElementById("begruendung");
+  begr.innerHTML="";
+  begr.innerHTML += "<li>Lage: "+lage+"</li>";
+  begr.innerHTML += "<li>B-Plan: "+bplan+"</li>";
+  begr.innerHTML += "<li>Nutzung: "+nutzung+"</li>";
+}
+</script>
+
 </body>
 </html>
