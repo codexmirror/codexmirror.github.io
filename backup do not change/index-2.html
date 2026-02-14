@@ -23,7 +23,14 @@
 
           <form id="check-form" novalidate>
             <fieldset data-required="true" data-field="lage">
-              <legend>Lage <span aria-hidden="true">*</span></legend>
+              <legend class="sr-only">Lage <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
+                <span class="legend-main">Lage <span aria-hidden="true">*</span></span>
+                <button type="button" class="info-toggle" data-info="lage" aria-expanded="false" aria-controls="info-lage" aria-label="Erklärung zu Lage anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-lage" hidden>
+                Innenbereich: Liegt im Ort zwischen anderen Häusern. Außenbereich: Liegt außerhalb geschlossener Bebauung (z. B. Feld oder Waldrand).
+              </div>
               <div class="tile-options" role="radiogroup" aria-label="Lage">
                 <label class="tile"><input type="radio" name="lage" value="innen" />Innenbereich</label>
                 <label class="tile"><input type="radio" name="lage" value="aussen" />Außenbereich</label>
@@ -33,7 +40,14 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="bplan">
-              <legend>Bebauungsplan <span aria-hidden="true">*</span></legend>
+              <legend class="sr-only">Bebauungsplan <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
+                <span class="legend-main">Bebauungsplan <span aria-hidden="true">*</span></span>
+                <button type="button" class="info-toggle" data-info="bplan" aria-expanded="false" aria-controls="info-bplan" aria-label="Erklärung zu Bebauungsplan anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-bplan" hidden>
+                Legt verbindlich fest, was gebaut werden darf.
+              </div>
               <div class="tile-options" role="radiogroup" aria-label="Bebauungsplan">
                 <label class="tile"><input type="radio" name="bplan" value="ja" />Ja</label>
                 <label class="tile"><input type="radio" name="bplan" value="nein" />Nein</label>
@@ -43,7 +57,14 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="typ">
-              <legend>Grundstückstyp <span aria-hidden="true">*</span></legend>
+              <legend class="sr-only">Grundstückstyp <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
+                <span class="legend-main">Grundstückstyp <span aria-hidden="true">*</span></span>
+                <button type="button" class="info-toggle" data-info="typ" aria-expanded="false" aria-controls="info-typ" aria-label="Erklärung zu Grundstückstyp anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-typ" hidden>
+                Beschreibt die rechtliche Einordnung des Grundstücks.
+              </div>
               <div class="tile-options" role="radiogroup" aria-label="Grundstückstyp">
                 <label class="tile"><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
                 <label class="tile"><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
@@ -55,7 +76,14 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="nutzung">
-              <legend>Geplante Nutzung <span aria-hidden="true">*</span></legend>
+              <legend class="sr-only">Geplante Nutzung <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
+                <span class="legend-main">Geplante Nutzung <span aria-hidden="true">*</span></span>
+                <button type="button" class="info-toggle" data-info="nutzung" aria-expanded="false" aria-controls="info-nutzung" aria-label="Erklärung zu geplanter Nutzung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-nutzung" hidden>
+                Wofür das Grundstück dauerhaft oder regelmäßig genutzt werden soll.
+              </div>
               <div class="tile-options" role="radiogroup" aria-label="Geplante Nutzung">
                 <label class="tile"><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
                 <label class="tile"><input type="radio" name="nutzung" value="tiny" />Tiny House (dauerhaft)</label>
@@ -65,6 +93,8 @@
               </div>
               <p class="field-error" id="error-nutzung" aria-live="polite"></p>
             </fieldset>
+
+            <p class="microcopy">Unsicher? Wähle „Unklar" – wir rechnen konservativ.</p>
 
             <details id="optional-details">
               <summary>Optionale Angaben</summary>
@@ -91,29 +121,30 @@
 
         <article class="card result" aria-labelledby="result-title">
           <h2 id="result-title">Dein Ergebnis</h2>
+          <div class="result-frame">
+            <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.</p>
 
-          <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.</p>
+            <div id="result-content" hidden>
+              <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
+              <p class="score" id="result-score">50</p>
+              <p class="interpretation" id="result-interpretation"></p>
+              <p class="confidence" id="result-confidence"></p>
 
-          <div id="result-content" hidden>
-            <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
-            <p class="score" id="result-score">50</p>
-            <p class="interpretation" id="result-interpretation"></p>
-            <p class="confidence" id="result-confidence"></p>
+              <section class="result-section">
+                <h3>Warum</h3>
+                <ul id="why-list"></ul>
+              </section>
 
-            <section class="result-section">
-              <h3>Warum</h3>
-              <ul id="why-list"></ul>
-            </section>
+              <section class="result-section">
+                <h3>Nächste Schritte</h3>
+                <ul id="steps-list"></ul>
+              </section>
 
-            <section class="result-section">
-              <h3>Nächste Schritte</h3>
-              <ul id="steps-list"></ul>
-            </section>
-
-            <section class="result-section">
-              <h3>Typische Fallen</h3>
-              <ul id="pitfalls-list"></ul>
-            </section>
+              <section class="result-section">
+                <h3>Typische Fallen</h3>
+                <ul id="pitfalls-list"></ul>
+              </section>
+            </div>
           </div>
         </article>
       </section>

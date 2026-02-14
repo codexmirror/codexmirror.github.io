@@ -25,12 +25,16 @@
       }
     ],
     nextStepTemplates: {
-      lageUnklar: "Beim Bauamt Innen-/Außenbereich bestätigen lassen.",
-      bplanUnklar: "Bebauungsplan anfordern und Nutzung prüfen.",
-      bestandUnklar: "Bestand rechtlich prüfen.",
-      erschlTeilweise: "Erschließung schriftlich klären.",
-      cap: "Cap-Hinweis ernst nehmen und Ausnahmen mit Bauamt konkret klären.",
-      negativ: "Kritische Punkte priorisieren und belastbare Nachweise einholen."
+      lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
+      bplanUnklar: "Gemeinde: Bebauungsplan anfordern und geplante Nutzung prüfen lassen.",
+      bestandUnklar: "Bestehende Gebäude und Genehmigungen rechtlich prüfen lassen.",
+      erschlTeilweise: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser, Strom.",
+      aussenWohnen: "Bauamt: Ausnahmen für Wohnen im Außenbereich konkret abklären.",
+      waldWohnen: "Gemeinde/Forst: Nutzungsrecht klären; Wohnen im Wald meist ausgeschlossen.",
+      bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
+      landwpriv: "Privilegierung prüfen: Betrieb, Flächen und Bedarf belastbar nachweisen.",
+      freizeitWohnen: "Zweckbestimmung schriftlich prüfen: Freizeitnutzung ist nicht dauerhaftes Wohnen.",
+      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet zusammenstellen."
     },
     pitfallsTemplates: {
       tiny: "Tiny House gilt rechtlich meist als normales Wohnen.",
@@ -73,7 +77,8 @@
   function clipWords(text, maxWords) {
     const words = text.trim().split(/\s+/);
     if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(" ") + "…";
+    const shortened = words.slice(0, maxWords).join(" ").replace(/[,:;.!?]+$/, "");
+    return shortened + "…";
   }
 
   function makeReason(field, impact, text, category) {
@@ -174,7 +179,7 @@
     if (state.lage === "unklar") unclear += 1;
     if (state.bplan === "unklar") unclear += 1;
     if (state.bestand === "unklar") unclear += 1;
-    if (state.erschliessung === "teilweise") unclear += 1;
+    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") unclear += 1;
     if (unclear === 0) return "hoch";
     if (unclear === 1) return "mittel";
     return "niedrig";
@@ -191,29 +196,41 @@
 
   function buildWhy(activeCaps, reasons) {
     const list = [];
-    activeCaps.forEach((cap) => list.push(cap.reason));
+    activeCaps.forEach((cap) => list.push({ type: "cap", text: cap.reason }));
 
-    const negatives = sortReasons(reasons.filter((r) => r.impact < 0 && r.category !== "unclear")).map((r) => r.text);
-    const positives = sortReasons(reasons.filter((r) => r.impact > 0)).map((r) => r.text);
-    const unclear = sortReasons(reasons.filter((r) => r.category === "unclear")).map((r) => r.text);
+    const negatives = sortReasons(reasons.filter((r) => r.impact < 0 && r.category !== "unclear"));
+    const positives = sortReasons(reasons.filter((r) => r.impact > 0));
+    const unclear = sortReasons(reasons.filter((r) => r.category === "unclear"));
 
-    [negatives, positives, unclear].forEach((bucket) => {
-      bucket.forEach((text) => {
-        if (list.length < 4 && !list.includes(text)) list.push(text);
+    [
+      negatives.map((r) => ({ type: "negative", text: r.text })),
+      positives.map((r) => ({ type: "positive", text: r.text })),
+      unclear.map((r) => ({ type: "unclear", text: r.text }))
+    ].forEach((bucket) => {
+      bucket.forEach((item) => {
+        if (list.length < 4 && !list.some((existing) => existing.text === item.text)) list.push(item);
       });
     });
 
-    return list.slice(0, 4).map((item) => clipWords(item, 14));
+    return list.slice(0, 4).map((item) => ({ type: item.type, text: clipWords(item.text, 14) }));
   }
 
   function buildNextSteps(state, activeCaps, reasons) {
     const steps = [];
+
+    if (state.typ === "wald" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
+    if (state.lage === "aussen" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
+    if (state.typ === "freizeit" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
+    if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
+    if (state.bplan === "nein") steps.push(CONFIG.nextStepTemplates.bplanNein);
+    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlTeilweise);
+
     if (state.lage === "unklar") steps.push(CONFIG.nextStepTemplates.lageUnklar);
     if (state.bplan === "unklar") steps.push(CONFIG.nextStepTemplates.bplanUnklar);
     if (state.bestand === "unklar") steps.push(CONFIG.nextStepTemplates.bestandUnklar);
-    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlTeilweise);
-    if (activeCaps.length > 0) steps.push(CONFIG.nextStepTemplates.cap);
-    if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.negativ);
+
+    if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
+
     return Array.from(new Set(steps)).slice(0, 3).map((item) => clipWords(item, 14));
   }
 
@@ -222,8 +239,10 @@
     if (state.nutzung === "tiny") pitfalls.push(CONFIG.pitfallsTemplates.tiny);
     if (state.lage === "aussen" || (state.typ === "wald" && isWohnenOderTiny(state.nutzung))) pitfalls.push(CONFIG.pitfallsTemplates.aussen);
     if (state.typ === "freizeit") pitfalls.push(CONFIG.pitfallsTemplates.freizeit);
-    pitfalls.push(CONFIG.pitfallsTemplates.general);
-    return Array.from(new Set(pitfalls)).slice(0, 3).map((item) => clipWords(item, 14));
+
+    const unique = Array.from(new Set(pitfalls));
+    if (unique.length < 3) unique.push(CONFIG.pitfallsTemplates.general);
+    return unique.slice(0, 3).map((item) => clipWords(item, 14));
   }
 
   function ampel(score) {
@@ -304,13 +323,15 @@
     });
   }
 
-  const CAP_TEXTS = new Set(CONFIG.caps.map((cap) => clipWords(cap.reason, 14)));
-  const POSITIVE_TEXTS = new Set(Object.values(TEMPLATES.positives).map((text) => clipWords(text, 14)));
-
-  function decorateWhyText(text) {
-    if (CAP_TEXTS.has(text)) return `⚠ ${text}`;
-    if (POSITIVE_TEXTS.has(text)) return `✓ ${text}`;
-    return `⚠ ${text}`;
+  function decorateWhyItem(item) {
+    const map = {
+      cap: "⚠",
+      negative: "⚠",
+      positive: "✓",
+      unclear: "ℹ"
+    };
+    const marker = map[item.type] || "⚠";
+    return `${marker} ${item.text}`;
   }
 
   function animateScore(element, from, to, shouldAnimate) {
@@ -398,7 +419,7 @@
       ampelEl.textContent = result.ampelText;
       interpEl.textContent = result.interpretation;
       confidenceEl.textContent = `Confidence: ${result.confidence}`;
-      renderList(whyList, result.why.map(decorateWhyText));
+      renderList(whyList, result.why.map(decorateWhyItem));
       renderList(stepsList, result.steps);
       renderList(pitfallsList, result.pitfalls);
     };
