@@ -40,6 +40,7 @@ h1 { margin-bottom: 0.25rem; }
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 1rem;
+  overflow: visible;
 }
 
 .card-head {
@@ -53,6 +54,7 @@ fieldset {
   border: none;
   margin: 0;
   padding: 0;
+  overflow: visible;
 }
 
 fieldset + fieldset,
@@ -78,6 +80,8 @@ details fieldset { margin-top: 1rem; }
   justify-content: space-between;
   gap: 8px;
   margin-bottom: 0.25rem;
+  min-height: 40px;
+  overflow: visible;
 }
 
 legend {
@@ -85,7 +89,7 @@ legend {
   margin-bottom: 0;
 }
 
-.legend-main { display: inline-flex; gap: 0.25rem; align-items: center; }
+.legend-main { display: inline-flex; gap: 0.25rem; align-items: center; line-height: 1.25; }
 
 .info-toggle {
   display: inline-flex;
@@ -104,6 +108,7 @@ legend {
   touch-action: manipulation;
   position: relative;
   z-index: 1;
+  flex: 0 0 auto;
 }
 
 .info-toggle:hover {
@@ -125,6 +130,8 @@ legend {
   color: #556170;
   font-size: 0.92rem;
   line-height: 1.35;
+  white-space: normal;
+  word-break: normal;
   padding: 0 0.6rem;
   border-radius: 10px;
   background: #f5f7fa;
@@ -132,11 +139,12 @@ legend {
 }
 
 .field-info.is-open {
-  max-height: 320px;
+  max-height: 520px;
   opacity: 1;
   margin-bottom: 0.55rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  overflow: visible;
 }
 
 .tile-options {
@@ -203,8 +211,8 @@ summary {
 }
 
 .result--neutral {
-  padding-top: 0.85rem;
-  padding-bottom: 0.85rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .result--neutral .result-frame {
@@ -212,7 +220,7 @@ summary {
 }
 
 .result-placeholder {
-  margin: 0.6rem 0 0;
+  margin: 0.4rem 0 0;
   color: var(--muted);
 }
 
