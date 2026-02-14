@@ -425,18 +425,30 @@
     form.addEventListener("input", markTouched);
     form.addEventListener("click", markTouched);
 
+    let lastInfoToggleTs = 0;
+
+    const handleInfoToggle = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const button = event.currentTarget;
+      const now = Date.now();
+      if (now - lastInfoToggleTs < 120) return;
+      lastInfoToggleTs = now;
+
+      const panelId = button.getAttribute("aria-controls");
+      const panel = document.getElementById(panelId);
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+      closeAllInfoPanels();
+      if (!isOpen && panel) {
+        panel.hidden = false;
+        panel.classList.add("is-open");
+        button.setAttribute("aria-expanded", "true");
+      }
+    };
+
     infoButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const panelId = button.getAttribute("aria-controls");
-        const panel = document.getElementById(panelId);
-        const isOpen = button.getAttribute("aria-expanded") === "true";
-        closeAllInfoPanels();
-        if (!isOpen && panel) {
-          panel.hidden = false;
-          panel.classList.add("is-open");
-          button.setAttribute("aria-expanded", "true");
-        }
-      });
+      button.addEventListener("pointerup", handleInfoToggle);
+      button.addEventListener("click", handleInfoToggle);
     });
 
     optionalDetails.addEventListener("toggle", () => {

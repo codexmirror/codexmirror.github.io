@@ -59,34 +59,62 @@ fieldset + fieldset,
 details,
 details fieldset { margin-top: 1rem; }
 
-legend {
-  width: 100%;
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.field-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 0.25rem;
+}
+
+legend {
   font-weight: 650;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0;
 }
 
 .legend-main { display: inline-flex; gap: 0.25rem; align-items: center; }
 
 .info-toggle {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  min-width: 32px;
-  min-height: 32px;
-  padding: 0.15rem;
-  background: #fff;
-  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #cfd6df;
+  border-radius: 999px;
+  background: #f5f7fa;
+  color: #556170;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  touch-action: manipulation;
+  position: relative;
+  z-index: 1;
+}
+
+.info-toggle:hover {
+  background: #edf1f6;
+  color: #3f4a58;
 }
 
 .info-toggle[aria-expanded="true"] {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-soft);
+  border-color: #b8c2ce;
+  background: #eceff4;
+  color: #384454;
 }
 
 .field-info {
@@ -94,15 +122,21 @@ legend {
   max-height: 0;
   opacity: 0;
   margin: 0;
-  color: var(--muted);
+  color: #556170;
   font-size: 0.92rem;
-  transition: max-height 150ms linear, opacity 150ms linear, margin-bottom 150ms linear;
+  line-height: 1.35;
+  padding: 0 0.6rem;
+  border-radius: 10px;
+  background: #f5f7fa;
+  transition: max-height 150ms linear, opacity 150ms linear, margin-bottom 150ms linear, padding-top 150ms linear, padding-bottom 150ms linear;
 }
 
 .field-info.is-open {
-  max-height: 64px;
+  max-height: 70px;
   opacity: 1;
   margin-bottom: 0.55rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .tile-options {
@@ -215,6 +249,11 @@ li { margin: 0.3rem 0; }
 }
 
 @media (min-width: 900px) {
+  .info-toggle {
+    width: 32px;
+    height: 32px;
+  }
+
   .layout {
     grid-template-columns: 1fr 1fr;
     align-items: start;

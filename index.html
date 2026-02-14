@@ -23,10 +23,11 @@
 
           <form id="check-form" novalidate>
             <fieldset data-required="true" data-field="lage">
-              <legend>
+              <legend class="sr-only">Lage <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
                 <span class="legend-main">Lage <span aria-hidden="true">*</span></span>
-                <button type="button" class="info-toggle" data-info="lage" aria-expanded="false" aria-controls="info-lage">ⓘ</button>
-              </legend>
+                <button type="button" class="info-toggle" data-info="lage" aria-expanded="false" aria-controls="info-lage" aria-label="Erklärung zu Lage anzeigen oder ausblenden">ⓘ</button>
+              </div>
               <div class="field-info" id="info-lage" hidden>
                 Innenbereich: Liegt im Ort zwischen anderen Häusern. Außenbereich: Liegt außerhalb geschlossener Bebauung (z. B. Feld oder Waldrand).
               </div>
@@ -39,10 +40,11 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="bplan">
-              <legend>
+              <legend class="sr-only">Bebauungsplan <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
                 <span class="legend-main">Bebauungsplan <span aria-hidden="true">*</span></span>
-                <button type="button" class="info-toggle" data-info="bplan" aria-expanded="false" aria-controls="info-bplan">ⓘ</button>
-              </legend>
+                <button type="button" class="info-toggle" data-info="bplan" aria-expanded="false" aria-controls="info-bplan" aria-label="Erklärung zu Bebauungsplan anzeigen oder ausblenden">ⓘ</button>
+              </div>
               <div class="field-info" id="info-bplan" hidden>
                 Legt verbindlich fest, was gebaut werden darf.
               </div>
@@ -55,10 +57,11 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="typ">
-              <legend>
+              <legend class="sr-only">Grundstückstyp <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
                 <span class="legend-main">Grundstückstyp <span aria-hidden="true">*</span></span>
-                <button type="button" class="info-toggle" data-info="typ" aria-expanded="false" aria-controls="info-typ">ⓘ</button>
-              </legend>
+                <button type="button" class="info-toggle" data-info="typ" aria-expanded="false" aria-controls="info-typ" aria-label="Erklärung zu Grundstückstyp anzeigen oder ausblenden">ⓘ</button>
+              </div>
               <div class="field-info" id="info-typ" hidden>
                 Beschreibt die rechtliche Einordnung des Grundstücks.
               </div>
@@ -73,10 +76,11 @@
             </fieldset>
 
             <fieldset data-required="true" data-field="nutzung">
-              <legend>
+              <legend class="sr-only">Geplante Nutzung <span aria-hidden="true">*</span></legend>
+              <div class="field-head">
                 <span class="legend-main">Geplante Nutzung <span aria-hidden="true">*</span></span>
-                <button type="button" class="info-toggle" data-info="nutzung" aria-expanded="false" aria-controls="info-nutzung">ⓘ</button>
-              </legend>
+                <button type="button" class="info-toggle" data-info="nutzung" aria-expanded="false" aria-controls="info-nutzung" aria-label="Erklärung zu geplanter Nutzung anzeigen oder ausblenden">ⓘ</button>
+              </div>
               <div class="field-info" id="info-nutzung" hidden>
                 Wofür das Grundstück dauerhaft oder regelmäßig genutzt werden soll.
               </div>
