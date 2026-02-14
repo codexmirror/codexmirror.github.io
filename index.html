@@ -140,11 +140,21 @@
       ul.appendChild(li);
     }
 
+    function bindIOSFriendlyTap(button, handler){
+      if (!button) return;
+
+      button.addEventListener("click", handler);
+      button.addEventListener("touchend", function (event) {
+        event.preventDefault();
+        handler();
+      }, { passive: false });
+    }
+
     var goBtn = $("go");
     if (!goBtn) {
       alert("Debug: Button #go nicht gefunden.");
     } else {
-      goBtn.addEventListener("click", function () {
+      bindIOSFriendlyTap(goBtn, function () {
         // Debug-Ping: zeigt dir sofort, ob JS läuft
         var old = goBtn.textContent;
         goBtn.textContent = "✅ Klick erkannt";
@@ -201,7 +211,7 @@
         if (color === "y"){
           if (lage === "unklar") addLi(reasonsUL, "Innen-/Außenbereich ist unklar – das ist der wichtigste Faktor.");
           if (bplan === "unklar") addLi(reasonsUL, "B-Plan unklar – ohne ihn wird vieles zum Einzelfall.");
-          if (lage === "innen" && bplan === "nein") addLi(reasonsUL, "Innenbereich ohne B-Plan: oft „Einfügen" (Einzelfall), aber nicht automatisch schlecht.");
+          if (lage === "innen" && bplan === "nein") addLi(reasonsUL, "Innenbereich ohne B-Plan: oft „Einfügen“ (Einzelfall), aber nicht automatisch schlecht.");
           if (lage === "aussen" && nutz === "wochenend") addLi(reasonsUL, "Außenbereich + Wochenendnutzung ist oft schwierig und genehmigungsabhängig.");
           if (typ === "freizeit" && isWohnen) addLi(reasonsUL, "Freizeitgrundstück + Wohnen/Tiny ist häufig nicht vorgesehen.");
           if (nutz === "priv") {
@@ -221,8 +231,8 @@
         addLi(stepsUL, "Kurzbeschreibung: Was genau soll gebaut/genutzt werden? (Größe, Nutzung, Zeitraum).");
         addLi(stepsUL, "Wenn es ernst wird: Bauvoranfrage prüfen (kostet, spart teure Fehlkäufe).");
 
-        addLi(fallsUL, "„Nachbar hat auch was" ≠ Genehmigung (Altbestand, Ausnahme, andere Rechtslage).");
-        addLi(fallsUL, "Tiny House ≠ „kein Haus" – rechtlich oft ganz normales Wohnen.");
+        addLi(fallsUL, "„Nachbar hat auch was“ ≠ Genehmigung (Altbestand, Ausnahme, andere Rechtslage).");
+        addLi(fallsUL, "Tiny House ≠ „kein Haus“ – rechtlich oft ganz normales Wohnen.");
         addLi(fallsUL, "Schöne Lage/Google Maps ≠ planungsrechtliche Zulässigkeit.");
 
         // Ampel rendern
@@ -235,7 +245,9 @@
 
         var res = $("result");
         res.style.display = "block";
-        res.scrollIntoView({behavior:"smooth", block:"start"});
+        if (typeof res.scrollIntoView === "function") {
+          res.scrollIntoView();
+        }
       });
     }
   </script>
