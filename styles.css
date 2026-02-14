@@ -128,11 +128,11 @@ legend {
   padding: 0 0.6rem;
   border-radius: 10px;
   background: #f5f7fa;
-  transition: max-height 150ms linear, opacity 150ms linear, margin-bottom 150ms linear, padding-top 150ms linear, padding-bottom 150ms linear;
+  transition: max-height 150ms ease, opacity 150ms ease, margin-bottom 150ms ease, padding-top 150ms ease, padding-bottom 150ms ease;
 }
 
 .field-info.is-open {
-  max-height: 70px;
+  max-height: 320px;
   opacity: 1;
   margin-bottom: 0.55rem;
   padding-top: 0.5rem;
@@ -202,6 +202,15 @@ summary {
   min-height: 430px;
 }
 
+.result--neutral {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+}
+
+.result--neutral .result-frame {
+  min-height: 0;
+}
+
 .result-placeholder {
   margin: 0.6rem 0 0;
   color: var(--muted);
@@ -259,7 +268,7 @@ li { margin: 0.3rem 0; }
     align-items: start;
   }
 
-  .result {
+  .result:not(.result--neutral) {
     position: sticky;
     top: 1rem;
   }

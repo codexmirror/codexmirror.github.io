@@ -336,6 +336,7 @@
     const form = document.getElementById("check-form");
     if (!form) return;
 
+    const resultCard = document.querySelector(".result");
     const resultPlaceholder = document.getElementById("result-placeholder");
     const resultContent = document.getElementById("result-content");
     const scoreEl = document.getElementById("result-score");
@@ -379,12 +380,14 @@
       renderErrors(state);
 
       if (result.neutral) {
+        if (resultCard) resultCard.classList.add("result--neutral");
         resultPlaceholder.hidden = false;
         resultContent.hidden = true;
         lastRenderedScore = 50;
         return;
       }
 
+      if (resultCard) resultCard.classList.remove("result--neutral");
       resultPlaceholder.hidden = true;
       resultContent.hidden = false;
 
