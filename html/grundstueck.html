@@ -17,7 +17,7 @@
   --yellow:#f4b400;
   --red:#d93025;
 
-  --radius:14px;
+  --radius:16px;
 }
 
 *{box-sizing:border-box}
@@ -44,6 +44,8 @@ h1{
   color:var(--muted);
 }
 
+/* FORM */
+
 .card{
   background:var(--card);
   border:1px solid var(--line);
@@ -62,6 +64,7 @@ label{
   font-size:13px;
   color:var(--muted);
   margin-bottom:10px;
+  line-height:1.4;
 }
 
 select{
@@ -75,9 +78,9 @@ select{
 
 button{
   width:100%;
-  padding:14px;
+  padding:15px;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   font-weight:700;
   font-size:15px;
   cursor:pointer;
@@ -86,41 +89,70 @@ button{
   margin-top:14px;
 }
 
+/* RESULT */
+
 .result{
-  margin-top:30px;
-  padding:20px;
+  margin-top:40px;
+  padding:28px;
   border-radius:var(--radius);
   border:1px solid var(--line);
   background:#fff;
   display:none;
 }
 
-.ampel{
-  font-weight:800;
-  font-size:22px;
-  margin-bottom:10px;
+.result-header{
+  text-align:center;
+  margin-bottom:24px;
 }
 
-.green{color:var(--green)}
-.yellow{color:var(--yellow)}
-.red{color:var(--red)}
+.ampel-circle{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:20px;
+  color:#fff;
+}
 
-.section-title{
-  font-weight:700;
-  margin-top:16px;
+.green-bg{background:var(--green)}
+.yellow-bg{background:var(--yellow)}
+.red-bg{background:var(--red)}
+
+.result-title{
+  font-size:22px;
+  font-weight:800;
   margin-bottom:6px;
 }
 
-ul{
-  padding-left:18px;
-  margin:4px 0 0;
+.result-sub{
   color:var(--muted);
   font-size:14px;
 }
 
+.section{
+  margin-top:22px;
+}
+
+.section h3{
+  font-size:15px;
+  margin-bottom:8px;
+}
+
+ul{
+  padding-left:18px;
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
 small{
   display:block;
-  margin-top:20px;
+  margin-top:30px;
   color:var(--muted);
   font-size:12px;
 }
@@ -132,14 +164,11 @@ small{
 <div class="wrapper">
 
 <h1>Grundstücks-Check</h1>
-<p class="lead">6 Fragen → strukturierte Ersteinschätzung (BauGB-Logik). Keine Datenerfassung.</p>
+<p class="lead">6 Fragen → strukturierte Ersteinschätzung. Keine Datenerfassung.</p>
 
 <div class="card">
 <label>Lage</label>
-<div class="help">
-Innenbereich = Teil eines zusammenhängend bebauten Ortes.  
-Außenbereich = außerhalb geschlossener Bebauung (z.B. Feld, Wald).
-</div>
+<div class="help">Innenbereich = im Ort. Außenbereich = außerhalb (z.B. Feld, Wald).</div>
 <select id="lage">
 <option value="">Bitte wählen</option>
 <option value="innen">Innenbereich</option>
@@ -149,10 +178,8 @@ Außenbereich = außerhalb geschlossener Bebauung (z.B. Feld, Wald).
 </div>
 
 <div class="card">
-<label>Bebauungsplan (B-Plan)</label>
-<div class="help">
-Ein Bebauungsplan legt verbindlich fest, was und wie gebaut werden darf.
-</div>
+<label>Bebauungsplan</label>
+<div class="help">Regelt verbindlich, was gebaut werden darf.</div>
 <select id="bplan">
 <option value="">Bitte wählen</option>
 <option value="ja">Ja</option>
@@ -163,9 +190,6 @@ Ein Bebauungsplan legt verbindlich fest, was und wie gebaut werden darf.
 
 <div class="card">
 <label>Grundstückstyp</label>
-<div class="help">
-Wald- oder Freizeitflächen sind häufig nicht als Wohnbauland vorgesehen.
-</div>
 <select id="typ">
 <option value="">Bitte wählen</option>
 <option value="wald">Waldfläche</option>
@@ -177,16 +201,12 @@ Wald- oder Freizeitflächen sind häufig nicht als Wohnbauland vorgesehen.
 </div>
 
 <div class="card">
-<label>Geplante Nutzung</label>
-<div class="help">
-"Dauerhaft wohnen" bedeutet Hauptwohnsitz.  
-"Privilegiert" gilt nur für echte landwirtschaftliche Betriebe.
-</div>
+<label>Nutzung</label>
 <select id="nutzung">
 <option value="">Bitte wählen</option>
 <option value="wohnen">Dauerhaft wohnen</option>
 <option value="wochenend">Wochenendnutzung</option>
-<option value="tiny">Tiny House (Wohnen)</option>
+<option value="tiny">Tiny House</option>
 <option value="priv">Landwirtschaftlich privilegiert</option>
 <option value="gewerbe">Gewerblich</option>
 </select>
@@ -196,36 +216,47 @@ Wald- oder Freizeitflächen sind häufig nicht als Wohnbauland vorgesehen.
 <label>Bestand</label>
 <select id="bestand">
 <option value="">Bitte wählen</option>
-<option value="genehmigt">Genehmigtes Gebäude vorhanden</option>
-<option value="unklar">Gebäude vorhanden, Genehmigung unklar</option>
+<option value="genehmigt">Genehmigt</option>
+<option value="unklar">Unklar</option>
 <option value="unbebaut">Unbebaut</option>
 </select>
 </div>
 
 <div class="card">
 <label>Erschließung</label>
-<select id="erschliessung">
+<select id="ersch">
 <option value="">Bitte wählen</option>
-<option value="voll">Voll erschlossen</option>
+<option value="voll">Voll</option>
 <option value="teilweise">Teilweise</option>
-<option value="unklar">Unklar / nicht vorhanden</option>
+<option value="unklar">Unklar</option>
 </select>
 </div>
 
-<button onclick="compute()">Ergebnis berechnen</button>
+<button onclick="compute()">Ergebnis anzeigen</button>
 
 <div id="result" class="result">
-<div id="ampel" class="ampel"></div>
-<div id="score"></div>
 
-<div class="section-title">Begründung</div>
-<ul id="begruendung"></ul>
+<div class="result-header">
+<div id="circle" class="ampel-circle">–</div>
+<div id="resultTitle" class="result-title"></div>
+<div id="score" class="result-sub"></div>
+</div>
 
-<div class="section-title">Typische Fehlannahmen</div>
-<ul id="fehlannahmen"></ul>
+<div class="section">
+<h3>Warum?</h3>
+<ul id="why"></ul>
+</div>
 
-<div class="section-title">Nächste Schritte</div>
-<ul id="steps"></ul>
+<div class="section">
+<h3>Was viele falsch annehmen</h3>
+<ul id="myths"></ul>
+</div>
+
+<div class="section">
+<h3>Was du jetzt tun kannst</h3>
+<ul id="next"></ul>
+</div>
+
 </div>
 
 <small>Hinweis: Keine Rechtsberatung. Strukturierte Ersteinschätzung nach typischen BauGB-Kriterien.</small>
@@ -238,121 +269,78 @@ function compute(){
 let score = 50;
 let override = null;
 
-const lage = document.getElementById("lage").value;
-const bplan = document.getElementById("bplan").value;
-const typ = document.getElementById("typ").value;
-const nutzung = document.getElementById("nutzung").value;
-const bestand = document.getElementById("bestand").value;
-const ersch = document.getElementById("erschliessung").value;
+const lage = lageSelect.value;
+const bplan = bplanSelect.value;
+const typ = typSelect.value;
+const nutzung = nutzungSelect.value;
+const bestand = bestandSelect.value;
+const ersch = erschSelect.value;
 
-/* Basis Score */
+/* SCORE */
 
 if(lage==="innen") score+=30;
 if(lage==="aussen") score-=25;
-
 if(bplan==="ja") score+=15;
-
 if(typ==="wald") score-=20;
 if(typ==="freizeit") score-=15;
 if(typ==="bauluecke") score+=10;
-
 if(nutzung==="priv") score+=20;
 if(nutzung==="gewerbe") score-=5;
-
 if(nutzung==="wohnen" && lage==="aussen") score-=20;
 if(nutzung==="tiny" && lage==="aussen") score-=20;
-if(nutzung==="tiny" && lage!=="aussen") score-=5;
 if(nutzung==="wochenend" && lage==="aussen") score-=10;
-
 if(bestand==="genehmigt") score+=10;
-
 if(ersch==="voll") score+=10;
 if(ersch==="teilweise") score+=5;
 if(ersch==="unklar") score-=15;
 
-if(score>100) score=100;
-if(score<0) score=0;
+score=Math.max(0,Math.min(100,score));
 
-/* Override-Regeln */
+/* OVERRIDE */
 
-if(lage==="aussen" && nutzung==="wohnen" && nutzung!=="priv"){
-  override="rot";
-}
+if(lage==="aussen" && nutzung==="wohnen") override="rot";
+if(typ==="wald" && (nutzung==="wohnen"||nutzung==="tiny")) override="rot";
+if(lage==="innen" && bplan==="ja" && typ==="bauluecke") override="gruen";
 
-if(typ==="wald" && (nutzung==="wohnen" || nutzung==="tiny")){
-  override="rot";
-}
+/* AMPEL */
 
-if(lage==="innen" && bplan==="ja" && typ==="bauluecke"){
-  override="gruen";
-}
+let status="Gelb";
+let bg="yellow-bg";
+let headline="Stark eingeschränkt – Details entscheiden.";
 
-/* Ampel bestimmen */
+if(score>=70){status="Grün"; bg="green-bg"; headline="Grundsätzlich möglich – Details entscheiden.";}
+if(score<40){status="Rot"; bg="red-bg"; headline="Sehr unwahrscheinlich – hohe Hürden.";}
 
-let ampel="Gelb";
-let klasse="yellow";
+if(override==="rot"){status="Rot"; bg="red-bg"; headline="Sehr unwahrscheinlich – planungsrechtlich kritisch.";}
+if(override==="gruen"){status="Grün"; bg="green-bg"; headline="Gute strukturelle Voraussetzungen.";}
 
-if(score>=70){ampel="Grün"; klasse="green";}
-if(score<40){ampel="Rot"; klasse="red";}
+result.style.display="block";
+circle.className="ampel-circle "+bg;
+circle.textContent=status;
+resultTitle.textContent=headline;
+score.textContent="Strukturelle Wahrscheinlichkeit: "+score+" / 100";
 
-if(override==="rot"){ampel="Rot"; klasse="red";}
-if(override==="gruen"){ampel="Grün"; klasse="green";}
+/* WHY */
 
-document.getElementById("result").style.display="block";
-document.getElementById("ampel").textContent=ampel;
-document.getElementById("ampel").className="ampel "+klasse;
-document.getElementById("score").textContent="Score: "+score+"/100";
+why.innerHTML="";
+if(lage==="aussen") why.innerHTML+="<li>Außenbereich schützt Landschaft – neue Wohnnutzung ist stark begrenzt.</li>";
+if(bplan==="ja") why.innerHTML+="<li>Ein Bebauungsplan schafft klare Regeln.</li>";
+if(typ==="wald") why.innerHTML+="<li>Waldflächen sind meist nicht als Wohnbauland vorgesehen.</li>";
+if(bestand==="genehmigt") why.innerHTML+="<li>Genehmigter Bestand kann Situation verbessern.</li>";
 
-/* Begründung */
+/* MYTHS */
 
-let begr = document.getElementById("begruendung");
-begr.innerHTML="";
+myths.innerHTML="";
+if(status==="Grün") myths.innerHTML+="<li>Grün heißt nicht: alles automatisch erlaubt.</li>";
+if(status==="Gelb") myths.innerHTML+="<li>Einzelbeispiele in der Nähe sind kein Automatismus.</li>";
+if(status==="Rot") myths.innerHTML+="<li>Schöne Lage bedeutet nicht Genehmigungsfähigkeit.</li>";
 
-if(lage==="aussen")
-begr.innerHTML+="<li>Im Außenbereich sind neue Wohnnutzungen planungsrechtlich stark eingeschränkt.</li>";
+/* NEXT */
 
-if(lage==="innen")
-begr.innerHTML+="<li>Im Innenbereich gelten grundsätzlich bessere Voraussetzungen für Bebauung.</li>";
-
-if(bplan==="ja")
-begr.innerHTML+="<li>Ein Bebauungsplan schafft verbindliche Regeln und erhöht Planungssicherheit.</li>";
-
-if(typ==="wald")
-begr.innerHTML+="<li>Waldflächen sind in der Regel nicht als Wohnbauland vorgesehen.</li>";
-
-if(nutzung==="wohnen")
-begr.innerHTML+="<li>Dauerhaftes Wohnen ist rechtlich anspruchsvoller als reine Freizeitnutzung.</li>";
-
-if(bestand==="genehmigt")
-begr.innerHTML+="<li>Vorhandene genehmigte Bebauung kann die Situation positiv beeinflussen.</li>";
-
-/* Fehlannahmen */
-
-let fehl = document.getElementById("fehlannahmen");
-fehl.innerHTML="";
-
-if(ampel==="Grün"){
-fehl.innerHTML+="<li>Innenbereich heißt nicht automatisch: alles ist erlaubt.</li>";
-fehl.innerHTML+="<li>Gestaltung und Nutzung können weiter eingeschränkt sein.</li>";
-}
-
-if(ampel==="Gelb"){
-fehl.innerHTML+="<li>Ein Gebäude in der Nähe bedeutet keine automatische Genehmigung.</li>";
-fehl.innerHTML+="<li>Details können entscheidend sein.</li>";
-}
-
-if(ampel==="Rot"){
-fehl.innerHTML+="<li>Schöne Lage bedeutet nicht Genehmigungsfähigkeit.</li>";
-fehl.innerHTML+="<li>Tiny House gilt rechtlich meist als Wohnen.</li>";
-}
-
-/* Schritte */
-
-let steps = document.getElementById("steps");
-steps.innerHTML="";
-steps.innerHTML+="<li>Bebauungsplan oder Satzungen bei der Gemeinde prüfen.</li>";
-steps.innerHTML+="<li>Klare Projektbeschreibung erstellen.</li>";
-steps.innerHTML+="<li>Bei Unsicherheit Bauamt kontaktieren oder Bauvoranfrage prüfen.</li>";
+next.innerHTML="";
+next.innerHTML+="<li>B-Plan und Satzungen bei der Gemeinde prüfen.</li>";
+next.innerHTML+="<li>Projekt klar definieren (Nutzung, Größe).</li>";
+next.innerHTML+="<li>Bei Unsicherheit Bauamt oder Bauvoranfrage nutzen.</li>";
 
 }
 </script>
