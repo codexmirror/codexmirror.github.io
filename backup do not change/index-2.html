@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grundstücks-Realitätscheck</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <h1>Grundstücks-Realitätscheck</h1>
+        <p class="subline">In wenigen Minuten eine erste Einschätzung, ob dein Vorhaben realistisch ist.</p>
+        <p class="disclaimer">Keine Rechtsberatung. Ersteinschätzung anhand typischer Muster und deiner Angaben.</p>
+      </header>
+
+      <section class="layout" aria-label="Realitätscheck Tool">
+        <article class="card" aria-labelledby="inputs-title">
+          <div class="card-head">
+            <h2 id="inputs-title">Deine Angaben</h2>
+            <button id="reset-button" type="button" class="secondary">Zurücksetzen</button>
+          </div>
+
+          <form id="check-form" novalidate>
+            <fieldset data-required="true" data-field="lage">
+              <legend>Lage <span aria-hidden="true">*</span></legend>
+              <div class="tile-options" role="radiogroup" aria-label="Lage">
+                <label class="tile"><input type="radio" name="lage" value="innen" />Innenbereich</label>
+                <label class="tile"><input type="radio" name="lage" value="aussen" />Außenbereich</label>
+                <label class="tile"><input type="radio" name="lage" value="unklar" />Unklar</label>
+              </div>
+              <p class="field-error" id="error-lage" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset data-required="true" data-field="bplan">
+              <legend>Bebauungsplan <span aria-hidden="true">*</span></legend>
+              <div class="tile-options" role="radiogroup" aria-label="Bebauungsplan">
+                <label class="tile"><input type="radio" name="bplan" value="ja" />Ja</label>
+                <label class="tile"><input type="radio" name="bplan" value="nein" />Nein</label>
+                <label class="tile"><input type="radio" name="bplan" value="unklar" />Unklar</label>
+              </div>
+              <p class="field-error" id="error-bplan" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset data-required="true" data-field="typ">
+              <legend>Grundstückstyp <span aria-hidden="true">*</span></legend>
+              <div class="tile-options" role="radiogroup" aria-label="Grundstückstyp">
+                <label class="tile"><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
+                <label class="tile"><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
+                <label class="tile"><input type="radio" name="typ" value="freizeit" />Freizeitgrundstück</label>
+                <label class="tile"><input type="radio" name="typ" value="wald" />Wald</label>
+                <label class="tile"><input type="radio" name="typ" value="sonstiges" />Sonstiges</label>
+              </div>
+              <p class="field-error" id="error-typ" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset data-required="true" data-field="nutzung">
+              <legend>Geplante Nutzung <span aria-hidden="true">*</span></legend>
+              <div class="tile-options" role="radiogroup" aria-label="Geplante Nutzung">
+                <label class="tile"><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
+                <label class="tile"><input type="radio" name="nutzung" value="tiny" />Tiny House (dauerhaft)</label>
+                <label class="tile"><input type="radio" name="nutzung" value="wochenende" />Wochenendnutzung</label>
+                <label class="tile"><input type="radio" name="nutzung" value="landwpriv" />Landwirtschaftlich privilegiert</label>
+                <label class="tile"><input type="radio" name="nutzung" value="gewerblich" />Gewerblich</label>
+              </div>
+              <p class="field-error" id="error-nutzung" aria-live="polite"></p>
+            </fieldset>
+
+            <details id="optional-details">
+              <summary>Optionale Angaben</summary>
+              <fieldset>
+                <legend>Bestand</legend>
+                <div class="tile-options" role="radiogroup" aria-label="Bestand">
+                  <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
+                  <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
+                  <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Erschließung</legend>
+                <div class="tile-options" role="radiogroup" aria-label="Erschließung">
+                  <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
+                  <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
+                  <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
+                </div>
+              </fieldset>
+            </details>
+          </form>
+        </article>
+
+        <article class="card result" aria-labelledby="result-title">
+          <h2 id="result-title">Dein Ergebnis</h2>
+
+          <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.</p>
+
+          <div id="result-content" hidden>
+            <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
+            <p class="score" id="result-score">50</p>
+            <p class="interpretation" id="result-interpretation"></p>
+            <p class="confidence" id="result-confidence"></p>
+
+            <section class="result-section">
+              <h3>Warum</h3>
+              <ul id="why-list"></ul>
+            </section>
+
+            <section class="result-section">
+              <h3>Nächste Schritte</h3>
+              <ul id="steps-list"></ul>
+            </section>
+
+            <section class="result-section">
+              <h3>Typische Fallen</h3>
+              <ul id="pitfalls-list"></ul>
+            </section>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
