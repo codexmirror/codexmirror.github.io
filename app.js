@@ -343,19 +343,10 @@
       renderErrors(state);
 
       if (result.neutral) {
-        const missing = CONFIG.requiredFields
-          .filter((field) => !state[field])
-          .map((field) => field === "bplan" ? "Bebauungsplan" : field[0].toUpperCase() + field.slice(1));
-
-        resultPlaceholder.textContent = missing.length > 0
-          ? `Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten. Fehlend: ${missing.join(", ")}.`
-          : "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.";
         resultPlaceholder.hidden = false;
         resultContent.hidden = true;
         return;
       }
-
-      resultPlaceholder.textContent = "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.";
 
       resultPlaceholder.hidden = true;
       resultContent.hidden = false;
@@ -377,13 +368,21 @@
       });
     });
 
-    const handleFieldUpdate = (event) => {
-      if (event.target && event.target.name) touched.add(event.target.name);
+    const markTouched = (event) => {
+      let input = null;
+      if (event.target && event.target.matches && event.target.matches("input[type=radio]")) {
+        input = event.target;
+      } else if (event.target && event.target.closest) {
+        const label = event.target.closest("label");
+        if (label) input = label.querySelector("input[type=radio]");
+      }
+      if (input && input.name) touched.add(input.name);
       update();
     };
 
-    form.addEventListener("change", handleFieldUpdate);
-    form.addEventListener("input", handleFieldUpdate);
+    form.addEventListener("change", markTouched);
+    form.addEventListener("input", markTouched);
+    form.addEventListener("click", markTouched);
 
     optionalDetails.addEventListener("toggle", () => {
       if (optionalDetails.open) optionalDetails.dataset.opened = "true";
