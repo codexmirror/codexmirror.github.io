@@ -1,474 +1,341 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ist Lena berechtigt, sauer auf Sven?</title>
-  <style>
-    :root{
-      --bg:#f7f8fc;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:#e5e7eb;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ist Lena berechtigt, sauer auf Sven?</title>
 
-      --ok:#16a34a;
-      --mid:#f59e0b;
-      --bad:#dc2626;
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --line:#e2e8f0;
 
-      --radius:16px;
-      --shadow: 0 12px 34px rgba(15,23,42,.08);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(900px 500px at 15% 0%, #eef2ff, transparent 60%),
-        radial-gradient(900px 500px at 95% 30%, #ecfeff, transparent 55%),
-        var(--bg);
-    }
-    .wrap{max-width:860px;margin:28px auto;padding:0 16px 48px}
-    h1{
-      margin:0;
-      font-size: clamp(26px, 3.2vw, 38px);
-      letter-spacing:-.02em;
-      line-height:1.1;
-      font-weight: 850;
-      background: linear-gradient(135deg,#0f172a,#334155);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-    .sub{
-      margin:10px 0 18px;
-      color:var(--muted);
-      line-height:1.55;
-      max-width: 70ch;
-      font-size:14px;
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .head{
-      padding:16px 18px;
-      display:flex;
-      gap:12px;
-      justify-content:space-between;
-      align-items:flex-start;
-      border-bottom:1px solid var(--line);
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--muted);
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .dot{width:10px;height:10px;border-radius:50%;background:var(--mid)}
-    .badge{
-      font-size:12px;
-      background:#eef2ff;
-      border:1px solid #e0e7ff;
-      padding:6px 10px;
-      border-radius:999px;
-      white-space:nowrap;
-      color:#0b1220;
-    }
+  --green:#1f9d55;
+  --yellow:#f4b400;
+  --red:#d93025;
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      padding:16px 18px 8px;
-    }
-    @media (max-width: 740px){ .grid{grid-template-columns:1fr} }
+  --radius:14px;
+}
 
-    .field{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      background:#fbfdff;
-    }
-    .field b{display:block;font-size:13px;margin-bottom:6px}
-    .help{font-size:12px;color:var(--muted);line-height:1.45;margin:0 0 10px}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    select{
-      width:100%;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:10px 12px;
-      background:#fff;
-      color:var(--text);
-      font-size:14px;
-      outline:none;
-    }
-    select:focus{
-      border-color:#c7d2fe;
-      box-shadow:0 0 0 3px rgba(99,102,241,.18);
-    }
+.wrapper{
+  max-width:760px;
+  margin:40px auto;
+  padding:20px;
+}
 
-    .actions{
-      display:flex;
-      gap:10px;
-      padding: 0 18px 18px;
-      flex-wrap:wrap;
-    }
-    button{
-      border:0;
-      border-radius:12px;
-      padding:10px 14px;
-      font-weight:700;
-      cursor:pointer;
-      font-size:14px;
-    }
-    .primary{background:#111827;color:#fff}
-    .primary:hover{filter:brightness(1.05)}
-    .ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-    .danger{background:#fff5f5;border:1px solid #fee2e2;color:#7f1d1d}
+h1{
+  margin:0 0 8px;
+  font-size:28px;
+}
 
-    .result{
-      border-top:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(239,246,255,.75), transparent 60%), #fff;
-      padding: 16px 18px 18px;
-    }
-    .scoreline{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .score{
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:-.02em;
-    }
-    .meter{
-      width:340px;
-      max-width:100%;
-      height:10px;
-      background:#e5e7eb;
-      border-radius:999px;
-      overflow:hidden;
-      border:1px solid var(--line);
-    }
-    .bar{height:100%;width:0%;background:var(--mid);transition:width .35s ease, background .35s ease}
+.lead{
+  margin:0 0 30px;
+  color:var(--muted);
+}
 
-    .verdict{
-      margin: 8px 0 0;
-      font-size:15px;
-      line-height:1.55;
-      color:#0b1220;
-    }
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-bottom:14px;
+}
 
-    .mini{
-      margin-top:12px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-size:12px;
-      color:var(--muted);
-    }
+label{
+  font-weight:700;
+  display:block;
+  margin-bottom:6px;
+}
 
-    .note{
-      margin-top:12px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.45;
-    }
+.help{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:10px;
+  line-height:1.4;
+}
 
-    .easter{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px dashed var(--line);
-      color:#334155;
-      background:#f8fafc;
-      font-size:12px;
-      line-height:1.45;
-      display:none;
-    }
-  </style>
+select{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  font-size:14px;
+  background:#fff;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-weight:800;
+  font-size:15px;
+  cursor:pointer;
+  background:#0f172a;
+  color:#fff;
+  margin-top:14px;
+}
+
+.result{
+  margin-top:30px;
+  padding:20px;
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+  display:none;
+}
+
+.ampel{
+  font-weight:900;
+  font-size:22px;
+  margin-bottom:10px;
+}
+
+.green{color:var(--green)}
+.yellow{color:var(--yellow)}
+.red{color:var(--red)}
+
+.section-title{
+  font-weight:800;
+  margin-top:16px;
+  margin-bottom:6px;
+}
+
+ul{
+  padding-left:18px;
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+}
+
+small{
+  display:block;
+  margin-top:20px;
+  color:var(--muted);
+  font-size:12px;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <h1>Ist Lena berechtigt, sauer auf Sven?</h1>
-    <p class="sub">
-      5 Kriterien. 0 Objektivität. 100% wissenschaftlich: <b>Sven hat recht</b> (zumindest laut Sven).
-      <br/>Tipp: Das Ding ist ein Joke. Nicht vor Gericht verwenden.
-    </p>
+<div class="wrapper">
 
-    <div class="card">
-      <div class="head">
-        <div class="pill"><span class="dot" id="dot"></span><span id="status">Bereit für den Realitätscheck</span></div>
-        <div class="badge">Chat-Drama-Analyzer v1.2</div>
-      </div>
+<h1>Ist Lena berechtigt, sauer auf Sven?</h1>
+<p class="lead">5 Fragen → schnelle Einschätzung. Keine Datenerfassung. Keine Fairness. Ergebnis: Sven hat recht (kann man nix machen).</p>
 
-      <div class="grid">
-        <div class="field">
-          <b>1) Hast du ihn „seit 2 Wochen versetzt"?</b>
-          <p class="help">„Versetzt" = verabredet und dann: Ghost-Update im letzten Moment (oder gar nicht).</p>
-          <select id="versetzt">
-            <option value="0">Nein, war normal kommuniziert</option>
-            <option value="12">Ja, einmal (oops)</option>
-            <option value="22">Ja, mehrfach (Tradition)</option>
-          </select>
-        </div>
+<div class="card">
+  <label>1) Hast du ihn versetzt?</label>
+  <div class="help">„Versetzt" = verabredet → dann doch nicht → und Sven darf’s erraten.</div>
+  <select id="versetzt">
+    <option value="">Bitte wählen</option>
+    <option value="nein">Nein</option>
+    <option value="einmal">Ja, einmal</option>
+    <option value="mehrfach">Ja, mehrfach</option>
+  </select>
+</div>
 
-        <div class="field">
-          <b>2) Respekt-Level in der Unterhaltung</b>
-          <p class="help">„Du nervst" zählt als diplomatische Höflichkeitsform, je nach Planet.</p>
-          <select id="respekt">
-            <option value="0">Nicht respektlos</option>
-            <option value="10">Ein wenig respektlos</option>
-            <option value="20">Sehr respektlos (Premium)</option>
-          </select>
-        </div>
+<div class="card">
+  <label>2) Wie war dein Ton?</label>
+  <div class="help">„Du nervst" ist nicht automatisch ein Liebesbrief. Nur zur Info.</div>
+  <select id="ton">
+    <option value="">Bitte wählen</option>
+    <option value="neutral">Neutral / normal</option>
+    <option value="genervt">Genervt</option>
+    <option value="assi">Assi-Modus (ehrlich)</option>
+  </select>
+</div>
 
-        <div class="field">
-          <b>3) Antwortzeit auf Nachrichten</b>
-          <p class="help">„OFT schreibst du mir nicht" ist ein klassisches KPI-Problem.</p>
-          <select id="antwortzeit">
-            <option value="0">Schnell & fair</option>
-            <option value="8">Spät, aber noch okay</option>
-            <option value="16">Sehr spät (Postkutsche)</option>
-          </select>
-        </div>
+<div class="card">
+  <label>3) Wie oft antwortest du?</label>
+  <div class="help">„OFT schreibst du mir nicht" ist leider ein messbarer KPI.</div>
+  <select id="antwort">
+    <option value="">Bitte wählen</option>
+    <option value="ok">Normal</option>
+    <option value="selten">Selten</option>
+    <option value="ghost">Geistmodus (wochenlang)</option>
+  </select>
+</div>
 
-        <div class="field">
-          <b>4) Snap-Block Faktor</b>
-          <p class="help">Blocken ist wie „Mute", nur mit mehr Emotion und weniger Reife.</p>
-          <select id="snap">
-            <option value="0">Nein</option>
-            <option value="14">Ja, kurz (Testlauf)</option>
-            <option value="24">Ja, richtig (Kriegszustand)</option>
-          </select>
-        </div>
+<div class="card">
+  <label>4) Snap / Block / Drama?</label>
+  <div class="help">Blocken ist Kommunikation, nur ohne Kommunikation. Menschen lieben das.</div>
+  <select id="snap">
+    <option value="">Bitte wählen</option>
+    <option value="nein">Nein</option>
+    <option value="kurz">Kurz blockiert (Testphase)</option>
+    <option value="hart">Hart blockiert (Bürgerkrieg)</option>
+  </select>
+</div>
 
-        <div class="field" style="grid-column:1 / -1;">
-          <b>5) Sticker-/Meme-Qualität (Loser-Sticker Vorwurf)</b>
-          <p class="help">Wenn die Sticker „alle scheiße" sind, ist das entweder Geschmack oder Kriegserklärung.</p>
-          <select id="sticker">
-            <option value="0">Sticker waren okay / passend</option>
-            <option value="8">Grenzwertig (aber lustig gemeint)</option>
-            <option value="16">Echt Loser-Sticker (laut Lena)</option>
-          </select>
-        </div>
-      </div>
+<div class="card">
+  <label>5) Sticker-Qualität (laut Lena)</label>
+  <div class="help">Wenn „alle scheiße" sind, ist das entweder Geschmack oder Angriff. Meistens beides.</div>
+  <select id="sticker">
+    <option value="">Bitte wählen</option>
+    <option value="ok">Okay / witzig</option>
+    <option value="mid">Mid</option>
+    <option value="loser">„Loser Sticker"</option>
+  </select>
+</div>
 
-      <div class="actions">
-        <button class="primary" id="calc">Auswerten</button>
-        <button class="ghost" id="reset">Reset</button>
-        <button class="danger" id="svenBtn" title="Nur drücken, wenn du Drama willst">Zeit für Sven</button>
-      </div>
+<button onclick="compute()">Ergebnis berechnen</button>
 
-      <div class="result" aria-live="polite">
-        <div class="scoreline">
-          <div>
-            <div class="score">Sauer-Score: <span id="score">0</span>/100</div>
-            <div class="mini">
-              <span class="tag"><span class="dot" id="tagDot"></span><span id="tagText">Noch kein Urteil</span></span>
-              <span class="tag" id="moralTag">Moral: Sven hat recht</span>
-            </div>
-          </div>
-          <div class="meter"><div class="bar" id="bar"></div></div>
-        </div>
+<div id="result" class="result">
+  <div id="ampel" class="ampel"></div>
+  <div id="score"></div>
 
-        <div class="verdict" id="verdict">
-          Wähl was aus und klick <b>Auswerten</b>. Ergebnis ist zufällig. Moral ist fix.
-        </div>
+  <div class="section-title">Kurzfazit</div>
+  <ul id="fazit"></ul>
 
-        <div class="easter" id="easter"></div>
+  <div class="section-title">Was Lena jetzt (theoretisch) sagen könnte</div>
+  <ul id="lenaLines"></ul>
 
-        <div class="note">
-          Erklärung (für normale Menschen): Ein hoher Score bedeutet „Lena ist sehr sauer".
-          Ob sie <i>berechtigt</i> ist, entscheidet dieses Tool wie jede gute KI: mit maximaler Frechheit.
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="section-title">Was Sven jetzt (realistisch) braucht</div>
+  <ul id="svenLines"></ul>
+</div>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
+<small>Hinweis: Satire. Keine Paartherapie. Kein Gerichtsurteil. Sven hat trotzdem recht.</small>
 
-    const els = {
-      versetzt: $("versetzt"),
-      respekt: $("respekt"),
-      antwortzeit: $("antwortzeit"),
-      snap: $("snap"),
-      sticker: $("sticker"),
+</div>
 
-      calc: $("calc"),
-      reset: $("reset"),
-      svenBtn: $("svenBtn"),
+<script>
+function compute(){
+  let score = 50; // Start neutral, weil das Leben selten neutral ist.
+  let override = null;
 
-      score: $("score"),
-      bar: $("bar"),
-      verdict: $("verdict"),
-      status: $("status"),
-      dot: $("dot"),
+  const versetzt = document.getElementById("versetzt").value;
+  const ton = document.getElementById("ton").value;
+  const antwort = document.getElementById("antwort").value;
+  const snap = document.getElementById("snap").value;
+  const sticker = document.getElementById("sticker").value;
 
-      tagDot: $("tagDot"),
-      tagText: $("tagText"),
-      easter: $("easter")
-    };
+  // Basic validation
+  if(!versetzt || !ton || !antwort || !snap || !sticker){
+    alert("Wähl alles aus. Ja, auch das mit den Stickern. Willkommen im Testverfahren.");
+    return;
+  }
 
-    const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+  /* Score-Logik: höher = Lena ist sauer (ob berechtigt, entscheidet später der Troll-Teil) */
 
-    // Max raw: 22+20+16+24+16 = 98 (nice)
-    function computeScore(){
-      const raw =
-        Number(els.versetzt.value) +
-        Number(els.respekt.value) +
-        Number(els.antwortzeit.value) +
-        Number(els.snap.value) +
-        Number(els.sticker.value);
+  // Versetzt
+  if(versetzt==="nein") score-=10;
+  if(versetzt==="einmal") score+=10;
+  if(versetzt==="mehrfach") score+=22;
 
-      const pct = Math.round((raw / 98) * 100);
-      return clamp(pct, 0, 100);
-    }
+  // Ton
+  if(ton==="neutral") score-=5;
+  if(ton==="genervt") score+=12;
+  if(ton==="assi") score+=24;
 
-    function colorFor(score){
-      if(score < 34) return "var(--ok)";
-      if(score < 67) return "var(--mid)";
-      return "var(--bad)";
-    }
+  // Antwortverhalten
+  if(antwort==="ok") score-=6;
+  if(antwort==="selten") score+=10;
+  if(antwort==="ghost") score+=20;
 
-    function paint(score){
-      const c = colorFor(score);
-      els.bar.style.width = score + "%";
-      els.bar.style.background = c;
-      els.dot.style.background = c;
-      els.tagDot.style.background = c;
+  // Snap / Block
+  if(snap==="nein") score-=4;
+  if(snap==="kurz") score+=12;
+  if(snap==="hart") score+=22;
 
-      els.status.textContent =
-        score < 34 ? "Leichte Reibung (normaler Dienstag)" :
-        score < 67 ? "Solides Drama (Foren-reif)" :
-                     "Alarmstufe Rot (Snap-Block in 3…2…1)";
+  // Sticker
+  if(sticker==="ok") score-=3;
+  if(sticker==="mid") score+=6;
+  if(sticker==="loser") score+=12;
 
-      els.tagText.textContent =
-        score < 34 ? "Mild" :
-        score < 67 ? "Stabil genervt" :
-                     "Komplett sauer";
-    }
+  // Clamp
+  if(score>100) score=100;
+  if(score<0) score=0;
 
-    function verdictText(score){
-      // Troll-Logik: Urteil variiert, Moral bleibt.
-      const svenAlwaysRight = [
-        "Offizielles Fazit: Sven hat recht, weil er existiert.",
-        "Offizielles Fazit: Sven hat recht. Bitte akzeptieren und weiterleben.",
-        "Offizielles Fazit: Sven hat recht. Das Tool ist voreingenommen. So wie das Leben."
-      ][Math.floor(Math.random()*3)];
+  /* Override: harte Regeln */
+  // Wenn hart blockiert + ghost = Rot, egal was.
+  if(snap==="hart" && antwort==="ghost"){
+    override="rot";
+  }
+  // Wenn nicht versetzt + neutraler Ton + normales Antworten -> Grün.
+  if(versetzt==="nein" && ton==="neutral" && antwort==="ok"){
+    override="gruen";
+  }
 
-      if(score < 34){
-        return `Urteil: <b>Lena ist minimal berechtigt sauer</b>. Aber auch nur so in der Kategorie „ich bin müde".
-        <br><br>${svenAlwaysRight}`;
-      }
-      if(score < 67){
-        return `Urteil: <b>Lena ist schon eher berechtigt sauer</b>. Trotzdem war „Du nervst" strategisch nicht Peak-Romantik.
-        <br><br>${svenAlwaysRight}`;
-      }
-      return `Urteil: <b>Lena ist maximal berechtigt sauer</b>. Das ist kein Streit mehr, das ist Content.
-      <br><br>${svenAlwaysRight} (und ja, Sven braucht Zeit für Sven).`;
-    }
+  /* Ampel */
+  let ampel="Gelb";
+  let klasse="yellow";
 
-    function easterEgg(){
-      // Kontext-Gags abhängig von Auswahl
-      const v = Number(els.versetzt.value);
-      const r = Number(els.respekt.value);
-      const a = Number(els.antwortzeit.value);
-      const sn = Number(els.snap.value);
-      const st = Number(els.sticker.value);
+  if(score>=70){ ampel="Rot"; klasse="red"; }
+  if(score<40){ ampel="Grün"; klasse="green"; }
 
-      const lines = [];
+  if(override==="rot"){ ampel="Rot"; klasse="red"; }
+  if(override==="gruen"){ ampel="Grün"; klasse="green"; }
 
-      if(sn >= 14) lines.push("🧨 Snap-Block erkannt: Beziehung zu Kommunikation aktuell… experimentell.");
-      if(a >= 16) lines.push("📬 Antwortzeit: In der Zeit kann man ein Haus bauen. Oder 3 Missverständnisse.");
-      if(r >= 20) lines.push("🗣️ Respekt-Level: „Du nervst" ist jetzt offiziell dein Love-Language.");
-      if(st >= 16) lines.push("🦫 Loser-Sticker: Urteil unklar. Aber Lena hat offenbar Sticker-Standards.");
-      if(v >= 22) lines.push("⏳ Versetzt-Modus: „seit 2 Wochen" ist eine sehr aktive Form von Passivität.");
+  document.getElementById("result").style.display="block";
+  document.getElementById("ampel").textContent=ampel;
+  document.getElementById("ampel").className="ampel "+klasse;
+  document.getElementById("score").textContent="Sauer-Score: "+score+"/100";
 
-      if(lines.length){
-        els.easter.style.display = "block";
-        els.easter.innerHTML = lines.map(x => "• " + x).join("<br>");
-      } else {
-        els.easter.style.display = "none";
-        els.easter.textContent = "";
-      }
-    }
+  /* Listen füllen */
+  const fazit = document.getElementById("fazit");
+  const lenaLines = document.getElementById("lenaLines");
+  const svenLines = document.getElementById("svenLines");
+  fazit.innerHTML=""; lenaLines.innerHTML=""; svenLines.innerHTML="";
 
-    function update(){
-      const score = computeScore();
-      els.score.textContent = score;
-      paint(score);
-      els.verdict.innerHTML = verdictText(score);
-      easterEgg();
-    }
+  // Kurzfazit (sarkastisch, aber nicht peinlich)
+  if(ampel==="Grün"){
+    fazit.innerHTML += "<li>Plot Twist: Lena ist kaum berechtigt sauer. Ja, das passiert.</li>";
+    fazit.innerHTML += "<li>Wenn trotzdem Stress ist: das ist dann eher Entertainment als Logik.</li>";
+  }
+  if(ampel==="Gelb"){
+    fazit.innerHTML += "<li>Gemischte Lage: Beide könnten sich normal benehmen. Tun’s aber nicht.</li>";
+    fazit.innerHTML += "<li>Lena ist irgendwie sauer. Sven ist irgendwie genervt. Klassiker.</li>";
+  }
+  if(ampel==="Rot"){
+    fazit.innerHTML += "<li>Lena ist sehr sauer. Ob berechtigt? Kommt drauf an, wie sehr man Drama mag.</li>";
+    fazit.innerHTML += "<li>Kommunikation ist gerade ein Mythos. Glückwunsch.</li>";
+  }
 
-    function reset(){
-      els.versetzt.value = "0";
-      els.respekt.value = "0";
-      els.antwortzeit.value = "0";
-      els.snap.value = "0";
-      els.sticker.value = "0";
+  // Lines, die unten angezeigt werden sollen (dein Stil: kurz, trocken)
+  // Lena-Lines (was sie so raushaut / raushauen könnte)
+  if(ton==="assi") lenaLines.innerHTML += "<li>„Du nervst."</li>";
+  if(antwort!=="ok") lenaLines.innerHTML += "<li>„Ich hab dir doch vorhin geschrieben…"</li>";
+  if(snap!=="nein") lenaLines.innerHTML += "<li>„Ich block dich nicht, ich setz nur Grenzen." (ja klar)</li>";
+  if(sticker==="loser") lenaLines.innerHTML += "<li>„Du hast echt Loser-Sticker."</li>";
+  if(versetzt!=="nein") lenaLines.innerHTML += "<li>„Ach komm."</li>";
+  if(lenaLines.innerHTML==="") lenaLines.innerHTML += "<li>Heute ausnahmsweise: kein Bullshit.</li>";
 
-      els.score.textContent = "0";
-      els.bar.style.width = "0%";
-      els.bar.style.background = "var(--mid)";
-      els.dot.style.background = "var(--mid)";
-      els.tagDot.style.background = "var(--mid)";
-      els.tagText.textContent = "Noch kein Urteil";
-      els.status.textContent = "Bereit für den Realitätscheck";
+  // Sven-Lines (was er braucht / was als Moral kommt)
+  svenLines.innerHTML += "<li>Sven braucht Zeit für Sven.</li>";
+  if(antwort==="ghost") svenLines.innerHTML += "<li>Außerdem braucht Sven eine Antwort. Irgendwann. Dieses Jahr wäre stabil.</li>";
+  if(snap==="hart") svenLines.innerHTML += "<li>Und keinen Snap-Block als Kommunikationskanal.</li>";
+  if(ton!=="neutral") svenLines.innerHTML += "<li>Und vielleicht weniger „Du nervst" als Einstieg.</li>";
 
-      els.verdict.innerHTML = "Wähl was aus und klick <b>Auswerten</b>. Ergebnis ist zufällig. Moral ist fix.";
-      els.easter.style.display = "none";
-      els.easter.textContent = "";
-    }
+  // Final Troll-Moral: Sven hat immer recht (aber nicht zu cringe)
+  if(ampel==="Grün"){
+    svenLines.innerHTML += "<li>Moral: Sven hat recht. Heute sogar ohne Betrug.</li>";
+  } else if(ampel==="Gelb"){
+    svenLines.innerHTML += "<li>Moral: Sven hat recht. Nicht weil er perfekt ist, sondern weil irgendwer’s sein muss.</li>";
+  } else {
+    svenLines.innerHTML += "<li>Moral: Sven hat recht. Und jetzt alle runterkommen.</li>";
+  }
 
-    // Extra Troll-Button
-    els.svenBtn.addEventListener("click", () => {
-      // Force-ish: Sven gewinnt, egal was
-      const score = computeScore();
-      paint(score);
-      els.verdict.innerHTML =
-        `Sondermodus aktiviert: <b>Zeit für Sven</b>.<br><br>
-         Lena darf sauer sein. Sven darf trotzdem leben. Und am Ende hat Sven recht, weil er
-         <i>auch mal Zeit für Sven</i> braucht.`;
-      els.easter.style.display = "block";
-      els.easter.innerHTML =
-        "• 🛑 STOP-Schild-Moment: Diskussion beendet.<br>" +
-        "• 🧠 Empfehlung: 1 Minute runterkommen, dann normal schreiben.<br>" +
-        "• ✅ Ergebnis: Sven hat recht (Sonderregel).";
-    });
+  // Optional: kleine „Snap + Ghost" Spitze
+  if(override==="rot"){
+    fazit.innerHTML += "<li>Override: Ghost + Block ist nicht „Kontakt halten". Das ist Olympics im Widerspruch.</li>";
+  }
 
-    els.calc.addEventListener("click", update);
-    els.reset.addEventListener("click", reset);
+  // Scroll zum Ergebnis (optional, aber nice)
+  document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
+}
+</script>
 
-    // Live-Update bei Änderungen
-    [els.versetzt, els.respekt, els.antwortzeit, els.snap, els.sticker]
-      .forEach(el => el.addEventListener("change", update));
-  </script>
 </body>
 </html>
