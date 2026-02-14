@@ -75,10 +75,10 @@ details fieldset { margin-top: 1rem; }
 }
 
 .field-head {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  column-gap: 8px;
   margin-bottom: 0.25rem;
   min-height: 40px;
   overflow: visible;
@@ -89,12 +89,17 @@ legend {
   margin-bottom: 0;
 }
 
-.legend-main { display: inline-flex; gap: 0.25rem; align-items: center; line-height: 1.25; }
+.legend-main {
+  display: block;
+  line-height: 1.25;
+  min-width: 0;
+}
 
 .info-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  place-items: center;
   width: 36px;
   height: 36px;
   border: 1px solid #cfd6df;
@@ -102,13 +107,18 @@ legend {
   background: #f5f7fa;
   color: #556170;
   cursor: pointer;
+  font-family: inherit;
   font-size: 1rem;
   line-height: 1;
   padding: 0;
   touch-action: manipulation;
   position: relative;
   z-index: 1;
-  flex: 0 0 auto;
+}
+
+.info-glyph {
+  display: block;
+  line-height: 1;
 }
 
 .info-toggle:hover {
@@ -266,6 +276,10 @@ li { margin: 0.3rem 0; }
 }
 
 @media (min-width: 900px) {
+  .field-head {
+    grid-template-columns: minmax(0, 1fr) 32px;
+  }
+
   .info-toggle {
     width: 32px;
     height: 32px;
@@ -281,3 +295,4 @@ li { margin: 0.3rem 0; }
     top: 1rem;
   }
 }
+
