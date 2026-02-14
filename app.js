@@ -85,9 +85,7 @@
   }
 
   function normalizeOptionalState(state) {
-    if (!state.optionalActive) {
-      return { ...state, bestand: "", erschliessung: "" };
-    }
+    if (!state.optionalActive) return { ...state, bestand: "", erschliessung: "" };
     return state;
   }
 
@@ -253,7 +251,7 @@
         score: 50,
         ampel: "🟡",
         ampelText: ampelLabel("🟡"),
-        interpretation: "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.",
+        interpretation: "Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.",
         why: [],
         steps: [],
         pitfalls: [],
@@ -306,6 +304,34 @@
     });
   }
 
+  const CAP_TEXTS = new Set(CONFIG.caps.map((cap) => clipWords(cap.reason, 14)));
+  const POSITIVE_TEXTS = new Set(Object.values(TEMPLATES.positives).map((text) => clipWords(text, 14)));
+
+  function decorateWhyText(text) {
+    if (CAP_TEXTS.has(text)) return `⚠ ${text}`;
+    if (POSITIVE_TEXTS.has(text)) return `✓ ${text}`;
+    return `⚠ ${text}`;
+  }
+
+  function animateScore(element, from, to, shouldAnimate) {
+    if (!shouldAnimate) {
+      element.textContent = String(to);
+      return;
+    }
+
+    const start = performance.now();
+    const duration = 300;
+
+    function tick(now) {
+      const elapsed = Math.min(1, (now - start) / duration);
+      const value = Math.round(from + (to - from) * elapsed);
+      element.textContent = String(value);
+      if (elapsed < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
   function attachApp() {
     const form = document.getElementById("check-form");
     if (!form) return;
@@ -321,12 +347,23 @@
     const pitfallsList = document.getElementById("pitfalls-list");
     const resetBtn = document.getElementById("reset-button");
     const optionalDetails = document.getElementById("optional-details");
+    const infoButtons = form.querySelectorAll(".info-toggle");
+    const infoPanels = form.querySelectorAll(".field-info");
 
     const touched = new Set();
+    let lastRenderedScore = 50;
 
     const setFieldError = (field, message) => {
       const el = document.getElementById(`error-${field}`);
       if (el) el.textContent = message;
+    };
+
+    const closeAllInfoPanels = () => {
+      infoPanels.forEach((panel) => {
+        panel.hidden = true;
+        panel.classList.remove("is-open");
+      });
+      infoButtons.forEach((btn) => btn.setAttribute("aria-expanded", "false"));
     };
 
     const renderErrors = (state) => {
@@ -339,22 +376,26 @@
     const update = () => {
       const state = getFormState(form, optionalDetails);
       const result = evaluate(state);
-
       renderErrors(state);
 
       if (result.neutral) {
         resultPlaceholder.hidden = false;
         resultContent.hidden = true;
+        lastRenderedScore = 50;
         return;
       }
 
       resultPlaceholder.hidden = true;
       resultContent.hidden = false;
-      scoreEl.textContent = String(result.score);
+
+      const shouldAnimate = Math.abs(result.score - lastRenderedScore) >= 5;
+      animateScore(scoreEl, lastRenderedScore, result.score, shouldAnimate);
+      lastRenderedScore = result.score;
+
       ampelEl.textContent = result.ampelText;
       interpEl.textContent = result.interpretation;
       confidenceEl.textContent = `Confidence: ${result.confidence}`;
-      renderList(whyList, result.why);
+      renderList(whyList, result.why.map(decorateWhyText));
       renderList(stepsList, result.steps);
       renderList(pitfallsList, result.pitfalls);
     };
@@ -384,6 +425,20 @@
     form.addEventListener("input", markTouched);
     form.addEventListener("click", markTouched);
 
+    infoButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const panelId = button.getAttribute("aria-controls");
+        const panel = document.getElementById(panelId);
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        closeAllInfoPanels();
+        if (!isOpen && panel) {
+          panel.hidden = false;
+          panel.classList.add("is-open");
+          button.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+
     optionalDetails.addEventListener("toggle", () => {
       if (optionalDetails.open) optionalDetails.dataset.opened = "true";
       update();
@@ -392,6 +447,7 @@
     resetBtn.addEventListener("click", () => {
       form.reset();
       touched.clear();
+      closeAllInfoPanels();
       optionalDetails.open = false;
       optionalDetails.dataset.opened = "false";
       CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
@@ -399,6 +455,7 @@
     });
 
     optionalDetails.dataset.opened = "false";
+    closeAllInfoPanels();
     update();
   }
 

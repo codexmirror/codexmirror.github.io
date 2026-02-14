@@ -60,7 +60,48 @@ details,
 details fieldset { margin-top: 1rem; }
 
 legend {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 650;
+  margin-bottom: 0.3rem;
+}
+
+.legend-main { display: inline-flex; gap: 0.25rem; align-items: center; }
+
+.info-toggle {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0.15rem;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.info-toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.field-info {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  transition: max-height 150ms linear, opacity 150ms linear, margin-bottom 150ms linear;
+}
+
+.field-info.is-open {
+  max-height: 64px;
+  opacity: 1;
   margin-bottom: 0.55rem;
 }
 
@@ -70,14 +111,13 @@ legend {
 }
 
 .tile {
-  position: relative;
   border: 1px solid var(--border);
   border-radius: 12px;
   min-height: 44px;
   padding: 0.75rem 0.85rem;
   background: #fff;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: background-color 0.15s linear, border-color 0.15s linear;
 }
 
 .tile:hover {
@@ -85,9 +125,7 @@ legend {
   background: #fbfdff;
 }
 
-.tile input[type="radio"] {
-  margin-right: 0.55rem;
-}
+.tile input[type="radio"] { margin-right: 0.55rem; }
 
 .tile:has(input:checked) {
   border-color: var(--accent);
@@ -99,6 +137,12 @@ legend {
   min-height: 1.2rem;
   color: var(--error);
   font-size: 0.92rem;
+}
+
+.microcopy {
+  margin: 0.2rem 0 0;
+  font-size: 0.92rem;
+  color: var(--muted);
 }
 
 .secondary {
@@ -118,6 +162,10 @@ summary {
 
 .result {
   background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+}
+
+.result-frame {
+  min-height: 430px;
 }
 
 .result-placeholder {
