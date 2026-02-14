@@ -34,30 +34,18 @@ body{
   padding:20px;
 }
 
-h1{
-  margin:0 0 10px;
-  font-size:28px;
-  line-height:1.2;
-}
-
-p.lead{
-  margin:0 0 30px;
-  color:var(--muted);
-}
+h1{ margin:0 0 10px; font-size:28px; line-height:1.2; }
+p.lead{ margin:0 0 18px; color:var(--muted); }
 
 .card{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:var(--radius);
   padding:20px;
-  margin-bottom:18px;
+  margin-bottom:14px;
 }
 
-label{
-  font-weight:600;
-  display:block;
-  margin-bottom:8px;
-}
+label{ font-weight:600; display:block; margin-bottom:8px; }
 
 select{
   width:100%;
@@ -68,21 +56,25 @@ select{
   background:#fff;
 }
 
-button{
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.actions button{
   width:100%;
   padding:14px;
   border:none;
   border-radius:12px;
-  font-weight:700;
+  font-weight:800;
   font-size:15px;
   cursor:pointer;
-  background:#0f172a;
-  color:#fff;
-  margin-top:10px;
 }
+.btn-primary{ background:#0f172a; color:#fff; }
+.btn-secondary{ background:#e2e8f0; color:#0f172a; }
 
 .result{
-  margin-top:30px;
+  margin-top:22px;
   padding:20px;
   border-radius:var(--radius);
   border:1px solid var(--line);
@@ -90,41 +82,91 @@ button{
   display:none;
 }
 
-.ampel{
-  font-weight:800;
-  font-size:20px;
-  margin-bottom:10px;
+.alert{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#9a3412;
+  padding:12px;
+  border-radius:12px;
+  display:none;
+  margin-bottom:12px;
+  font-size:14px;
 }
 
+.ampel{
+  font-weight:900;
+  font-size:20px;
+  margin-bottom:6px;
+}
+.headline{
+  font-weight:800;
+  margin:0 0 10px;
+}
 .green{color:var(--green)}
 .yellow{color:var(--yellow)}
 .red{color:var(--red)}
 
+.section-title{
+  margin:16px 0 6px;
+  font-weight:800;
+}
+
 ul{
   padding-left:18px;
-  margin:10px 0 0;
+  margin:8px 0 0;
   color:var(--muted);
   font-size:14px;
 }
 
+.meta{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+}
+
+.toggle{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size:14px;
+  color:var(--muted);
+  user-select:none;
+}
+
 small{
   display:block;
-  margin-top:20px;
+  margin-top:18px;
   color:var(--muted);
   font-size:13px;
 }
+
+details{
+  margin-top:12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  background:#f9fafb;
+}
+details summary{
+  cursor:pointer;
+  font-weight:800;
+}
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
 </style>
 </head>
 
 <body>
-
 <div class="wrapper">
 
   <h1>Grundstücks-Check</h1>
-  <p class="lead">6 Fragen → Ampel-Ergebnis. Keine Datenerfassung.</p>
+  <p class="lead">6 Fragen → Ampel-Ergebnis. Schwerpunkt Außenbereich. Keine Datenerfassung.</p>
 
   <div class="card">
-    <label>Lage</label>
+    <label for="lage">Lage</label>
     <select id="lage">
       <option value="">Bitte wählen</option>
       <option value="innen">Innenbereich</option>
@@ -134,7 +176,7 @@ small{
   </div>
 
   <div class="card">
-    <label>Bebauungsplan</label>
+    <label for="bplan">Bebauungsplan</label>
     <select id="bplan">
       <option value="">Bitte wählen</option>
       <option value="ja">Ja</option>
@@ -144,115 +186,340 @@ small{
   </div>
 
   <div class="card">
-    <label>Grundstückstyp</label>
+    <label for="typ">Grundstückstyp</label>
     <select id="typ">
       <option value="">Bitte wählen</option>
       <option value="wald">Waldfläche</option>
       <option value="land">Landwirtschaftlich</option>
       <option value="freizeit">Freizeitgrundstück</option>
-      <option value="bauluecke">Baulücke</option>
+      <option value="bauluecke">Baulücke / Siedlungsnähe</option>
       <option value="sonst">Sonstiges</option>
     </select>
   </div>
 
   <div class="card">
-    <label>Nutzung</label>
+    <label for="nutzung">Geplante Nutzung</label>
     <select id="nutzung">
       <option value="">Bitte wählen</option>
       <option value="wohnen">Dauerhaft wohnen</option>
-      <option value="wochenend">Wochenend</option>
-      <option value="tiny">Tiny House</option>
+      <option value="wochenend">Wochenend-/Feriennutzung</option>
+      <option value="tiny">Tiny House (Wohnen)</option>
       <option value="priv">Landwirtschaftlich privilegiert</option>
-      <option value="gewerbe">Gewerblich</option>
+      <option value="gewerbe">Gewerblich / Lager / sonstiges</option>
     </select>
   </div>
 
   <div class="card">
-    <label>Bestand</label>
+    <label for="bestand">Bestand</label>
     <select id="bestand">
       <option value="">Bitte wählen</option>
-      <option value="genehmigt">Genehmigt</option>
-      <option value="unklar">Unklar</option>
+      <option value="genehmigt">Ja, genehmigt</option>
+      <option value="unklar">Ja, Genehmigung unklar</option>
       <option value="unbebaut">Unbebaut</option>
     </select>
   </div>
 
   <div class="card">
-    <label>Erschließung</label>
+    <label for="erschliessung">Erschließung</label>
     <select id="erschliessung">
       <option value="">Bitte wählen</option>
-      <option value="voll">Voll</option>
+      <option value="voll">Voll erschlossen</option>
       <option value="teilweise">Teilweise</option>
       <option value="unklar">Unklar / nicht vorhanden</option>
     </select>
   </div>
 
-  <button onclick="compute()">Ergebnis berechnen</button>
-
-  <div id="result" class="result">
-    <div id="ampel" class="ampel"></div>
-    <div id="score"></div>
-    <ul id="begruendung"></ul>
+  <div class="actions">
+    <button class="btn-primary" onclick="compute()">Ergebnis berechnen</button>
+    <button class="btn-secondary" onclick="resetAll()" type="button">Zurücksetzen</button>
   </div>
 
-  <small>Hinweis: Keine Rechtsberatung. Strukturierte Ersteinschätzung nach typischen BauGB-Kriterien.</small>
+  <div id="result" class="result">
+    <div id="alert" class="alert"></div>
+
+    <div id="ampel" class="ampel"></div>
+    <div id="headline" class="headline"></div>
+
+    <div class="meta">
+      <label class="toggle">
+        <input id="toggleAdvanced" type="checkbox" onchange="renderAdvanced()" />
+        Erweiterte Ansicht (Score & Berechnung)
+      </label>
+      <div id="score" class="mono" style="display:none;"></div>
+    </div>
+    <div id="scoreHint" style="display:none; margin-top:6px; color:var(--muted); font-size:13px;">
+      Score = strukturelle Wahrscheinlichkeit (keine juristische Aussage).
+    </div>
+
+    <div class="section-title">Begründung</div>
+    <ul id="begruendung"></ul>
+
+    <div class="section-title">Typische Fehlannahmen</div>
+    <ul id="fehlannahmen"></ul>
+
+    <div class="section-title">Nächste sinnvolle Schritte</div>
+    <ul id="steps"></ul>
+
+    <details>
+      <summary>So kommt die Einstufung zustande</summary>
+      <div style="margin-top:8px; color:var(--muted); font-size:14px;">
+        <div><b>Ihre Angaben</b></div>
+        <ul id="answers"></ul>
+
+        <div id="calcWrap" style="display:none; margin-top:10px;">
+          <div><b>Score-Komponenten</b></div>
+          <ul id="calc"></ul>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <small>Hinweis: Keine Rechtsberatung. Strukturierte Ersteinschätzung nach typischen BauGB-Kriterien (Innen-/Außenbereich als Kernachse).</small>
 
 </div>
 
 <script>
+function val(id){ return document.getElementById(id).value; }
+
+function pretty(key, v){
+  const maps = {
+    lage:{ innen:"Innenbereich", aussen:"Außenbereich", unklar:"Unklar" },
+    bplan:{ ja:"Ja", nein:"Nein", unbekannt:"Unbekannt" },
+    typ:{ wald:"Waldfläche", land:"Landwirtschaftlich", freizeit:"Freizeitgrundstück", bauluecke:"Baulücke / Siedlungsnähe", sonst:"Sonstiges" },
+    nutzung:{ wohnen:"Dauerhaft wohnen", wochenend:"Wochenend-/Feriennutzung", tiny:"Tiny House (Wohnen)", priv:"Landwirtschaftlich privilegiert", gewerbe:"Gewerblich / Lager / sonstiges" },
+    bestand:{ genehmigt:"Ja, genehmigt", unklar:"Ja, Genehmigung unklar", unbebaut:"Unbebaut" },
+    erschliessung:{ voll:"Voll erschlossen", teilweise:"Teilweise", unklar:"Unklar / nicht vorhanden" }
+  };
+  return (maps[key] && maps[key][v]) ? maps[key][v] : v;
+}
+
+let lastResult = null;
+
 function compute(){
+  const state = {
+    lage: val("lage"),
+    bplan: val("bplan"),
+    typ: val("typ"),
+    nutzung: val("nutzung"),
+    bestand: val("bestand"),
+    erschliessung: val("erschliessung")
+  };
 
+  // Validation: all answered
+  const missing = Object.entries(state).filter(([k,v]) => !v).map(([k]) => k);
+  document.getElementById("result").style.display = "block";
+  const alert = document.getElementById("alert");
+
+  if(missing.length){
+    alert.style.display="block";
+    alert.textContent = "Bitte alle 6 Fragen beantworten, um ein Ergebnis zu erhalten.";
+    // hide content blocks
+    document.getElementById("ampel").textContent="";
+    document.getElementById("headline").textContent="";
+    document.getElementById("begruendung").innerHTML="";
+    document.getElementById("fehlannahmen").innerHTML="";
+    document.getElementById("steps").innerHTML="";
+    document.getElementById("answers").innerHTML="";
+    document.getElementById("calc").innerHTML="";
+    document.getElementById("score").style.display="none";
+    document.getElementById("scoreHint").style.display="none";
+    lastResult = null;
+    return;
+  } else {
+    alert.style.display="none";
+  }
+
+  const result = computeResult(state);
+  lastResult = { state, result };
+
+  renderResult(state, result);
+}
+
+function computeResult(state){
   let score = 50;
+  const calc = [];
 
-  const lage = document.getElementById("lage").value;
-  const bplan = document.getElementById("bplan").value;
-  const typ = document.getElementById("typ").value;
-  const nutzung = document.getElementById("nutzung").value;
-  const bestand = document.getElementById("bestand").value;
-  const erschliessung = document.getElementById("erschliessung").value;
+  // Lage
+  if(state.lage==="innen"){ score+=30; calc.push(["Innenbereich", +30]); }
+  if(state.lage==="aussen"){ score-=25; calc.push(["Außenbereich", -25]); }
+  if(state.lage==="unklar"){ calc.push(["Lage unklar", 0]); }
 
-  if(lage==="innen") score+=30;
-  if(lage==="aussen") score-=25;
+  // B-Plan
+  if(state.bplan==="ja"){ score+=15; calc.push(["B-Plan vorhanden", +15]); }
+  else { calc.push(["B-Plan nicht/unklar", 0]); }
 
-  if(bplan==="ja") score+=15;
+  // Typ
+  if(state.typ==="wald"){ score-=20; calc.push(["Waldfläche", -20]); }
+  if(state.typ==="freizeit"){ score-=15; calc.push(["Freizeitgrundstück", -15]); }
+  if(state.typ==="bauluecke"){ score+=10; calc.push(["Baulücke/Siedlungsnähe", +10]); }
+  if(state.typ==="land"){ calc.push(["Landwirtschaftliche Fläche", 0]); }
+  if(state.typ==="sonst"){ calc.push(["Sonstiger Typ", 0]); }
 
-  if(typ==="wald") score-=20;
-  if(typ==="freizeit") score-=15;
-  if(typ==="bauluecke") score+=10;
+  // Nutzung
+  if(state.nutzung==="priv"){ score+=20; calc.push(["Privilegierte Nutzung", +20]); }
+  if(state.nutzung==="gewerbe"){ score-=5; calc.push(["Gewerbliche Nutzung", -5]); }
 
-  if(nutzung==="priv") score+=20;
-  if(nutzung==="gewerbe") score-=5;
+  if(state.nutzung==="wohnen" && state.lage==="aussen"){ score-=20; calc.push(["Dauerwohnen im Außenbereich", -20]); }
+  if(state.nutzung==="tiny" && state.lage==="aussen"){ score-=20; calc.push(["Tiny House (Wohnen) im Außenbereich", -20]); }
+  if(state.nutzung==="tiny" && state.lage!=="aussen"){ score-=5; calc.push(["Tiny House (Wohnen)", -5]); }
+  if(state.nutzung==="wochenend" && state.lage==="aussen"){ score-=10; calc.push(["Wochenendnutzung im Außenbereich", -10]); }
 
-  if(nutzung==="wohnen" && lage==="aussen") score-=20;
-  if(nutzung==="tiny" && lage==="aussen") score-=20;
-  if(nutzung==="tiny" && lage!=="aussen") score-=5;
-  if(nutzung==="wochenend" && lage==="aussen") score-=10;
+  // Bestand
+  if(state.bestand==="genehmigt"){ score+=10; calc.push(["Genehmigter Bestand", +10]); }
+  else { calc.push(["Kein/unklarer Bestand", 0]); }
 
-  if(bestand==="genehmigt") score+=10;
+  // Erschließung
+  if(state.erschliessung==="voll"){ score+=10; calc.push(["Voll erschlossen", +10]); }
+  if(state.erschliessung==="teilweise"){ score+=5; calc.push(["Teilweise erschlossen", +5]); }
+  if(state.erschliessung==="unklar"){ score-=15; calc.push(["Erschließung unklar/nicht", -15]); }
 
-  if(erschliessung==="voll") score+=10;
-  if(erschliessung==="teilweise") score+=5;
-  if(erschliessung==="unklar") score-=15;
+  // Clamp
+  score = Math.max(0, Math.min(100, score));
 
-  if(score>100) score=100;
-  if(score<0) score=0;
+  // Ampel by thresholds
+  let ampel="Gelb", klasse="yellow", headline="Stark eingeschränkt – nur unter Bedingungen realistisch.";
+  if(score>=70){ ampel="Grün"; klasse="green"; headline="Grundsätzlich möglich – Details entscheiden."; }
+  if(score<40){ ampel="Rot"; klasse="red"; headline="Sehr unwahrscheinlich – hohe planungsrechtliche Hürden."; }
 
-  let ampel="Gelb";
-  let klasse="yellow";
+  // Override rules (hard logic)
+  // 1) Wald + Wohnen/Tiny -> Rot
+  if(state.typ==="wald" && (state.nutzung==="wohnen" || state.nutzung==="tiny")){
+    ampel="Rot"; klasse="red"; headline="Sehr unwahrscheinlich – Waldflächen sind für Wohnen meist nicht vorgesehen.";
+  }
+  // 2) Außenbereich + Dauerwohnen ohne Privilegierung -> Rot (Ausnahme: genehmigt + B-Plan ja => Gelb)
+  if(state.lage==="aussen" && state.nutzung==="wohnen" && state.nutzung!=="priv"){
+    const exception = (state.bestand==="genehmigt" && state.bplan==="ja");
+    if(exception){
+      ampel="Gelb"; klasse="yellow"; headline="Stark eingeschränkt – Bestand/Planung können helfen, Details bleiben entscheidend.";
+    } else {
+      ampel="Rot"; klasse="red"; headline="Sehr unwahrscheinlich – Dauerwohnen im Außenbereich ist regelmäßig stark eingeschränkt.";
+    }
+  }
+  // 3) Innen + B-Plan ja + Baulücke => mindestens Gelb
+  if(state.lage==="innen" && state.bplan==="ja" && state.typ==="bauluecke" && ampel==="Rot"){
+    ampel="Gelb"; klasse="yellow"; headline="Stark eingeschränkt – Details im Bebauungsplan sind entscheidend.";
+  }
 
-  if(score>=70){ ampel="Grün"; klasse="green";}
-  if(score<40){ ampel="Rot"; klasse="red";}
+  const begruendung = buildBegruendung(state, ampel);
+  const fehlannahmen = buildFehlannahmen(ampel);
+  const steps = buildSteps();
 
+  return { score, ampel, klasse, headline, begruendung, fehlannahmen, steps, calc };
+}
+
+function buildBegruendung(state, ampel){
+  const out = [];
+
+  // Always mention Lage
+  if(state.lage==="innen"){
+    out.push("Innenbereich: grundsätzlich eher geeignet für bauliche Nutzung – Details hängen von Umfeld/Planung ab.");
+  } else if(state.lage==="aussen"){
+    out.push("Außenbereich: neue Nutzungen (insb. Wohnen) sind in der Regel stark eingeschränkt.");
+  } else {
+    out.push("Lage unklar: Innen-/Außenbereich ist die zentrale Weiche – ohne Einordnung bleibt die Aussage vorsichtig.");
+  }
+
+  // B-Plan
+  if(state.bplan==="ja") out.push("Bebauungsplan vorhanden: kann Nutzung und Bebaubarkeit konkret regeln (prüfen, was festgesetzt ist).");
+  else out.push("Kein/unklarer Bebauungsplan: stärker abhängig von Einordnung und Umgebung (typisch: Einzelfall-/Detailprüfung).");
+
+  // Typ & Nutzung interactions
+  if(state.typ==="wald") out.push("Waldflächen sind planungsrechtlich häufig nicht auf Wohnen ausgelegt; zusätzliche Schutzbelange sind möglich.");
+  if(state.typ==="freizeit") out.push("Freizeitgrundstücke bedeuten nicht automatisch Wohnnutzung; oft gelten Einschränkungen für Dauerhaftigkeit/Umfang.");
+  if(state.typ==="bauluecke") out.push("Baulücke/Siedlungsnähe kann die Wahrscheinlichkeit erhöhen – entscheidend ist, ob es wirklich Innenbereich ist und was Planung zulässt.");
+
+  if(state.nutzung==="priv") out.push("Privilegierte Nutzung kann im Außenbereich eher zulässig sein – setzt aber typischerweise einen konkreten betrieblichen Bezug voraus.");
+  if((state.nutzung==="tiny" || state.nutzung==="wohnen") && state.lage==="aussen") out.push("Tiny House zählt meist als Wohnen – im Außenbereich gelten dafür besonders hohe Hürden.");
+  if(state.erschliessung==="unklar") out.push("Erschließung unklar/nicht vorhanden: kann die praktische Umsetzbarkeit deutlich erschweren (zusätzlich zum Planungsrecht).");
+  if(state.bestand==="genehmigt") out.push("Genehmigter Bestand kann die Ausgangslage beeinflussen – erweitert aber nicht automatisch neue Nutzungen.");
+
+  // Limit to 5 bullets (keep tight)
+  return out.slice(0,5);
+}
+
+function buildFehlannahmen(ampel){
+  if(ampel==="Grün"){
+    return [
+      "Innenbereich heißt nicht automatisch: jede Nutzung ist zulässig.",
+      "Ein Bebauungsplan kann Gestaltung/Nutzung stärker begrenzen als erwartet.",
+      "Erschließung und Detailanforderungen (Abstände, Schutzbelange) bleiben relevant."
+    ];
+  }
+  if(ampel==="Gelb"){
+    return [
+      "„Da steht schon etwas" heißt nicht, dass neue Nutzung genehmigt wird.",
+      "Einzelfälle in der Nähe sind kein Automatismus.",
+      "Ohne klare Planungsgrundlage hängt vieles von Details und Behördenpraxis ab."
+    ];
+  }
+  return [
+    "Schöne Lage ≠ Genehmigungsfähigkeit.",
+    "Freizeit-/Waldflächen sind meist nicht für Wohnen vorgesehen.",
+    "Tiny House ist rechtlich häufig trotzdem Wohnen."
+  ];
+}
+
+function buildSteps(){
+  return [
+    "Bebauungsplan / Satzungen prüfen (Gemeindeportal oder Bauamt).",
+    "Vorhaben klar beschreiben (Nutzung, Dauerhaftigkeit, Größe, Erschließung).",
+    "Bei Unsicherheit: Bauamt vorab kontaktieren oder Bauvoranfrage prüfen."
+  ];
+}
+
+function renderResult(state, r){
   document.getElementById("result").style.display="block";
-  document.getElementById("ampel").textContent=ampel;
-  document.getElementById("ampel").className="ampel "+klasse;
-  document.getElementById("score").textContent="Score: "+score+"/100";
 
+  document.getElementById("ampel").textContent = r.ampel;
+  document.getElementById("ampel").className = "ampel " + r.klasse;
+
+  document.getElementById("headline").textContent = r.headline;
+
+  // lists
   const begr = document.getElementById("begruendung");
-  begr.innerHTML="";
-  begr.innerHTML += "<li>Lage: "+lage+"</li>";
-  begr.innerHTML += "<li>B-Plan: "+bplan+"</li>";
-  begr.innerHTML += "<li>Nutzung: "+nutzung+"</li>";
+  begr.innerHTML = r.begruendung.map(x => `<li>${x}</li>`).join("");
+
+  document.getElementById("fehlannahmen").innerHTML = r.fehlannahmen.map(x => `<li>${x}</li>`).join("");
+  document.getElementById("steps").innerHTML = r.steps.map(x => `<li>${x}</li>`).join("");
+
+  // answers
+  const answers = document.getElementById("answers");
+  answers.innerHTML = `
+    <li>Lage: <span class="mono">${pretty("lage", state.lage)}</span></li>
+    <li>B-Plan: <span class="mono">${pretty("bplan", state.bplan)}</span></li>
+    <li>Grundstückstyp: <span class="mono">${pretty("typ", state.typ)}</span></li>
+    <li>Nutzung: <span class="mono">${pretty("nutzung", state.nutzung)}</span></li>
+    <li>Bestand: <span class="mono">${pretty("bestand", state.bestand)}</span></li>
+    <li>Erschließung: <span class="mono">${pretty("erschliessung", state.erschliessung)}</span></li>
+  `;
+
+  // score (hidden by default)
+  const adv = document.getElementById("toggleAdvanced").checked;
+  document.getElementById("score").style.display = adv ? "block" : "none";
+  document.getElementById("scoreHint").style.display = adv ? "block" : "none";
+  document.getElementById("score").textContent = `Score: ${r.score}/100`;
+
+  const calcWrap = document.getElementById("calcWrap");
+  const calc = document.getElementById("calc");
+  calcWrap.style.display = adv ? "block" : "none";
+  if(adv){
+    calc.innerHTML = r.calc.map(([label, delta]) => `<li>${label}: <span class="mono">${delta>0?"+":""}${delta}</span></li>`).join("");
+  } else {
+    calc.innerHTML = "";
+  }
+}
+
+function renderAdvanced(){
+  if(!lastResult) return;
+  renderResult(lastResult.state, lastResult.result);
+}
+
+function resetAll(){
+  ["lage","bplan","typ","nutzung","bestand","erschliessung"].forEach(id => document.getElementById(id).value="");
+  document.getElementById("toggleAdvanced").checked = false;
+  document.getElementById("result").style.display="none";
+  document.getElementById("alert").style.display="none";
+  lastResult = null;
 }
 </script>
 
