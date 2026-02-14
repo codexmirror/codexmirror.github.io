@@ -28,13 +28,14 @@
       lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
       bplanUnklar: "Gemeinde: Bebauungsplan anfordern und geplante Nutzung prüfen lassen.",
       bestandUnklar: "Bestehende Gebäude und Genehmigungen rechtlich prüfen lassen.",
-      erschlTeilweise: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser, Strom.",
+      erschlKlaeren: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser, Strom.",
       aussenWohnen: "Bauamt: Ausnahmen für Wohnen im Außenbereich konkret abklären.",
       waldWohnen: "Gemeinde/Forst: Nutzungsrecht klären; Wohnen im Wald meist ausgeschlossen.",
       bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
       landwpriv: "Privilegierung prüfen: Betrieb, Flächen und Bedarf belastbar nachweisen.",
       freizeitWohnen: "Zweckbestimmung schriftlich prüfen: Freizeitnutzung ist nicht dauerhaftes Wohnen.",
-      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet zusammenstellen."
+      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet zusammenstellen.",
+      fallback: "Bei Unsicherheit: Bauamt-Auskunft schriftlich einholen."
     },
     pitfallsTemplates: {
       tiny: "Tiny House gilt rechtlich meist als normales Wohnen.",
@@ -223,7 +224,7 @@
     if (state.typ === "freizeit" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
     if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
     if (state.bplan === "nein") steps.push(CONFIG.nextStepTemplates.bplanNein);
-    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlTeilweise);
+    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlKlaeren);
 
     if (state.lage === "unklar") steps.push(CONFIG.nextStepTemplates.lageUnklar);
     if (state.bplan === "unklar") steps.push(CONFIG.nextStepTemplates.bplanUnklar);
@@ -231,7 +232,11 @@
 
     if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
 
-    return Array.from(new Set(steps)).slice(0, 3).map((item) => clipWords(item, 14));
+    const unique = Array.from(new Set(steps));
+    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde/i.test(step));
+    if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
+
+    return unique.slice(0, 3).map((item) => clipWords(item, 14));
   }
 
   function buildPitfalls(state) {
@@ -303,14 +308,16 @@
   }
 
   function getFormState(form, optionalDetails) {
+    const bestand = getCheckedValue(form, "bestand");
+    const erschliessung = getCheckedValue(form, "erschliessung");
     return {
       lage: getCheckedValue(form, "lage"),
       bplan: getCheckedValue(form, "bplan"),
       typ: getCheckedValue(form, "typ"),
       nutzung: getCheckedValue(form, "nutzung"),
-      bestand: getCheckedValue(form, "bestand"),
-      erschliessung: getCheckedValue(form, "erschliessung"),
-      optionalActive: optionalDetails.dataset.opened === "true"
+      bestand,
+      erschliessung,
+      optionalActive: Boolean(bestand || erschliessung)
     };
   }
 
@@ -418,7 +425,12 @@
 
       ampelEl.textContent = result.ampelText;
       interpEl.textContent = result.interpretation;
-      confidenceEl.textContent = `Confidence: ${result.confidence}`;
+      const confidenceTextMap = {
+        hoch: "Angaben weitgehend klar.",
+        mittel: "Ein Punkt sollte noch geklärt werden.",
+        niedrig: "Mehrere Punkte sind unklar – Ergebnis konservativ."
+      };
+      confidenceEl.textContent = `Sicherheit: ${result.confidence} – ${confidenceTextMap[result.confidence]}`;
       renderList(whyList, result.why.map(decorateWhyItem));
       renderList(stepsList, result.steps);
       renderList(pitfallsList, result.pitfalls);
@@ -476,7 +488,6 @@
     });
 
     optionalDetails.addEventListener("toggle", () => {
-      if (optionalDetails.open) optionalDetails.dataset.opened = "true";
       update();
     });
 
@@ -485,12 +496,10 @@
       touched.clear();
       closeAllInfoPanels();
       optionalDetails.open = false;
-      optionalDetails.dataset.opened = "false";
       CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
       update();
     });
 
-    optionalDetails.dataset.opened = "false";
     closeAllInfoPanels();
     update();
   }
