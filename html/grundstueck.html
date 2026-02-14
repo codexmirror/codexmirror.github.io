@@ -11,134 +11,127 @@
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <header class="site-header" role="banner">
-    <div class="container header-row">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">∴</span>
-        <span class="brand-name">Grundstücks-Check</span>
+  <header class="header" role="banner">
+    <div class="container header__row">
+      <div class="brand" aria-label="Grundstücks-Check">
+        <span class="brand__mark" aria-hidden="true">∴</span>
+        <span class="brand__name">Grundstücks-Check</span>
       </div>
 
       <nav class="nav" aria-label="Navigation">
-        <a href="#how">So funktioniert’s</a>
-        <a href="#trust">Hinweis</a>
+        <a href="#details">So funktioniert’s</a>
+        <a href="#details">Hinweis</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="site-main">
+  <main id="main">
+    <!-- HERO: nur das Wesentliche -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="kicker">Deutschland-only · BauGB-Logik · Außenbereich-first</p>
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="kicker">Deutschland-only · Außenbereich-first · BauGB-Logik</p>
 
           <h1 id="hero-title">Darf man auf diesem Grundstück bauen oder wohnen?</h1>
+
           <p class="subline">
-            In 3–5 Minuten zur strukturierten Ersteinschätzung – Schwerpunkt Außenbereich (BauGB).
+            6 Fragen → Ampel + kurze Begründung. Dauer: 3–5 Minuten.
           </p>
 
-          <ul class="mini-bullets" aria-label="Was du bekommst">
-            <li>Ampel-Ergebnis mit Begründung</li>
-            <li>Typische Fehlannahmen</li>
-            <li>Keine Datenerfassung im MVP</li>
-          </ul>
-
-          <div class="cta-row">
-            <!-- CTA führt später auf /check oder #check -->
-            <a class="btn btn-primary" href="#check" aria-label="Grundstück prüfen starten">Grundstück prüfen</a>
-            <a class="btn btn-secondary" href="#how">Wie es funktioniert</a>
+          <div class="chips" aria-label="Highlights">
+            <span class="chip">Ampel-Ergebnis</span>
+            <span class="chip">Fehlannahmen</span>
+            <span class="chip">ohne Datenerfassung</span>
           </div>
 
-          <p class="disclaimer-inline" id="trust">
-            Hinweis: Dies ist keine Rechtsberatung. Der Check liefert eine strukturierte Ersteinschätzung anhand typischer planungsrechtlicher Kriterien (BauGB) und ersetzt keine Prüfung durch Behörden/Fachleute.
+          <div class="actions">
+            <a class="btn btn--primary" href="#start">Grundstück prüfen</a>
+            <a class="btn btn--ghost" href="#details">Mehr Details</a>
+          </div>
+
+          <p class="micro">
+            Keine Rechtsberatung. Du bekommst eine strukturierte Ersteinschätzung – nicht mehr, nicht weniger.
           </p>
         </div>
 
-        <aside class="hero-card" aria-label="Vorschau Ampel-System">
-          <h2 class="card-title">Ergebnis-Logik (Ampel)</h2>
-          <p class="card-text">Du bekommst ein klares Signal + kurze Begründung – neutral, nicht alarmistisch.</p>
-
-          <div class="ampel-preview" aria-label="Ampel-Farben">
-            <span class="dot dot-green" title="Grün" aria-label="Grün"></span>
-            <span class="dot dot-yellow" title="Gelb" aria-label="Gelb"></span>
-            <span class="dot dot-red" title="Rot" aria-label="Rot"></span>
+        <!-- Minimaler Preview-Block statt "viel Text" -->
+        <aside class="hero__panel" aria-label="Ampel-Vorschau">
+          <div class="panel__title">Ergebnis</div>
+          <div class="traffic" aria-hidden="true">
+            <span class="dot dot--g"></span>
+            <span class="dot dot--y"></span>
+            <span class="dot dot--r"></span>
           </div>
-
-          <ul class="card-list">
-            <li>6 kurze Fragen</li>
-            <li>Transparenzbox (Antworten + optional Score)</li>
-            <li>Nächste sinnvolle Schritte</li>
-          </ul>
+          <p class="panel__text">Klar. Neutral. Mit nächsten Schritten.</p>
         </aside>
       </div>
     </section>
 
-    <section id="how" class="section" aria-labelledby="how-title">
+    <!-- START: kleiner CTA-Block -->
+    <section id="start" class="start" aria-labelledby="start-title">
       <div class="container">
-        <h2 id="how-title">Wie der Check funktioniert (3–5 Min)</h2>
-
-        <ol class="steps">
-          <li>
-            <strong>Einordnen:</strong> Lage (Innen-/Außenbereich) und Planungsstatus (B-Plan).
-          </li>
-          <li>
-            <strong>Konkretisieren:</strong> Grundstückstyp, Nutzung, Bestand, Erschließung.
-          </li>
-          <li>
-            <strong>Ergebnis:</strong> Ampel + Begründung + Fehlannahmen + nächste Schritte.
-          </li>
-        </ol>
-
-        <div class="info-grid">
-          <div class="info">
-            <h3>Was es ist</h3>
-            <p>Eine strukturierte Ersteinschätzung anhand typischer Kriterien.</p>
+        <div class="start__card">
+          <div>
+            <h2 id="start-title">Start</h2>
+            <p class="muted">Der Entscheidungs-Flow kommt als nächster Schritt. Hier nur Landingpage.</p>
           </div>
-          <div class="info">
-            <h3>Was es nicht ist</h3>
-            <p>Keine Rechtsberatung, keine Behördenentscheidung, kein Ersatz für Prüfung.</p>
-          </div>
-          <div class="info">
-            <h3>Daten</h3>
-            <p>Kein Login, keine personenbezogenen Felder, kein Tracking im MVP.</p>
-          </div>
+          <a class="btn btn--primary" href="#" aria-label="Check starten (Platzhalter)">Jetzt starten</a>
         </div>
       </div>
     </section>
 
-    <section id="check" class="section section-muted" aria-labelledby="check-title">
+    <!-- DETAILS: Tiefe per Accordion, nicht als Wand aus Text -->
+    <section id="details" class="details" aria-labelledby="details-title">
       <div class="container">
-        <h2 id="check-title">Bereit?</h2>
-        <p class="lead">
-          Starte den Check, wenn du grob einschätzen willst, ob Bauen/Wohnen strukturell wahrscheinlich ist.
-        </p>
+        <h2 id="details-title">Details</h2>
 
-        <div class="cta-panel" role="note" aria-label="Call to action">
-          <div>
-            <p class="cta-head">Grundstück prüfen</p>
-            <p class="cta-sub">Dauer: ca. 3–5 Minuten · Ergebnis am Ende automatisch</p>
-          </div>
-          <a class="btn btn-primary" href="#" aria-label="Zum Check (Platzhalter)">Jetzt starten</a>
+        <div class="accordion" role="region" aria-label="Details und Hinweise">
+          <details class="acc">
+            <summary class="acc__sum">Wie der Check funktioniert (3–5 Min)</summary>
+            <div class="acc__body">
+              <ol class="list">
+                <li><strong>Einordnen:</strong> Innen-/Außenbereich + B-Plan.</li>
+                <li><strong>Konkretisieren:</strong> Typ, Nutzung, Bestand, Erschließung.</li>
+                <li><strong>Ergebnis:</strong> Ampel + Gründe + Fehlannahmen + nächste Schritte.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary class="acc__sum">Hinweis (keine Rechtsberatung)</summary>
+            <div class="acc__body">
+              <p class="muted">
+                Dies ist keine Rechtsberatung. Der Check liefert eine strukturierte Ersteinschätzung anhand typischer planungsrechtlicher Kriterien (BauGB) und ersetzt keine Prüfung durch Behörden/Fachleute.
+              </p>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary class="acc__sum">Daten & Tracking</summary>
+            <div class="acc__body">
+              <ul class="list">
+                <li>Kein Login.</li>
+                <li>Keine personenbezogenen Felder.</li>
+                <li>Kein Tracking-Pixel im MVP.</li>
+              </ul>
+            </div>
+          </details>
         </div>
-
-        <p class="fineprint">
-          Platzhalter: Der eigentliche Entscheidungs-Flow kommt als nächster Schritt.
-        </p>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
-    <div class="container footer-row">
-      <nav aria-label="Footer Links">
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__row">
+      <nav class="footer__links" aria-label="Footer Links">
         <a href="#" rel="nofollow">Impressum (Platzhalter)</a>
         <a href="#" rel="nofollow">Datenschutz (Platzhalter)</a>
       </nav>
-      <small>© <span id="year"></span> Grundstücks-Check</small>
+      <small class="muted">© <span id="year"></span> Grundstücks-Check</small>
     </div>
   </footer>
 
   <script>
-    // minimal: nur Jahreszahl, kein Tracking, keine Daten
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
