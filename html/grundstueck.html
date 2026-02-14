@@ -235,6 +235,16 @@ Wald- oder Freizeitflächen sind häufig nicht als Wohnbauland vorgesehen.
 <script>
 function compute(){
 
+const fields = ["lage","bplan","typ","nutzung","bestand","erschliessung"];
+
+// Pflichtfeld-Check
+for(let f of fields){
+  if(document.getElementById(f).value===""){
+    alert("Bitte alle Felder ausfüllen.");
+    return;
+  }
+}
+
 let score = 50;
 let override = null;
 
@@ -245,114 +255,118 @@ const nutzung = document.getElementById("nutzung").value;
 const bestand = document.getElementById("bestand").value;
 const ersch = document.getElementById("erschliessung").value;
 
-/* Basis Score */
+/* ---- Grundlogik ---- */
 
-if(lage==="innen") score+=30;
+// Lage
+if(lage==="innen") score+=25;
 if(lage==="aussen") score-=25;
 
+// Bebauungsplan
 if(bplan==="ja") score+=15;
+if(bplan==="nein") score-=5;
+if(bplan==="unbekannt") score-=10;
 
-if(typ==="wald") score-=20;
+// Grundstückstyp
+if(typ==="wald") score-=25;
 if(typ==="freizeit") score-=15;
-if(typ==="bauluecke") score+=10;
+if(typ==="bauluecke") score+=15;
 
-if(nutzung==="priv") score+=20;
+// Nutzung
+if(nutzung==="wohnen") score+=0;
+if(nutzung==="tiny") score-=5;
+if(nutzung==="wochenend") score-=5;
 if(nutzung==="gewerbe") score-=5;
 
-if(nutzung==="wohnen" && lage==="aussen") score-=20;
-if(nutzung==="tiny" && lage==="aussen") score-=20;
-if(nutzung==="tiny" && lage!=="aussen") score-=5;
-if(nutzung==="wochenend" && lage==="aussen") score-=10;
+// Privilegierung nur sinnvoll im Außenbereich + Landwirtschaft
+if(nutzung==="priv" && lage==="aussen" && typ==="land"){
+  score+=25;
+}
 
-if(bestand==="genehmigt") score+=10;
+// Bestand
+if(bestand==="genehmigt") score+=15;
+if(bestand==="unklar") score-=5;
 
+// Erschließung
 if(ersch==="voll") score+=10;
 if(ersch==="teilweise") score+=5;
-if(ersch==="unklar") score-=15;
+if(ersch==="unklar") score-=10;
 
-if(score>100) score=100;
-if(score<0) score=0;
+/* ---- Harte Realitäts-Overrides ---- */
 
-/* Override-Regeln */
-
-if(lage==="aussen" && nutzung==="wohnen" && nutzung!=="priv"){
+// Außenbereich + dauerhaft wohnen (nicht privilegiert)
+if(lage==="aussen" && nutzung==="wohnen"){
   override="rot";
 }
 
+// Wald + Wohnen oder Tiny
 if(typ==="wald" && (nutzung==="wohnen" || nutzung==="tiny")){
   override="rot";
 }
 
+// Innenbereich + B-Plan + Baulücke
 if(lage==="innen" && bplan==="ja" && typ==="bauluecke"){
   override="gruen";
 }
 
-/* Ampel bestimmen */
+if(score>100) score=100;
+if(score<0) score=0;
+
+/* ---- Ampel ---- */
 
 let ampel="Gelb";
 let klasse="yellow";
 
-if(score>=70){ampel="Grün"; klasse="green";}
-if(score<40){ampel="Rot"; klasse="red";}
+if(score>=70){ ampel="Grün"; klasse="green"; }
+if(score<40){ ampel="Rot"; klasse="red"; }
 
-if(override==="rot"){ampel="Rot"; klasse="red";}
-if(override==="gruen"){ampel="Grün"; klasse="green";}
+if(override==="rot"){ ampel="Rot"; klasse="red"; }
+if(override==="gruen"){ ampel="Grün"; klasse="green"; }
+
+/* ---- Output ---- */
 
 document.getElementById("result").style.display="block";
 document.getElementById("ampel").textContent=ampel;
 document.getElementById("ampel").className="ampel "+klasse;
-document.getElementById("score").textContent="Score: "+score+"/100";
-
-/* Begründung */
+document.getElementById("score").textContent="Realitätsindex: "+score+"/100";
 
 let begr = document.getElementById("begruendung");
 begr.innerHTML="";
 
 if(lage==="aussen")
-begr.innerHTML+="<li>Im Außenbereich sind neue Wohnnutzungen planungsrechtlich stark eingeschränkt.</li>";
+begr.innerHTML+="<li>Außenbereich ist rechtlich stark eingeschränkt.</li>";
 
 if(lage==="innen")
-begr.innerHTML+="<li>Im Innenbereich gelten grundsätzlich bessere Voraussetzungen für Bebauung.</li>";
+begr.innerHTML+="<li>Innenbereich bietet grundsätzlich bessere Voraussetzungen.</li>";
 
 if(bplan==="ja")
-begr.innerHTML+="<li>Ein Bebauungsplan schafft verbindliche Regeln und erhöht Planungssicherheit.</li>";
+begr.innerHTML+="<li>Bebauungsplan schafft Planungssicherheit.</li>";
 
 if(typ==="wald")
 begr.innerHTML+="<li>Waldflächen sind in der Regel nicht als Wohnbauland vorgesehen.</li>";
 
-if(nutzung==="wohnen")
-begr.innerHTML+="<li>Dauerhaftes Wohnen ist rechtlich anspruchsvoller als reine Freizeitnutzung.</li>";
-
 if(bestand==="genehmigt")
-begr.innerHTML+="<li>Vorhandene genehmigte Bebauung kann die Situation positiv beeinflussen.</li>";
+begr.innerHTML+="<li>Genehmigter Bestand verbessert die Ausgangslage.</li>";
 
-/* Fehlannahmen */
+if(ersch==="unklar")
+begr.innerHTML+="<li>Unklare Erschließung kann ein Kosten- oder Genehmigungsrisiko sein.</li>";
 
 let fehl = document.getElementById("fehlannahmen");
 fehl.innerHTML="";
 
-if(ampel==="Grün"){
-fehl.innerHTML+="<li>Innenbereich heißt nicht automatisch: alles ist erlaubt.</li>";
-fehl.innerHTML+="<li>Gestaltung und Nutzung können weiter eingeschränkt sein.</li>";
-}
-
-if(ampel==="Gelb"){
-fehl.innerHTML+="<li>Ein Gebäude in der Nähe bedeutet keine automatische Genehmigung.</li>";
-fehl.innerHTML+="<li>Details können entscheidend sein.</li>";
-}
-
-if(ampel==="Rot"){
-fehl.innerHTML+="<li>Schöne Lage bedeutet nicht Genehmigungsfähigkeit.</li>";
-fehl.innerHTML+="<li>Tiny House gilt rechtlich meist als Wohnen.</li>";
-}
-
-/* Schritte */
+fehl.innerHTML+="<li>„Nachbar durfte bauen" bedeutet nicht automatisch eigene Genehmigung.</li>";
+fehl.innerHTML+="<li>Tiny House gilt rechtlich meist als normales Wohnen.</li>";
 
 let steps = document.getElementById("steps");
 steps.innerHTML="";
-steps.innerHTML+="<li>Bebauungsplan oder Satzungen bei der Gemeinde prüfen.</li>";
-steps.innerHTML+="<li>Klare Projektbeschreibung erstellen.</li>";
-steps.innerHTML+="<li>Bei Unsicherheit Bauamt kontaktieren oder Bauvoranfrage prüfen.</li>";
+
+steps.innerHTML+="<li>Bebauungsplan oder Außenbereichsstatus bei der Gemeinde prüfen.</li>";
+steps.innerHTML+="<li>Projekt konkret definieren (Größe, Nutzung, Dauer).</li>";
+steps.innerHTML+="<li>Bei Unsicherheit Bauvoranfrage stellen.</li>";
+
+window.scrollTo({
+  top: document.getElementById("result").offsetTop - 20,
+  behavior: "smooth"
+});
 
 }
 </script>
