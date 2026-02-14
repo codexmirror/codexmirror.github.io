@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grundstücks-Check – Ersteinschätzung (BauGB)</title>
+  <meta name="description" content="In 3–5 Minuten zur strukturierten Ersteinschätzung – Schwerpunkt Außenbereich (BauGB). Keine Datenerfassung im MVP." />
+  <link rel="stylesheet" href="/css/grundstueck.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header" role="banner">
+    <div class="container header-row">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">∴</span>
+        <span class="brand-name">Grundstücks-Check</span>
+      </div>
+
+      <nav class="nav" aria-label="Navigation">
+        <a href="#how">So funktioniert’s</a>
+        <a href="#trust">Hinweis</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="site-main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="kicker">Deutschland-only · BauGB-Logik · Außenbereich-first</p>
+
+          <h1 id="hero-title">Darf man auf diesem Grundstück bauen oder wohnen?</h1>
+          <p class="subline">
+            In 3–5 Minuten zur strukturierten Ersteinschätzung – Schwerpunkt Außenbereich (BauGB).
+          </p>
+
+          <ul class="mini-bullets" aria-label="Was du bekommst">
+            <li>Ampel-Ergebnis mit Begründung</li>
+            <li>Typische Fehlannahmen</li>
+            <li>Keine Datenerfassung im MVP</li>
+          </ul>
+
+          <div class="cta-row">
+            <!-- CTA führt später auf /check oder #check -->
+            <a class="btn btn-primary" href="#check" aria-label="Grundstück prüfen starten">Grundstück prüfen</a>
+            <a class="btn btn-secondary" href="#how">Wie es funktioniert</a>
+          </div>
+
+          <p class="disclaimer-inline" id="trust">
+            Hinweis: Dies ist keine Rechtsberatung. Der Check liefert eine strukturierte Ersteinschätzung anhand typischer planungsrechtlicher Kriterien (BauGB) und ersetzt keine Prüfung durch Behörden/Fachleute.
+          </p>
+        </div>
+
+        <aside class="hero-card" aria-label="Vorschau Ampel-System">
+          <h2 class="card-title">Ergebnis-Logik (Ampel)</h2>
+          <p class="card-text">Du bekommst ein klares Signal + kurze Begründung – neutral, nicht alarmistisch.</p>
+
+          <div class="ampel-preview" aria-label="Ampel-Farben">
+            <span class="dot dot-green" title="Grün" aria-label="Grün"></span>
+            <span class="dot dot-yellow" title="Gelb" aria-label="Gelb"></span>
+            <span class="dot dot-red" title="Rot" aria-label="Rot"></span>
+          </div>
+
+          <ul class="card-list">
+            <li>6 kurze Fragen</li>
+            <li>Transparenzbox (Antworten + optional Score)</li>
+            <li>Nächste sinnvolle Schritte</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="how" class="section" aria-labelledby="how-title">
+      <div class="container">
+        <h2 id="how-title">Wie der Check funktioniert (3–5 Min)</h2>
+
+        <ol class="steps">
+          <li>
+            <strong>Einordnen:</strong> Lage (Innen-/Außenbereich) und Planungsstatus (B-Plan).
+          </li>
+          <li>
+            <strong>Konkretisieren:</strong> Grundstückstyp, Nutzung, Bestand, Erschließung.
+          </li>
+          <li>
+            <strong>Ergebnis:</strong> Ampel + Begründung + Fehlannahmen + nächste Schritte.
+          </li>
+        </ol>
+
+        <div class="info-grid">
+          <div class="info">
+            <h3>Was es ist</h3>
+            <p>Eine strukturierte Ersteinschätzung anhand typischer Kriterien.</p>
+          </div>
+          <div class="info">
+            <h3>Was es nicht ist</h3>
+            <p>Keine Rechtsberatung, keine Behördenentscheidung, kein Ersatz für Prüfung.</p>
+          </div>
+          <div class="info">
+            <h3>Daten</h3>
+            <p>Kein Login, keine personenbezogenen Felder, kein Tracking im MVP.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="check" class="section section-muted" aria-labelledby="check-title">
+      <div class="container">
+        <h2 id="check-title">Bereit?</h2>
+        <p class="lead">
+          Starte den Check, wenn du grob einschätzen willst, ob Bauen/Wohnen strukturell wahrscheinlich ist.
+        </p>
+
+        <div class="cta-panel" role="note" aria-label="Call to action">
+          <div>
+            <p class="cta-head">Grundstück prüfen</p>
+            <p class="cta-sub">Dauer: ca. 3–5 Minuten · Ergebnis am Ende automatisch</p>
+          </div>
+          <a class="btn btn-primary" href="#" aria-label="Zum Check (Platzhalter)">Jetzt starten</a>
+        </div>
+
+        <p class="fineprint">
+          Platzhalter: Der eigentliche Entscheidungs-Flow kommt als nächster Schritt.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-row">
+      <nav aria-label="Footer Links">
+        <a href="#" rel="nofollow">Impressum (Platzhalter)</a>
+        <a href="#" rel="nofollow">Datenschutz (Platzhalter)</a>
+      </nav>
+      <small>© <span id="year"></span> Grundstücks-Check</small>
+    </div>
+  </footer>
+
+  <script>
+    // minimal: nur Jahreszahl, kein Tracking, keine Daten
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
