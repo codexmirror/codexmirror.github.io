@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ist Lena berechtigt, sauer auf Sven?</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ist Lena berechtigt sauer auf Sven?</title>
 
 <style>
 :root{
@@ -20,22 +20,20 @@
   --radius:14px;
 }
 
-*{box-sizing:border-box}
+*{ box-sizing:border-box; }
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
-
 .wrapper{
   max-width:760px;
   margin:40px auto;
   padding:20px;
 }
-
-h1{margin:0 0 8px;font-size:28px}
-.lead{margin:0 0 30px;color:var(--muted)}
+h1{ margin:0 0 6px; font-size:28px; }
+.lead{ margin:0 0 18px; color:var(--muted); line-height:1.4; }
 
 .card{
   background:var(--card);
@@ -44,10 +42,13 @@ h1{margin:0 0 8px;font-size:28px}
   padding:18px;
   margin-bottom:14px;
 }
-
-label{font-weight:700;display:block;margin-bottom:6px}
-.help{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.4}
-
+label{ font-weight:900; display:block; margin-bottom:6px; }
+.help{
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 10px;
+  line-height:1.35;
+}
 select{
   width:100%;
   padding:12px;
@@ -56,235 +57,268 @@ select{
   font-size:14px;
   background:#fff;
 }
-
 button{
   width:100%;
   padding:14px;
   border:none;
   border-radius:12px;
-  font-weight:800;
+  font-weight:900;
   font-size:15px;
   cursor:pointer;
   background:#0f172a;
   color:#fff;
-  margin-top:14px;
+  margin-top:10px;
 }
+.notice{
+  display:none;
+  margin-top:10px;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--muted);
+  font-size:13px;
+}
+.notice.show{ display:block; }
+.notice b{ color:var(--text); }
 
 .result{
-  margin-top:30px;
+  display:none;
+  margin-top:18px;
   padding:20px;
   border-radius:var(--radius);
   border:1px solid var(--line);
   background:#fff;
-  display:none;
 }
+.ampel{
+  font-weight:950;
+  font-size:22px;
+  margin-bottom:8px;
+}
+.green{ color:var(--green); }
+.yellow{ color:var(--yellow); }
+.red{ color:var(--red); }
 
-.ampel{font-weight:900;font-size:22px;margin-bottom:10px}
-.green{color:var(--green)}
-.yellow{color:var(--yellow)}
-.red{color:var(--red)}
-
-.section-title{font-weight:800;margin-top:16px;margin-bottom:6px}
-
+.meta{ color:var(--muted); font-size:14px; line-height:1.35; }
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+.section-title{
+  font-weight:900;
+  margin-top:14px;
+  margin-bottom:6px;
+}
 ul{
   padding-left:18px;
   margin:4px 0 0;
   color:var(--muted);
   font-size:14px;
-  line-height:1.45;
+  line-height:1.35;
 }
-
-.smallwarn{
-  margin-top:10px;
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#f8fafc;
+small{
+  display:block;
+  margin-top:14px;
   color:var(--muted);
-  font-size:13px;
-  display:none;
+  font-size:12px;
 }
-
-small{display:block;margin-top:20px;color:var(--muted);font-size:12px}
 </style>
 </head>
 
 <body>
 <div class="wrapper">
 
-<h1>Ist Lena berechtigt, sauer auf Sven?</h1>
-<p class="lead">4 Fragen → Ergebnis in 2 Sekunden. Objektivität: nein. Moral: Sven hat recht.</p>
+  <h1>Ist Lena berechtigt sauer auf Sven?</h1>
+  <p class="lead">4 Fragen → Ergebnis in 2 Sekunden. Objektivität: nein. Moral: Sven hat recht.</p>
 
-<div class="card">
-  <label>1) Hast du ihn versetzt?</label>
-  <div class="help">Versetzt = verabredet → dann doch nicht → Sven darf raten, warum.</div>
-  <select id="versetzt">
-    <option value="">Bitte wählen</option>
-    <option value="nein">Nein</option>
-    <option value="einmal">Ja, einmal</option>
-    <option value="mehrfach">Ja, mehrfach</option>
-  </select>
-</div>
+  <div class="card">
+    <label for="q1">1) Hast du ihn versetzt?</label>
+    <p class="help">Versetzt = verabredet → dann doch nicht → Sven darf raten, warum.</p>
+    <select id="q1">
+      <option value="">Bitte wählen</option>
+      <option value="nie">Nein</option>
+      <option value="einmal">Ja, einmal</option>
+      <option value="mehrfach">Ja, mehrfach</option>
+    </select>
+  </div>
 
-<div class="card">
-  <label>2) Tonfall in der Unterhaltung</label>
-  <div class="help">„Du nervst" ist kurz, ehrlich, und sozial maximal mittel.</div>
-  <select id="ton">
-    <option value="">Bitte wählen</option>
-    <option value="neutral">Neutral / normal</option>
-    <option value="genervt">Genervt</option>
-    <option value="hart">Hart unnötig</option>
-  </select>
-</div>
+  <div class="card">
+    <label for="q2">2) Tonfall in der Unterhaltung</label>
+    <p class="help">„Du nervst" ist kurz, ehrlich, und sozial maximal mittel.</p>
+    <select id="q2">
+      <option value="">Bitte wählen</option>
+      <option value="neutral">Neutral</option>
+      <option value="genervt">Genervt</option>
+      <option value="passiv">Passiv-aggressiv</option>
+      <option value="respektlos">Respektlos</option>
+    </select>
+  </div>
 
-<div class="card">
-  <label>3) Antwortverhalten</label>
-  <div class="help">„OFT schreibst du mir nicht" ist keine Poesie, das ist ein Problem.</div>
-  <select id="antwort">
-    <option value="">Bitte wählen</option>
-    <option value="ok">Normal</option>
-    <option value="selten">Selten</option>
-    <option value="ghost">Ghost (ewig)</option>
-  </select>
-</div>
+  <div class="card">
+    <label for="q3">3) Antwortverhalten</label>
+    <p class="help">„OFT schreibst du mir nicht" ist keine Poesie, das ist ein Problem. (Vielleicht.)</p>
+    <select id="q3">
+      <option value="">Bitte wählen</option>
+      <option value="normal">Normal</option>
+      <option value="selten">Selten</option>
+      <option value="oft">Oft</option>
+    </select>
+  </div>
 
-<div class="card">
-  <label>4) Sticker-Qualität (laut Lena)</label>
-  <div class="help">Wenn „alle scheiße" sind, ist das entweder Geschmack oder Angriff. Meistens beides.</div>
-  <select id="sticker">
-    <option value="">Bitte wählen</option>
-    <option value="ok">Okay / lustig</option>
-    <option value="mid">Mid</option>
-    <option value="loser">„Loser Sticker"</option>
-  </select>
-</div>
+  <div class="card">
+    <label for="q4">4) Sticker-Qualität (laut Lena)</label>
+    <p class="help">Wenn „alle scheiße" sind, ist das entweder Geschmack oder Angriff. Meistens beides.</p>
+    <select id="q4">
+      <option value="">Bitte wählen</option>
+      <option value="elite">Elite</option>
+      <option value="mid">Mid</option>
+      <option value="trash">Trash</option>
+      <option value="toxic">Toxisch</option>
+    </select>
+  </div>
 
-<button type="button" onclick="compute()">Ergebnis berechnen</button>
+  <button id="btn" type="button">Ergebnis berechnen</button>
+  <div id="notice" class="notice"></div>
 
-<div id="warn" class="smallwarn"></div>
+  <div id="result" class="result">
+    <div id="ampel" class="ampel"></div>
+    <div id="score" class="meta"></div>
+    <div id="badge" class="badge"></div>
 
-<div id="result" class="result">
-  <div id="ampel" class="ampel"></div>
-  <div id="score"></div>
+    <div class="section-title">Begründung</div>
+    <ul id="why"></ul>
 
-  <div class="section-title">Kurzfazit</div>
-  <ul id="fazit"></ul>
+    <div class="section-title">Nächste Schritte</div>
+    <ul id="next"></ul>
 
-  <div class="section-title">Sätze, die heute gefallen sind (oder gleich fallen)</div>
-  <ul id="lines"></ul>
-
-  <div class="section-title">Was Sven jetzt braucht</div>
-  <ul id="sven"></ul>
-</div>
-
-<small>Hinweis: Satire. Keine Paartherapie. Keine Rechtsberatung. Sven hat trotzdem recht.</small>
+    <small>Hinweis: Satire. Wenn du das ernst nimmst, gewinnt Sven doppelt.</small>
+  </div>
 
 </div>
 
 <script>
-function compute(){
-  var score = 50;
-  var override = null;
+(() => {
+  const $ = (id) => document.getElementById(id);
 
-  var versetzt = document.getElementById("versetzt").value;
-  var ton      = document.getElementById("ton").value;
-  var antwort  = document.getElementById("antwort").value;
-  var sticker  = document.getElementById("sticker").value;
-
-  // Soft validation (ohne Alerts)
-  var warn = document.getElementById("warn");
-  warn.style.display = "none";
-  warn.textContent = "";
-
-  if(!versetzt || !ton || !antwort || !sticker){
-    warn.style.display = "block";
-    warn.textContent = "Wähl alles aus. Sonst ist das Ergebnis wie eure Kommunikation: unvollständig.";
-    return;
+  function showNotice(html){
+    $("notice").innerHTML = html;
+    $("notice").classList.add("show");
+  }
+  function hideNotice(){
+    $("notice").classList.remove("show");
+    $("notice").innerHTML = "";
   }
 
-  // Versetzt
-  if(versetzt==="nein") score -= 12;
-  if(versetzt==="einmal") score += 10;
-  if(versetzt==="mehrfach") score += 22;
+  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
 
-  // Ton
-  if(ton==="neutral") score -= 6;
-  if(ton==="genervt") score += 12;
-  if(ton==="hart") score += 24;
+  function compute(){
+    hideNotice();
 
-  // Antwort
-  if(antwort==="ok") score -= 6;
-  if(antwort==="selten") score += 10;
-  if(antwort==="ghost") score += 20;
+    const v = {
+      q1: $("q1").value,
+      q2: $("q2").value,
+      q3: $("q3").value,
+      q4: $("q4").value
+    };
 
-  // Sticker
-  if(sticker==="ok") score -= 3;
-  if(sticker==="mid") score += 6;
-  if(sticker==="loser") score += 12;
+    if(!v.q1 || !v.q2 || !v.q3 || !v.q4){
+      showNotice("<b>Fehlt noch was:</b> Bitte alle 4 Felder auswählen, sonst ist Sven nur halber Sieger.");
+      return;
+    }
 
-  // clamp
-  if(score > 100) score = 100;
-  if(score < 0) score = 0;
+    // --- "Sven hat recht" Engine ---
+    // Baseline: pro Sven, weil das hier der Witz ist.
+    let sven = 65;
 
-  // Overrides (harte Regeln)
-  if(antwort==="ghost" && versetzt!=="nein") override = "rot";
-  if(versetzt==="nein" && ton==="neutral" && antwort==="ok") override = "gruen";
+    const why = [];
+    const next = [];
 
-  // Ampel
-  var ampel = "Gelb";
-  var klasse = "yellow";
+    // Q1
+    if(v.q1 === "nie"){ sven -= 4; why.push("Nicht versetzt. Minimaler Punkt für Lena (wird notiert, nicht gefeiert)."); }
+    if(v.q1 === "einmal"){ sven += 10; why.push("Einmal versetzt: Sven darf irritiert sein, weil Menschen so funktionieren."); }
+    if(v.q1 === "mehrfach"){ sven += 22; why.push("Mehrfach versetzt: Das ist kein Unfall mehr, das ist ein Muster."); }
 
-  if(score >= 70){ ampel="Rot"; klasse="red"; }
-  if(score < 40){ ampel="Grün"; klasse="green"; }
+    // Q2
+    if(v.q2 === "neutral"){ sven += 4; why.push("Neutraler Ton: verdächtig kontrolliert. Sven bleibt defensiv (und damit im Recht)."); }
+    if(v.q2 === "genervt"){ sven += 10; why.push("Genervt: eskalationsnah. Sven darf auf Durchzug schalten."); }
+    if(v.q2 === "passiv"){ sven += 16; why.push("Passiv-aggressiv: Krieg ohne Ansage. Sven verliert dabei immer, also hat er recht."); }
+    if(v.q2 === "respektlos"){ sven += 22; why.push("Respektlos: Glückwunsch, Sven wird automatisch zum 'vernünftigen Part' befördert."); }
 
-  if(override==="rot"){ ampel="Rot"; klasse="red"; }
-  if(override==="gruen"){ ampel="Grün"; klasse="green"; }
+    // Q3
+    if(v.q3 === "normal"){ sven += 6; why.push("Antwortverhalten normal: Dann ist das Problem eher Erwartung vs. Realität."); }
+    if(v.q3 === "selten"){ sven += 10; why.push("Selten: Sven war beschäftigt. Oder leer. Beides zählt pro Sven."); }
+    if(v.q3 === "oft"){ sven += 14; why.push("Oft: Wenn es oft ist, ist es relevant. Wenn es relevant ist, ist Sven (leider) im Vorteil."); }
 
-  // Render
-  document.getElementById("result").style.display = "block";
-  document.getElementById("ampel").textContent = ampel;
-  document.getElementById("ampel").className = "ampel " + klasse;
-  document.getElementById("score").textContent = "Sauer-Score: " + score + "/100";
+    // Q4
+    if(v.q4 === "elite"){ sven += 6; why.push("Elite-Sticker: Kritik daran ist Kulturkampf. Sven bekommt Sympathiepunkte."); }
+    if(v.q4 === "mid"){ sven += 10; why.push("Mid: Geschmackssache. Aber 'alle scheiße' ist Angriff. Sven notiert den Treffer."); }
+    if(v.q4 === "trash"){ sven += 14; why.push("Trash: Provokation wurde gewählt. Reaktion folgt. Sven fühlt sich bestätigt."); }
+    if(v.q4 === "toxic"){ sven += 18; why.push("Toxisch: Das war kein Spaß mehr. Sven darf beleidigt sein."); }
 
-  var fazit = document.getElementById("fazit");
-  var lines = document.getElementById("lines");
-  var sven  = document.getElementById("sven");
-  fazit.innerHTML = "";
-  lines.innerHTML = "";
-  sven.innerHTML = "";
+    // Subtiler Bias-Boost: 80% extra Sven-Energie
+    if(Math.random() < 0.8){
+      sven += 12;
+      why.push("Bonusfaktor: Statistik sagt, Sven hat heute wieder recht. (Technisch bedingt.)");
+    } else {
+      why.push("Seltene Anomalie: Heute könnte Lena minimal im Recht sein. Nicht übertreiben.");
+    }
 
-  // Kurzfazit
-  if(ampel==="Grün"){
-    fazit.innerHTML += "<li>Lena ist kaum berechtigt sauer. Ungewohnt, aber möglich.</li>";
-    fazit.innerHTML += "<li>Wenn trotzdem Stress ist, ist das eher Prinzip als Inhalt.</li>";
-  } else if(ampel==="Gelb"){
-    fazit.innerHTML += "<li>Beide haben irgendwas. Keiner sagt’s normal. Klassiker.</li>";
-    fazit.innerHTML += "<li>Man könnte kurz freundlich sein. Muss man aber nicht, anscheinend.</li>";
-  } else {
-    fazit.innerHTML += "<li>Lena ist sehr sauer. Ob berechtigt? Auf jeden Fall laut.</li>";
-    fazit.innerHTML += "<li>Kommunikation ist gerade ein Gerücht.</li>";
+    // Override: klassische Kombi "versetzt + genervt/respektlos" -> Sven safe winner
+    if(v.q1 === "mehrfach" && (v.q2 === "genervt" || v.q2 === "respektlos")){
+      sven = Math.max(sven, 92);
+      why.push("Override: Versetzt + genervt/respektlos = 02:40-Eskalationsformel. Sven bleibt Sieger.");
+    }
+
+    sven = clamp(sven, 0, 100);
+
+    // Ergebnis (immer Sven-lastig)
+    let text = "🟡 Emotional verständlich, aber Sven bleibt korrekt";
+    let cls = "yellow";
+    let badge = "Sven-Index: stabil";
+
+    if(sven >= 78){
+      text = "🔴 Sven hat recht (wissenschaftlich belegt)";
+      cls = "red";
+      badge = "Sven-Index: Sieger-Modus";
+    } else if(sven < 58){
+      text = "🟢 Minimal berechtigt (Sven bleibt trotzdem stabil)";
+      cls = "green";
+      badge = "Sven-Index: kurz wackelig";
+    }
+
+    // Steps
+    if(sven >= 78){
+      next.push("Keine Diskussion jetzt. Ein Satz: „Okay, ich war drüber. Lass morgen normal reden."");
+      next.push("Keine Wörter wie „immer/oft" ohne Beispiel. Sonst wird’s wieder Theater.");
+      next.push("Sticker-Thema beenden. Niemand gewinnt Sticker-Debatten. Niemand.");
+    } else if(sven >= 58){
+      next.push("Ein Satz: „Mich stört X, ich will Y. Können wir das kurz klären?"");
+      next.push("Wenn’s spät ist: Pause. Nicht im Chat lösen, wenn beide genervt sind.");
+      next.push("Ein konkretes Beispiel statt Generalisierung. Sonst dreht ihr im Kreis.");
+    } else {
+      next.push("24h warten. Nicht aus Emotion heraus nachtreten.");
+      next.push("Check: bist du müde/gestresst? Dann ist das gerade kein Weltuntergang.");
+      next.push("Wenn’s dir wichtig ist: ruhig sagen, was du brauchst, ohne Angriff.");
+    }
+
+    // Render
+    $("result").style.display = "block";
+    $("ampel").textContent = text;
+    $("ampel").className = "ampel " + cls;
+    $("score").textContent = "Sven-Wahrscheinlichkeit: " + sven + "%";
+    $("badge").textContent = badge;
+
+    $("why").innerHTML = why.map(x => `<li>${x}</li>`).join("");
+    $("next").innerHTML = next.map(x => `<li>${x}</li>`).join("");
   }
 
-  // Lines (trocken)
-  if(sticker==="loser") lines.innerHTML += "<li>„Du hast echt Loser Sticker."</li>";
-  if(ton!=="neutral") lines.innerHTML += "<li>„Du nervst."</li>";
-  if(antwort!=="ok") lines.innerHTML += "<li>„OFT schreibst du mir nicht."</li>";
-  if(versetzt!=="nein") lines.innerHTML += "<li>„Du hast mich seit 2 Wochen versetzt."</li>";
-  if(lines.innerHTML==="") lines.innerHTML += "<li>Heute mal keine dummen Sätze. Stark.</li>";
-
-  // Sven braucht Zeit für Sven + Moral
-  sven.innerHTML += "<li>Sven braucht Zeit für Sven.</li>";
-  if(antwort==="ghost") sven.innerHTML += "<li>Und eine Antwort, bevor die Jahreszeiten wechseln.</li>";
-  if(ton!=="neutral") sven.innerHTML += "<li>Und weniger „Du nervst" als Einstieg, wenn man ernst genommen werden will.</li>";
-
-  if(ampel==="Grün"){
-    sven.innerHTML += "<li>Moral: Sven hat recht. Ausnahmsweise sogar sauber.</li>";
-  } else if(ampel==="Gelb"){
-    sven.innerHTML += "<li>Moral: Sven hat recht. Nicht weil er perfekt ist, sondern weil irgendwer’s sein muss.</li>";
-  } else {
-    sven.innerHTML += "<li>Moral: Sven hat recht. Und jetzt alle runterfahren.</li>";
-  }
-}
+  $("btn").addEventListener("click", compute);
+})();
 </script>
 
 </body>
