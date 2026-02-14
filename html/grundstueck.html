@@ -132,102 +132,111 @@
   </div>
 
   <script>
-    const $ = (id) => document.getElementById(id);
+document.addEventListener("DOMContentLoaded", () => {
+  const $ = (id) => document.getElementById(id);
 
-    function li(ul, text){
-      const el = document.createElement("li");
-      el.textContent = text;
-      ul.appendChild(el);
+  function li(ul, text){
+    const el = document.createElement("li");
+    el.textContent = text;
+    ul.appendChild(el);
+  }
+
+  const goBtn = $("go");
+  if (!goBtn) {
+    console.error("Button #go nicht gefunden. Prüfe ID oder Script-Timing.");
+    return;
+  }
+
+  goBtn.addEventListener("click", () => {
+    const lage = $("lage")?.value || "";
+    const bplan = $("bplan")?.value || "";
+    const typ  = $("typ")?.value || "";
+    const nutz = $("nutzung")?.value || "";
+
+    const bestand = $("bestand")?.value || "";
+    const ersch   = $("ersch")?.value || "";
+
+    const ok = lage && bplan && typ && nutz;
+
+    const err = $("err");
+    if (err) err.style.display = ok ? "none" : "block";
+    if (!ok) return;
+
+    const reasonsUL = $("reasons"); if (!reasonsUL) return;
+    const stepsUL   = $("steps");   if (!stepsUL) return;
+    const fallsUL   = $("falls");   if (!fallsUL) return;
+
+    reasonsUL.innerHTML = "";
+    stepsUL.innerHTML = "";
+    fallsUL.innerHTML = "";
+
+    let color = "y";
+    let kicker = "Einzelfall – Details können das Ergebnis kippen.";
+
+    const isWohnen = (nutz === "wohnen" || nutz === "tiny");
+
+    if (typ === "wald" && isWohnen){
+      color = "r";
+      kicker = "Wald + Wohnen ist in der Praxis meist nicht genehmigungsfähig.";
+      li(reasonsUL, "Waldflächen sind i.d.R. nicht für Wohnnutzung vorgesehen.");
     }
 
-    $("go").addEventListener("click", () => {
-      const lage = $("lage").value;
-      const bplan = $("bplan").value;
-      const typ = $("typ").value;
-      const nutz = $("nutzung").value;
+    if (color !== "r" && lage === "aussen" && isWohnen && nutz !== "priv"){
+      color = "r";
+      kicker = "Außenbereich + Wohnen ist planungsrechtlich stark eingeschränkt.";
+      li(reasonsUL, "Im Außenbereich sind neue Wohnvorhaben regelmäßig unzulässig (nur Ausnahmen).");
+    }
 
-      const bestand = $("bestand") ? $("bestand").value : "";
-      const ersch = $("ersch") ? $("ersch").value : "";
+    if (color !== "r" && lage === "innen" && bplan === "ja" && typ === "bauluecke"){
+      color = "g";
+      kicker = "Gute Ausgangslage – Details entscheiden nur noch im Rahmen des Plans.";
+      li(reasonsUL, "Innenbereich + Bebauungsplan schafft Planungssicherheit.");
+      li(reasonsUL, "Baulücke im Ort ist typischerweise baulich vorgesehen.");
+    }
 
-      // Pflichtfelder
-      const ok = lage && bplan && typ && nutz;
-      $("err").style.display = ok ? "none" : "block";
-      if (!ok) return;
-
-      // Ergebnis-Container reset
-      const reasonsUL = $("reasons"); reasonsUL.innerHTML = "";
-      const stepsUL = $("steps"); stepsUL.innerHTML = "";
-      const fallsUL = $("falls"); fallsUL.innerHTML = "";
-
-      // Default
-      let color = "y";
-      let kicker = "Einzelfall – Details können das Ergebnis kippen.";
-
-      // 1) harte Realitätsbremsen
-      const isWohnen = (nutz === "wohnen" || nutz === "tiny");
-
-      if (typ === "wald" && isWohnen){
-        color = "r";
-        kicker = "Wald + Wohnen ist in der Praxis meist nicht genehmigungsfähig.";
-        li(reasonsUL, "Waldflächen sind i.d.R. nicht für Wohnnutzung vorgesehen.");
+    if (color === "y"){
+      if (lage === "unklar") li(reasonsUL, "Innen-/Außenbereich ist unklar – das ist der wichtigste Faktor.");
+      if (bplan === "unklar") li(reasonsUL, "B-Plan unklar – ohne ihn wird vieles zum Einzelfall.");
+      if (lage === "innen" && bplan === "nein") li(reasonsUL, "Innenbereich ohne B-Plan: oft „Einfügen" (Einzelfall), aber nicht automatisch schlecht.");
+      if (lage === "aussen" && nutz === "wochenend") li(reasonsUL, "Außenbereich + Wochenendnutzung ist oft schwierig und genehmigungsabhängig.");
+      if (typ === "freizeit" && isWohnen) li(reasonsUL, "Freizeitgrundstück + Wohnen/Tiny ist häufig nicht vorgesehen.");
+      if (nutz === "priv") {
+        kicker = "Kann möglich sein – aber nur bei echtem Betrieb + passendem Vorhaben.";
+        li(reasonsUL, "Privilegierung greift nur für echte landwirtschaftliche Betriebe und bestimmte Vorhaben.");
       }
 
-      // Außenbereich + Wohnen (außer privilegiert)
-      if (color !== "r" && lage === "aussen" && isWohnen && nutz !== "priv"){
-        color = "r";
-        kicker = "Außenbereich + Wohnen ist planungsrechtlich stark eingeschränkt.";
-        li(reasonsUL, "Im Außenbereich sind neue Wohnvorhaben regelmäßig unzulässig (nur Ausnahmen).");
-      }
+      if (bestand === "genehmigt") li(reasonsUL, "Genehmigter Bestand kann die Ausgangslage verbessern (aber Nutzung bleibt entscheidend).");
+      if (bestand === "unklar") li(reasonsUL, "Bestand unklar: Genehmigung klären – sonst Risiko.");
+      if (ersch === "unklar") li(reasonsUL, "Erschließung unklar: kann ein harter Showstopper werden.");
 
-      // 2) klare Grün-Konstellation
-      if (color !== "r" && lage === "innen" && bplan === "ja" && typ === "bauluecke"){
-        color = "g";
-        kicker = "Gute Ausgangslage – Details entscheiden nur noch im Rahmen des Plans.";
-        li(reasonsUL, "Innenbereich + Bebauungsplan schafft Planungssicherheit.");
-        li(reasonsUL, "Baulücke im Ort ist typischerweise baulich vorgesehen.");
-      }
+      if (reasonsUL.children.length === 0) li(reasonsUL, "Details entscheiden (Satzungen, Nutzung, konkrete Planung, Nachbarschaft).");
+    }
 
-      // 3) Gelb-Logik / Feinheiten
-      if (color === "y"){
-        if (lage === "unklar") li(reasonsUL, "Innen-/Außenbereich ist unklar – das ist der wichtigste Faktor.");
-        if (bplan === "unklar") li(reasonsUL, "B-Plan unklar – ohne ihn wird vieles zum Einzelfall.");
-        if (lage === "innen" && bplan === "nein") li(reasonsUL, "Innenbereich ohne B-Plan: oft „Einfügen" (Einzelfall), aber nicht automatisch schlecht.");
-        if (lage === "aussen" && nutz === "wochenend") li(reasonsUL, "Außenbereich + Wochenendnutzung ist oft schwierig und genehmigungsabhängig.");
-        if (typ === "freizeit" && isWohnen) li(reasonsUL, "Freizeitgrundstück + Wohnen/Tiny ist häufig nicht vorgesehen.");
-        if (nutz === "priv") {
-          kicker = "Kann möglich sein – aber nur bei echtem Betrieb + passendem Vorhaben.";
-          li(reasonsUL, "Privilegierung greift nur für echte landwirtschaftliche Betriebe und bestimmte Vorhaben.");
-        }
+    li(stepsUL, "Gemeinde/Bauamt: Innen-/Außenbereich & Planlage (B-Plan/Satzungen) klären.");
+    li(stepsUL, "Kurzbeschreibung schreiben: Was genau soll gebaut/ genutzt werden? (Größe, Nutzung, Zeitraum).");
+    li(stepsUL, "Wenn es ernst wird: Bauvoranfrage prüfen (kostet, spart aber teure Fehlkäufe).");
 
-        // Optional Details: milde Korrekturen (nicht overkill)
-        if (bestand === "genehmigt") li(reasonsUL, "Genehmigter Bestand kann die Ausgangslage verbessern (aber Nutzung bleibt entscheidend).");
-        if (bestand === "unklar") li(reasonsUL, "Bestand unklar: Genehmigung klären – sonst Risiko.");
-        if (ersch === "unklar") li(reasonsUL, "Erschließung unklar: kann ein harter Showstopper werden.");
+    li(fallsUL, "„Nachbar hat auch was" ≠ Genehmigung (Altbestand, Ausnahme, andere Rechtslage).");
+    li(fallsUL, "Tiny House ≠ „kein Haus" – rechtlich oft ganz normales Wohnen.");
+    li(fallsUL, "Schöne Lage/Google Maps ≠ planungsrechtliche Zulässigkeit.");
 
-        if (reasonsUL.children.length === 0) li(reasonsUL, "Details entscheiden (Satzungen, Nutzung, konkrete Planung, Nachbarschaft).");
-      }
-
-      // Steps (immer konkret)
-      li(stepsUL, "Gemeinde/Bauamt: Innen-/Außenbereich & Planlage (B-Plan/Satzungen) klären.");
-      li(stepsUL, "Kurzbeschreibung schreiben: Was genau soll gebaut/ genutzt werden? (Größe, Nutzung, Zeitraum).");
-      li(stepsUL, "Wenn es ernst wird: Bauvoranfrage prüfen (kostet, spart aber teure Fehlkäufe).");
-
-      // Fallen
-      li(fallsUL, "„Nachbar hat auch was" ≠ Genehmigung (Altbestand, Ausnahme, andere Rechtslage).");
-      li(fallsUL, "Tiny House ≠ „kein Haus" – rechtlich oft ganz normales Wohnen.");
-      li(fallsUL, "Schöne Lage/Google Maps ≠ planungsrechtliche Zulässigkeit.");
-
-      // Output Badge
-      const ampel = $("ampel");
+    const ampel = $("ampel");
+    if (ampel) {
       if (color === "g") { ampel.textContent = "🟢 Grundsätzlich möglich"; ampel.className = "badge g"; }
       if (color === "y") { ampel.textContent = "🟡 Stark eingeschränkt / Einzelfall"; ampel.className = "badge y"; }
       if (color === "r") { ampel.textContent = "🔴 Sehr unwahrscheinlich"; ampel.className = "badge r"; }
+    }
 
-      $("kicker").textContent = kicker;
+    const kickerEl = $("kicker");
+    if (kickerEl) kickerEl.textContent = kicker;
 
-      $("result").style.display = "block";
-      $("result").scrollIntoView({behavior:"smooth", block:"start"});
-    });
-  </script>
+    const res = $("result");
+    if (res) {
+      res.style.display = "block";
+      res.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+  });
+});
+</script>
 </body>
 </html>
