@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grundstücks-Realitätscheck</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="page-header">
+        <h1>Grundstücks-Realitätscheck</h1>
+        <p class="subline">In wenigen Minuten eine erste Einschätzung, ob dein Vorhaben realistisch ist.</p>
+        <p class="disclaimer">Keine Rechtsberatung. Ersteinschätzung anhand typischer Muster und deiner Angaben.</p>
+      </header>
+
+      <section class="layout" aria-label="Realitätscheck Tool">
+        <article class="card" aria-labelledby="inputs-title">
+          <div class="card-head">
+            <h2 id="inputs-title">Deine Angaben</h2>
+            <button id="reset-button" type="button" class="secondary">Zurücksetzen</button>
+          </div>
+
+          <form id="check-form" novalidate>
+            <fieldset>
+              <legend>Lage <span aria-hidden="true">*</span></legend>
+              <div class="options" role="radiogroup" aria-label="Lage">
+                <label><input type="radio" name="lage" value="innen" />Innenbereich</label>
+                <label><input type="radio" name="lage" value="aussen" />Außenbereich</label>
+                <label><input type="radio" name="lage" value="unklar" />Unklar</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Bebauungsplan <span aria-hidden="true">*</span></legend>
+              <div class="options" role="radiogroup" aria-label="Bebauungsplan">
+                <label><input type="radio" name="bplan" value="ja" />Ja</label>
+                <label><input type="radio" name="bplan" value="nein" />Nein</label>
+                <label><input type="radio" name="bplan" value="unklar" />Unklar</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Grundstückstyp <span aria-hidden="true">*</span></legend>
+              <div class="options" role="radiogroup" aria-label="Grundstückstyp">
+                <label><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
+                <label><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
+                <label><input type="radio" name="typ" value="freizeit" />Freizeitgrundstück</label>
+                <label><input type="radio" name="typ" value="wald" />Wald</label>
+                <label><input type="radio" name="typ" value="sonstiges" />Sonstiges</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Geplante Nutzung <span aria-hidden="true">*</span></legend>
+              <div class="options" role="radiogroup" aria-label="Geplante Nutzung">
+                <label><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
+                <label><input type="radio" name="nutzung" value="tiny" />Tiny House (dauerhaft)</label>
+                <label><input type="radio" name="nutzung" value="wochenende" />Wochenendnutzung</label>
+                <label><input type="radio" name="nutzung" value="landwpriv" />Landwirtschaftlich privilegiert</label>
+                <label><input type="radio" name="nutzung" value="gewerblich" />Gewerblich</label>
+              </div>
+            </fieldset>
+
+            <details>
+              <summary>Optionale Angaben</summary>
+              <fieldset>
+                <legend>Bestand</legend>
+                <div class="options" role="radiogroup" aria-label="Bestand">
+                  <label><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
+                  <label><input type="radio" name="bestand" value="unklar" />Unklar</label>
+                  <label><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Erschließung</legend>
+                <div class="options" role="radiogroup" aria-label="Erschließung">
+                  <label><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
+                  <label><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
+                  <label><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
+                </div>
+              </fieldset>
+            </details>
+
+            <p id="inline-validation" class="inline-validation" aria-live="polite"></p>
+          </form>
+        </article>
+
+        <article class="card result" aria-labelledby="result-title">
+          <h2 id="result-title">Dein Ergebnis</h2>
+          <p class="ampel" id="result-ampel" aria-label="Ampelstatus">🟡</p>
+          <p class="score" id="result-score">50</p>
+          <p class="interpretation" id="result-interpretation">Bitte Pflichtfelder auswählen, um eine Einschätzung zu erhalten.</p>
+          <p class="confidence" id="result-confidence"></p>
+
+          <section>
+            <h3>Warum</h3>
+            <ul id="why-list"></ul>
+          </section>
+
+          <section>
+            <h3>Nächste Schritte</h3>
+            <ul id="steps-list"></ul>
+          </section>
+
+          <section>
+            <h3>Typische Fallen</h3>
+            <ul id="pitfalls-list"></ul>
+          </section>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
