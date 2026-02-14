@@ -280,15 +280,19 @@
     };
   }
 
+  function getCheckedValue(form, name) {
+    const checked = form.querySelector(`input[name="${name}"]:checked`);
+    return checked ? checked.value : "";
+  }
+
   function getFormState(form, optionalDetails) {
-    const fd = new FormData(form);
     return {
-      lage: fd.get("lage") || "",
-      bplan: fd.get("bplan") || "",
-      typ: fd.get("typ") || "",
-      nutzung: fd.get("nutzung") || "",
-      bestand: fd.get("bestand") || "",
-      erschliessung: fd.get("erschliessung") || "",
+      lage: getCheckedValue(form, "lage"),
+      bplan: getCheckedValue(form, "bplan"),
+      typ: getCheckedValue(form, "typ"),
+      nutzung: getCheckedValue(form, "nutzung"),
+      bestand: getCheckedValue(form, "bestand"),
+      erschliessung: getCheckedValue(form, "erschliessung"),
       optionalActive: optionalDetails.dataset.opened === "true"
     };
   }
@@ -339,10 +343,19 @@
       renderErrors(state);
 
       if (result.neutral) {
+        const missing = CONFIG.requiredFields
+          .filter((field) => !state[field])
+          .map((field) => field === "bplan" ? "Bebauungsplan" : field[0].toUpperCase() + field.slice(1));
+
+        resultPlaceholder.textContent = missing.length > 0
+          ? `Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten. Fehlend: ${missing.join(", ")}.`
+          : "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.";
         resultPlaceholder.hidden = false;
         resultContent.hidden = true;
         return;
       }
+
+      resultPlaceholder.textContent = "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.";
 
       resultPlaceholder.hidden = true;
       resultContent.hidden = false;
@@ -364,10 +377,13 @@
       });
     });
 
-    form.addEventListener("change", (event) => {
+    const handleFieldUpdate = (event) => {
       if (event.target && event.target.name) touched.add(event.target.name);
       update();
-    });
+    };
+
+    form.addEventListener("change", handleFieldUpdate);
+    form.addEventListener("input", handleFieldUpdate);
 
     optionalDetails.addEventListener("toggle", () => {
       if (optionalDetails.open) optionalDetails.dataset.opened = "true";
