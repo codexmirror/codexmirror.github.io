@@ -22,92 +22,99 @@
           </div>
 
           <form id="check-form" novalidate>
-            <fieldset>
+            <fieldset data-required="true" data-field="lage">
               <legend>Lage <span aria-hidden="true">*</span></legend>
-              <div class="options" role="radiogroup" aria-label="Lage">
-                <label><input type="radio" name="lage" value="innen" />Innenbereich</label>
-                <label><input type="radio" name="lage" value="aussen" />Außenbereich</label>
-                <label><input type="radio" name="lage" value="unklar" />Unklar</label>
+              <div class="tile-options" role="radiogroup" aria-label="Lage">
+                <label class="tile"><input type="radio" name="lage" value="innen" />Innenbereich</label>
+                <label class="tile"><input type="radio" name="lage" value="aussen" />Außenbereich</label>
+                <label class="tile"><input type="radio" name="lage" value="unklar" />Unklar</label>
               </div>
+              <p class="field-error" id="error-lage" aria-live="polite"></p>
             </fieldset>
 
-            <fieldset>
+            <fieldset data-required="true" data-field="bplan">
               <legend>Bebauungsplan <span aria-hidden="true">*</span></legend>
-              <div class="options" role="radiogroup" aria-label="Bebauungsplan">
-                <label><input type="radio" name="bplan" value="ja" />Ja</label>
-                <label><input type="radio" name="bplan" value="nein" />Nein</label>
-                <label><input type="radio" name="bplan" value="unklar" />Unklar</label>
+              <div class="tile-options" role="radiogroup" aria-label="Bebauungsplan">
+                <label class="tile"><input type="radio" name="bplan" value="ja" />Ja</label>
+                <label class="tile"><input type="radio" name="bplan" value="nein" />Nein</label>
+                <label class="tile"><input type="radio" name="bplan" value="unklar" />Unklar</label>
               </div>
+              <p class="field-error" id="error-bplan" aria-live="polite"></p>
             </fieldset>
 
-            <fieldset>
+            <fieldset data-required="true" data-field="typ">
               <legend>Grundstückstyp <span aria-hidden="true">*</span></legend>
-              <div class="options" role="radiogroup" aria-label="Grundstückstyp">
-                <label><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
-                <label><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
-                <label><input type="radio" name="typ" value="freizeit" />Freizeitgrundstück</label>
-                <label><input type="radio" name="typ" value="wald" />Wald</label>
-                <label><input type="radio" name="typ" value="sonstiges" />Sonstiges</label>
+              <div class="tile-options" role="radiogroup" aria-label="Grundstückstyp">
+                <label class="tile"><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
+                <label class="tile"><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
+                <label class="tile"><input type="radio" name="typ" value="freizeit" />Freizeitgrundstück</label>
+                <label class="tile"><input type="radio" name="typ" value="wald" />Wald</label>
+                <label class="tile"><input type="radio" name="typ" value="sonstiges" />Sonstiges</label>
               </div>
+              <p class="field-error" id="error-typ" aria-live="polite"></p>
             </fieldset>
 
-            <fieldset>
+            <fieldset data-required="true" data-field="nutzung">
               <legend>Geplante Nutzung <span aria-hidden="true">*</span></legend>
-              <div class="options" role="radiogroup" aria-label="Geplante Nutzung">
-                <label><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
-                <label><input type="radio" name="nutzung" value="tiny" />Tiny House (dauerhaft)</label>
-                <label><input type="radio" name="nutzung" value="wochenende" />Wochenendnutzung</label>
-                <label><input type="radio" name="nutzung" value="landwpriv" />Landwirtschaftlich privilegiert</label>
-                <label><input type="radio" name="nutzung" value="gewerblich" />Gewerblich</label>
+              <div class="tile-options" role="radiogroup" aria-label="Geplante Nutzung">
+                <label class="tile"><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
+                <label class="tile"><input type="radio" name="nutzung" value="tiny" />Tiny House (dauerhaft)</label>
+                <label class="tile"><input type="radio" name="nutzung" value="wochenende" />Wochenendnutzung</label>
+                <label class="tile"><input type="radio" name="nutzung" value="landwpriv" />Landwirtschaftlich privilegiert</label>
+                <label class="tile"><input type="radio" name="nutzung" value="gewerblich" />Gewerblich</label>
               </div>
+              <p class="field-error" id="error-nutzung" aria-live="polite"></p>
             </fieldset>
 
-            <details>
+            <details id="optional-details">
               <summary>Optionale Angaben</summary>
               <fieldset>
                 <legend>Bestand</legend>
-                <div class="options" role="radiogroup" aria-label="Bestand">
-                  <label><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
-                  <label><input type="radio" name="bestand" value="unklar" />Unklar</label>
-                  <label><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
+                <div class="tile-options" role="radiogroup" aria-label="Bestand">
+                  <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
+                  <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
+                  <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
                 </div>
               </fieldset>
 
               <fieldset>
                 <legend>Erschließung</legend>
-                <div class="options" role="radiogroup" aria-label="Erschließung">
-                  <label><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
-                  <label><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
-                  <label><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
+                <div class="tile-options" role="radiogroup" aria-label="Erschließung">
+                  <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
+                  <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
+                  <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
                 </div>
               </fieldset>
             </details>
-
-            <p id="inline-validation" class="inline-validation" aria-live="polite"></p>
           </form>
         </article>
 
         <article class="card result" aria-labelledby="result-title">
           <h2 id="result-title">Dein Ergebnis</h2>
-          <p class="ampel" id="result-ampel" aria-label="Ampelstatus">🟡</p>
-          <p class="score" id="result-score">50</p>
-          <p class="interpretation" id="result-interpretation">Bitte Pflichtfelder auswählen, um eine Einschätzung zu erhalten.</p>
-          <p class="confidence" id="result-confidence"></p>
 
-          <section>
-            <h3>Warum</h3>
-            <ul id="why-list"></ul>
-          </section>
+          <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.</p>
 
-          <section>
-            <h3>Nächste Schritte</h3>
-            <ul id="steps-list"></ul>
-          </section>
+          <div id="result-content" hidden>
+            <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
+            <p class="score" id="result-score">50</p>
+            <p class="interpretation" id="result-interpretation"></p>
+            <p class="confidence" id="result-confidence"></p>
 
-          <section>
-            <h3>Typische Fallen</h3>
-            <ul id="pitfalls-list"></ul>
-          </section>
+            <section class="result-section">
+              <h3>Warum</h3>
+              <ul id="why-list"></ul>
+            </section>
+
+            <section class="result-section">
+              <h3>Nächste Schritte</h3>
+              <ul id="steps-list"></ul>
+            </section>
+
+            <section class="result-section">
+              <h3>Typische Fallen</h3>
+              <ul id="pitfalls-list"></ul>
+            </section>
+          </div>
         </article>
       </section>
     </main>

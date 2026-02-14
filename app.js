@@ -9,19 +9,16 @@
     ],
     caps: [
       {
-        key: "cap_erschliessung",
         max: 35,
         applies: (s) => s.erschliessung === "nicht",
         reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Wohnen meist unrealistisch."
       },
       {
-        key: "cap_aussen_wohnen",
         max: 25,
         applies: (s) => s.lage === "aussen" && isWohnenOderTiny(s.nutzung),
         reason: "Außenbereich ist für dauerhaftes Wohnen meist stark eingeschränkt."
       },
       {
-        key: "cap_wald_wohnen",
         max: 15,
         applies: (s) => s.typ === "wald" && isWohnenOderTiny(s.nutzung),
         reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
@@ -40,6 +37,12 @@
       aussen: "Außenbereich ist für Wohnen oft stark eingeschränkt.",
       freizeit: "Freizeitnutzung ≠ dauerhaftes Wohnen.",
       general: "Maklertexte ersetzen keine Auskunft vom Bauamt."
+    },
+    fieldErrors: {
+      lage: "Bitte eine Lage auswählen.",
+      bplan: "Bitte einen Bebauungsplan-Status auswählen.",
+      typ: "Bitte einen Grundstückstyp auswählen.",
+      nutzung: "Bitte eine geplante Nutzung auswählen."
     }
   };
 
@@ -67,26 +70,25 @@
     return nutzung === "wohnen" || nutzung === "tiny";
   }
 
-  function getFormState(form) {
-    const fd = new FormData(form);
-    return {
-      lage: fd.get("lage") || "",
-      bplan: fd.get("bplan") || "",
-      typ: fd.get("typ") || "",
-      nutzung: fd.get("nutzung") || "",
-      bestand: fd.get("bestand") || "",
-      erschliessung: fd.get("erschliessung") || ""
-    };
+  function clipWords(text, maxWords) {
+    const words = text.trim().split(/\s+/);
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(" ") + "…";
+  }
+
+  function makeReason(field, impact, text, category) {
+    return { field, impact, text, category };
   }
 
   function requiredComplete(state) {
     return CONFIG.requiredFields.every((field) => Boolean(state[field]));
   }
 
-  function clipWords(text, maxWords) {
-    const words = text.trim().split(/\s+/);
-    if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(" ") + "…";
+  function normalizeOptionalState(state) {
+    if (!state.optionalActive) {
+      return { ...state, bestand: "", erschliessung: "" };
+    }
+    return state;
   }
 
   function applyModifiers(state) {
@@ -130,11 +132,9 @@
     }
 
     if (state.nutzung === "gewerblich") {
-      const change = state.lage === "innen" && state.bplan === "ja" ? 0 : -5;
-      score += change;
-      if (change !== 0) {
-        reasons.push(makeReason("nutzung", -5, TEMPLATES.negatives.nutzung_gewerblich, "negative"));
-      }
+      const delta = state.lage === "innen" && state.bplan === "ja" ? 0 : -5;
+      score += delta;
+      if (delta !== 0) reasons.push(makeReason("nutzung", -5, TEMPLATES.negatives.nutzung_gewerblich, "negative"));
     }
 
     if (state.bestand === "genehmigt") {
@@ -153,10 +153,6 @@
     }
 
     return { score, reasons };
-  }
-
-  function makeReason(field, impact, text, category) {
-    return { field, impact, text, category };
   }
 
   function applyCaps(score, state) {
@@ -181,24 +177,22 @@
     if (state.bplan === "unklar") unclear += 1;
     if (state.bestand === "unklar") unclear += 1;
     if (state.erschliessung === "teilweise") unclear += 1;
-
     if (unclear === 0) return "hoch";
     if (unclear === 1) return "mittel";
     return "niedrig";
   }
 
   function sortReasons(reasons) {
-    const orderMap = Object.fromEntries(CONFIG.tieBreakerOrder.map((item, index) => [item, index]));
+    const order = Object.fromEntries(CONFIG.tieBreakerOrder.map((k, i) => [k, i]));
     return reasons.sort((a, b) => {
-      const absDiff = Math.abs(b.impact) - Math.abs(a.impact);
-      if (absDiff !== 0) return absDiff;
-      return orderMap[a.field] - orderMap[b.field];
+      const byImpact = Math.abs(b.impact) - Math.abs(a.impact);
+      if (byImpact !== 0) return byImpact;
+      return order[a.field] - order[b.field];
     });
   }
 
-  function buildWhy(state, activeCaps, reasons) {
+  function buildWhy(activeCaps, reasons) {
     const list = [];
-
     activeCaps.forEach((cap) => list.push(cap.reason));
 
     const negatives = sortReasons(reasons.filter((r) => r.impact < 0 && r.category !== "unclear")).map((r) => r.text);
@@ -240,17 +234,26 @@
     return "🟢";
   }
 
+  function ampelLabel(light) {
+    if (light === "🔴") return "🔴 Kritisch";
+    if (light === "🟡") return "🟡 Vorsicht";
+    return "🟢 Plausibel";
+  }
+
   function interpretation(score) {
     return CONFIG.interpretations.find((bucket) => score >= bucket.min && score <= bucket.max).text;
   }
 
-  function evaluate(state) {
+  function evaluate(rawState) {
+    const state = normalizeOptionalState(rawState);
+
     if (!requiredComplete(state)) {
       return {
         neutral: true,
         score: 50,
         ampel: "🟡",
-        interpretation: "Bitte Pflichtfelder auswählen, um eine Einschätzung zu erhalten.",
+        ampelText: ampelLabel("🟡"),
+        interpretation: "Bitte alle Pflichtfelder auswählen, um eine Einschätzung zu erhalten.",
         why: [],
         steps: [],
         pitfalls: [],
@@ -261,17 +264,32 @@
     const modified = applyModifiers(state);
     const capped = applyCaps(modified.score, state);
     const finalScore = clampScore(capped.score);
+    const light = ampel(finalScore);
 
     return {
       neutral: false,
       score: finalScore,
-      ampel: ampel(finalScore),
+      ampel: light,
+      ampelText: ampelLabel(light),
       interpretation: interpretation(finalScore),
-      why: buildWhy(state, capped.activeCaps, modified.reasons),
+      why: buildWhy(capped.activeCaps, modified.reasons),
       steps: buildNextSteps(state, capped.activeCaps, modified.reasons),
       pitfalls: buildPitfalls(state),
       confidence: confidence(state),
       activeCaps: capped.activeCaps
+    };
+  }
+
+  function getFormState(form, optionalDetails) {
+    const fd = new FormData(form);
+    return {
+      lage: fd.get("lage") || "",
+      bplan: fd.get("bplan") || "",
+      typ: fd.get("typ") || "",
+      nutzung: fd.get("nutzung") || "",
+      bestand: fd.get("bestand") || "",
+      erschliessung: fd.get("erschliessung") || "",
+      optionalActive: optionalDetails.dataset.opened === "true"
     };
   }
 
@@ -288,6 +306,8 @@
     const form = document.getElementById("check-form");
     if (!form) return;
 
+    const resultPlaceholder = document.getElementById("result-placeholder");
+    const resultContent = document.getElementById("result-content");
     const scoreEl = document.getElementById("result-score");
     const ampelEl = document.getElementById("result-ampel");
     const interpEl = document.getElementById("result-interpretation");
@@ -295,30 +315,75 @@
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
     const pitfallsList = document.getElementById("pitfalls-list");
-    const validation = document.getElementById("inline-validation");
     const resetBtn = document.getElementById("reset-button");
+    const optionalDetails = document.getElementById("optional-details");
+
+    const touched = new Set();
+
+    const setFieldError = (field, message) => {
+      const el = document.getElementById(`error-${field}`);
+      if (el) el.textContent = message;
+    };
+
+    const renderErrors = (state) => {
+      CONFIG.requiredFields.forEach((field) => {
+        const showError = touched.has(field) && !state[field];
+        setFieldError(field, showError ? CONFIG.fieldErrors[field] : "");
+      });
+    };
 
     const update = () => {
-      const state = getFormState(form);
+      const state = getFormState(form, optionalDetails);
       const result = evaluate(state);
 
+      renderErrors(state);
+
+      if (result.neutral) {
+        resultPlaceholder.hidden = false;
+        resultContent.hidden = true;
+        return;
+      }
+
+      resultPlaceholder.hidden = true;
+      resultContent.hidden = false;
       scoreEl.textContent = String(result.score);
-      ampelEl.textContent = result.ampel;
+      ampelEl.textContent = result.ampelText;
       interpEl.textContent = result.interpretation;
-      confidenceEl.textContent = result.confidence ? `Confidence: ${result.confidence}` : "";
+      confidenceEl.textContent = `Confidence: ${result.confidence}`;
       renderList(whyList, result.why);
       renderList(stepsList, result.steps);
       renderList(pitfallsList, result.pitfalls);
-
-      validation.textContent = result.neutral ? "Bitte alle Pflichtfelder auswählen." : "";
     };
 
-    form.addEventListener("change", update);
-    resetBtn.addEventListener("click", () => {
-      form.reset();
+    form.querySelectorAll("fieldset[data-required='true']").forEach((fieldset) => {
+      const field = fieldset.dataset.field;
+      fieldset.addEventListener("focusout", (event) => {
+        if (event.currentTarget.contains(event.relatedTarget)) return;
+        touched.add(field);
+        update();
+      });
+    });
+
+    form.addEventListener("change", (event) => {
+      if (event.target && event.target.name) touched.add(event.target.name);
       update();
     });
 
+    optionalDetails.addEventListener("toggle", () => {
+      if (optionalDetails.open) optionalDetails.dataset.opened = "true";
+      update();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      form.reset();
+      touched.clear();
+      optionalDetails.open = false;
+      optionalDetails.dataset.opened = "false";
+      CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
+      update();
+    });
+
+    optionalDetails.dataset.opened = "false";
     update();
   }
 
@@ -326,42 +391,42 @@
     const scenarios = [
       {
         id: "S1",
-        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "" },
+        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.ampel === "🟢" && (!r.activeCaps || r.activeCaps.length === 0)
       },
       {
         id: "S2",
-        state: { lage: "aussen", bplan: "ja", typ: "sonstiges", nutzung: "tiny", bestand: "", erschliessung: "" },
+        state: { lage: "aussen", bplan: "ja", typ: "sonstiges", nutzung: "tiny", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.score <= 25 && r.ampel === "🔴"
       },
       {
         id: "S3",
-        state: { lage: "innen", bplan: "ja", typ: "wald", nutzung: "wohnen", bestand: "", erschliessung: "" },
+        state: { lage: "innen", bplan: "ja", typ: "wald", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.score <= 15 && r.ampel === "🔴"
       },
       {
         id: "S4",
-        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "nicht" },
+        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "nicht", optionalActive: true },
         check: (r) => r.score <= 35 && r.ampel !== "🟢"
       },
       {
         id: "S5",
-        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wochenende", bestand: "", erschliessung: "" },
+        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wochenende", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.score >= 30
       },
       {
         id: "S6",
-        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wohnen", bestand: "", erschliessung: "" },
+        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.score <= 70
       },
       {
         id: "S7",
-        state: { lage: "aussen", bplan: "nein", typ: "landwirtschaft", nutzung: "landwpriv", bestand: "", erschliessung: "" },
+        state: { lage: "aussen", bplan: "nein", typ: "landwirtschaft", nutzung: "landwpriv", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.score >= 40 && r.score <= 70
       },
       {
         id: "S8",
-        state: { lage: "", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "" },
+        state: { lage: "", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.neutral === true && r.score === 50 && r.why.length === 0 && r.steps.length === 0 && r.pitfalls.length === 0
       }
     ];
