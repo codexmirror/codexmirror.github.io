@@ -386,6 +386,7 @@
 
     const touched = new Set();
     let lastRenderedScore = 50;
+    let hasFiredToolCompleted = false;
 
     const setFieldError = (field, message) => {
       const el = document.getElementById(`error-${field}`);
@@ -419,6 +420,19 @@
         lastRenderedScore = 50;
         return;
       }
+      // GA4: tool_completed nur einmal feuern, wenn erstmalig ein Ergebnis angezeigt wird
+if (!hasFiredToolCompleted) {
+  hasFiredToolCompleted = true;
+
+  // GA4 Event (funktioniert nur, wenn gtag im Head eingebunden ist)
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "tool_completed", {
+      event_category: "engagement",
+      event_label: "grundstueck-check",
+      value: result.score
+    });
+  }
+}
 
       if (resultCard) resultCard.classList.remove("result--neutral");
       resultPlaceholder.hidden = true;
@@ -504,6 +518,7 @@
     resetBtn.addEventListener("click", () => {
       form.reset();
       touched.clear();
+      hasFiredToolCompleted = false;
       closeAllInfoPanels();
       optionalDetails.open = false;
       CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
