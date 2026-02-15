@@ -386,7 +386,7 @@
 
     const touched = new Set();
     let lastRenderedScore = 50;
-    let hasFiredToolCompleted = false;
+    const toolCompletedSessionKey = "gc_tool_completed_sent";
 
     const setFieldError = (field, message) => {
       const el = document.getElementById(`error-${field}`);
@@ -420,19 +420,18 @@
         lastRenderedScore = 50;
         return;
       }
-      // GA4: tool_completed nur einmal feuern, wenn erstmalig ein Ergebnis angezeigt wird
-if (!hasFiredToolCompleted) {
-  hasFiredToolCompleted = true;
-
-  // GA4 Event (funktioniert nur, wenn gtag im Head eingebunden ist)
-  if (typeof window.gtag === "function") {
-    window.gtag("event", "tool_completed", {
-      event_category: "engagement",
-      event_label: "grundstueck-check",
-      value: result.score
-    });
-  }
-}
+      if (
+        window.localStorage.getItem("gc_consent") === "granted" &&
+        typeof window.gtag === "function" &&
+        !window.sessionStorage.getItem(toolCompletedSessionKey)
+      ) {
+        window.gtag("event", "tool_completed", {
+          event_category: "engagement",
+          event_label: "grundstueck-check",
+          value: result.score
+        });
+        window.sessionStorage.setItem(toolCompletedSessionKey, "1");
+      }
 
       if (resultCard) resultCard.classList.remove("result--neutral");
       resultPlaceholder.hidden = true;

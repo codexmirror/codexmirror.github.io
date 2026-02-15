@@ -1,17 +1,9 @@
 <!doctype html>
 <html lang="de">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WKG6V25BQW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WKG6V25BQW');
-</script>
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="ga4-id" content="G-WKG6V25BQW" />
   <title>Datenschutzerklärung</title>
   <meta name="description" content="Informationen zur Verarbeitung personenbezogener Daten." />
   <meta name="robots" content="noindex,follow" />
@@ -69,20 +61,47 @@
         an mich oder an Dritte.
       </p>
 
-      <h2>4. Cookies</h2>
+      <h2>4. Google Analytics (nur nach Einwilligung)</h2>
       <p>
-        Diese Website setzt keine Cookies und verwendet keine Analyse-,
-        Tracking- oder Marketing-Tools.
+        Auf dieser Website wird Google Analytics 4 nur geladen,
+        wenn Sie im Consent-Banner ausdrücklich einwilligen.
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).
+      </p>
+      <p>
+        Anbieter ist Google Ireland Limited, Gordon House,
+        Barrow Street, Dublin 4, Irland.
+        Eine Verarbeitung kann auch durch Google LLC, USA, erfolgen.
+      </p>
+      <p>
+        Bei erteilter Einwilligung werden Nutzungsdaten an Google übermittelt.
+        Die IP-Anonymisierung ist aktiviert (anonymize_ip).
+      </p>
+      <p>
+        Es kann zu einer Übermittlung personenbezogener Daten in die USA kommen
+        (Drittlandübermittlung). Für die USA besteht ein Risiko,
+        dass Behörden auf Daten zugreifen können,
+        ohne dass in allen Fällen ein der EU vergleichbares Schutzniveau besteht.
       </p>
 
-      <h2>5. Speicherdauer</h2>
+      <h2>5. Consent-Speicherung im localStorage</h2>
+      <p>
+        Die Einwilligungsentscheidung wird im localStorage Ihres Browsers gespeichert
+        (Schlüssel: <code>gc_consent</code>, Wert: <code>granted</code> oder <code>denied</code>).
+        Dadurch wird das Banner nicht bei jedem Seitenaufruf erneut angezeigt.
+      </p>
+      <p>
+        Diese Speicherung erfolgt ausschließlich lokal in Ihrem Browser.
+        Es werden hierfür keine zusätzlichen Cookies gesetzt.
+      </p>
+
+      <h2>6. Speicherdauer</h2>
       <p>
         Personenbezogene Daten werden nur so lange verarbeitet,
         wie dies zur Bereitstellung der Website erforderlich ist
         oder gesetzliche Aufbewahrungsfristen bestehen.
       </p>
 
-      <h2>6. Ihre Rechte</h2>
+      <h2>7. Ihre Rechte</h2>
       <p>Sie haben gemäß DSGVO folgende Rechte:</p>
       <ul>
         <li>Auskunft (Art. 15 DSGVO)</li>
@@ -101,17 +120,18 @@
         Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart.
       </p>
 
-      <h2>7. SSL- bzw. TLS-Verschlüsselung</h2>
+      <h2>8. SSL- bzw. TLS-Verschlüsselung</h2>
       <p>
         Diese Website nutzt aus Sicherheitsgründen und zum Schutz
         der Übertragung vertraulicher Inhalte eine SSL- bzw.
         TLS-Verschlüsselung (HTTPS).
       </p>
 
-      <h2>8. Stand</h2>
+      <h2>9. Stand</h2>
       <p>Stand: Februar 2026</p>
 
     </article>
   </main>
+  <script src="consent.js" defer></script>
 </body>
 </html>
