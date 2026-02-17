@@ -522,8 +522,16 @@
       };
       if (confidenceEl) {
         if (result.confidence) {
-          const detail = confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen.";
-          confidenceEl.textContent = `Planungssicherheit: ${result.confidence} – ${detail}`;
+          const isPositiveAmpel = result.ampel === "🟢";
+          const confidenceLabel = isPositiveAmpel ? "Planungssicherheit" : "Einschätzungssicherheit";
+          const detail = isPositiveAmpel
+            ? confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen."
+            : {
+                hoch: "Die Bewertung ist in dieser Konstellation belastbar.",
+                mittel: "Die Bewertung ist brauchbar, ein wichtiger Punkt ist noch offen.",
+                niedrig: "Die Bewertung ist vorläufig, mehrere Angaben sind noch offen."
+              }[result.confidence] || "Bitte als Vorprüfung verstehen.";
+          confidenceEl.textContent = `${confidenceLabel}: ${result.confidence} – ${detail}`;
         } else {
           confidenceEl.textContent = "";
         }
