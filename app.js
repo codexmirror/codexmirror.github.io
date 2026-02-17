@@ -297,34 +297,34 @@
   }
 
   function resultHeadline(light, planningConfidence) {
-    if (light === "🔴") return "In deiner aktuellen Konstellation ist eine Genehmigung eher unwahrscheinlich.";
-    if (light === "🟡") return "Dein Vorhaben ist möglich – aber stark abhängig von Details.";
-    if (planningConfidence === "niedrig") return "Deine Ausgangslage ist grundsätzlich günstig, aber noch nicht belastbar.";
-    return "Deine Ausgangslage ist grundsätzlich günstig.";
+    if (light === "🔴") return "Aktuell eher nicht plausibel.";
+    if (light === "🟡") return "Grundsätzlich plausibel, aber noch nicht belastbar.";
+    if (planningConfidence === "niedrig") return "Plausibel, wenn offene Punkte bestätigt werden.";
+    return "Grundsätzlich plausibel.";
   }
 
   function practicalBullets(score, light) {
     if (light === "🔴") {
       return [
-        "Plane mit einer strengen Vorprüfung durch die Behörde und rechne mit Nachforderungen.",
-        "Kläre zuerst Ausschlusskriterien (Lage, Zweckbestimmung, Erschließung) schriftlich.",
-        "Setze keine Investitionen um, bevor die Grundsatzfrage belastbar eingeordnet ist."
+        "Mehrere Kernkriterien sprechen aktuell dagegen.",
+        "Ohne schriftliche Klärung bleibt das Risiko hoch.",
+        "Keine verbindlichen Schritte vor der Vorprüfung."
       ];
     }
     if (light === "🟡") {
       const inUpperYellow = score >= 46;
       return [
         inUpperYellow
-          ? "Mit belastbaren Nachweisen kann aus einem Grenzfall ein tragfähiges Vorhaben werden."
-          : "Es gibt echte Chancen, aber ebenso klare Risiken in der aktuellen Konstellation.",
-        "Priorisiere die offenen Punkte und kläre sie nacheinander schriftlich mit Bauamt/Gemeinde.",
-        "Bewerte Zeit- und Kostenplanung erst nach der behördlichen Einordnung belastbar."
+          ? "Tragfähig, wenn die offenen Punkte belegt werden."
+          : "Zwischen Chance und Risiko: Details entscheiden.",
+        "Die Einschätzung steht und fällt mit schriftlichen Nachweisen.",
+        "Plane erst weiter, wenn die Kernfragen geklärt sind."
       ];
     }
     return [
-      "Die Ausgangslage ist gut, ersetzt aber keine formale Prüfung im Einzelfall.",
-      "Mit klaren Unterlagen steigen Planbarkeit und Verlässlichkeit im weiteren Verfahren.",
-      "Vor größeren Entscheidungen die Zulässigkeit der konkreten Nutzung schriftlich bestätigen lassen."
+      "Die Ausgangslage passt grundsätzlich.",
+      "Offene Detailfragen können das Ergebnis noch verschieben.",
+      "Vor Umsetzung die Nutzung schriftlich bestätigen lassen."
     ];
   }
 
@@ -448,6 +448,8 @@
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
     const pitfallsList = document.getElementById("pitfalls-list");
+    const detailsToggle = document.getElementById("details-toggle");
+    const resultDetails = document.getElementById("result-details");
     const resetBtn = document.getElementById("reset-button");
     const optionalDetails = document.getElementById("optional-details");
     const infoButtons = form.querySelectorAll(".info-toggle");
@@ -490,6 +492,11 @@
         if (resultCard) resultCard.classList.add("result--neutral");
         setHidden(resultPlaceholder, false);
         setHidden(resultContent, true);
+        if (detailsToggle && resultDetails) {
+          detailsToggle.setAttribute("aria-expanded", "false");
+          detailsToggle.textContent = "Details anzeigen";
+          resultDetails.hidden = true;
+        }
         lastRenderedScore = 50;
         return;
       }
@@ -506,13 +513,13 @@
       if (interpEl) interpEl.textContent = result.interpretation;
       renderList(practicalList, result.practical);
       const confidenceTextMap = {
-        hoch: "Die zentralen Angaben sind klar – gute Grundlage für die nächste Abstimmung.",
-        mittel: "Ein wichtiger Punkt ist noch offen – danach wird die Lage deutlich belastbarer.",
-        niedrig: "Mehrere Punkte sind noch offen – nutze das Ergebnis als vorsichtige Vorprüfung."
+        hoch: "Die Kerndaten sind stimmig.",
+        mittel: "Ein wichtiger Punkt ist noch offen.",
+        niedrig: "Mehrere Angaben sind noch offen."
       };
       if (confidenceEl) {
         if (result.confidence) {
-          const detail = confidenceTextMap[result.confidence] || "Einige Angaben sind noch unklar – bitte als Vorprüfung verstehen.";
+          const detail = confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen.";
           confidenceEl.textContent = `Planungssicherheit: ${result.confidence} – ${detail}`;
         } else {
           confidenceEl.textContent = "";
@@ -589,6 +596,16 @@
       button.addEventListener("click", handleInfoToggle);
     });
 
+    if (detailsToggle && resultDetails) {
+      detailsToggle.addEventListener("click", () => {
+        const expanded = detailsToggle.getAttribute("aria-expanded") === "true";
+        const next = !expanded;
+        detailsToggle.setAttribute("aria-expanded", String(next));
+        detailsToggle.textContent = next ? "Details ausblenden" : "Details anzeigen";
+        resultDetails.hidden = !next;
+      });
+    }
+
     if (optionalDetails) {
       optionalDetails.addEventListener("toggle", () => {
         update();
@@ -605,6 +622,11 @@
         }
         closeAllInfoPanels();
         if (optionalDetails) optionalDetails.open = false;
+        if (detailsToggle && resultDetails) {
+          detailsToggle.setAttribute("aria-expanded", "false");
+          detailsToggle.textContent = "Details anzeigen";
+          resultDetails.hidden = true;
+        }
         CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
         update();
       });

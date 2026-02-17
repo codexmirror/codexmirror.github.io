@@ -149,24 +149,37 @@
               <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
               <p class="score" id="result-score">50</p>
               <p class="interpretation" id="result-interpretation"></p>
-              <p class="practical-label">Was bedeutet das praktisch?</p>
               <ul id="practical-list" class="practical-list"></ul>
-              <p class="confidence" id="result-confidence"></p>
-              <p class="result-trust">Die Einschätzung orientiert sich an typischen planungsrechtlichen Prüfschritten (Innen-/Außenbereich, Bebauungsplan, Zweckbestimmung, Erschließung).</p>
-
-              <section class="result-section">
-                <h3>Warum</h3>
-                <ul id="why-list"></ul>
-              </section>
 
               <section class="result-section">
                 <h3>Nächste Schritte</h3>
                 <ul id="steps-list"></ul>
               </section>
 
-              <section class="result-section">
-                <h3>Typische Fallen</h3>
-                <ul id="pitfalls-list"></ul>
+              <button
+                type="button"
+                id="details-toggle"
+                class="details-toggle"
+                aria-expanded="false"
+                aria-controls="result-details"
+                aria-label="Zusätzliche Details zum Ergebnis anzeigen oder ausblenden"
+              >
+                Details anzeigen
+              </button>
+
+              <section id="result-details" hidden>
+                <p class="confidence" id="result-confidence"></p>
+                <p class="result-trust">Orientiert an typischen Prüfpunkten: Lage, Planungsrahmen, Zweckbestimmung, Erschließung.</p>
+
+                <section class="result-section">
+                  <h3>Warum</h3>
+                  <ul id="why-list"></ul>
+                </section>
+
+                <section class="result-section">
+                  <h3>Typische Fallen</h3>
+                  <ul id="pitfalls-list"></ul>
+                </section>
               </section>
             </div>
           </div>
