@@ -3,9 +3,12 @@
     requiredFields: ["lage", "bplan", "typ", "nutzung"],
     tieBreakerOrder: ["lage", "bplan", "typ", "nutzung", "erschliessung", "bestand"],
     interpretations: [
-      { min: 1, max: 29, text: "Eher unrealistisch ohne besondere Ausnahme." },
-      { min: 30, max: 59, text: "Unklar bis möglich – hängt stark von Details ab." },
-      { min: 60, max: 100, text: "Eher plausibel – Details trotzdem prüfen." }
+      { min: 1, max: 15, text: "Aktuell spricht sehr viel gegen eine Genehmigung im beantragten Umfang." },
+      { min: 16, max: 29, text: "Derzeit eher unwahrscheinlich – nur mit klaren Ausnahmen denkbar." },
+      { min: 30, max: 45, text: "Teils möglich, aber mit deutlichen rechtlichen Hürden." },
+      { min: 46, max: 59, text: "Grenzbereich: tragfähig, wenn offene Punkte sauber geklärt werden." },
+      { min: 60, max: 75, text: "Grundsätzlich plausibel, sofern Nachweise und Rahmenbedingungen passen." },
+      { min: 76, max: 100, text: "Günstige Ausgangslage – Detailprüfung bleibt trotzdem wichtig." }
     ],
     caps: [
       {
@@ -26,22 +29,25 @@
     ],
     nextStepTemplates: {
       lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
-      bplanUnklar: "Gemeinde: Bebauungsplan anfordern und geplante Nutzung prüfen lassen.",
-      bestandUnklar: "Bestehende Gebäude und Genehmigungen rechtlich prüfen lassen.",
-      erschlKlaeren: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser, Strom.",
-      aussenWohnen: "Bauamt: Ausnahmen für Wohnen im Außenbereich konkret abklären.",
-      waldWohnen: "Gemeinde/Forst: Nutzungsrecht klären; Wohnen im Wald meist ausgeschlossen.",
+      bplanUnklar: "Gemeinde: Bebauungsplan einsehen und gewünschte Nutzung schriftlich einordnen lassen.",
+      bestandUnklar: "Bestand und Genehmigungsstand schriftlich beim Bauamt klären.",
+      erschlKlaeren: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser und Strom.",
+      aussenWohnen: "Bauamt: Wohnen im Außenbereich und mögliche Ausnahmen schriftlich prüfen lassen.",
+      waldWohnen: "Gemeinde/Forstamt: Nutzung klären; Wohnen im Wald ist meist ausgeschlossen.",
       bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
-      landwpriv: "Privilegierung prüfen: Betrieb, Flächen und Bedarf belastbar nachweisen.",
-      freizeitWohnen: "Zweckbestimmung schriftlich prüfen: Freizeitnutzung ist nicht dauerhaftes Wohnen.",
-      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet zusammenstellen.",
+      landwpriv: "Privilegierung belastbar nachweisen: Betrieb, Flächen und konkreten Bedarf.",
+      freizeitWohnen: "Zweckbestimmung schriftlich klären: Freizeitnutzung ist kein dauerhaftes Wohnen.",
+      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet vorbereiten.",
       fallback: "Bei Unsicherheit: Bauamt-Auskunft schriftlich einholen."
     },
     pitfallsTemplates: {
-      tiny: "Tiny House gilt rechtlich meist als normales Wohnen.",
-      aussen: "Außenbereich ist für Wohnen oft stark eingeschränkt.",
-      freizeit: "Freizeitnutzung ≠ dauerhaftes Wohnen.",
-      general: "Maklertexte ersetzen keine Auskunft vom Bauamt."
+      anmeldung: "Hauptwohnsitz anmelden ersetzt keine baurechtliche Zulässigkeit.",
+      tiny: "Tiny House wird baurechtlich meist wie dauerhaftes Wohnen behandelt.",
+      aussen: "Außenbereich heißt nicht automatisch unbebaubar, aber Wohnen bleibt stark eingeschränkt.",
+      freizeit: "Freizeitnutzung und Dauerwohnen sind planungsrechtlich verschieden.",
+      bestand: "Bestandsschutz oder Duldung gilt selten pauschal für neue Vorhaben.",
+      general: "Exposé-Formulierungen ersetzen keine schriftliche Einordnung vom Bauamt.",
+      fallback: "Mündliche Aussagen sind hilfreich, entscheidend ist die schriftliche Einordnung."
     },
     fieldErrors: {
       lage: "Bitte eine Lage auswählen.",
@@ -85,6 +91,20 @@
     if (fillerWords.has(lastWord) && trimmedWords.length > 1) trimmedWords.pop();
     const shortened = trimmedWords.join(" ").replace(/[,:;.!?]+$/, "");
     return shortened + "…";
+  }
+
+  function normalizeText(text) {
+    return String(text || "").toLowerCase().replace(/[.,:;!?]/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function dedupeTexts(values) {
+    const seen = new Set();
+    return values.filter((value) => {
+      const normalized = normalizeText(value);
+      if (!normalized || seen.has(normalized)) return false;
+      seen.add(normalized);
+      return true;
+    });
   }
 
   function makeReason(field, impact, text, category) {
@@ -218,7 +238,7 @@
       });
     });
 
-    return list.slice(0, 4).map((item) => ({ type: item.type, text: clipWords(item.text, 14) }));
+    return list.slice(0, 4).map((item) => ({ type: item.type, text: clipWords(item.text, 17) }));
   }
 
   function buildNextSteps(state, activeCaps, reasons) {
@@ -237,22 +257,31 @@
 
     if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
 
-    const unique = Array.from(new Set(steps));
+    const unique = dedupeTexts(steps);
     const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|schriftlich/i.test(step));
     if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
 
-    return unique.slice(0, 3).map((item) => clipWords(item, 14));
+    return unique.slice(0, 3).map((item) => clipWords(item, 17));
   }
 
   function buildPitfalls(state) {
-    const pitfalls = [];
-    if (state.nutzung === "tiny") pitfalls.push(CONFIG.pitfallsTemplates.tiny);
-    if (state.lage === "aussen" || (state.typ === "wald" && isWohnenOderTiny(state.nutzung))) pitfalls.push(CONFIG.pitfallsTemplates.aussen);
-    if (state.typ === "freizeit") pitfalls.push(CONFIG.pitfallsTemplates.freizeit);
+    const fallSpecific = [];
+    if (state.nutzung === "tiny") fallSpecific.push(CONFIG.pitfallsTemplates.tiny);
+    if (state.lage === "aussen" || (state.typ === "wald" && isWohnenOderTiny(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
+    if (state.typ === "freizeit") fallSpecific.push(CONFIG.pitfallsTemplates.freizeit);
+    if (state.bestand === "genehmigt" || state.bestand === "unklar") fallSpecific.push(CONFIG.pitfallsTemplates.bestand);
 
-    const unique = Array.from(new Set(pitfalls));
-    if (unique.length < 3) unique.push(CONFIG.pitfallsTemplates.general);
-    return unique.slice(0, 3).map((item) => clipWords(item, 14));
+    const selectedSpecific = dedupeTexts(fallSpecific).slice(0, 1);
+    const pitfalls = dedupeTexts([CONFIG.pitfallsTemplates.anmeldung, ...selectedSpecific, CONFIG.pitfallsTemplates.general]);
+    const fallbackOrder = [CONFIG.pitfallsTemplates.fallback, CONFIG.pitfallsTemplates.bestand, CONFIG.pitfallsTemplates.tiny];
+
+    fallbackOrder.forEach((item) => {
+      if (pitfalls.length >= 3) return;
+      const alreadyIncluded = pitfalls.some((existing) => normalizeText(existing) === normalizeText(item));
+      if (!alreadyIncluded) pitfalls.push(item);
+    });
+
+    return pitfalls.slice(0, 3).map((item) => clipWords(item, 17));
   }
 
   function ampel(score) {
@@ -265,6 +294,38 @@
     if (light === "🔴") return "🔴 Kritisch";
     if (light === "🟡") return "🟡 Vorsicht";
     return "🟢 Plausibel";
+  }
+
+  function resultHeadline(light, planningConfidence) {
+    if (light === "🔴") return "In deiner aktuellen Konstellation ist eine Genehmigung eher unwahrscheinlich.";
+    if (light === "🟡") return "Dein Vorhaben ist möglich – aber stark abhängig von Details.";
+    if (planningConfidence === "niedrig") return "Deine Ausgangslage ist grundsätzlich günstig, aber noch nicht belastbar.";
+    return "Deine Ausgangslage ist grundsätzlich günstig.";
+  }
+
+  function practicalBullets(score, light) {
+    if (light === "🔴") {
+      return [
+        "Plane mit einer strengen Vorprüfung durch die Behörde und rechne mit Nachforderungen.",
+        "Kläre zuerst Ausschlusskriterien (Lage, Zweckbestimmung, Erschließung) schriftlich.",
+        "Setze keine Investitionen um, bevor die Grundsatzfrage belastbar eingeordnet ist."
+      ];
+    }
+    if (light === "🟡") {
+      const inUpperYellow = score >= 46;
+      return [
+        inUpperYellow
+          ? "Mit belastbaren Nachweisen kann aus einem Grenzfall ein tragfähiges Vorhaben werden."
+          : "Es gibt echte Chancen, aber ebenso klare Risiken in der aktuellen Konstellation.",
+        "Priorisiere die offenen Punkte und kläre sie nacheinander schriftlich mit Bauamt/Gemeinde.",
+        "Bewerte Zeit- und Kostenplanung erst nach der behördlichen Einordnung belastbar."
+      ];
+    }
+    return [
+      "Die Ausgangslage ist gut, ersetzt aber keine formale Prüfung im Einzelfall.",
+      "Mit klaren Unterlagen steigen Planbarkeit und Verlässlichkeit im weiteren Verfahren.",
+      "Vor größeren Entscheidungen die Zulässigkeit der konkreten Nutzung schriftlich bestätigen lassen."
+    ];
   }
 
   function interpretation(score) {
@@ -281,6 +342,8 @@
         ampel: "🟡",
         ampelText: ampelLabel("🟡"),
         interpretation: "Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.",
+        headline: "",
+        practical: [],
         why: [],
         steps: [],
         pitfalls: [],
@@ -292,6 +355,7 @@
     const capped = applyCaps(modified.score, state);
     const finalScore = clampScore(capped.score);
     const light = ampel(finalScore);
+    const planningConfidence = confidence(state);
 
     return {
       neutral: false,
@@ -299,10 +363,12 @@
       ampel: light,
       ampelText: ampelLabel(light),
       interpretation: interpretation(finalScore),
+      headline: resultHeadline(light, planningConfidence),
+      practical: practicalBullets(finalScore, light),
       why: buildWhy(capped.activeCaps, modified.reasons),
       steps: buildNextSteps(state, capped.activeCaps, modified.reasons),
       pitfalls: buildPitfalls(state),
-      confidence: confidence(state),
+      confidence: planningConfidence,
       activeCaps: capped.activeCaps
     };
   }
@@ -327,6 +393,7 @@
   }
 
   function renderList(target, values) {
+    if (!target) return;
     target.innerHTML = "";
     values.forEach((text) => {
       const li = document.createElement("li");
@@ -375,6 +442,8 @@
     const scoreEl = document.getElementById("result-score");
     const ampelEl = document.getElementById("result-ampel");
     const interpEl = document.getElementById("result-interpretation");
+    const headlineEl = document.getElementById("result-headline");
+    const practicalList = document.getElementById("practical-list");
     const confidenceEl = document.getElementById("result-confidence");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
@@ -387,6 +456,10 @@
     const touched = new Set();
     let lastRenderedScore = 50;
     const toolCompletedSessionKey = "gc_tool_completed_sent";
+
+    const setHidden = (el, isHidden) => {
+      if (el) el.hidden = isHidden;
+    };
 
     const setFieldError = (field, message) => {
       const el = document.getElementById(`error-${field}`);
@@ -415,48 +488,54 @@
 
       if (result.neutral) {
         if (resultCard) resultCard.classList.add("result--neutral");
-        resultPlaceholder.hidden = false;
-        resultContent.hidden = true;
+        setHidden(resultPlaceholder, false);
+        setHidden(resultContent, true);
         lastRenderedScore = 50;
         return;
       }
+      if (resultCard) resultCard.classList.remove("result--neutral");
+      setHidden(resultPlaceholder, true);
+      setHidden(resultContent, false);
+
+      const shouldAnimate = Math.abs(result.score - lastRenderedScore) >= 5;
+      if (scoreEl) animateScore(scoreEl, lastRenderedScore, result.score, shouldAnimate);
+      lastRenderedScore = result.score;
+
+      if (ampelEl) ampelEl.textContent = result.ampelText;
+      if (headlineEl) headlineEl.textContent = result.headline;
+      if (interpEl) interpEl.textContent = result.interpretation;
+      renderList(practicalList, result.practical);
+      const confidenceTextMap = {
+        hoch: "Die zentralen Angaben sind klar – gute Grundlage für die nächste Abstimmung.",
+        mittel: "Ein wichtiger Punkt ist noch offen – danach wird die Lage deutlich belastbarer.",
+        niedrig: "Mehrere Punkte sind noch offen – nutze das Ergebnis als vorsichtige Vorprüfung."
+      };
+      if (confidenceEl) {
+        if (result.confidence) {
+          const detail = confidenceTextMap[result.confidence] || "Einige Angaben sind noch unklar – bitte als Vorprüfung verstehen.";
+          confidenceEl.textContent = `Planungssicherheit: ${result.confidence} – ${detail}`;
+        } else {
+          confidenceEl.textContent = "";
+        }
+      }
+      renderList(whyList, result.why.map(decorateWhyItem));
+      renderList(stepsList, result.steps);
+      renderList(pitfallsList, result.pitfalls);
+
       if (
+        requiredComplete(state) &&
         window.localStorage.getItem("gc_consent") === "granted" &&
         typeof window.gtag === "function" &&
         !window.sessionStorage.getItem(toolCompletedSessionKey)
       ) {
         window.gtag("event", "tool_completed", {
-          event_category: "engagement",
-          event_label: "grundstueck-check",
-          value: result.score
+          value: result.score,
+          score: result.score,
+          ampel: result.ampelText,
+          confidence: result.confidence
         });
         window.sessionStorage.setItem(toolCompletedSessionKey, "1");
       }
-
-      if (resultCard) resultCard.classList.remove("result--neutral");
-      resultPlaceholder.hidden = true;
-      resultContent.hidden = false;
-
-      const shouldAnimate = Math.abs(result.score - lastRenderedScore) >= 5;
-      animateScore(scoreEl, lastRenderedScore, result.score, shouldAnimate);
-      lastRenderedScore = result.score;
-
-      ampelEl.textContent = result.ampelText;
-      interpEl.textContent = result.interpretation;
-      const confidenceTextMap = {
-        hoch: "Angaben weitgehend klar.",
-        mittel: "Ein Punkt sollte noch geklärt werden.",
-        niedrig: "Mehrere Punkte sind unklar – Ergebnis konservativ."
-      };
-      if (result.confidence) {
-        const detail = confidenceTextMap[result.confidence] || "Angaben teils unklar – Ergebnis konservativ.";
-        confidenceEl.textContent = `Sicherheit: ${result.confidence} – ${detail}`;
-      } else {
-        confidenceEl.textContent = "";
-      }
-      renderList(whyList, result.why.map(decorateWhyItem));
-      renderList(stepsList, result.steps);
-      renderList(pitfallsList, result.pitfalls);
     };
 
     form.querySelectorAll("fieldset[data-required='true']").forEach((fieldset) => {
@@ -510,19 +589,26 @@
       button.addEventListener("click", handleInfoToggle);
     });
 
-    optionalDetails.addEventListener("toggle", () => {
-      update();
-    });
+    if (optionalDetails) {
+      optionalDetails.addEventListener("toggle", () => {
+        update();
+      });
+    }
 
-    resetBtn.addEventListener("click", () => {
-      form.reset();
-      touched.clear();
-      hasFiredToolCompleted = false;
-      closeAllInfoPanels();
-      optionalDetails.open = false;
-      CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
-      update();
-    });
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        form.reset();
+        touched.clear();
+        window.sessionStorage.removeItem(toolCompletedSessionKey);
+        if (window.localStorage.getItem("gc_consent") === "granted" && typeof window.gtag === "function") {
+          window.gtag("event", "tool_reset");
+        }
+        closeAllInfoPanels();
+        if (optionalDetails) optionalDetails.open = false;
+        CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
+        update();
+      });
+    }
 
     closeAllInfoPanels();
     update();
