@@ -234,6 +234,29 @@ summary {
   color: var(--muted);
 }
 
+.result-headline {
+  margin: 0 0 0.5rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.practical-label {
+  margin: 0.35rem 0 0.15rem;
+  font-weight: 650;
+  color: #243041;
+}
+
+.practical-list {
+  margin-top: 0;
+}
+
+.result-trust {
+  margin: 0.65rem 0 0.9rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
 .ampel-badge {
   display: inline-block;
   margin: 0;
