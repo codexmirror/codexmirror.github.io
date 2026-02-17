@@ -445,6 +445,7 @@
     const headlineEl = document.getElementById("result-headline");
     const practicalList = document.getElementById("practical-list");
     const confidenceEl = document.getElementById("result-confidence");
+    const confidenceTitleEl = document.getElementById("result-confidence-title");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
     const stepsListMore = document.getElementById("steps-list-more");
@@ -523,15 +524,19 @@
       if (confidenceEl) {
         if (result.confidence) {
           const isPositiveAmpel = result.ampel === "🟢";
-          const confidenceLabel = isPositiveAmpel ? "Planungssicherheit" : "Einschätzungssicherheit";
-          const detail = isPositiveAmpel
+          if (confidenceTitleEl) {
+            confidenceTitleEl.textContent = isPositiveAmpel
+              ? "Planungssicherheit"
+              : "Einschätzungssicherheit";
+          }
+          const detailText = isPositiveAmpel
             ? confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen."
             : {
                 hoch: "Die Bewertung ist in dieser Konstellation belastbar.",
-                mittel: "Die Bewertung ist brauchbar, ein wichtiger Punkt ist noch offen.",
-                niedrig: "Die Bewertung ist vorläufig, mehrere Angaben sind noch offen."
+                mittel: "Die Bewertung ist brauchbar – ein wichtiger Punkt ist noch offen.",
+                niedrig: "Die Bewertung ist vorläufig – mehrere Angaben sind noch offen."
               }[result.confidence] || "Bitte als Vorprüfung verstehen.";
-          confidenceEl.textContent = `${confidenceLabel}: ${result.confidence} – ${detail}`;
+          confidenceEl.textContent = `${result.confidence} – ${detailText}`;
         } else {
           confidenceEl.textContent = "";
         }
