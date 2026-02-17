@@ -145,14 +145,29 @@
             <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.</p>
 
             <div id="result-content" hidden>
-              <p class="result-headline" id="result-headline"></p>
               <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
               <p class="score" id="result-score">50</p>
-              <p class="interpretation" id="result-interpretation"></p>
-              <ul id="practical-list" class="practical-list"></ul>
+              <p class="score-legend-inline" aria-label="Score-Legende">
+                Legende: kritisch · prüfbedürftig · plausibel · gute Ausgangslage
+              </p>
 
-              <section class="result-section">
-                <h3>Nächste Schritte</h3>
+              <details class="score-legend-details">
+                <summary>Legende anzeigen</summary>
+                <div class="score-legend-details__body">
+                  <p class="score-legend-ranges">
+                    0–30 kritisch<br />
+                    31–60 prüfbedürftig<br />
+                    61–80 plausibel<br />
+                    81–100 gute Ausgangslage
+                  </p>
+                  <p class="score-legend-note">Score bewertet planungsrechtliche Ausgangslage.</p>
+                </div>
+              </details>
+
+              <p class="result-headline" id="result-headline"></p>
+
+              <section class="result-section" id="primary-step-section">
+                <h3>Wichtigster nächster Schritt</h3>
                 <ul id="steps-list"></ul>
               </section>
 
@@ -168,18 +183,31 @@
               </button>
 
               <section id="result-details" hidden>
-                <p class="confidence" id="result-confidence"></p>
-                <p class="result-trust">Orientiert an typischen Prüfpunkten: Lage, Planungsrahmen, Zweckbestimmung, Erschließung.</p>
+                <p class="interpretation" id="result-interpretation"></p>
+
+                <section class="result-section">
+                  <h3>Planungssicherheit</h3>
+                  <p class="confidence" id="result-confidence"></p>
+                  <h4 class="result-subtitle">Was bedeutet das praktisch?</h4>
+                  <ul id="practical-list" class="practical-list"></ul>
+                </section>
 
                 <section class="result-section">
                   <h3>Warum</h3>
                   <ul id="why-list"></ul>
                 </section>
 
+                <section class="result-section" id="more-steps-section">
+                  <h3>Weitere Schritte</h3>
+                  <ul id="steps-list-more"></ul>
+                </section>
+
                 <section class="result-section">
                   <h3>Typische Fallen</h3>
                   <ul id="pitfalls-list"></ul>
                 </section>
+
+                <p class="result-trust">Die Einschätzung orientiert sich an typischen planungsrechtlichen Prüfschritten wie Innen- oder Außenbereich, Bebauungsplan, Zweckbestimmung und Erschließung.</p>
               </section>
             </div>
           </div>

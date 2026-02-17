@@ -447,6 +447,9 @@
     const confidenceEl = document.getElementById("result-confidence");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
+    const stepsListMore = document.getElementById("steps-list-more");
+    const primaryStepSection = document.getElementById("primary-step-section");
+    const moreStepsSection = document.getElementById("more-steps-section");
     const pitfallsList = document.getElementById("pitfalls-list");
     const detailsToggle = document.getElementById("details-toggle");
     const resultDetails = document.getElementById("result-details");
@@ -526,7 +529,12 @@
         }
       }
       renderList(whyList, result.why.map(decorateWhyItem));
-      renderList(stepsList, result.steps);
+      const primaryStep = result.steps.length > 0 ? [result.steps[0]] : [];
+      const moreSteps = result.steps.length > 1 ? result.steps.slice(1) : [];
+      renderList(stepsList, primaryStep);
+      renderList(stepsListMore, moreSteps);
+      setHidden(primaryStepSection, primaryStep.length === 0);
+      setHidden(moreStepsSection, moreSteps.length === 0);
       renderList(pitfallsList, result.pitfalls);
 
       if (
