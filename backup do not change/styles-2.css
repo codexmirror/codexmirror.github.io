@@ -305,3 +305,44 @@ li { margin: 0.3rem 0; }
   display: flex;
   gap: 1rem;
 }
+
+.gc-consent-banner {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+  padding: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gc-consent-banner p {
+  margin: 0;
+}
+
+.gc-consent-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gc-consent-actions button {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+  background: #fff;
+}
+
+.gc-consent-actions button[data-consent="granted"] {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}

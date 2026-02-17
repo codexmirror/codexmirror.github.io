@@ -386,6 +386,7 @@
 
     const touched = new Set();
     let lastRenderedScore = 50;
+    const toolCompletedSessionKey = "gc_tool_completed_sent";
 
     const setFieldError = (field, message) => {
       const el = document.getElementById(`error-${field}`);
@@ -418,6 +419,18 @@
         resultContent.hidden = true;
         lastRenderedScore = 50;
         return;
+      }
+      if (
+        window.localStorage.getItem("gc_consent") === "granted" &&
+        typeof window.gtag === "function" &&
+        !window.sessionStorage.getItem(toolCompletedSessionKey)
+      ) {
+        window.gtag("event", "tool_completed", {
+          event_category: "engagement",
+          event_label: "grundstueck-check",
+          value: result.score
+        });
+        window.sessionStorage.setItem(toolCompletedSessionKey, "1");
       }
 
       if (resultCard) resultCard.classList.remove("result--neutral");
@@ -504,6 +517,7 @@
     resetBtn.addEventListener("click", () => {
       form.reset();
       touched.clear();
+      hasFiredToolCompleted = false;
       closeAllInfoPanels();
       optionalDetails.open = false;
       CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
