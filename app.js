@@ -53,6 +53,7 @@
       }
     ],
     nextStepTemplates: {
+      stopFactorIntro: "Sonderrisiken zuerst klären: Diese Punkte können die Planung stoppen.",
       lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
       bplanUnklar: "Gemeinde: Bebauungsplan einsehen und gewünschte Nutzung schriftlich einordnen lassen.",
       bestandUnklar: "Bestand und Genehmigungsstand schriftlich beim Bauamt klären.",
@@ -76,6 +77,9 @@
       aussen: "Außenbereich heißt nicht automatisch unbebaubar, aber Wohnen bleibt stark eingeschränkt.",
       freizeit: "Freizeitnutzung und Dauerwohnen sind planungsrechtlich verschieden.",
       bestand: "Bestandsschutz oder Duldung gilt selten pauschal für neue Vorhaben.",
+      naturschutz: "Strenges Schutzgebiet kann Vorhaben vollständig ausschließen.",
+      wasserschutz: "Wasserschutz Zone I/II kann Neubau und Nutzungsänderungen faktisch blockieren.",
+      hochwasser: "HQ100-Lage kann zu Bauverboten, strengen Auflagen oder Folgekosten führen.",
       general: "Exposé-Formulierungen ersetzen keine schriftliche Einordnung vom Bauamt.",
       fallback: "Mündliche Aussagen sind hilfreich, entscheidend ist die schriftliche Einordnung."
     },
@@ -312,7 +316,10 @@
 
   function buildWhy(activeCaps, reasons) {
     const list = [];
-    activeCaps.forEach((cap) => list.push({ type: "cap", text: cap.reason }));
+    const stopCaps = activeCaps.filter((cap) => /schutzgebiet|wasserschutz|hochwasser|hq100|zone i\/ii|zone iii/i.test(cap.reason));
+    const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
+    stopCaps.forEach((cap) => list.push({ type: "cap", text: `Dominanter Faktor: ${cap.reason}` }));
+    otherCaps.forEach((cap) => list.push({ type: "cap", text: cap.reason }));
 
     const negatives = sortReasons(reasons.filter((r) => r.impact < 0 && r.category !== "unclear"));
     const positives = sortReasons(reasons.filter((r) => r.impact > 0));
@@ -334,6 +341,15 @@
   function buildNextSteps(state, activeCaps, reasons) {
     const steps = [];
 
+    const hasStopFactor =
+      state.schutzgebiet === "streng" ||
+      state.wasserschutz === "zone12" ||
+      state.hochwasser === "hq100";
+    if (hasStopFactor) steps.push(CONFIG.nextStepTemplates.stopFactorIntro);
+    if (state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
+    if (state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
+    if (state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
+
     if (state.typ === "wald" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
     if (state.lage === "aussen" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
     if (isAussenbereich(state) && state.nutzung === "wochenende") steps.push(CONFIG.nextStepTemplates.aussenWochenende);
@@ -345,9 +361,9 @@
     if (state.lage === "unklar") steps.push(CONFIG.nextStepTemplates.lageUnklar);
     if (state.bplan === "unklar") steps.push(CONFIG.nextStepTemplates.bplanUnklar);
     if (state.bestand === "unklar") steps.push(CONFIG.nextStepTemplates.bestandUnklar);
-    if (state.schutzgebiet === "lsg" || state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
-    if (state.wasserschutz === "zone3" || state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
-    if (state.hochwasser === "risiko" || state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
+    if (state.schutzgebiet === "lsg") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
+    if (state.wasserschutz === "zone3") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
+    if (state.hochwasser === "risiko") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
 
     const hasUnknownSpecial = [state.schutzgebiet, state.wasserschutz, state.hochwasser].some((v) => v === "unbekannt");
     if (state.optionalActive && hasUnknownSpecial) steps.push(CONFIG.nextStepTemplates.geoportalPruefen);
@@ -358,7 +374,8 @@
     const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|schriftlich/i.test(step));
     if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
 
-    return unique.slice(0, 3).map((item) => clipWords(item, 17));
+    const topThree = unique.slice(0, 3);
+    return topThree.map((item) => clipWords(item, 17));
   }
 
   function buildPitfalls(state) {
@@ -367,8 +384,11 @@
     if (state.lage === "aussen" || (state.typ === "wald" && isWohnenOderTiny(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
     if (state.typ === "freizeit") fallSpecific.push(CONFIG.pitfallsTemplates.freizeit);
     if (state.bestand === "genehmigt" || state.bestand === "unklar") fallSpecific.push(CONFIG.pitfallsTemplates.bestand);
+    if (state.schutzgebiet === "streng") fallSpecific.push(CONFIG.pitfallsTemplates.naturschutz);
+    if (state.wasserschutz === "zone12") fallSpecific.push(CONFIG.pitfallsTemplates.wasserschutz);
+    if (state.hochwasser === "hq100") fallSpecific.push(CONFIG.pitfallsTemplates.hochwasser);
 
-    const selectedSpecific = dedupeTexts(fallSpecific).slice(0, 1);
+    const selectedSpecific = dedupeTexts(fallSpecific).slice(0, 2);
     const pitfalls = dedupeTexts([CONFIG.pitfallsTemplates.anmeldung, ...selectedSpecific, CONFIG.pitfallsTemplates.general]);
     const fallbackOrder = [CONFIG.pitfallsTemplates.fallback, CONFIG.pitfallsTemplates.bestand, CONFIG.pitfallsTemplates.tiny];
 
@@ -387,9 +407,11 @@
     return "🟢";
   }
 
-  function adjustAmpel(light, state) {
+  function adjustAmpel(light, state, activeCaps) {
     const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
     const privileged = state.nutzung === "landwpriv";
+    const hasHardStopCap = activeCaps.some((cap) => cap.max <= 35);
+    if (hasHardStopCap && light !== "🔴") return "🔴";
     if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
     return light;
   }
@@ -461,7 +483,7 @@
     const activeCaps = [...gated.gates, ...capped.activeCaps];
     const finalScore = clampScore(capped.score);
     const rawLight = ampel(finalScore);
-    const light = adjustAmpel(rawLight, state);
+    const light = adjustAmpel(rawLight, state, activeCaps);
     const planningConfidence = confidence(state);
 
     return {
@@ -833,6 +855,24 @@
       },
       {
         id: "T6",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          schutzgebiet: "streng",
+          wasserschutz: "zone12",
+          hochwasser: "hq100",
+          optionalActive: true
+        },
+        check: (r) =>
+          r.ampel === "🔴" &&
+          r.why.some((item) => /Dominanter Faktor/i.test(item.text)) &&
+          r.steps.length > 0 &&
+          /planung stoppen/i.test(r.steps[0])
+      },
+      {
+        id: "T7",
         state: baseline,
         check: () =>
           baselineResult.score === emptyOptionalVariant.score &&
