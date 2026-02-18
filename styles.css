@@ -207,9 +207,25 @@ legend {
 
 .secondary:hover { background: #f9fafb; }
 
+
+#optional-details .tile {
+  white-space: normal;
+  line-height: 1.35;
+}
+
 summary {
   cursor: pointer;
   font-weight: 650;
+}
+
+#optional-details {
+  margin-top: 0.6rem;
+}
+
+#optional-details fieldset + fieldset {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
 }
 
 .result {
@@ -272,6 +288,8 @@ summary {
   text-decoration: underline;
   text-underline-offset: 2px;
   list-style: none;
+  padding: 0.1rem 0.15rem;
+  border-radius: 6px;
 }
 
 .result .score-legend-details > summary::-webkit-details-marker {
@@ -279,9 +297,8 @@ summary {
 }
 
 .result .score-legend-details > summary:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
-  border-radius: 6px;
 }
 
 .result .score-legend-details__body {
