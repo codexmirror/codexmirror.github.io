@@ -17,7 +17,7 @@
         reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
       },
       {
-        max: 45,
+        max: 35,
         applies: (s) => s.lage_detail === "randlage",
         reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
       },
@@ -48,7 +48,7 @@
       },
       {
         max: 15,
-        applies: (s) => s.typ === "wald" && isWohnenOderTiny(s.nutzung),
+        applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
         reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
       }
     ],
@@ -94,25 +94,34 @@
   const TEMPLATES = {
     positives: {
       lage_innen: "Innenbereich ist oft planungsrechtlich günstiger.",
-      bplan_ja: "Bebauungsplan schafft oft klarere Nutzungsmöglichkeiten.",
+      bplan_ja: "Bebauungsplan kann die Zulässigkeit klarer absichern.",
       typ_bauluecke: "Baulücken sind häufig eher für Bebauung gedacht.",
       typ_freizeit_wochenende: "Freizeitgrundstück passt eher zu Wochenendnutzung.",
       typ_landwpriv: "Privilegierte Landwirtschaft kann im Außenbereich eher möglich sein.",
-      bestand_genehmigt: "Genehmigter Bestand reduziert oft rechtliche Unsicherheit.",
+      bestand_genehmigt: "Genehmigter Bestand kann die Ausgangslage stützen.",
       erschl_voll: "Voll erschlossen senkt praktische Hürden deutlich."
     },
     negatives: {
       lage_unklar: "Unklare Lage macht Genehmigungsrisiken schwer einschätzbar.",
-      bplan_nein: "Ohne Bebauungsplan sind Nutzungen oft schwerer durchsetzbar.",
+      bplan_nein: "Ohne Bebauungsplan fehlen oft klare Leitplanken für die Nutzung.",
       bplan_unklar: "Unklarer Bebauungsplan erhöht das Planungsrisiko.",
       typ_freizeit_wohnen: "Freizeitgrundstück ist für Dauerwohnen häufig ungeeignet.",
       nutzung_gewerblich: "Gewerbliche Nutzung braucht oft zusätzliche Vorgaben und Nachweise.",
-      erschl_teilweise: "Teilweise Erschließung kann Bau und Nutzung bremsen."
+      erschl_teilweise: "Teilweise Erschließung kann Bau und Nutzung bremsen.",
+      landwpriv_unplausibel: "Privilegierung ohne klaren landwirtschaftlichen Bezug ist meist nicht tragfähig.",
+      innen34_einfuegen: "Innenbereich (§34) verlangt Einfügen in Art und Maß der Umgebung.",
+      sonderfall_lsg: "Landschaftsschutz bringt oft zusätzliche Auflagen und Einschränkungen.",
+      sonderfall_zone3: "Wasserschutz (Zone III) kann Planung und Nutzung deutlich einschränken.",
+      sonderfall_hochwasser_hq100: "HQ100-Lage erzeugt strenge Anforderungen bis hin zu Bauverboten."
     }
   };
 
-  function isWohnenOderTiny(nutzung) {
-    return nutzung === "wohnen" || nutzung === "tiny";
+  function normalizeNutzung(nutzung) {
+    return nutzung === "tiny" ? "wohnen" : nutzung;
+  }
+
+  function isWohnen(nutzung) {
+    return normalizeNutzung(nutzung) === "wohnen";
   }
 
   function isInsideIsh(state) {
@@ -189,11 +198,13 @@
     }
 
     if (state.bplan === "ja") {
-      score += 20;
-      reasons.push(makeReason("bplan", 20, TEMPLATES.positives.bplan_ja, "positive"));
+      const delta = isOutsideIsh(state) ? 8 : 12;
+      score += delta;
+      reasons.push(makeReason("bplan", delta, TEMPLATES.positives.bplan_ja, "positive"));
     } else if (state.bplan === "nein") {
-      score -= 10;
-      reasons.push(makeReason("bplan", -10, TEMPLATES.negatives.bplan_nein, "negative"));
+      const delta = isInsideIsh(state) ? -2 : isOutsideIsh(state) ? -10 : -6;
+      score += delta;
+      reasons.push(makeReason("bplan", delta, TEMPLATES.negatives.bplan_nein, "negative"));
     } else if (state.bplan === "unklar") {
       score -= 5;
       reasons.push(makeReason("bplan", -5, TEMPLATES.negatives.bplan_unklar, "unclear"));
@@ -207,13 +218,22 @@
       score += 10;
       reasons.push(makeReason("typ", 10, TEMPLATES.positives.typ_freizeit_wochenende, "positive"));
     }
-    if (state.typ === "freizeit" && isWohnenOderTiny(state.nutzung)) {
+    if (state.typ === "freizeit" && isWohnen(state.nutzung)) {
       score -= 20;
       reasons.push(makeReason("typ", -20, TEMPLATES.negatives.typ_freizeit_wohnen, "negative"));
     }
     if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") {
-      score += 10;
-      reasons.push(makeReason("typ", 10, TEMPLATES.positives.typ_landwpriv, "positive"));
+      score += 6;
+      reasons.push(makeReason("typ", 6, TEMPLATES.positives.typ_landwpriv, "positive"));
+    }
+    if (state.nutzung === "landwpriv" && state.typ !== "landwirtschaft") {
+      score -= 12;
+      reasons.push(makeReason("nutzung", -12, TEMPLATES.negatives.landwpriv_unplausibel, "negative"));
+    }
+
+    if (state.lage_detail === "innen34" && isWohnen(state.nutzung) && state.typ !== "bauluecke") {
+      score -= 6;
+      reasons.push(makeReason("lage_detail", -6, TEMPLATES.negatives.innen34_einfuegen, "negative"));
     }
 
     if (state.nutzung === "gewerblich") {
@@ -223,8 +243,9 @@
     }
 
     if (state.bestand === "genehmigt") {
-      score += 10;
-      reasons.push(makeReason("bestand", 10, TEMPLATES.positives.bestand_genehmigt, "positive"));
+      const delta = isOutsideIsh(state) ? 4 : 8;
+      score += delta;
+      reasons.push(makeReason("bestand", delta, TEMPLATES.positives.bestand_genehmigt, "positive"));
     } else if (state.bestand === "unklar") {
       reasons.push(makeReason("bestand", 0, "Bestand ist unklar und sollte geprüft werden.", "unclear"));
     }
@@ -238,16 +259,29 @@
     }
 
     if (state.lage_detail === "randlage") {
-      score -= 10;
-      reasons.push(makeReason("lage_detail", -10, "Randlage verschlechtert die planungsrechtliche Lage.", "negative"));
+      score -= 15;
+      reasons.push(makeReason("lage_detail", -15, "Randlage wird planungsrechtlich häufig wie Außenbereich behandelt.", "negative"));
     } else if (state.lage_detail === "satzung") {
       score += 5;
       reasons.push(makeReason("lage_detail", 5, "Klarer Satzungsbezug kann die Einordnung stützen.", "positive"));
     }
 
-    if (state.hochwasser === "risiko") {
-      score -= 5;
-      reasons.push(makeReason("hochwasser", -5, "Hochwasserrisiko bringt zusätzliche Auflagen mit sich.", "negative"));
+    if (state.schutzgebiet === "lsg") {
+      score -= 10;
+      reasons.push(makeReason("schutzgebiet", -10, TEMPLATES.negatives.sonderfall_lsg, "negative"));
+    }
+
+    if (state.wasserschutz === "zone3") {
+      score -= 8;
+      reasons.push(makeReason("wasserschutz", -8, TEMPLATES.negatives.sonderfall_zone3, "negative"));
+    }
+
+    if (state.hochwasser === "hq100") {
+      score -= 15;
+      reasons.push(makeReason("hochwasser", -15, TEMPLATES.negatives.sonderfall_hochwasser_hq100, "negative"));
+    } else if (state.hochwasser === "risiko") {
+      score -= 8;
+      reasons.push(makeReason("hochwasser", -8, "Hochwasserrisiko bringt zusätzliche Auflagen mit sich.", "negative"));
     }
 
     return { score, reasons };
@@ -268,7 +302,7 @@
   function applyGates(score, state) {
     let current = score;
     const gates = [];
-    const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
+    const restrictedUse = ["wohnen", "wochenende"].includes(normalizeNutzung(state.nutzung));
     const privileged = state.nutzung === "landwpriv";
 
     if (isOutsideIsh(state) && restrictedUse && !privileged) {
@@ -350,10 +384,10 @@
     if (state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
     if (state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
 
-    if (state.typ === "wald" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
-    if (state.lage === "aussen" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
+    if (state.typ === "wald" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
+    if (state.lage === "aussen" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
     if (isAussenbereich(state) && state.nutzung === "wochenende") steps.push(CONFIG.nextStepTemplates.aussenWochenende);
-    if (state.typ === "freizeit" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
+    if (state.typ === "freizeit" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
     if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
     if (state.bplan === "nein") steps.push(CONFIG.nextStepTemplates.bplanNein);
     if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlKlaeren);
@@ -380,8 +414,8 @@
 
   function buildPitfalls(state) {
     const fallSpecific = [];
-    if (state.nutzung === "tiny") fallSpecific.push(CONFIG.pitfallsTemplates.tiny);
-    if (state.lage === "aussen" || (state.typ === "wald" && isWohnenOderTiny(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
+    if (isWohnen(state.nutzung)) fallSpecific.push(CONFIG.pitfallsTemplates.tiny);
+    if (state.lage === "aussen" || (state.typ === "wald" && isWohnen(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
     if (state.typ === "freizeit") fallSpecific.push(CONFIG.pitfallsTemplates.freizeit);
     if (state.bestand === "genehmigt" || state.bestand === "unklar") fallSpecific.push(CONFIG.pitfallsTemplates.bestand);
     if (state.schutzgebiet === "streng") fallSpecific.push(CONFIG.pitfallsTemplates.naturschutz);
@@ -408,7 +442,7 @@
   }
 
   function adjustAmpel(light, state, activeCaps) {
-    const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
+    const restrictedUse = ["wohnen", "wochenende"].includes(normalizeNutzung(state.nutzung));
     const privileged = state.nutzung === "landwpriv";
     const hasHardStopCap = activeCaps.some((cap) => cap.max <= 35);
     if (hasHardStopCap && light !== "🔴") return "🔴";
@@ -459,7 +493,10 @@
   }
 
   function evaluate(rawState) {
-    const state = normalizeOptionalState(rawState);
+    const state = normalizeOptionalState({
+      ...rawState,
+      nutzung: normalizeNutzung(rawState.nutzung)
+    });
 
     if (!requiredComplete(state)) {
       return {
@@ -880,6 +917,11 @@
           JSON.stringify(baselineResult.why) === JSON.stringify(emptyOptionalVariant.why) &&
           JSON.stringify(baselineResult.steps) === JSON.stringify(emptyOptionalVariant.steps) &&
           JSON.stringify(baselineResult.pitfalls) === JSON.stringify(emptyOptionalVariant.pitfalls)
+      },
+      {
+        id: "T8",
+        state: { ...baseline, nutzung: "tiny" },
+        check: (r) => r.score === baselineResult.score && r.ampel === baselineResult.ampel
       }
     ];
 
