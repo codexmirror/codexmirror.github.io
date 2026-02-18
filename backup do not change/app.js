@@ -14,12 +14,17 @@
       {
         max: 35,
         applies: (s) => s.erschliessung === "nicht",
-        reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Wohnen meist unrealistisch."
+        reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
       },
       {
         max: 25,
-        applies: (s) => s.lage === "aussen" && isWohnenOderTiny(s.nutzung),
+        applies: (s) => isAussenbereich(s) && isWohnenOderTiny(s.nutzung),
         reason: "Außenbereich ist für dauerhaftes Wohnen meist stark eingeschränkt."
+      },
+      {
+        max: 25,
+        applies: (s) => isAussenbereich(s) && s.nutzung === "wochenende",
+        reason: "Außenbereich ist für Freizeit-/Wochenendnutzung häufig stark eingeschränkt."
       },
       {
         max: 15,
@@ -33,6 +38,7 @@
       bestandUnklar: "Bestand und Genehmigungsstand schriftlich beim Bauamt klären.",
       erschlKlaeren: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser und Strom.",
       aussenWohnen: "Bauamt: Wohnen im Außenbereich und mögliche Ausnahmen schriftlich prüfen lassen.",
+      aussenWochenende: "Bauamt: Wochenendnutzung im Außenbereich schriftlich prüfen lassen.",
       waldWohnen: "Gemeinde/Forstamt: Nutzung klären; Wohnen im Wald ist meist ausgeschlossen.",
       bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
       landwpriv: "Privilegierung belastbar nachweisen: Betrieb, Flächen und konkreten Bedarf.",
@@ -79,6 +85,10 @@
 
   function isWohnenOderTiny(nutzung) {
     return nutzung === "wohnen" || nutzung === "tiny";
+  }
+
+  function isAussenbereich(state) {
+    return state.lage === "aussen";
   }
 
   function clipWords(text, maxWords) {
@@ -143,7 +153,7 @@
       reasons.push(makeReason("bplan", -5, TEMPLATES.negatives.bplan_unklar, "unclear"));
     }
 
-    if (state.typ === "bauluecke") {
+    if (state.typ === "bauluecke" && state.lage === "innen") {
       score += 20;
       reasons.push(makeReason("typ", 20, TEMPLATES.positives.typ_bauluecke, "positive"));
     }
@@ -196,6 +206,27 @@
     return { score: current, activeCaps };
   }
 
+  function applyGates(score, state) {
+    let current = score;
+    const activeGates = [];
+    const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
+
+    if (isAussenbereich(state) && restrictedUse) {
+      activeGates.push({
+        max: 25,
+        reason: "Im Außenbereich sind diese Nutzungen häufig nur unter engen Voraussetzungen zulässig."
+      });
+      current = Math.min(current, 25);
+    }
+
+    const uniqueReasons = dedupeTexts(activeGates.map((gate) => gate.reason));
+    const dedupedGates = uniqueReasons
+      .map((reason) => activeGates.find((gate) => normalizeText(gate.reason) === normalizeText(reason)))
+      .filter(Boolean);
+
+    return { score: current, activeGates: dedupedGates };
+  }
+
   function clampScore(score) {
     return Math.min(100, Math.max(1, score));
   }
@@ -205,7 +236,7 @@
     if (state.lage === "unklar") unclear += 1;
     if (state.bplan === "unklar") unclear += 1;
     if (state.bestand === "unklar") unclear += 1;
-    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") unclear += 1;
+    if (state.erschliessung === "teilweise") unclear += 1;
     if (unclear === 0) return "hoch";
     if (unclear === 1) return "mittel";
     return "niedrig";
@@ -246,6 +277,7 @@
 
     if (state.typ === "wald" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
     if (state.lage === "aussen" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
+    if (isAussenbereich(state) && state.nutzung === "wochenende") steps.push(CONFIG.nextStepTemplates.aussenWochenende);
     if (state.typ === "freizeit" && isWohnenOderTiny(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
     if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
     if (state.bplan === "nein") steps.push(CONFIG.nextStepTemplates.bplanNein);
@@ -288,6 +320,13 @@
     if (score <= 29) return "🔴";
     if (score <= 59) return "🟡";
     return "🟢";
+  }
+
+  function adjustAmpel(light, state) {
+    const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
+    const privileged = state.nutzung === "landwpriv";
+    if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
+    return light;
   }
 
   function ampelLabel(light) {
@@ -352,9 +391,12 @@
     }
 
     const modified = applyModifiers(state);
-    const capped = applyCaps(modified.score, state);
+    const gated = applyGates(modified.score, state);
+    const capped = applyCaps(gated.score, state);
+    const activeCapsForWhy = [...gated.activeGates, ...capped.activeCaps];
     const finalScore = clampScore(capped.score);
-    const light = ampel(finalScore);
+    const rawLight = ampel(finalScore);
+    const light = adjustAmpel(rawLight, state);
     const planningConfidence = confidence(state);
 
     return {
@@ -365,11 +407,11 @@
       interpretation: interpretation(finalScore),
       headline: resultHeadline(light, planningConfidence),
       practical: practicalBullets(finalScore, light),
-      why: buildWhy(capped.activeCaps, modified.reasons),
-      steps: buildNextSteps(state, capped.activeCaps, modified.reasons),
+      why: buildWhy(activeCapsForWhy, modified.reasons),
+      steps: buildNextSteps(state, activeCapsForWhy, modified.reasons),
       pitfalls: buildPitfalls(state),
       confidence: planningConfidence,
-      activeCaps: capped.activeCaps
+      activeCaps: activeCapsForWhy
     };
   }
 
@@ -445,6 +487,7 @@
     const headlineEl = document.getElementById("result-headline");
     const practicalList = document.getElementById("practical-list");
     const confidenceEl = document.getElementById("result-confidence");
+    const confidenceTitleEl = document.getElementById("result-confidence-title");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
     const stepsListMore = document.getElementById("steps-list-more");
@@ -523,15 +566,19 @@
       if (confidenceEl) {
         if (result.confidence) {
           const isPositiveAmpel = result.ampel === "🟢";
-          const confidenceLabel = isPositiveAmpel ? "Planungssicherheit" : "Einschätzungssicherheit";
-          const detail = isPositiveAmpel
+          if (confidenceTitleEl) {
+            confidenceTitleEl.textContent = isPositiveAmpel
+              ? "Planungssicherheit"
+              : "Einschätzungssicherheit";
+          }
+          const detailText = isPositiveAmpel
             ? confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen."
             : {
                 hoch: "Die Bewertung ist in dieser Konstellation belastbar.",
-                mittel: "Die Bewertung ist brauchbar, ein wichtiger Punkt ist noch offen.",
-                niedrig: "Die Bewertung ist vorläufig, mehrere Angaben sind noch offen."
+                mittel: "Die Bewertung ist brauchbar – ein wichtiger Punkt ist noch offen.",
+                niedrig: "Die Bewertung ist vorläufig – mehrere Angaben sind noch offen."
               }[result.confidence] || "Bitte als Vorprüfung verstehen.";
-          confidenceEl.textContent = `${confidenceLabel}: ${result.confidence} – ${detail}`;
+          confidenceEl.textContent = `${result.confidence} – ${detailText}`;
         } else {
           confidenceEl.textContent = "";
         }
@@ -662,7 +709,7 @@
       {
         id: "S2",
         state: { lage: "aussen", bplan: "ja", typ: "sonstiges", nutzung: "tiny", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score <= 25 && r.ampel === "🔴"
+        check: (r) => r.score <= 25 && r.ampel !== "🟢"
       },
       {
         id: "S3",
@@ -693,6 +740,11 @@
         id: "S8",
         state: { lage: "", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
         check: (r) => r.neutral === true && r.score === 50 && r.why.length === 0 && r.steps.length === 0 && r.pitfalls.length === 0
+      },
+      {
+        id: "S9",
+        state: { lage: "aussen", bplan: "ja", typ: "bauluecke", nutzung: "wochenende", bestand: "", erschliessung: "", optionalActive: false },
+        check: (r) => r.score <= 25 && r.ampel !== "🟢"
       }
     ];
 
