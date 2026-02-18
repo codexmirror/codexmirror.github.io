@@ -135,6 +135,49 @@
                   <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
                 </div>
               </fieldset>
+
+              <fieldset>
+                <legend>Lage-Detail</legend>
+                <p class="microcopy">Nur auswählen, wenn du es sicher weißt. Sonst „Weiß ich nicht“.</p>
+                <div class="tile-options" role="radiogroup" aria-label="Lage-Detail">
+                  <label class="tile"><input type="radio" name="lage_detail" value="innen34" />Innenbereich (§34)</label>
+                  <label class="tile"><input type="radio" name="lage_detail" value="aussen35" />Außenbereich (§35)</label>
+                  <label class="tile"><input type="radio" name="lage_detail" value="randlage" />Randlage</label>
+                  <label class="tile"><input type="radio" name="lage_detail" value="satzung" />Satzungsgebiet</label>
+                  <label class="tile"><input type="radio" name="lage_detail" value="unklar" />Weiß ich nicht</label>
+                </div>
+              </fieldset>
+
+              <section aria-label="Sonderfälle">
+                <h3>Sonderfälle (können Planung stoppen)</h3>
+
+                <fieldset>
+                  <legend>Natur-/Schutzgebiet</legend>
+                  <div class="tile-options" role="radiogroup" aria-label="Natur- oder Schutzgebiet">
+                    <label class="tile"><input type="radio" name="schutzgebiet" value="unbekannt" />Unbekannt</label>
+                    <label class="tile"><input type="radio" name="schutzgebiet" value="lsg" />Landschaftsschutzgebiet</label>
+                    <label class="tile"><input type="radio" name="schutzgebiet" value="streng" />Strenges Schutzgebiet</label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Wasserschutz</legend>
+                  <div class="tile-options" role="radiogroup" aria-label="Wasserschutz">
+                    <label class="tile"><input type="radio" name="wasserschutz" value="unbekannt" />Unbekannt</label>
+                    <label class="tile"><input type="radio" name="wasserschutz" value="zone3" />Zone III</label>
+                    <label class="tile"><input type="radio" name="wasserschutz" value="zone12" />Zone I/II</label>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Hochwasser</legend>
+                  <div class="tile-options" role="radiogroup" aria-label="Hochwasser">
+                    <label class="tile"><input type="radio" name="hochwasser" value="unbekannt" />Unbekannt</label>
+                    <label class="tile"><input type="radio" name="hochwasser" value="risiko" />Risiko</label>
+                    <label class="tile"><input type="radio" name="hochwasser" value="hq100" />HQ100</label>
+                  </div>
+                </fieldset>
+              </section>
             </details>
           </form>
         </article>

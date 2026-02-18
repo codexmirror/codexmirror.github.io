@@ -212,6 +212,19 @@ summary {
   font-weight: 650;
 }
 
+#optional-details { margin-top: 0.6rem; }
+
+#optional-details .tile {
+  white-space: normal;
+  line-height: 1.35;
+}
+
+#optional-details fieldset + fieldset {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
 .result {
   background: #fff;
 }
