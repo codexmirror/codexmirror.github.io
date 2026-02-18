@@ -1,7 +1,18 @@
 (function () {
   const CONFIG = {
     requiredFields: ["lage", "bplan", "typ", "nutzung"],
-    tieBreakerOrder: ["lage", "bplan", "typ", "nutzung", "erschliessung", "bestand"],
+    tieBreakerOrder: [
+      "lage",
+      "lage_detail",
+      "bplan",
+      "typ",
+      "nutzung",
+      "erschliessung",
+      "bestand",
+      "schutzgebiet",
+      "wasserschutz",
+      "hochwasser"
+    ],
     interpretations: [
       { min: 1, max: 15, text: "Aktuell spricht sehr viel gegen eine Genehmigung im beantragten Umfang." },
       { min: 16, max: 29, text: "Derzeit eher unwahrscheinlich – nur mit klaren Ausnahmen denkbar." },
@@ -73,7 +84,6 @@
     },
     pitfallsTemplates: {
       anmeldung: "Hauptwohnsitz anmelden ersetzt keine baurechtliche Zulässigkeit.",
-      tiny: "Tiny House wird baurechtlich meist wie dauerhaftes Wohnen behandelt.",
       aussen: "Außenbereich heißt nicht automatisch unbebaubar, aber Wohnen bleibt stark eingeschränkt.",
       freizeit: "Freizeitnutzung und Dauerwohnen sind planungsrechtlich verschieden.",
       bestand: "Bestandsschutz oder Duldung gilt selten pauschal für neue Vorhaben.",
@@ -116,12 +126,8 @@
     }
   };
 
-  function normalizeNutzung(nutzung) {
-    return nutzung === "tiny" ? "wohnen" : nutzung;
-  }
-
   function isWohnen(nutzung) {
-    return normalizeNutzung(nutzung) === "wohnen";
+    return nutzung === "wohnen";
   }
 
   function isInsideIsh(state) {
@@ -302,7 +308,7 @@
   function applyGates(score, state) {
     let current = score;
     const gates = [];
-    const restrictedUse = ["wohnen", "wochenende"].includes(normalizeNutzung(state.nutzung));
+    const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
     const privileged = state.nutzung === "landwpriv";
 
     if (isOutsideIsh(state) && restrictedUse && !privileged) {
@@ -344,7 +350,10 @@
     return reasons.sort((a, b) => {
       const byImpact = Math.abs(b.impact) - Math.abs(a.impact);
       if (byImpact !== 0) return byImpact;
-      return order[a.field] - order[b.field];
+      const aOrder = Number.isFinite(order[a.field]) ? order[a.field] : Number.MAX_SAFE_INTEGER;
+      const bOrder = Number.isFinite(order[b.field]) ? order[b.field] : Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+      return a.text.localeCompare(b.text, "de");
     });
   }
 
@@ -365,14 +374,16 @@
       unclear.map((r) => ({ type: "unclear", text: r.text }))
     ].forEach((bucket) => {
       bucket.forEach((item) => {
-        if (list.length < 4 && !list.some((existing) => existing.text === item.text)) list.push(item);
+        const allCapsShown = list.length >= activeCaps.length;
+        const underDisplayLimit = list.length < Math.max(4, activeCaps.length);
+        if (allCapsShown && underDisplayLimit && !list.some((existing) => existing.text === item.text)) list.push(item);
       });
     });
 
-    return list.slice(0, 4).map((item) => ({ type: item.type, text: clipWords(item.text, 17) }));
+    return list.slice(0, Math.max(4, activeCaps.length)).map((item) => ({ type: item.type, text: clipWords(item.text, 17) }));
   }
 
-  function buildNextSteps(state, activeCaps, reasons) {
+  function buildNextSteps(state, reasons) {
     const steps = [];
 
     const hasStopFactor =
@@ -414,7 +425,6 @@
 
   function buildPitfalls(state) {
     const fallSpecific = [];
-    if (isWohnen(state.nutzung)) fallSpecific.push(CONFIG.pitfallsTemplates.tiny);
     if (state.lage === "aussen" || (state.typ === "wald" && isWohnen(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
     if (state.typ === "freizeit") fallSpecific.push(CONFIG.pitfallsTemplates.freizeit);
     if (state.bestand === "genehmigt" || state.bestand === "unklar") fallSpecific.push(CONFIG.pitfallsTemplates.bestand);
@@ -424,7 +434,7 @@
 
     const selectedSpecific = dedupeTexts(fallSpecific).slice(0, 2);
     const pitfalls = dedupeTexts([CONFIG.pitfallsTemplates.anmeldung, ...selectedSpecific, CONFIG.pitfallsTemplates.general]);
-    const fallbackOrder = [CONFIG.pitfallsTemplates.fallback, CONFIG.pitfallsTemplates.bestand, CONFIG.pitfallsTemplates.tiny];
+    const fallbackOrder = [CONFIG.pitfallsTemplates.fallback, CONFIG.pitfallsTemplates.bestand];
 
     fallbackOrder.forEach((item) => {
       if (pitfalls.length >= 3) return;
@@ -442,7 +452,7 @@
   }
 
   function adjustAmpel(light, state, activeCaps) {
-    const restrictedUse = ["wohnen", "wochenende"].includes(normalizeNutzung(state.nutzung));
+    const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
     const privileged = state.nutzung === "landwpriv";
     const hasHardStopCap = activeCaps.some((cap) => cap.max <= 35);
     if (hasHardStopCap && light !== "🔴") return "🔴";
@@ -493,10 +503,7 @@
   }
 
   function evaluate(rawState) {
-    const state = normalizeOptionalState({
-      ...rawState,
-      nutzung: normalizeNutzung(rawState.nutzung)
-    });
+    const state = normalizeOptionalState(rawState);
 
     if (!requiredComplete(state)) {
       return {
@@ -532,7 +539,7 @@
       headline: resultHeadline(light, planningConfidence),
       practical: practicalBullets(finalScore, light),
       why: buildWhy(activeCaps, modified.reasons),
-      steps: buildNextSteps(state, activeCaps, modified.reasons),
+      steps: buildNextSteps(state, modified.reasons),
       pitfalls: buildPitfalls(state),
       confidence: planningConfidence,
       activeCaps
@@ -544,7 +551,7 @@
     return checked ? checked.value : "";
   }
 
-  function getFormState(form, optionalDetails) {
+  function getFormState(form) {
     const bestand = getCheckedValue(form, "bestand");
     const erschliessung = getCheckedValue(form, "erschliessung");
     const lage_detail = getCheckedValue(form, "lage_detail");
@@ -662,7 +669,7 @@
     };
 
     const update = () => {
-      const state = getFormState(form, optionalDetails);
+      const state = getFormState(form);
       const result = evaluate(state);
       renderErrors(state);
 
@@ -888,7 +895,7 @@
           schutzgebiet: "streng",
           optionalActive: true
         },
-        check: (r) => r.score <= 25
+        check: (r) => r.score <= 25 && r.why.some((item) => /schutzgebiet/i.test(item.text))
       },
       {
         id: "T6",
@@ -920,8 +927,42 @@
       },
       {
         id: "T8",
-        state: { ...baseline, nutzung: "tiny" },
+        state: { ...baseline, nutzung: "wohnen" },
         check: (r) => r.score === baselineResult.score && r.ampel === baselineResult.ampel
+      },
+      {
+        id: "T9",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          schutzgebiet: "streng",
+          wasserschutz: "zone12",
+          hochwasser: "hq100",
+          optionalActive: true
+        },
+        check: (r) => {
+          const whyText = r.why.map((item) => item.text).join(" |");
+          return /schutzgebiet/i.test(whyText) && /wasserschutz/i.test(whyText) && /hq100|hochwasser/i.test(whyText);
+        }
+      },
+      {
+        id: "T10",
+        state: {
+          lage: "aussen",
+          bplan: "ja",
+          typ: "sonstiges",
+          nutzung: "wohnen",
+          lage_detail: "aussen35",
+          optionalActive: true
+        },
+        check: (r) => r.score <= 25 && r.ampel === "🔴" && /nicht plausibel/i.test(r.headline)
+      },
+      {
+        id: "T11",
+        state: baseline,
+        check: (r) => !r.pitfalls.some((item) => /tiny house/i.test(item))
       }
     ];
 
