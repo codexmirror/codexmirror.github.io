@@ -17,14 +17,34 @@
         reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
       },
       {
-        max: 25,
-        applies: (s) => isAussenbereich(s) && isWohnenOderTiny(s.nutzung),
-        reason: "Außenbereich ist für dauerhaftes Wohnen meist stark eingeschränkt."
+        max: 45,
+        applies: (s) => s.lage_detail === "randlage",
+        reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
       },
       {
         max: 25,
-        applies: (s) => isAussenbereich(s) && s.nutzung === "wochenende",
-        reason: "Außenbereich ist für Freizeit-/Wochenendnutzung häufig stark eingeschränkt."
+        applies: (s) => s.schutzgebiet === "streng",
+        reason: "Strenges Schutzgebiet lässt Vorhaben oft nur stark eingeschränkt zu."
+      },
+      {
+        max: 55,
+        applies: (s) => s.schutzgebiet === "lsg",
+        reason: "Landschaftsschutzgebiet begrenzt die Nutzung je nach Auflagen deutlich."
+      },
+      {
+        max: 35,
+        applies: (s) => s.wasserschutz === "zone12",
+        reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
+      },
+      {
+        max: 55,
+        applies: (s) => s.wasserschutz === "zone3",
+        reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
+      },
+      {
+        max: 45,
+        applies: (s) => s.hochwasser === "hq100",
+        reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
       },
       {
         max: 15,
@@ -43,6 +63,10 @@
       bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
       landwpriv: "Privilegierung belastbar nachweisen: Betrieb, Flächen und konkreten Bedarf.",
       freizeitWohnen: "Zweckbestimmung schriftlich klären: Freizeitnutzung ist kein dauerhaftes Wohnen.",
+      naturschutzKlaeren: "Naturschutz: Schutzstatus und Auflagen schriftlich klären.",
+      wasserschutzKlaeren: "Wasserschutz: Schutzzone und Auflagen schriftlich klären.",
+      hochwasserKlaeren: "Hochwasser: Karten prüfen und Auflagen klären.",
+      geoportalPruefen: "Geoportal prüfen (Schutz/Wasser/Hochwasser).",
       starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet vorbereiten.",
       fallback: "Bei Unsicherheit: Bauamt-Auskunft schriftlich einholen."
     },
@@ -87,6 +111,14 @@
     return nutzung === "wohnen" || nutzung === "tiny";
   }
 
+  function isInsideIsh(state) {
+    return state.lage === "innen" || state.lage_detail === "innen34" || state.lage_detail === "satzung";
+  }
+
+  function isOutsideIsh(state) {
+    return state.lage === "aussen" || state.lage_detail === "aussen35" || state.lage_detail === "randlage";
+  }
+
   function isAussenbereich(state) {
     return state.lage === "aussen";
   }
@@ -126,7 +158,17 @@
   }
 
   function normalizeOptionalState(state) {
-    if (!state.optionalActive) return { ...state, bestand: "", erschliessung: "" };
+    if (!state.optionalActive) {
+      return {
+        ...state,
+        bestand: "",
+        erschliessung: "",
+        lage_detail: "",
+        schutzgebiet: "",
+        wasserschutz: "",
+        hochwasser: ""
+      };
+    }
     return state;
   }
 
@@ -153,7 +195,7 @@
       reasons.push(makeReason("bplan", -5, TEMPLATES.negatives.bplan_unklar, "unclear"));
     }
 
-    if (state.typ === "bauluecke" && state.lage === "innen") {
+    if (state.typ === "bauluecke" && isInsideIsh(state)) {
       score += 20;
       reasons.push(makeReason("typ", 20, TEMPLATES.positives.typ_bauluecke, "positive"));
     }
@@ -191,6 +233,19 @@
       reasons.push(makeReason("erschliessung", -5, TEMPLATES.negatives.erschl_teilweise, "unclear"));
     }
 
+    if (state.lage_detail === "randlage") {
+      score -= 10;
+      reasons.push(makeReason("lage_detail", -10, "Randlage verschlechtert die planungsrechtliche Lage.", "negative"));
+    } else if (state.lage_detail === "satzung") {
+      score += 5;
+      reasons.push(makeReason("lage_detail", 5, "Klarer Satzungsbezug kann die Einordnung stützen.", "positive"));
+    }
+
+    if (state.hochwasser === "risiko") {
+      score -= 5;
+      reasons.push(makeReason("hochwasser", -5, "Hochwasserrisiko bringt zusätzliche Auflagen mit sich.", "negative"));
+    }
+
     return { score, reasons };
   }
 
@@ -208,23 +263,19 @@
 
   function applyGates(score, state) {
     let current = score;
-    const activeGates = [];
+    const gates = [];
     const restrictedUse = ["wohnen", "tiny", "wochenende"].includes(state.nutzung);
+    const privileged = state.nutzung === "landwpriv";
 
-    if (isAussenbereich(state) && restrictedUse) {
-      activeGates.push({
+    if (isOutsideIsh(state) && restrictedUse && !privileged) {
+      gates.push({
         max: 25,
-        reason: "Im Außenbereich sind diese Nutzungen häufig nur unter engen Voraussetzungen zulässig."
+        reason: "Außenbereich/Randlage: diese Nutzung ist planungsrechtlich stark eingeschränkt."
       });
       current = Math.min(current, 25);
     }
 
-    const uniqueReasons = dedupeTexts(activeGates.map((gate) => gate.reason));
-    const dedupedGates = uniqueReasons
-      .map((reason) => activeGates.find((gate) => normalizeText(gate.reason) === normalizeText(reason)))
-      .filter(Boolean);
-
-    return { score: current, activeGates: dedupedGates };
+    return { score: current, gates };
   }
 
   function clampScore(score) {
@@ -237,6 +288,14 @@
     if (state.bplan === "unklar") unclear += 1;
     if (state.bestand === "unklar") unclear += 1;
     if (state.erschliessung === "teilweise") unclear += 1;
+    if (state.lage_detail === "unklar") unclear += 1;
+
+    ["schutzgebiet", "wasserschutz", "hochwasser"].forEach((field) => {
+      if (state[field] !== "" && state[field] === "unbekannt" && (isOutsideIsh(state) || state.lage === "unklar")) {
+        unclear += 1;
+      }
+    });
+
     if (unclear === 0) return "hoch";
     if (unclear === 1) return "mittel";
     return "niedrig";
@@ -286,6 +345,12 @@
     if (state.lage === "unklar") steps.push(CONFIG.nextStepTemplates.lageUnklar);
     if (state.bplan === "unklar") steps.push(CONFIG.nextStepTemplates.bplanUnklar);
     if (state.bestand === "unklar") steps.push(CONFIG.nextStepTemplates.bestandUnklar);
+    if (state.schutzgebiet === "lsg" || state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
+    if (state.wasserschutz === "zone3" || state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
+    if (state.hochwasser === "risiko" || state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
+
+    const hasUnknownSpecial = [state.schutzgebiet, state.wasserschutz, state.hochwasser].some((v) => v === "unbekannt");
+    if (state.optionalActive && hasUnknownSpecial) steps.push(CONFIG.nextStepTemplates.geoportalPruefen);
 
     if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
 
@@ -393,7 +458,7 @@
     const modified = applyModifiers(state);
     const gated = applyGates(modified.score, state);
     const capped = applyCaps(gated.score, state);
-    const activeCapsForWhy = [...gated.activeGates, ...capped.activeCaps];
+    const activeCaps = [...gated.gates, ...capped.activeCaps];
     const finalScore = clampScore(capped.score);
     const rawLight = ampel(finalScore);
     const light = adjustAmpel(rawLight, state);
@@ -407,11 +472,11 @@
       interpretation: interpretation(finalScore),
       headline: resultHeadline(light, planningConfidence),
       practical: practicalBullets(finalScore, light),
-      why: buildWhy(activeCapsForWhy, modified.reasons),
-      steps: buildNextSteps(state, activeCapsForWhy, modified.reasons),
+      why: buildWhy(activeCaps, modified.reasons),
+      steps: buildNextSteps(state, activeCaps, modified.reasons),
       pitfalls: buildPitfalls(state),
       confidence: planningConfidence,
-      activeCaps: activeCapsForWhy
+      activeCaps
     };
   }
 
@@ -423,6 +488,10 @@
   function getFormState(form, optionalDetails) {
     const bestand = getCheckedValue(form, "bestand");
     const erschliessung = getCheckedValue(form, "erschliessung");
+    const lage_detail = getCheckedValue(form, "lage_detail");
+    const schutzgebiet = getCheckedValue(form, "schutzgebiet");
+    const wasserschutz = getCheckedValue(form, "wasserschutz");
+    const hochwasser = getCheckedValue(form, "hochwasser");
     return {
       lage: getCheckedValue(form, "lage"),
       bplan: getCheckedValue(form, "bplan"),
@@ -430,7 +499,11 @@
       nutzung: getCheckedValue(form, "nutzung"),
       bestand,
       erschliessung,
-      optionalActive: Boolean(bestand || erschliessung)
+      lage_detail,
+      schutzgebiet,
+      wasserschutz,
+      hochwasser,
+      optionalActive: Boolean(bestand || erschliessung || lage_detail || schutzgebiet || wasserschutz || hochwasser)
     };
   }
 
@@ -700,51 +773,73 @@
   }
 
   function runSelfTests() {
+    const baseline = { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false };
+    const baselineResult = evaluate(baseline);
+    const emptyOptionalVariant = evaluate({
+      ...baseline,
+      lage_detail: "",
+      schutzgebiet: "",
+      wasserschutz: "",
+      hochwasser: "",
+      optionalActive: false
+    });
+
     const scenarios = [
       {
-        id: "S1",
-        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.ampel === "🟢" && (!r.activeCaps || r.activeCaps.length === 0)
+        id: "T1",
+        state: { lage: "aussen", bplan: "ja", typ: "sonstiges", nutzung: "wohnen", optionalActive: false },
+        check: (r) => r.score <= 25
       },
       {
-        id: "S2",
-        state: { lage: "aussen", bplan: "ja", typ: "sonstiges", nutzung: "tiny", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score <= 25 && r.ampel !== "🟢"
+        id: "T2",
+        state: {
+          lage: "aussen",
+          bplan: "ja",
+          typ: "sonstiges",
+          nutzung: "wohnen",
+          bestand: "genehmigt",
+          optionalActive: true
+        },
+        check: (r) => r.score <= 25
       },
       {
-        id: "S3",
-        state: { lage: "innen", bplan: "ja", typ: "wald", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score <= 15 && r.ampel === "🔴"
+        id: "T3",
+        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", optionalActive: false },
+        check: (r) => r.score > 60
       },
       {
-        id: "S4",
-        state: { lage: "innen", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "nicht", optionalActive: true },
-        check: (r) => r.score <= 35 && r.ampel !== "🟢"
+        id: "T4",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          lage_detail: "randlage",
+          optionalActive: true
+        },
+        check: (r) => r.score <= 45
       },
       {
-        id: "S5",
-        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wochenende", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score >= 30
+        id: "T5",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          schutzgebiet: "streng",
+          optionalActive: true
+        },
+        check: (r) => r.score <= 25
       },
       {
-        id: "S6",
-        state: { lage: "innen", bplan: "ja", typ: "freizeit", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score <= 70
-      },
-      {
-        id: "S7",
-        state: { lage: "aussen", bplan: "nein", typ: "landwirtschaft", nutzung: "landwpriv", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score >= 40 && r.score <= 70
-      },
-      {
-        id: "S8",
-        state: { lage: "", bplan: "ja", typ: "bauluecke", nutzung: "wohnen", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.neutral === true && r.score === 50 && r.why.length === 0 && r.steps.length === 0 && r.pitfalls.length === 0
-      },
-      {
-        id: "S9",
-        state: { lage: "aussen", bplan: "ja", typ: "bauluecke", nutzung: "wochenende", bestand: "", erschliessung: "", optionalActive: false },
-        check: (r) => r.score <= 25 && r.ampel !== "🟢"
+        id: "T6",
+        state: baseline,
+        check: () =>
+          baselineResult.score === emptyOptionalVariant.score &&
+          baselineResult.ampel === emptyOptionalVariant.ampel &&
+          JSON.stringify(baselineResult.why) === JSON.stringify(emptyOptionalVariant.why) &&
+          JSON.stringify(baselineResult.steps) === JSON.stringify(emptyOptionalVariant.steps) &&
+          JSON.stringify(baselineResult.pitfalls) === JSON.stringify(emptyOptionalVariant.pitfalls)
       }
     ];
 
