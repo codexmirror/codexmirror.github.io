@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mieten vs. Kaufen Rechner</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="rentbuy.css?v=2" />
+  <link rel="stylesheet" href="rentbuy.css" />
 </head>
 <body class="rentbuy-page">
   <main class="container">
@@ -32,6 +32,7 @@
               <p id="rentbuy-errors-main"></p>
               <p id="rentbuy-errors-list" class="rentbuy-error-list"></p>
             </div>
+
             <div class="rentbuy-grid">
               <div class="rentbuy-field" data-field="purchasePrice">
                 <label for="purchasePrice">Kaufpreis (EUR) *</label>
@@ -63,16 +64,25 @@
                 <p class="field-error" data-error-for="interestPaPct" aria-live="polite"></p>
               </div>
 
-              <div class="rentbuy-field" data-field="repaymentPaPct">
-                <div class="rentbuy-label-row">
-                  <label for="repaymentPaPct">Tilgungssatz p.a. (%) *</label>
-                  <button type="button" class="rentbuy-info-link" data-info-target="repaymentPaPct">Was ist das?</button>
+              <div class="rentbuy-field" data-field="financeMode">
+                <label>Finanzierungsziel *</label>
+                <div class="rentbuy-radio-group" role="radiogroup" aria-label="Finanzierungsziel">
+                  <label><input type="radio" name="financeMode" value="payment" />Monatsrate festlegen</label>
+                  <label><input type="radio" name="financeMode" value="payoff" />Schuldenfrei in X Jahren</label>
                 </div>
-                <div class="rentbuy-info-panel" id="info-repaymentPaPct" hidden>
-                  INFO: Anteil des Darlehens, den du pro Jahr zusaetzlich zum Zins zurueckzahlst.
-                </div>
-                <input id="repaymentPaPct" name="repaymentPaPct" type="number" min="0" max="20" step="0.01" placeholder="z. B. 2" required />
-                <p class="field-error" data-error-for="repaymentPaPct" aria-live="polite"></p>
+                <p class="field-error" data-error-for="financeMode" aria-live="polite"></p>
+              </div>
+
+              <div class="rentbuy-field" data-field="monthlyPayment" id="field-monthlyPayment">
+                <label for="monthlyPayment">Max. Monatsrate (EUR)</label>
+                <input id="monthlyPayment" name="monthlyPayment" type="number" min="1" max="20000" step="0.01" />
+                <p class="field-error" data-error-for="monthlyPayment" aria-live="polite"></p>
+              </div>
+
+              <div class="rentbuy-field" data-field="payoffYears" id="field-payoffYears">
+                <label for="payoffYears">Schuldenfrei in (Jahre)</label>
+                <input id="payoffYears" name="payoffYears" type="number" min="1" max="50" step="1" />
+                <p class="field-error" data-error-for="payoffYears" aria-live="polite"></p>
               </div>
 
               <div class="rentbuy-field" data-field="rentMonthly">
@@ -82,12 +92,12 @@
               </div>
 
               <div class="rentbuy-field" data-field="years">
-                <label for="years">Zeitraum (Jahre) *</label>
+                <label for="years">Vergleichszeitraum (Jahre) *</label>
                 <input id="years" name="years" type="number" min="1" max="50" step="1" placeholder="z. B. 20" required />
                 <p class="field-error" data-error-for="years" aria-live="polite"></p>
               </div>
             </div>
-            <p class="microcopy">Wenn du Werte nicht kennst: nutze Richtwerte ueber "Beispielwerte einsetzen" oder die Erklaerungen im Feld.</p>
+            <p class="microcopy">Vergleichszeitraum ist die Betrachtungsdauer; das Finanzierungsziel kann kuerzer oder laenger sein.</p>
           </fieldset>
 
           <details>
@@ -124,6 +134,8 @@
         <div id="rentbuy-result-content" hidden>
           <div class="rentbuy-result-header">
             <p class="result-headline" id="rentbuy-headline"></p>
+            <p class="rentbuy-finance-hint" id="rentbuy-finance-hint"></p>
+            <p class="rentbuy-finance-hint" id="rentbuy-timespan-hint"></p>
           </div>
 
           <section class="summary-grid">

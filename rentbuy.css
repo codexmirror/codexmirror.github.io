@@ -28,11 +28,28 @@
   font-weight: 600;
 }
 
+.rentbuy-page .rentbuy-field.is-disabled {
+  opacity: 0.5;
+}
+
+.rentbuy-page .rentbuy-field.is-disabled input {
+  pointer-events: none;
+  background: #f3f4f6;
+}
+
 .rentbuy-page .rentbuy-label-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 0.5rem;
+}
+
+.rentbuy-page .rentbuy-radio-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  display: grid;
+  gap: 0.35rem;
 }
 
 .rentbuy-page .rentbuy-info-link {
@@ -79,6 +96,11 @@
   border-radius: 10px;
   padding: 0.58rem 0.65rem;
   font: inherit;
+}
+
+.rentbuy-page .rentbuy-finance-hint {
+  margin: 0.2rem 0;
+  color: var(--muted);
 }
 
 .rentbuy-page .summary-grid {
