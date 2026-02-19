@@ -8,16 +8,7 @@
     - Vergleichsmetrik: NettoEndwert = Endvermögen - nicht-vermögensbildende Kosten.
   */
 
-  const REQUIRED_FIELDS = [
-    "purchasePrice",
-    "equity",
-    "closingCostPct",
-    "interestPaPct",
-    "repaymentPaPct",
-    "rentMonthly",
-    "years"
-  ];
-
+  const REQUIRED_FIELDS = ["purchasePrice", "equity", "closingCostPct", "interestPaPct", "repaymentPaPct", "rentMonthly", "years"];
   const OPTIONAL_FIELDS = [
     "maintenanceYearly",
     "hoaMonthly",
@@ -39,14 +30,21 @@
     "sellingCostPct"
   ];
 
-  const FIELD_LABELS = {
-    purchasePrice: "Kaufpreis",
-    equity: "Eigenkapital",
-    closingCostPct: "Kaufnebenkosten",
-    interestPaPct: "Zinssatz p.a.",
-    repaymentPaPct: "Tilgungssatz p.a.",
-    rentMonthly: "Kaltmiete pro Monat",
-    years: "Zeitraum (Jahre)"
+  const LABEL_MAP = {
+    purchasePrice: "Kaufpreis (EUR)",
+    equity: "Eigenkapital (EUR)",
+    closingCostPct: "Kaufnebenkosten (%)",
+    interestPaPct: "Zinssatz p.a. (%)",
+    repaymentPaPct: "Tilgungssatz p.a. (%)",
+    rentMonthly: "Kaltmiete pro Monat (EUR)",
+    years: "Zeitraum (Jahre)",
+    maintenanceYearly: "Instandhaltung (EUR/Jahr)",
+    hoaMonthly: "Hausgeld (EUR/Monat)",
+    rentGrowthPaPct: "Mietsteigerung p.a. (%)",
+    propertyGrowthPaPct: "Immobilienwertentwicklung p.a. (%)",
+    opportunityPaPct: "Opportunitätsrendite p.a. (%)",
+    renovationOneOff: "Einmalige Renovierung beim Kauf (EUR)",
+    sellingCostPct: "Verkaufskosten am Ende (%)"
   };
 
   function parseNumber(value) {
@@ -66,8 +64,9 @@
   }
 
   function parseAndNormalizeState(formState) {
-    const errors = [];
     const fieldErrors = {};
+    const missingFields = [];
+    const rangeErrorFields = [];
     const parsed = {};
 
     [...REQUIRED_FIELDS, ...OPTIONAL_FIELDS].forEach((key) => {
@@ -76,32 +75,28 @@
 
     REQUIRED_FIELDS.forEach((key) => {
       if (parsed[key] === null) {
-        const message = `Bitte ${FIELD_LABELS[key]} eingeben.`;
-        errors.push(message);
-        fieldErrors[key] = message;
+        fieldErrors[key] = "Pflichtfeld";
+        missingFields.push(key);
       }
     });
 
     EUR_FIELDS.forEach((key) => {
       if (parsed[key] !== null && parsed[key] < 0) {
-        const message = key in FIELD_LABELS ? `${FIELD_LABELS[key]}: Bitte Wert ab 0 eingeben.` : "Bitte Wert ab 0 eingeben.";
-        errors.push(message);
-        fieldErrors[key] = message;
+        fieldErrors[key] = "Wert ab 0";
+        rangeErrorFields.push(key);
       }
     });
 
     PCT_FIELDS.forEach((key) => {
       if (parsed[key] !== null && (parsed[key] < 0 || parsed[key] > 20)) {
-        const message = "Bitte Zahl zwischen 0 und 20 eingeben.";
-        errors.push(message);
-        fieldErrors[key] = message;
+        fieldErrors[key] = "Wert 0 bis 20";
+        rangeErrorFields.push(key);
       }
     });
 
     if (parsed.years !== null && (!Number.isInteger(parsed.years) || parsed.years < 1 || parsed.years > 50)) {
-      const message = "Zeitraum: 1–50 Jahre.";
-      errors.push(message);
-      fieldErrors.years = message;
+      fieldErrors.years = "Wert 1 bis 50";
+      rangeErrorFields.push("years");
     }
 
     const normalized = {
@@ -119,9 +114,7 @@
       opportunityPaPct: parsed.opportunityPaPct ?? 0,
       renovationOneOff: parsed.renovationOneOff ?? 0,
       sellingCostPct: parsed.sellingCostPct ?? 0,
-      optionalsProvided: OPTIONAL_FIELDS.filter((key) => parsed[key] !== null && parsed[key] > 0),
-      optionalsProvidedRaw: OPTIONAL_FIELDS.filter((key) => String(formState[key] ?? "").trim() !== ""),
-      isValid: errors.length === 0
+      optionalsProvidedRaw: OPTIONAL_FIELDS.filter((key) => String(formState[key] ?? "").trim() !== "")
     };
 
     normalized.months = normalized.years ? normalized.years * 12 : 0;
@@ -139,8 +132,14 @@
     normalized.propertyGrowthMonthly = monthRateFromYearPct(normalized.propertyGrowthPaPct);
     normalized.opportunityMonthly = monthRateFromYearPct(normalized.opportunityPaPct);
     normalized.maintenanceMonthly = normalized.maintenanceYearly / 12;
+    normalized.isValid = missingFields.length === 0 && rangeErrorFields.length === 0;
 
-    return { state: normalized, errors, fieldErrors };
+    return {
+      state: normalized,
+      fieldErrors,
+      missingFields,
+      rangeErrorFields
+    };
   }
 
   function simulateMortgageMonthly(state) {
@@ -154,9 +153,7 @@
     for (let i = 0; i < months; i += 1) {
       const rate_t = rest > 0 ? state.monthlyRate : 0;
       const zins = rest > 0 ? rest * state.monthlyInterestRate : 0;
-      const tilgung = rest > 0
-        ? (rate_t < zins ? 0 : Math.max(0, rate_t - zins))
-        : 0;
+      const tilgung = rest > 0 ? (rate_t < zins ? 0 : Math.max(0, rate_t - zins)) : 0;
       rest = rest > 0 ? Math.max(0, rest - tilgung) : 0;
       zinsenGesamt += zins;
       instandhaltungGesamt += state.maintenanceMonthly;
@@ -244,20 +241,31 @@
     const nettoRent = endvermoegenRent - nichtVermoegensKostenRent;
 
     const diff = Math.abs(nettoBuy - nettoRent);
-    const winner = nettoBuy >= nettoRent ? "Kaufen" : "Mieten";
 
     return {
       nettoBuy: round2(nettoBuy),
       nettoRent: round2(nettoRent),
       diff: round2(diff),
-      winner,
       breakdown: {
         endvermoegenBuy: round2(endvermoegenBuy),
         endvermoegenRent: round2(endvermoegenRent),
         investmentEndeBuy: round2(investmentEnabled ? rent.investmentEndeBuy : 0),
+        investmentEndeRent: round2(investmentEnabled ? rent.investmentEndeRent : 0),
         nichtVermoegensKostenBuy: round2(nichtVermoegensKostenBuy),
         nichtVermoegensKostenRent: round2(nichtVermoegensKostenRent)
       }
+    };
+  }
+
+  function computeCashflowSummary(buy, rent, state) {
+    const months = Math.max(1, state.months || 0);
+    const totalPaidBuy = round2(buy.kaufenCashflows.reduce((sum, value) => sum + value, 0) + state.closingCostEur + state.renovationOneOff);
+    const totalPaidRent = round2(rent.mieteGesamt);
+    return {
+      totalPaidBuy,
+      avgPaidBuy: round2(totalPaidBuy / months),
+      totalPaidRent,
+      avgPaidRent: round2(totalPaidRent / months)
     };
   }
 
@@ -283,21 +291,52 @@
     });
   }
 
+  function buildErrorList(keys) {
+    const labels = keys.map((key) => LABEL_MAP[key] || key);
+    return labels.slice(0, 3).concat(labels.length > 3 ? ["..."] : []);
+  }
+
+  function renderErrorBox(nodes, missingFields, rangeErrorFields, shouldShow) {
+    if (!shouldShow || (!missingFields.length && !rangeErrorFields.length)) {
+      nodes.errors.hidden = true;
+      nodes.errors.innerHTML = "";
+      return;
+    }
+
+    const isMissing = missingFields.length > 0;
+    const title = isMissing
+      ? "Bitte fülle alle Pflichtfelder aus."
+      : "Bitte Wertebereiche prüfen (z.B. 0-20% / 1-50 Jahre).";
+
+    const list = buildErrorList(isMissing ? missingFields : rangeErrorFields);
+    const listHtml = list.length ? `<ul>${list.map((item) => `<li>${item}</li>`).join("")}</ul>` : "";
+    nodes.errors.innerHTML = `<p>${title}</p>${listHtml}`;
+    nodes.errors.hidden = false;
+  }
+
+  function getWinnerText(comparison) {
+    if (comparison.diff <= 1000) {
+      return { winner: "none", text: "Unter deinen Annahmen liegen Kaufen und Mieten nah beieinander." };
+    }
+    if (comparison.nettoBuy > comparison.nettoRent) {
+      return { winner: "buy", text: "Unter deinen Annahmen ist Kaufen vorteilhafter." };
+    }
+    return { winner: "rent", text: "Unter deinen Annahmen ist Mieten vorteilhafter." };
+  }
+
   function renderApp(form, nodes, uiState) {
-    const { state, fieldErrors } = parseAndNormalizeState(readFormState(form));
-    const hasRequired = REQUIRED_FIELDS.every((field) => parseNumber(form.elements[field].value) !== null);
+    const { state, fieldErrors, missingFields, rangeErrorFields } = parseAndNormalizeState(readFormState(form));
     const hasAnyRequiredTouched = REQUIRED_FIELDS.some((field) => uiState.touched[field]);
-    const showRequiredErrors = hasAnyRequiredTouched && (!hasRequired || !state.isValid);
+    const showRequiredErrors = hasAnyRequiredTouched && (!state.isValid || missingFields.length > 0);
 
     Object.keys(nodes.fieldErrors).forEach((field) => {
       const shouldShow = Boolean(fieldErrors[field]) && (uiState.touched[field] || showRequiredErrors);
-      nodes.fieldErrors[field].textContent = shouldShow ? fieldErrors[field] : "";
+      nodes.fieldErrors[field].textContent = shouldShow ? "Bitte prüfen." : "";
     });
 
-    const hasVisibleErrors = Object.keys(nodes.fieldErrors).some((field) => nodes.fieldErrors[field].textContent);
-    nodes.errors.textContent = hasVisibleErrors ? "Bitte markierte Felder prüfen." : "";
+    renderErrorBox(nodes, missingFields, rangeErrorFields, hasAnyRequiredTouched);
 
-    if (!hasRequired || !state.isValid) {
+    if (!state.isValid) {
       nodes.placeholder.hidden = false;
       nodes.content.hidden = true;
       return;
@@ -306,50 +345,59 @@
     const buy = simulateMortgageMonthly(state);
     const rent = simulateRentMonthly(state, buy);
     const comparison = computeComparison(buy, rent, state);
+    const summary = computeCashflowSummary(buy, rent, state);
+    const winnerState = getWinnerText(comparison);
 
-    nodes.errors.textContent = "";
     nodes.placeholder.hidden = true;
     nodes.content.hidden = false;
-    nodes.headline.textContent = `Unter deinen Annahmen ist ${comparison.winner} günstiger um ${formatCurrency(comparison.diff)}.`;
+    nodes.headline.textContent = winnerState.text;
+
+    nodes.buyTotalLabel.textContent = `Gesamtzahlung über ${state.years} Jahre`;
+    nodes.buyTotalValue.textContent = formatCurrency(summary.totalPaidBuy);
+    nodes.buyAvgValue.textContent = `Durchschnitt pro Monat: ${formatCurrency(summary.avgPaidBuy)}`;
+    nodes.rentTotalLabel.textContent = `Gesamtzahlung über ${state.years} Jahre`;
+    nodes.rentTotalValue.textContent = formatCurrency(summary.totalPaidRent);
+    nodes.rentAvgValue.textContent = `Durchschnitt pro Monat: ${formatCurrency(summary.avgPaidRent)}`;
+
+    nodes.buySummaryCard.classList.toggle("is-winner", winnerState.winner === "buy");
+    nodes.rentSummaryCard.classList.toggle("is-winner", winnerState.winner === "rent");
 
     const buyLines = [
-      `Endvermögen: ${formatCurrency(comparison.breakdown.endvermoegenBuy)}`,
-      `Restschuld: ${formatCurrency(buy.rest)}`,
+      `Restschuld am Ende: ${formatCurrency(buy.rest)}`,
       `Zinsanteil gesamt: ${formatCurrency(buy.zinsenGesamt)}`,
       `Nicht-vermögensbildende Kosten: ${formatCurrency(comparison.breakdown.nichtVermoegensKostenBuy)}`,
+      `Immobilienwert am Ende: ${formatCurrency(buy.marktwert)}`,
+      `Verkaufserlös: ${formatCurrency(buy.verkaufserloes)}`,
       `NettoEndwert: ${formatCurrency(comparison.nettoBuy)}`
     ];
 
+    if (state.opportunityPaPct > 0) {
+      buyLines.push(`Investment-Endwert (Differenzanlagen): ${formatCurrency(comparison.breakdown.investmentEndeBuy)}`);
+    }
+
     const rentLines = [
-      `Kumulierte Miete: ${formatCurrency(rent.mieteGesamt)}`,
-      `Investment-Endwert: ${formatCurrency(rent.investmentEndeRent)}`,
+      `Nicht-vermögensbildende Kosten: ${formatCurrency(comparison.breakdown.nichtVermoegensKostenRent)}`,
       `NettoEndwert: ${formatCurrency(comparison.nettoRent)}`
     ];
 
-    const assumptions = [
-      `Kaufpreis: ${formatCurrency(state.purchasePrice)}`,
-      `Eigenkapital: ${formatCurrency(state.equity)}`,
-      `Kaufnebenkosten: ${state.closingCostPct.toFixed(2)} %`,
-      `Zinssatz p.a.: ${state.interestPaPct.toFixed(2)} %`,
-      `Tilgungssatz p.a.: ${state.repaymentPaPct.toFixed(2)} %`,
-      `Kaltmiete pro Monat: ${formatCurrency(state.rentMonthly)}`,
-      `Zeitraum: ${state.years} Jahre`
-    ];
+    if (state.opportunityPaPct > 0) {
+      rentLines.unshift(`Investment-Endwert: ${formatCurrency(comparison.breakdown.investmentEndeRent)}`);
+    }
 
-    const optionalLabels = {
-      maintenanceYearly: "Instandhaltung (EUR/Jahr)",
-      hoaMonthly: "Hausgeld (EUR/Monat)",
-      rentGrowthPaPct: "Mietsteigerung p.a.",
-      propertyGrowthPaPct: "Immobilienwertentwicklung p.a.",
-      opportunityPaPct: "Opportunitätsrendite p.a.",
-      renovationOneOff: "Einmalige Renovierung beim Kauf",
-      sellingCostPct: "Verkaufskosten am Ende"
-    };
+    const assumptions = [
+      `Kaufpreis (EUR): ${formatCurrency(state.purchasePrice)}`,
+      `Eigenkapital (EUR): ${formatCurrency(state.equity)}`,
+      `Kaufnebenkosten (%): ${state.closingCostPct.toFixed(2)} %`,
+      `Zinssatz p.a. (%): ${state.interestPaPct.toFixed(2)} %`,
+      `Tilgungssatz p.a. (%): ${state.repaymentPaPct.toFixed(2)} %`,
+      `Kaltmiete pro Monat (EUR): ${formatCurrency(state.rentMonthly)}`,
+      `Zeitraum (Jahre): ${state.years}`
+    ];
 
     state.optionalsProvidedRaw.forEach((key) => {
       const value = state[key];
       const formatted = key.includes("Pct") ? `${value.toFixed(2)} %` : formatCurrency(value);
-      assumptions.push(`${optionalLabels[key]}: ${formatted}`);
+      assumptions.push(`${LABEL_MAP[key]}: ${formatted}`);
     });
 
     renderList(nodes.buyList, buyLines);
@@ -357,11 +405,23 @@
     renderList(nodes.assumptions, assumptions);
   }
 
-  function toggleInfoPanel(button, panel) {
-    const expanded = button.getAttribute("aria-expanded") === "true";
-    button.setAttribute("aria-expanded", String(!expanded));
-    panel.hidden = expanded;
-    panel.classList.toggle("is-open", !expanded);
+  function closeAllInfoPanels(buttons) {
+    buttons.forEach((button) => {
+      const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
+      if (!panel) return;
+      button.setAttribute("aria-expanded", "false");
+      panel.hidden = true;
+      panel.classList.remove("is-open");
+    });
+  }
+
+  function openInfoPanel(button, buttons) {
+    closeAllInfoPanels(buttons);
+    const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
+    if (!panel) return;
+    button.setAttribute("aria-expanded", "true");
+    panel.hidden = false;
+    panel.classList.add("is-open");
   }
 
   function attachApp() {
@@ -376,6 +436,14 @@
       rentList: document.getElementById("rentbuy-rent-list"),
       assumptions: document.getElementById("rentbuy-assumptions"),
       errors: document.getElementById("rentbuy-errors"),
+      buySummaryCard: document.getElementById("buy-summary-card"),
+      rentSummaryCard: document.getElementById("rent-summary-card"),
+      buyTotalLabel: document.getElementById("buy-total-label"),
+      buyTotalValue: document.getElementById("buy-total-value"),
+      buyAvgValue: document.getElementById("buy-avg-value"),
+      rentTotalLabel: document.getElementById("rent-total-label"),
+      rentTotalValue: document.getElementById("rent-total-value"),
+      rentAvgValue: document.getElementById("rent-avg-value"),
       fieldErrors: Object.fromEntries(REQUIRED_FIELDS.map((field) => [field, document.querySelector(`[data-error-for="${field}"]`)]))
     };
 
@@ -395,10 +463,21 @@
 
     form.addEventListener("input", () => renderApp(form, nodes, uiState));
 
-    document.querySelectorAll(".info-toggle").forEach((button) => {
-      const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
-      if (!panel) return;
-      button.addEventListener("click", () => toggleInfoPanel(button, panel));
+    const infoButtons = Array.from(document.querySelectorAll(".info-toggle"));
+    infoButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        if (isOpen) {
+          closeAllInfoPanels(infoButtons);
+          return;
+        }
+        openInfoPanel(button, infoButtons);
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest(".rentbuy-field")) return;
+      closeAllInfoPanels(infoButtons);
     });
 
     document.getElementById("rentbuy-example-values").addEventListener("click", () => {
@@ -413,13 +492,9 @@
       form.reset();
       uiState.touched = Object.fromEntries(REQUIRED_FIELDS.map((field) => [field, false]));
       Object.values(nodes.fieldErrors).forEach((node) => { node.textContent = ""; });
-      document.querySelectorAll(".info-toggle").forEach((button) => {
-        const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
-        if (!panel) return;
-        button.setAttribute("aria-expanded", "false");
-        panel.hidden = true;
-        panel.classList.remove("is-open");
-      });
+      nodes.errors.hidden = true;
+      nodes.errors.innerHTML = "";
+      closeAllInfoPanels(infoButtons);
       renderApp(form, nodes, uiState);
     });
 
@@ -477,15 +552,26 @@
     const floorCashflow = s7.maintenanceMonthly + s7.hoaMonthly;
     const hasPaidOffMonth = b7.kaufenCashflows.some((cashflow) => Math.abs(cashflow - floorCashflow) < 1e-6);
 
-    const s8 = parseAndNormalizeState({
-      ...baseState,
-      opportunityPaPct: 4,
-      rentMonthly: 4000
-    }).state;
+    const s8 = parseAndNormalizeState({ ...baseState, opportunityPaPct: 4, rentMonthly: 4000 }).state;
     const b8 = simulateMortgageMonthly(s8);
     const r8 = simulateRentMonthly(s8, b8);
     const c8 = computeComparison(b8, r8, s8);
     const baselineEndvermoegenBuy8 = round2(b8.verkaufserloes - b8.rest);
+
+    const s9 = parseAndNormalizeState(baseState).state;
+    const b9 = simulateMortgageMonthly(s9);
+    const r9 = simulateRentMonthly(s9, b9);
+    const cash9 = computeCashflowSummary(b9, r9, s9);
+
+    const s11 = parseAndNormalizeState({
+      ...baseState,
+      equity: 500000,
+      maintenanceYearly: 2400,
+      hoaMonthly: 100
+    }).state;
+    const b11 = simulateMortgageMonthly(s11);
+    const r11 = simulateRentMonthly(s11, b11);
+    const cash11 = computeCashflowSummary(b11, r11, s11);
 
     return [
       { id: "T1", pass: b1.rest > 0 && Number.isFinite(b1.rest) && Number.isFinite(c1.nettoBuy) },
@@ -500,7 +586,10 @@
         pass: r8.investmentEndeBuy > 0
           && c8.breakdown.endvermoegenBuy === round2(baselineEndvermoegenBuy8 + r8.investmentEndeBuy)
           && c8.nettoBuy > round2(baselineEndvermoegenBuy8 - c8.breakdown.nichtVermoegensKostenBuy)
-      }
+      },
+      { id: "T9", pass: Math.abs(cash9.totalPaidRent - r9.mieteGesamt) < 0.01 },
+      { id: "T10", pass: Math.abs(cash9.avgPaidRent * s9.months - cash9.totalPaidRent) < 1 },
+      { id: "T11", pass: s11.loanPrincipal <= 0 && cash11.totalPaidBuy > 0 && cash11.totalPaidBuy >= round2(s11.months * (s11.maintenanceMonthly + s11.hoaMonthly) + s11.closingCostEur + s11.renovationOneOff) }
     ];
   }
 
@@ -510,6 +599,7 @@
       simulateMortgageMonthly,
       simulateRentMonthly,
       computeComparison,
+      computeCashflowSummary,
       runSelfTests
     };
   }

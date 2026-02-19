@@ -24,6 +24,7 @@
           </div>
         </div>
         <p class="rentbuy-example-note">Beispielwerte sind nur Orientierung.</p>
+        <div id="rentbuy-errors" class="rentbuy-error-box" hidden aria-live="polite"></div>
 
         <form id="rentbuy-form" novalidate>
           <fieldset>
@@ -44,23 +45,17 @@
               <div class="rentbuy-field" data-field="closingCostPct">
                 <div class="field-head">
                   <label for="closingCostPct" class="legend-main">Kaufnebenkosten (%) *</label>
-                  <button type="button" class="info-toggle" data-info="closingCostPct" aria-expanded="false" aria-controls="info-closingCostPct" aria-label="Erklärung zu Kaufnebenkosten anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+                  <button type="button" class="info-toggle" data-info="closingCostPct" aria-expanded="false" aria-controls="info-closingCostPct">Was ist das?</button>
                 </div>
                 <div class="field-info" id="info-closingCostPct" hidden>
-                  Zusatzkosten beim Kauf (z. B. Grunderwerbsteuer, Notar, ggf. Makler). Oft grob 8–15%.
+                  INFO: Zusatzkosten rund um den Kauf (z.B. Notar/Grundbuch/Steuer/Makler). Oft grob 8-12%.
                 </div>
                 <input id="closingCostPct" name="closingCostPct" type="number" min="0" max="20" step="0.01" placeholder="z. B. 10" required />
                 <p class="field-error" data-error-for="closingCostPct" aria-live="polite"></p>
               </div>
 
               <div class="rentbuy-field" data-field="interestPaPct">
-                <div class="field-head">
-                  <label for="interestPaPct" class="legend-main">Zinssatz p.a. (%) *</label>
-                  <button type="button" class="info-toggle" data-info="interestPaPct" aria-expanded="false" aria-controls="info-interestPaPct" aria-label="Erklärung zu Zinssatz anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
-                </div>
-                <div class="field-info" id="info-interestPaPct" hidden>
-                  Sollzins deines Darlehens pro Jahr.
-                </div>
+                <label for="interestPaPct">Zinssatz p.a. (%) *</label>
                 <input id="interestPaPct" name="interestPaPct" type="number" min="0" max="20" step="0.01" placeholder="z. B. 3,5" required />
                 <p class="field-error" data-error-for="interestPaPct" aria-live="polite"></p>
               </div>
@@ -68,10 +63,10 @@
               <div class="rentbuy-field" data-field="repaymentPaPct">
                 <div class="field-head">
                   <label for="repaymentPaPct" class="legend-main">Tilgungssatz p.a. (%) *</label>
-                  <button type="button" class="info-toggle" data-info="repaymentPaPct" aria-expanded="false" aria-controls="info-repaymentPaPct" aria-label="Erklärung zu Tilgungssatz anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+                  <button type="button" class="info-toggle" data-info="repaymentPaPct" aria-expanded="false" aria-controls="info-repaymentPaPct">Was ist das?</button>
                 </div>
                 <div class="field-info" id="info-repaymentPaPct" hidden>
-                  Wie stark du den Kredit pro Jahr zurückzahlst. Typisch 1–3% (zusätzlich zum Zins).
+                  INFO: Anteil des Darlehens, den du pro Jahr zusätzlich zum Zins zurückzahlst.
                 </div>
                 <input id="repaymentPaPct" name="repaymentPaPct" type="number" min="0" max="20" step="0.01" placeholder="z. B. 2" required />
                 <p class="field-error" data-error-for="repaymentPaPct" aria-live="polite"></p>
@@ -90,7 +85,6 @@
               </div>
             </div>
             <p class="microcopy">Wenn du Werte nicht kennst: nutze Richtwerte über „Beispielwerte einsetzen" oder die Info-Hinweise.</p>
-            <p id="rentbuy-errors" class="field-error" aria-live="polite"></p>
           </fieldset>
 
           <details>
@@ -102,66 +96,73 @@
               <div class="rentbuy-field"><label for="rentGrowthPaPct">Mietsteigerung p.a. (%)</label><input id="rentGrowthPaPct" name="rentGrowthPaPct" type="number" min="0" max="20" step="0.01" /></div>
 
               <div class="rentbuy-field">
-                <div class="field-head">
-                  <label for="propertyGrowthPaPct" class="legend-main">Immobilienwertentwicklung p.a. (%)</label>
-                  <button type="button" class="info-toggle" data-info="propertyGrowthPaPct" aria-expanded="false" aria-controls="info-propertyGrowthPaPct" aria-label="Erklärung zu Immobilienwertentwicklung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
-                </div>
-                <div class="field-info" id="info-propertyGrowthPaPct" hidden>
-                  Annahme zur Preisentwicklung (optional).
-                </div>
+                <label for="propertyGrowthPaPct">Immobilienwertentwicklung p.a. (%)</label>
                 <input id="propertyGrowthPaPct" name="propertyGrowthPaPct" type="number" min="0" max="20" step="0.01" />
               </div>
 
               <div class="rentbuy-field">
                 <div class="field-head">
                   <label for="opportunityPaPct" class="legend-main">Opportunitätsrendite p.a. (%)</label>
-                  <button type="button" class="info-toggle" data-info="opportunityPaPct" aria-expanded="false" aria-controls="info-opportunityPaPct" aria-label="Erklärung zu Opportunitätsrendite anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+                  <button type="button" class="info-toggle" data-info="opportunityPaPct" aria-expanded="false" aria-controls="info-opportunityPaPct">Was ist das?</button>
                 </div>
                 <div class="field-info" id="info-opportunityPaPct" hidden>
-                  Rendite, die dein freies Geld alternativ erzielen könnte (optional).
+                  INFO: Annahme zur Rendite, wenn Geld alternativ investiert wird.
                 </div>
                 <input id="opportunityPaPct" name="opportunityPaPct" type="number" min="0" max="20" step="0.01" />
               </div>
 
               <div class="rentbuy-field"><label for="renovationOneOff">Einmalige Renovierung beim Kauf (EUR)</label><input id="renovationOneOff" name="renovationOneOff" type="number" min="0" step="0.01" /></div>
-
-              <div class="rentbuy-field">
-                <div class="field-head">
-                  <label for="sellingCostPct" class="legend-main">Verkaufskosten am Ende (%)</label>
-                  <button type="button" class="info-toggle" data-info="sellingCostPct" aria-expanded="false" aria-controls="info-sellingCostPct" aria-label="Erklärung zu Verkaufskosten anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
-                </div>
-                <div class="field-info" id="info-sellingCostPct" hidden>
-                  Kosten beim Verkauf (Makler etc.). Wir berücksichtigen das nur über den Verkaufserlös.
-                </div>
-                <input id="sellingCostPct" name="sellingCostPct" type="number" min="0" max="20" step="0.01" />
-              </div>
+              <div class="rentbuy-field"><label for="sellingCostPct">Verkaufskosten am Ende (%)</label><input id="sellingCostPct" name="sellingCostPct" type="number" min="0" max="20" step="0.01" /></div>
             </div>
           </details>
         </form>
       </article>
 
       <article class="card result" aria-labelledby="rentbuy-result-title">
-        <h2 id="rentbuy-result-title">Ergebnis</h2>
+        <div class="result-header">
+          <h2 id="rentbuy-result-title">Ergebnis</h2>
+          <p class="result-subline">Die wichtigsten Kennzahlen zuerst, Details aufklappbar.</p>
+        </div>
         <p id="rentbuy-placeholder" class="result-placeholder">Bitte alle Pflichtfelder valide ausfüllen.</p>
         <div id="rentbuy-result-content" hidden>
           <p class="result-headline" id="rentbuy-headline"></p>
-          <p class="rentbuy-method">Wir vergleichen Endvermögen minus nicht-vermögensbildende Kosten (Tilgung zählt nicht als Kosten).</p>
 
-          <section class="rentbuy-columns">
-            <div>
-              <h3>Kaufen</h3>
-              <ul id="rentbuy-buy-list"></ul>
-            </div>
-            <div>
-              <h3>Mieten</h3>
-              <ul id="rentbuy-rent-list"></ul>
-            </div>
+          <section class="summary-grid" aria-label="Key Infos">
+            <article class="summary-card" id="buy-summary-card">
+              <h3>Kaufen - Key Infos</h3>
+              <p class="metric-label" id="buy-total-label"></p>
+              <p class="metric-value" id="buy-total-value"></p>
+              <p class="metric-sub" id="buy-avg-value"></p>
+            </article>
+            <article class="summary-card" id="rent-summary-card">
+              <h3>Mieten - Key Infos</h3>
+              <p class="metric-label" id="rent-total-label"></p>
+              <p class="metric-value" id="rent-total-value"></p>
+              <p class="metric-sub" id="rent-avg-value"></p>
+            </article>
           </section>
 
-          <section>
-            <h3>Annahmen</h3>
-            <ul id="rentbuy-assumptions"></ul>
-          </section>
+          <details class="result-details">
+            <summary>Details anzeigen</summary>
+            <div class="details-body">
+              <p class="rentbuy-method">Wir vergleichen Endvermögen minus nicht-vermögensbildende Kosten (Tilgung zählt nicht als Kosten).</p>
+              <section class="rentbuy-columns">
+                <div>
+                  <h3>Kaufen</h3>
+                  <ul id="rentbuy-buy-list"></ul>
+                </div>
+                <div>
+                  <h3>Mieten</h3>
+                  <ul id="rentbuy-rent-list"></ul>
+                </div>
+              </section>
+
+              <section>
+                <h3>Annahmen</h3>
+                <ul id="rentbuy-assumptions"></ul>
+              </section>
+            </div>
+          </details>
         </div>
       </article>
     </section>
