@@ -28,6 +28,52 @@
   font-weight: 600;
 }
 
+.rentbuy-page .rentbuy-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.rentbuy-page .rentbuy-info-link {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.rentbuy-page .rentbuy-info-panel {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f5f7fa;
+  color: #384454;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  padding: 0.55rem 0.65rem;
+  max-width: 56ch;
+}
+
+.rentbuy-page .rentbuy-error-box {
+  border: 1px solid #c8d2df;
+  background: #f5f7fa;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  margin: 0.35rem 0 0.6rem;
+}
+
+.rentbuy-page .rentbuy-error-box p {
+  margin: 0;
+}
+
+.rentbuy-page .rentbuy-error-list {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .rentbuy-page input[type="number"] {
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -35,69 +81,62 @@
   font: inherit;
 }
 
-.rentbuy-page .field-head {
+.rentbuy-page .summary-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 36px;
-  align-items: center;
-  column-gap: 8px;
-  margin-bottom: 0.05rem;
-  min-height: 36px;
+  gap: 0.9rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.5rem;
 }
 
-.rentbuy-page .legend-main {
+.rentbuy-page .summary-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: #fff;
+}
+
+.rentbuy-page .summary-card.is-winner {
+  border-left: 4px solid var(--accent);
+  background: #f6f9ff;
+}
+
+.rentbuy-page .metric-label {
+  margin: 0.2rem 0 0;
+  opacity: 0.75;
+}
+
+.rentbuy-page .metric-value {
+  margin: 0.15rem 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 700;
+}
+
+.rentbuy-page .metric-sub {
   margin: 0;
-  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
-.rentbuy-page .info-toggle {
-  appearance: none;
-  -webkit-appearance: none;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #cfd6df;
-  border-radius: 999px;
-  background: #f5f7fa;
-  color: #556170;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0;
+.rentbuy-page .rentbuy-details {
+  margin-top: 0.9rem;
 }
 
-.rentbuy-page .info-toggle:hover {
-  background: #edf1f6;
-  color: #3f4a58;
-}
-
-.rentbuy-page .info-toggle[aria-expanded="true"] {
-  border-color: #b8c2ce;
-  background: #eceff4;
-  color: #384454;
-}
-
-.rentbuy-page .field-info {
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  margin: 0;
-  color: #556170;
-  font-size: 0.92rem;
-  line-height: 1.35;
-  padding: 0 0.6rem;
+.rentbuy-page .rentbuy-details > summary {
+  border: 1px solid var(--border);
   border-radius: 10px;
-  background: #f5f7fa;
-  transition: max-height 150ms ease, opacity 150ms ease, margin-bottom 150ms ease, padding-top 150ms ease, padding-bottom 150ms ease;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
 }
 
-.rentbuy-page .field-info.is-open {
-  max-height: 300px;
-  opacity: 1;
-  margin-bottom: 0.35rem;
-  padding-top: 0.45rem;
-  padding-bottom: 0.45rem;
+.rentbuy-page .rentbuy-details > summary:hover,
+.rentbuy-page .rentbuy-details > summary:focus-visible {
+  background: #f8fafc;
+}
+
+.rentbuy-page .rentbuy-details-body {
+  border-top: 1px solid #e4e9f0;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
 }
 
 .rentbuy-page .rentbuy-columns {
@@ -118,6 +157,8 @@
   padding-left: 1.2rem;
 }
 
-.rentbuy-page #rentbuy-errors {
-  margin-top: 0.4rem;
+@media (max-width: 860px) {
+  .rentbuy-page .summary-grid {
+    grid-template-columns: 1fr;
+  }
 }
