@@ -39,6 +39,16 @@
     "sellingCostPct"
   ];
 
+  const FIELD_LABELS = {
+    purchasePrice: "Kaufpreis",
+    equity: "Eigenkapital",
+    closingCostPct: "Kaufnebenkosten",
+    interestPaPct: "Zinssatz p.a.",
+    repaymentPaPct: "Tilgungssatz p.a.",
+    rentMonthly: "Kaltmiete pro Monat",
+    years: "Zeitraum (Jahre)"
+  };
+
   function parseNumber(value) {
     if (value === null || value === undefined) return null;
     const raw = String(value).trim();
@@ -57,6 +67,7 @@
 
   function parseAndNormalizeState(formState) {
     const errors = [];
+    const fieldErrors = {};
     const parsed = {};
 
     [...REQUIRED_FIELDS, ...OPTIONAL_FIELDS].forEach((key) => {
@@ -64,19 +75,33 @@
     });
 
     REQUIRED_FIELDS.forEach((key) => {
-      if (parsed[key] === null) errors.push(`${key} ist erforderlich.`);
+      if (parsed[key] === null) {
+        const message = `Bitte ${FIELD_LABELS[key]} eingeben.`;
+        errors.push(message);
+        fieldErrors[key] = message;
+      }
     });
 
     EUR_FIELDS.forEach((key) => {
-      if (parsed[key] !== null && parsed[key] < 0) errors.push(`${key} muss >= 0 sein.`);
+      if (parsed[key] !== null && parsed[key] < 0) {
+        const message = key in FIELD_LABELS ? `${FIELD_LABELS[key]}: Bitte Wert ab 0 eingeben.` : "Bitte Wert ab 0 eingeben.";
+        errors.push(message);
+        fieldErrors[key] = message;
+      }
     });
 
     PCT_FIELDS.forEach((key) => {
-      if (parsed[key] !== null && (parsed[key] < 0 || parsed[key] > 20)) errors.push(`${key} muss zwischen 0 und 20 liegen.`);
+      if (parsed[key] !== null && (parsed[key] < 0 || parsed[key] > 20)) {
+        const message = "Bitte Zahl zwischen 0 und 20 eingeben.";
+        errors.push(message);
+        fieldErrors[key] = message;
+      }
     });
 
     if (parsed.years !== null && (!Number.isInteger(parsed.years) || parsed.years < 1 || parsed.years > 50)) {
-      errors.push("years muss zwischen 1 und 50 Jahren liegen.");
+      const message = "Zeitraum: 1–50 Jahre.";
+      errors.push(message);
+      fieldErrors.years = message;
     }
 
     const normalized = {
@@ -95,6 +120,7 @@
       renovationOneOff: parsed.renovationOneOff ?? 0,
       sellingCostPct: parsed.sellingCostPct ?? 0,
       optionalsProvided: OPTIONAL_FIELDS.filter((key) => parsed[key] !== null && parsed[key] > 0),
+      optionalsProvidedRaw: OPTIONAL_FIELDS.filter((key) => String(formState[key] ?? "").trim() !== ""),
       isValid: errors.length === 0
     };
 
@@ -114,7 +140,7 @@
     normalized.opportunityMonthly = monthRateFromYearPct(normalized.opportunityPaPct);
     normalized.maintenanceMonthly = normalized.maintenanceYearly / 12;
 
-    return { state: normalized, errors };
+    return { state: normalized, errors, fieldErrors };
   }
 
   function simulateMortgageMonthly(state) {
@@ -257,14 +283,23 @@
     });
   }
 
-  function renderApp(form, nodes) {
-    const { state, errors } = parseAndNormalizeState(readFormState(form));
+  function renderApp(form, nodes, uiState) {
+    const { state, fieldErrors } = parseAndNormalizeState(readFormState(form));
     const hasRequired = REQUIRED_FIELDS.every((field) => parseNumber(form.elements[field].value) !== null);
+    const hasAnyRequiredTouched = REQUIRED_FIELDS.some((field) => uiState.touched[field]);
+    const showRequiredErrors = hasAnyRequiredTouched && (!hasRequired || !state.isValid);
+
+    Object.keys(nodes.fieldErrors).forEach((field) => {
+      const shouldShow = Boolean(fieldErrors[field]) && (uiState.touched[field] || showRequiredErrors);
+      nodes.fieldErrors[field].textContent = shouldShow ? fieldErrors[field] : "";
+    });
+
+    const hasVisibleErrors = Object.keys(nodes.fieldErrors).some((field) => nodes.fieldErrors[field].textContent);
+    nodes.errors.textContent = hasVisibleErrors ? "Bitte markierte Felder prüfen." : "";
 
     if (!hasRequired || !state.isValid) {
       nodes.placeholder.hidden = false;
       nodes.content.hidden = true;
-      nodes.errors.textContent = errors.join(" ");
       return;
     }
 
@@ -311,7 +346,7 @@
       sellingCostPct: "Verkaufskosten am Ende"
     };
 
-    state.optionalsProvided.forEach((key) => {
+    state.optionalsProvidedRaw.forEach((key) => {
       const value = state[key];
       const formatted = key.includes("Pct") ? `${value.toFixed(2)} %` : formatCurrency(value);
       assumptions.push(`${optionalLabels[key]}: ${formatted}`);
@@ -320,6 +355,13 @@
     renderList(nodes.buyList, buyLines);
     renderList(nodes.rentList, rentLines);
     renderList(nodes.assumptions, assumptions);
+  }
+
+  function toggleInfoPanel(button, panel) {
+    const expanded = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!expanded));
+    panel.hidden = expanded;
+    panel.classList.toggle("is-open", !expanded);
   }
 
   function attachApp() {
@@ -333,16 +375,55 @@
       buyList: document.getElementById("rentbuy-buy-list"),
       rentList: document.getElementById("rentbuy-rent-list"),
       assumptions: document.getElementById("rentbuy-assumptions"),
-      errors: document.getElementById("rentbuy-errors")
+      errors: document.getElementById("rentbuy-errors"),
+      fieldErrors: Object.fromEntries(REQUIRED_FIELDS.map((field) => [field, document.querySelector(`[data-error-for="${field}"]`)]))
     };
 
-    form.addEventListener("input", () => renderApp(form, nodes));
-    document.getElementById("rentbuy-reset").addEventListener("click", () => {
-      form.reset();
-      renderApp(form, nodes);
+    const uiState = { touched: Object.fromEntries(REQUIRED_FIELDS.map((field) => [field, false])) };
+
+    REQUIRED_FIELDS.forEach((field) => {
+      const el = form.elements[field];
+      const markTouched = () => {
+        uiState.touched[field] = true;
+        renderApp(form, nodes, uiState);
+      };
+      el.addEventListener("blur", markTouched);
+      el.addEventListener("input", () => {
+        if (uiState.touched[field]) renderApp(form, nodes, uiState);
+      });
     });
 
-    renderApp(form, nodes);
+    form.addEventListener("input", () => renderApp(form, nodes, uiState));
+
+    document.querySelectorAll(".info-toggle").forEach((button) => {
+      const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
+      if (!panel) return;
+      button.addEventListener("click", () => toggleInfoPanel(button, panel));
+    });
+
+    document.getElementById("rentbuy-example-values").addEventListener("click", () => {
+      const defaults = { closingCostPct: "10", interestPaPct: "3.5", repaymentPaPct: "2", years: "20" };
+      Object.entries(defaults).forEach(([field, value]) => {
+        if (String(form.elements[field].value).trim() === "") form.elements[field].value = value;
+      });
+      renderApp(form, nodes, uiState);
+    });
+
+    document.getElementById("rentbuy-reset").addEventListener("click", () => {
+      form.reset();
+      uiState.touched = Object.fromEntries(REQUIRED_FIELDS.map((field) => [field, false]));
+      Object.values(nodes.fieldErrors).forEach((node) => { node.textContent = ""; });
+      document.querySelectorAll(".info-toggle").forEach((button) => {
+        const panel = document.getElementById(button.dataset.info ? `info-${button.dataset.info}` : "");
+        if (!panel) return;
+        button.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+        panel.classList.remove("is-open");
+      });
+      renderApp(form, nodes, uiState);
+    });
+
+    renderApp(form, nodes, uiState);
   }
 
   function runSelfTests() {
