@@ -1,0 +1,38 @@
+.rentbuy-page .rentbuy-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 0.75rem;
+}
+
+.rentbuy-page .rentbuy-grid label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.rentbuy-page input[type="number"] {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.58rem 0.65rem;
+  font: inherit;
+}
+
+.rentbuy-page .rentbuy-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.rentbuy-page .rentbuy-method {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.rentbuy-page #rentbuy-buy-list,
+.rentbuy-page #rentbuy-rent-list,
+.rentbuy-page #rentbuy-assumptions {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}

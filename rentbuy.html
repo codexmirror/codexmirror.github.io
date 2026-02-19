@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mieten vs. Kaufen Rechner</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="rentbuy.css" />
+</head>
+<body class="rentbuy-page">
+  <main class="container">
+    <header class="page-header">
+      <h1>Mieten vs. Kaufen</h1>
+      <p class="subline">Orientierung über einen frei wählbaren Zeitraum mit transparenten Annahmen.</p>
+    </header>
+
+    <section class="layout" aria-label="Mieten vs Kaufen Rechner">
+      <article class="card" aria-labelledby="rentbuy-inputs-title">
+        <div class="card-head">
+          <h2 id="rentbuy-inputs-title">Eingaben</h2>
+          <button id="rentbuy-reset" type="button" class="secondary">Zurücksetzen</button>
+        </div>
+
+        <form id="rentbuy-form" novalidate>
+          <fieldset>
+            <legend>Pflichtfelder (Schnellcheck)</legend>
+            <div class="rentbuy-grid">
+              <label>Kaufpreis (EUR) *<input name="purchasePrice" type="number" min="0" step="0.01" required /></label>
+              <label>Eigenkapital (EUR) *<input name="equity" type="number" min="0" step="0.01" required /></label>
+              <label>Kaufnebenkosten (%) *<input name="closingCostPct" type="number" min="0" max="20" step="0.01" required /></label>
+              <label>Zinssatz p.a. (%) *<input name="interestPaPct" type="number" min="0" max="20" step="0.01" required /></label>
+              <label>Tilgungssatz p.a. (%) *<input name="repaymentPaPct" type="number" min="0" max="20" step="0.01" required /></label>
+              <label>Kaltmiete pro Monat (EUR) *<input name="rentMonthly" type="number" min="0" step="0.01" required /></label>
+              <label>Zeitraum (Jahre) *<input name="years" type="number" min="1" max="50" step="1" required /></label>
+            </div>
+          </fieldset>
+
+          <details>
+            <summary>Optionale Felder (Advanced)</summary>
+            <div class="rentbuy-grid">
+              <label>Instandhaltung (EUR/Jahr)<input name="maintenanceYearly" type="number" min="0" step="0.01" /></label>
+              <label>Hausgeld (EUR/Monat)<input name="hoaMonthly" type="number" min="0" step="0.01" /></label>
+              <label>Mietsteigerung p.a. (%)<input name="rentGrowthPaPct" type="number" min="0" max="20" step="0.01" /></label>
+              <label>Immobilienwertentwicklung p.a. (%)<input name="propertyGrowthPaPct" type="number" min="0" max="20" step="0.01" /></label>
+              <label>Opportunitätsrendite p.a. (%)<input name="opportunityPaPct" type="number" min="0" max="20" step="0.01" /></label>
+              <label>Einmalige Renovierung beim Kauf (EUR)<input name="renovationOneOff" type="number" min="0" step="0.01" /></label>
+              <label>Verkaufskosten am Ende (%)<input name="sellingCostPct" type="number" min="0" max="20" step="0.01" /></label>
+            </div>
+          </details>
+          <p id="rentbuy-errors" class="field-error" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="card result" aria-labelledby="rentbuy-result-title">
+        <h2 id="rentbuy-result-title">Ergebnis</h2>
+        <p id="rentbuy-placeholder" class="result-placeholder">Bitte alle Pflichtfelder valide ausfüllen.</p>
+        <div id="rentbuy-result-content" hidden>
+          <p class="result-headline" id="rentbuy-headline"></p>
+          <p class="rentbuy-method">Wir vergleichen Endvermögen minus nicht-vermögensbildende Kosten (Tilgung zählt nicht als Kosten).</p>
+
+          <section class="rentbuy-columns">
+            <div>
+              <h3>Kaufen</h3>
+              <ul id="rentbuy-buy-list"></ul>
+            </div>
+            <div>
+              <h3>Mieten</h3>
+              <ul id="rentbuy-rent-list"></ul>
+            </div>
+          </section>
+
+          <section>
+            <h3>Annahmen</h3>
+            <ul id="rentbuy-assumptions"></ul>
+          </section>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="rentbuy.js" defer></script>
+</body>
+</html>
