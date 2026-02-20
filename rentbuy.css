@@ -1,249 +1,164 @@
-diff --git a/rentbuy.css b/rentbuy.css
-index ffc89b6d2b3b739ddcc6eed29366e1c207460a1b..a8e2890eafc8ff475e14db865fb6e60fabba9a82 100644
---- a/rentbuy.css
-+++ b/rentbuy.css
-@@ -1,123 +1,202 @@
- .rentbuy-page .rentbuy-grid {
-   display: grid;
-   gap: 0.75rem;
-   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-   margin-top: 0.75rem;
- }
- 
- .rentbuy-page .rentbuy-head-actions {
-   display: flex;
-   gap: 0.5rem;
-   flex-wrap: wrap;
-   justify-content: flex-end;
- }
- 
- .rentbuy-page .rentbuy-example-note {
-   margin: 0.45rem 0 0;
-   color: var(--muted);
-   font-size: 0.92rem;
- }
- 
-+.rentbuy-page .rentbuy-error-box {
-+  margin-top: 0.75rem;
-+  border: 1px solid #d3d9e1;
-+  background: #f6f8fb;
-+  border-radius: 12px;
-+  padding: 0.7rem 0.9rem;
-+}
-+
-+.rentbuy-page .rentbuy-error-box p {
-+  margin: 0;
-+  font-weight: 600;
-+}
-+
-+.rentbuy-page .rentbuy-error-box ul {
-+  margin: 0.45rem 0 0;
-+  padding-left: 1.2rem;
-+}
-+
- .rentbuy-page .rentbuy-field {
-   display: grid;
-   gap: 0.35rem;
-   color: var(--text);
- }
- 
- .rentbuy-page .rentbuy-field label {
-   font-weight: 600;
- }
- 
- .rentbuy-page input[type="number"] {
-   border: 1px solid var(--border);
-   border-radius: 10px;
-   padding: 0.58rem 0.65rem;
-   font: inherit;
- }
- 
- .rentbuy-page .field-head {
--  display: grid;
--  grid-template-columns: minmax(0, 1fr) 36px;
--  align-items: center;
--  column-gap: 8px;
--  margin-bottom: 0.05rem;
--  min-height: 36px;
-+  display: flex;
-+  align-items: baseline;
-+  justify-content: space-between;
-+  gap: 0.7rem;
- }
- 
- .rentbuy-page .legend-main {
-   margin: 0;
-   font-weight: 600;
- }
- 
- .rentbuy-page .info-toggle {
-   appearance: none;
-   -webkit-appearance: none;
--  display: grid;
--  place-items: center;
--  width: 32px;
--  height: 32px;
--  border: 1px solid #cfd6df;
--  border-radius: 999px;
--  background: #f5f7fa;
--  color: #556170;
-+  border: 0;
-+  background: transparent;
-+  color: #2e5d92;
-   cursor: pointer;
--  font-family: inherit;
--  font-size: 1rem;
--  line-height: 1;
-+  font: inherit;
-+  font-size: 0.88rem;
-+  text-decoration: underline;
-+  text-underline-offset: 2px;
-   padding: 0;
- }
- 
--.rentbuy-page .info-toggle:hover {
--  background: #edf1f6;
--  color: #3f4a58;
--}
--
--.rentbuy-page .info-toggle[aria-expanded="true"] {
--  border-color: #b8c2ce;
--  background: #eceff4;
--  color: #384454;
-+.rentbuy-page .info-toggle:hover,
-+.rentbuy-page .info-toggle:focus-visible {
-+  color: #23466d;
- }
- 
- .rentbuy-page .field-info {
--  overflow: hidden;
--  max-height: 0;
--  opacity: 0;
-   margin: 0;
--  color: #556170;
-+  border: 1px solid #d5dce5;
-+  border-radius: 10px;
-+  background: #f7f9fc;
-+  color: #3d4b5b;
-   font-size: 0.92rem;
--  line-height: 1.35;
--  padding: 0 0.6rem;
-+  line-height: 1.4;
-+  padding: 0.55rem 0.65rem;
-+  max-width: 560px;
-+}
-+
-+.rentbuy-page .result-header {
-+  margin-bottom: 0.65rem;
-+}
-+
-+.rentbuy-page .result-subline {
-+  margin: 0.2rem 0 0;
-+  color: var(--muted);
-+}
-+
-+.rentbuy-page .result-headline {
-+  margin-top: 0;
-+  margin-bottom: 0.9rem;
-+  font-weight: 700;
-+}
-+
-+.rentbuy-page .summary-grid {
-+  display: grid;
-+  gap: 0.9rem;
-+  grid-template-columns: 1fr 1fr;
-+}
-+
-+.rentbuy-page .summary-card {
-+  border: 1px solid var(--border);
-+  border-radius: 14px;
-+  padding: 0.9rem;
-+  background: #ffffff;
-+}
-+
-+.rentbuy-page .summary-card.is-winner {
-+  border-left: 4px solid #5b84b1;
-+  background: #f4f8fc;
-+}
-+
-+.rentbuy-page .summary-card h3 {
-+  margin-top: 0;
-+  margin-bottom: 0.45rem;
-+}
-+
-+.rentbuy-page .metric-label {
-+  margin: 0;
-+  opacity: 0.75;
-+}
-+
-+.rentbuy-page .metric-value {
-+  margin: 0.2rem 0 0;
-+  font-size: clamp(1.35rem, 2.6vw, 1.95rem);
-+  font-weight: 700;
-+}
-+
-+.rentbuy-page .metric-sub {
-+  margin: 0.2rem 0 0;
-+  font-size: 0.9rem;
-+  opacity: 0.8;
-+}
-+
-+.rentbuy-page .result-details {
-+  margin-top: 1rem;
-+}
-+
-+.rentbuy-page .result-details summary {
-+  list-style: none;
-+  border: 1px solid var(--border);
-   border-radius: 10px;
--  background: #f5f7fa;
--  transition: max-height 150ms ease, opacity 150ms ease, margin-bottom 150ms ease, padding-top 150ms ease, padding-bottom 150ms ease;
-+  padding: 0.55rem 0.75rem;
-+  cursor: pointer;
-+  font-weight: 600;
- }
- 
--.rentbuy-page .field-info.is-open {
--  max-height: 300px;
--  opacity: 1;
--  margin-bottom: 0.35rem;
--  padding-top: 0.45rem;
--  padding-bottom: 0.45rem;
-+.rentbuy-page .result-details summary:hover,
-+.rentbuy-page .result-details summary:focus-visible {
-+  background: #f8f9fb;
-+}
-+
-+.rentbuy-page .details-body {
-+  margin-top: 0.8rem;
-+  padding-top: 0.8rem;
-+  border-top: 1px solid var(--border);
-+  display: grid;
-+  gap: 0.9rem;
- }
- 
- .rentbuy-page .rentbuy-columns {
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-   gap: 1rem;
- }
- 
- .rentbuy-page .rentbuy-method {
-   margin-top: 0;
-   color: var(--muted);
- }
- 
- .rentbuy-page #rentbuy-buy-list,
- .rentbuy-page #rentbuy-rent-list,
- .rentbuy-page #rentbuy-assumptions {
-   margin: 0.35rem 0 0;
-   padding-left: 1.2rem;
- }
- 
--.rentbuy-page #rentbuy-errors {
--  margin-top: 0.4rem;
-+@media (max-width: 780px) {
-+  .rentbuy-page .summary-grid {
-+    grid-template-columns: 1fr;
-+  }
- }
+.rentbuy-page .rentbuy-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 0.75rem;
+}
+
+.rentbuy-page .rentbuy-head-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rentbuy-page .rentbuy-example-note {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.rentbuy-page .rentbuy-field {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text);
+}
+
+.rentbuy-page .rentbuy-field label {
+  font-weight: 600;
+}
+
+.rentbuy-page .rentbuy-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.rentbuy-page .rentbuy-info-link {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.rentbuy-page .rentbuy-info-panel {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f5f7fa;
+  color: #384454;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  padding: 0.55rem 0.65rem;
+  max-width: 56ch;
+}
+
+.rentbuy-page .rentbuy-error-box {
+  border: 1px solid #c8d2df;
+  background: #f5f7fa;
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  margin: 0.35rem 0 0.6rem;
+}
+
+.rentbuy-page .rentbuy-error-box p {
+  margin: 0;
+}
+
+.rentbuy-page .rentbuy-error-list {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.rentbuy-page input[type="number"] {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.58rem 0.65rem;
+  font: inherit;
+}
+
+.rentbuy-page .summary-grid {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.5rem;
+}
+
+.rentbuy-page .summary-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: #fff;
+}
+
+.rentbuy-page .summary-card.is-winner {
+  border-left: 4px solid var(--accent);
+  background: #f6f9ff;
+}
+
+.rentbuy-page .metric-label {
+  margin: 0.2rem 0 0;
+  opacity: 0.75;
+}
+
+.rentbuy-page .metric-value {
+  margin: 0.15rem 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 700;
+}
+
+.rentbuy-page .metric-sub {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.rentbuy-page .rentbuy-details {
+  margin-top: 0.9rem;
+}
+
+.rentbuy-page .rentbuy-details > summary {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  background: #fff;
+}
+
+.rentbuy-page .rentbuy-details > summary:hover,
+.rentbuy-page .rentbuy-details > summary:focus-visible {
+  background: #f8fafc;
+}
+
+.rentbuy-page .rentbuy-details-body {
+  border-top: 1px solid #e4e9f0;
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+}
+
+.rentbuy-page .rentbuy-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.rentbuy-page .rentbuy-method {
+  margin-top: 0;
+  color: var(--muted);
+}
+
+.rentbuy-page #rentbuy-buy-list,
+.rentbuy-page #rentbuy-rent-list,
+.rentbuy-page #rentbuy-assumptions {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 860px) {
+  .rentbuy-page .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
