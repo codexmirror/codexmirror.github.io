@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GRIMOIRE COMPILER · sigil engine</title>
+  <style>
+    :root{
+      --bg:#070708;
+      --ink:#e9e7df;
+      --muted:#b8b3a7;
+      --paper:#111114;
+      --line:#2a2a2f;
+      --accent:#d6caa6;
+      --danger:#ff5252;
+    }
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--ink);}
+    body{font:14px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+    *{box-sizing:border-box}
+
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:16px;
+    }
+    header{
+      grid-column:1 / -1;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.0));
+      padding:14px 16px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+    }
+    header h1{
+      font-size:14px;
+      margin:0;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+    }
+    header .sig{
+      opacity:.85;
+      white-space:nowrap;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      padding:14px;
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    label{display:block; margin:10px 0 6px; color:var(--muted); font-size:12px;}
+    textarea, input, select{
+      width:100%;
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      color:var(--ink);
+      padding:10px;
+      font:inherit;
+      outline:none;
+    }
+    textarea{min-height:96px; resize:vertical;}
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+    .row3{display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;}
+
+    .btns{display:flex; gap:10px; margin-top:12px;}
+    button{
+      flex:1;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--ink);
+      padding:10px 12px;
+      font:inherit;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      cursor:pointer;
+    }
+    button:hover{border-color:#3b3b44}
+    button:active{transform:translateY(1px)}
+    .warn{color:var(--danger); font-size:12px; margin-top:8px; display:none;}
+    .warn.show{display:block;}
+
+    .stage{
+      position:relative;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 25% 20%, rgba(255,255,255,.03), transparent 45%),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,.02), transparent 50%),
+        rgba(0,0,0,.15);
+      padding:14px;
+      min-height:540px;
+      display:grid;
+      grid-template-rows: auto 1fr auto;
+      gap:12px;
+    }
+    .stage h2{
+      margin:0;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .stage .meta{
+      font-size:12px;
+      color:var(--muted);
+      opacity:.9;
+      white-space:nowrap;
+    }
+    .canvasWrap{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.25);
+      padding:10px;
+      display:grid;
+      place-items:center;
+    }
+    svg{max-width:100%; height:auto; display:block;}
+    .log{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      padding:10px;
+      color:var(--muted);
+      font-size:12px;
+      white-space:pre-wrap;
+      min-height:80px;
+    }
+
+    .tiny{
+      font-size:11px;
+      color:var(--muted);
+      opacity:.9;
+    }
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:12px 0;
+    }
+    .toggleLine{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .toggleLine input{width:auto;}
+    .kbd{border:1px solid var(--line); padding:1px 6px; border-radius:4px; font-size:11px; color:var(--muted);}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>GRIMOIRE COMPILER · Sigil Engine</h1>
+        <div class="sig">procedure over panic · geometry over guesswork</div>
+      </div>
+      <div class="sig">seal-id: <span id="sealId">…</span> · checksum: <span id="checksum">…</span></div>
+    </header>
+
+    <section class="panel" aria-label="Compiler controls">
+      <h2>Input</h2>
+      <label for="intent">Intention</label>
+      <textarea id="intent" placeholder="Type an intention, phrase, or name. Deterministic. Reproducible."></textarea>
+
+      <div class="row">
+        <div>
+          <label for="mode">Tradition</label>
+          <select id="mode">
+            <option value="radial">Radial Seal (bureaucratic ring)</option>
+            <option value="square">Magic Square Path (grid doctrine)</option>
+          </select>
+        </div>
+        <div>
+          <label for="alphabet">Alphabet</label>
+          <select id="alphabet">
+            <option value="latin">Latin (a–z)</option>
+            <option value="alchemical">Alchemical set (🜁🜂🜃🜄 etc.)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row3">
+        <div>
+          <label for="reduce">Reduction</label>
+          <select id="reduce">
+            <option value="dedupe">Remove duplicates</option>
+            <option value="dedupe_novowels">Remove duplicates + vowels</option>
+            <option value="none">None (raw normalized)</option>
+          </select>
+        </div>
+        <div>
+          <label for="rings">Containment Rings</label>
+          <input id="rings" type="number" min="1" max="3" value="2" />
+        </div>
+        <div>
+          <label for="ticks">Ring Ticks</label>
+          <input id="ticks" type="number" min="12" max="72" value="36" />
+        </div>
+      </div>
+
+      <div class="toggleLine">
+        <input id="showScaffold" type="checkbox" checked />
+        <label for="showScaffold" style="margin:0">Show scaffold (constraints + grid)</label>
+      </div>
+
+      <div class="btns">
+        <button id="compile" type="button">Compile</button>
+        <button id="export" type="button">Export SVG</button>
+      </div>
+      <div class="warn" id="warn"></div>
+
+      <div class="divider"></div>
+      <div class="tiny">
+        <div>Keys: <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> compile · <span class="kbd">Esc</span> clear</div>
+        <div style="margin-top:6px;">This is aesthetic + algorithmic. No external requests. No storage. No "real rituals."</div>
+      </div>
+    </section>
+
+    <section class="stage" aria-label="Sigil output">
+      <h2>
+        <span>Output</span>
+        <span class="meta" id="metaLine">…</span>
+      </h2>
+
+      <div class="canvasWrap" id="canvasWrap">
+        <!-- SVG injected here -->
+      </div>
+
+      <div class="log" id="log">Awaiting procedure…</div>
+    </section>
+  </div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const intentEl = $("intent");
+  const modeEl = $("mode");
+  const alphabetEl = $("alphabet");
+  const reduceEl = $("reduce");
+  const ringsEl = $("rings");
+  const ticksEl = $("ticks");
+  const showScaffoldEl = $("showScaffold");
+  const compileBtn = $("compile");
+  const exportBtn = $("export");
+  const warnEl = $("warn");
+  const canvasWrap = $("canvasWrap");
+  const logEl = $("log");
+  const sealIdEl = $("sealId");
+  const checksumEl = $("checksum");
+  const metaLineEl = $("metaLine");
+
+  // ---------- "dark book" logic: determinism + audit ----------
+  function normalizeInput(s){
+    return (s || "")
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "") // strip diacritics
+      .replace(/[^a-z0-9\s]/g, " ")    // keep a-z, 0-9 for stable mapping
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function reduceString(norm, mode){
+    if (!norm) return "";
+    let s = norm.replace(/\s/g, "");
+
+    if (mode === "dedupe_novowels") {
+      s = s.replace(/[aeiouy]/g, "");
+    }
+    if (mode === "dedupe" || mode === "dedupe_novowels") {
+      const seen = new Set();
+      let out = "";
+      for (const ch of s){
+        if (!seen.has(ch)){
+          seen.add(ch);
+          out += ch;
+        }
+      }
+      s = out;
+    }
+    return s;
+  }
+
+  // deterministic checksum: sum of char codes (norm) + length mixing
+  function checksum360(norm){
+    let sum = 0;
+    for (let i=0; i<norm.length; i++){
+      sum = (sum + norm.charCodeAt(i) * (i+1)) >>> 0;
+    }
+    // fold a bit
+    sum ^= (norm.length * 2654435761) >>> 0;
+    return sum % 360;
+  }
+
+  function makeSealId(norm){
+    // tiny deterministic ID: base36 of a folded hash
+    let h = 2166136261 >>> 0;
+    for (let i=0; i<norm.length; i++){
+      h ^= norm.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return "S-" + (h >>> 0).toString(36).toUpperCase().padStart(8,"0");
+  }
+
+  function alphabetSet(kind){
+    if (kind === "alchemical"){
+      // just for ring text / ornament, not mapping
+      return ["🜁","🜂","🜃","🜄","☿","♀","♁","♂","♃","♄","♅","♆","☉","☾","♇","✶","✷","✸","✹","✺","✧","✦","✴","✵","✳","✲"];
+    }
+    // latin fallback
+    return "abcdefghijklmnopqrstuvwxyz".split("");
+  }
+
+  // ---------- geometry helpers ----------
+  function polar(cx, cy, r, deg){
+    const rad = (deg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function pathFromPoints(pts, close=false){
+    if (!pts.length) return "";
+    let d = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+    for (let i=1;i<pts.length;i++){
+      d += ` L ${pts[i].x.toFixed(2)} ${pts[i].y.toFixed(2)}`;
+    }
+    if (close) d += " Z";
+    return d;
+  }
+
+  function escXml(s){
+    return s.replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  }
+
+  // ---------- build SVG scaffolds ----------
+  function buildRadialSeal({norm, reduced, rings, ticks, showScaffold, alphabetKind}){
+    const size = 560;
+    const cx = size/2, cy = size/2;
+
+    const cs = checksum360(norm);
+    const rot = cs; // rotate whole seal by checksum degrees (cold "anchoring")
+    const ringText = norm || "…";
+    const glyphs = alphabetSet(alphabetKind);
+
+    // mapping: characters in reduced string -> angles 0..359 deterministically
+    // We map a-z0-9 to 0..35 then to degrees with fixed step; add a position-based offset
+    const mapChar = (ch) => {
+      if (ch >= "a" && ch <= "z") return ch.charCodeAt(0) - 97;
+      if (ch >= "0" && ch <= "9") return 26 + (ch.charCodeAt(0) - 48);
+      return 0;
+    };
+
+    const outerR = 230;
+    const innerR = 110;
+
+    // Build points along two radii to add "depth"
+    const pts = [];
+    for (let i=0; i<reduced.length; i++){
+      const v = mapChar(reduced[i]);
+      const base = (v * (360/36));          // 36 bins
+      const offset = (i * 17) % 360;        // position twist, deterministic
+      const deg = (base + offset) % 360;
+      const r = innerR + ((i % 2) * 52);    // hop radius
+      pts.push(polar(cx, cy, r, deg));
+    }
+
+    // If too few points, create a minimal "mark"
+    if (pts.length === 1){
+      const p = pts[0];
+      pts.push({x: (p.x+cx)/2, y: (p.y+cy)/2});
+    }
+
+    // add terminal "cap" marks: start/end circles
+    const start = pts[0];
+    const end = pts[pts.length-1];
+
+    // ring tick marks
+    const tickEls = [];
+    for (let i=0;i<ticks;i++){
+      const deg = (i * (360/ticks));
+      const p1 = polar(cx, cy, outerR+2, deg);
+      const p2 = polar(cx, cy, outerR-10, deg);
+      tickEls.push(`<path d="M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} L ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}" stroke="rgba(233,231,223,.22)" stroke-width="1" />`);
+    }
+
+    // containment rings (1..3)
+    const ringEls = [];
+    for (let i=0;i<rings;i++){
+      const r = outerR - i*18;
+      ringEls.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(233,231,223,.18)" stroke-width="1.2" />`);
+    }
+
+    // triangle constraint (Solomonic-ish containment vibe)
+    const tri = [];
+    for (let i=0;i<3;i++){
+      tri.push(polar(cx, cy, 160, rot + i*120));
+    }
+    const triD = pathFromPoints(tri, true);
+
+    // ring text on a path
+    const ringPathId = "ringPath";
+    const ringPath = `
+      <path id="${ringPathId}"
+            d="M ${cx} ${cy-outerR}
+               A ${outerR} ${outerR} 0 1 1 ${cx-0.01} ${cy-outerR}"
+            fill="none" />
+    `;
+
+    // Compose a repeating string that feels like "registry"
+    const registry = (ringText + " · " + makeSealId(norm) + " · checksum " + cs + " · ").toUpperCase();
+    const repeat = registry.repeat(10).slice(0, 420);
+
+    // subtle ornaments: glyphs at cardinal points
+    const cardinals = [0,90,180,270].map((d,i)=>{
+      const p = polar(cx, cy, outerR+22, d+rot);
+      const g = glyphs[i % glyphs.length];
+      return `<text x="${p.x.toFixed(2)}" y="${p.y.toFixed(2)}" text-anchor="middle" dominant-baseline="middle"
+                font-size="14" fill="rgba(214,202,166,.9)">${escXml(g)}</text>`;
+    }).join("");
+
+    const sigilPathD = pathFromPoints(pts, false);
+
+    const scaffold = showScaffold ? `
+      ${ringEls.join("")}
+      ${tickEls.join("")}
+      <path d="${triD}" fill="none" stroke="rgba(214,202,166,.18)" stroke-width="1.2" />
+    ` : "";
+
+    const svg = `
+      <svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Generated sigil">
+        <defs>
+          ${ringPath}
+        </defs>
+        <g transform="rotate(${rot} ${cx} ${cy})">
+          ${scaffold}
+
+          <text font-size="11" fill="rgba(233,231,223,.22)" letter-spacing="2">
+            <textPath href="#${ringPathId}" startOffset="2%">${escXml(repeat)}</textPath>
+          </text>
+
+          ${cardinals}
+
+          <path d="${sigilPathD}"
+                fill="none"
+                stroke="rgba(233,231,223,.92)"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+          <circle cx="${start.x.toFixed(2)}" cy="${start.y.toFixed(2)}" r="4.2" fill="rgba(214,202,166,.95)" />
+          <circle cx="${end.x.toFixed(2)}" cy="${end.y.toFixed(2)}" r="3.2" fill="rgba(233,231,223,.92)" />
+
+          <circle cx="${cx}" cy="${cy}" r="3" fill="rgba(233,231,223,.65)" />
+        </g>
+
+        <text x="${cx}" y="${size-18}" text-anchor="middle" font-size="11" fill="rgba(184,179,167,.85)">
+          ${escXml(makeSealId(norm))} · checksum ${cs}° · length ${norm.length} · reduced ${reduced.length}
+        </text>
+      </svg>
+    `;
+    return { svg, cs, sealId: makeSealId(norm), rot };
+  }
+
+  function nextSquareSize(n){
+    // smallest k such that k*k >= n, minimum 3
+    let k = Math.ceil(Math.sqrt(Math.max(n, 9)));
+    return Math.max(3, k);
+  }
+
+  function buildMagicSquare({norm, reduced, showScaffold}){
+    const size = 560;
+    const pad = 40;
+    const gridSize = nextSquareSize(Math.max(reduced.length, 9));
+    const cell = Math.floor((size - pad*2) / gridSize);
+    const gx = (size - cell*gridSize)/2;
+    const gy = gx;
+
+    // Fill grid deterministically:
+    // 1) unique letters of reduced
+    // 2) then remaining a-z0-9
+    const base = "abcdefghijklmnopqrstuvwxyz0123456789".split("");
+    const fill = [];
+    const used = new Set();
+
+    for (const ch of reduced){
+      if (!used.has(ch)){
+        used.add(ch);
+        fill.push(ch);
+      }
+    }
+    for (const ch of base){
+      if (!used.has(ch)){
+        used.add(ch);
+        fill.push(ch);
+      }
+      if (fill.length >= gridSize*gridSize) break;
+    }
+
+    // map char -> list of coordinates where it appears (usually one)
+    const coordOf = new Map();
+    for (let i=0;i<fill.length;i++){
+      const r = Math.floor(i / gridSize);
+      const c = i % gridSize;
+      const ch = fill[i];
+      coordOf.set(ch, {r,c, i});
+    }
+
+    // Build path points for reduced string in order
+    const pts = [];
+    for (const ch of reduced){
+      const cc = coordOf.get(ch);
+      if (!cc) continue;
+      const x = gx + cc.c*cell + cell/2;
+      const y = gy + cc.r*cell + cell/2;
+      pts.push({x,y});
+    }
+
+    // Minimal fallback
+    if (pts.length < 2){
+      pts.push({x: size/2, y: size/2});
+      pts.push({x: size/2 + 1, y: size/2});
+    }
+
+    const cs = checksum360(norm);
+    const rot = cs;
+
+    // Draw grid scaffold
+    const lines = [];
+    if (showScaffold){
+      for (let i=0;i<=gridSize;i++){
+        const x = gx + i*cell;
+        const y = gy + i*cell;
+        lines.push(`<path d="M ${x.toFixed(2)} ${gy.toFixed(2)} L ${x.toFixed(2)} ${(gy+gridSize*cell).toFixed(2)}" stroke="rgba(233,231,223,.12)" stroke-width="1"/>`);
+        lines.push(`<path d="M ${gx.toFixed(2)} ${y.toFixed(2)} L ${(gx+gridSize*cell).toFixed(2)} ${y.toFixed(2)}" stroke="rgba(233,231,223,.12)" stroke-width="1"/>`);
+      }
+    }
+
+    // Letter marks (subtle) as "manuscript"
+    const letters = [];
+    if (showScaffold){
+      for (let i=0;i<gridSize*gridSize;i++){
+        const r = Math.floor(i / gridSize);
+        const c = i % gridSize;
+        const ch = fill[i] ?? "";
+        const x = gx + c*cell + cell/2;
+        const y = gy + r*cell + cell/2;
+        letters.push(`<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" text-anchor="middle" dominant-baseline="middle"
+                       font-size="${Math.max(10, Math.floor(cell*0.32))}" fill="rgba(184,179,167,.22)">${escXml(ch)}</text>`);
+      }
+    }
+
+    // Path with slight "seal" look: add a surrounding square border
+    const border = `<rect x="${gx.toFixed(2)}" y="${gy.toFixed(2)}" width="${(gridSize*cell).toFixed(2)}" height="${(gridSize*cell).toFixed(2)}"
+                    fill="none" stroke="rgba(233,231,223,.22)" stroke-width="1.2"/>`;
+
+    const d = pathFromPoints(pts, false);
+
+    const start = pts[0], end = pts[pts.length-1];
+
+    const svg = `
+      <svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" role="img" aria-label="Generated sigil">
+        <g transform="rotate(${rot} ${size/2} ${size/2})">
+          ${showScaffold ? border : ""}
+          ${showScaffold ? lines.join("") : ""}
+          ${showScaffold ? letters.join("") : ""}
+
+          <path d="${d}"
+                fill="none"
+                stroke="rgba(233,231,223,.92)"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+
+          <circle cx="${start.x.toFixed(2)}" cy="${start.y.toFixed(2)}" r="4.2" fill="rgba(214,202,166,.95)" />
+          <circle cx="${end.x.toFixed(2)}" cy="${end.y.toFixed(2)}" r="3.2" fill="rgba(233,231,223,.92)" />
+        </g>
+
+        <text x="${size/2}" y="${size-18}" text-anchor="middle" font-size="11" fill="rgba(184,179,167,.85)">
+          ${escXml(makeSealId(norm))} · checksum ${cs}° · grid ${gridSize}×${gridSize} · reduced ${reduced.length}
+        </text>
+      </svg>
+    `;
+    return { svg, cs, sealId: makeSealId(norm), rot, gridSize };
+  }
+
+  function setWarn(msg){
+    warnEl.textContent = msg;
+    warnEl.classList.toggle("show", !!msg);
+  }
+
+  function log(lines){
+    logEl.textContent = lines.join("\n");
+  }
+
+  function compile(){
+    setWarn("");
+
+    const raw = intentEl.value;
+    const norm = normalizeInput(raw);
+    if (!norm){
+      setWarn("Provide an intention (at least one letter/number).");
+      canvasWrap.innerHTML = "";
+      sealIdEl.textContent = "…";
+      checksumEl.textContent = "…";
+      metaLineEl.textContent = "…";
+      log(["Procedure halted: empty input."]);
+      return;
+    }
+
+    const reduced = reduceString(norm, reduceEl.value);
+    if (!reduced){
+      setWarn("Reduction removed everything. Try a different reduction mode.");
+      canvasWrap.innerHTML = "";
+      log(["Procedure halted: reduced form empty."]);
+      return;
+    }
+
+    const params = {
+      norm,
+      reduced,
+      rings: clampInt(+ringsEl.value, 1, 3),
+      ticks: clampInt(+ticksEl.value, 12, 72),
+      showScaffold: !!showScaffoldEl.checked,
+      alphabetKind: alphabetEl.value
+    };
+
+    let out;
+    const mode = modeEl.value;
+    if (mode === "square"){
+      out = buildMagicSquare(params);
+      metaLineEl.textContent = `magic square · checksum ${out.cs}° · grid ${out.gridSize}×${out.gridSize}`;
+    } else {
+      out = buildRadialSeal(params);
+      metaLineEl.textContent = `radial seal · checksum ${out.cs}° · rings ${params.rings} · ticks ${params.ticks}`;
+    }
+
+    canvasWrap.innerHTML = out.svg;
+    sealIdEl.textContent = out.sealId;
+    checksumEl.textContent = String(out.cs);
+
+    // audit trail like a cold grimoire margin note
+    log([
+      "GRIMOIRE COMPILER -- audit trail",
+      "--------------------------------",
+      `input.normalized: "${norm}"`,
+      `reduction.mode: ${reduceEl.value}`,
+      `input.reduced: "${reduced}"`,
+      `tradition: ${mode}`,
+      `seal.id: ${out.sealId}`,
+      `checksum: ${out.cs} (rotation anchor)`,
+      "",
+      "notes:",
+      "- deterministic output for identical normalized input",
+      "- containment geometry is scaffolded (toggleable)",
+      "- ring registry encodes identifier + checksum (radial mode)",
+      "- grid doctrine encodes path through a filled square (square mode)"
+    ]);
+
+    // store last for export
+    compile.lastSVG = out.svg;
+  }
+
+  function clampInt(v, lo, hi){
+    v = Number.isFinite(v) ? Math.floor(v) : lo;
+    return Math.max(lo, Math.min(hi, v));
+  }
+
+  function exportSVG(){
+    const svg = (compile.lastSVG || "").trim();
+    if (!svg){
+      setWarn("Nothing to export yet. Compile first.");
+      return;
+    }
+    setWarn("");
+
+    const blob = new Blob([svg], {type:"image/svg+xml;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const norm = normalizeInput(intentEl.value) || "sigil";
+    a.href = url;
+    a.download = `${makeSealId(norm)}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2500);
+  }
+
+  // bindings
+  compileBtn.addEventListener("click", compile);
+  exportBtn.addEventListener("click", exportSVG);
+
+  addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+      e.preventDefault();
+      compile();
+    }
+    if (e.key === "Escape"){
+      intentEl.value = "";
+      canvasWrap.innerHTML = "";
+      setWarn("");
+      log(["Cleared."]);
+      sealIdEl.textContent = "…";
+      checksumEl.textContent = "…";
+      metaLineEl.textContent = "…";
+    }
+  });
+
+  // first boot: a default example
+  intentEl.value = "I return with structure.";
+  compile();
+
+})();
+</script>
+</body>
+</html>
