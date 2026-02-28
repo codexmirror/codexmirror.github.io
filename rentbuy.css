@@ -123,6 +123,14 @@
   color: #111827;
 }
 
+/* Neutraler Fokus statt grünem Browser-Default */
+.rentbuy-page .rentbuy-field input:focus,
+.rentbuy-page .rentbuy-field input:focus-visible {
+  outline: none;
+  border-color: #1d4ed8; /* euer Blau */
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+}
+
 .rentbuy-page .rentbuy-input-suffix {
   position: relative;
 }
