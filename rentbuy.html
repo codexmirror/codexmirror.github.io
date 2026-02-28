@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mieten oder Kaufen Rechner</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="rentbuy.css" />
+</head>
+<body class="rentbuy-page">
+  <main class="rentbuy-shell">
+    <header class="rentbuy-header">
+      <h1>Mieten oder Kaufen</h1>
+      <p>Vergleiche in wenigen Eingaben, welche Option über denselben Zeitraum günstiger ist.</p>
+    </header>
+
+    <section class="rentbuy-layout" aria-label="Mieten oder Kaufen Rechner">
+      <article class="rentbuy-card">
+        <h2>Deine Eingaben</h2>
+        <form id="rentbuy-form" novalidate>
+          <div class="rentbuy-grid">
+            <label class="rentbuy-field">
+              <span>Kaufpreis (EUR) *</span>
+              <input id="kaufpreis" name="kaufpreis" type="number" min="0" step="1000" inputmode="decimal" required />
+            </label>
+            <label class="rentbuy-field">
+              <span>Eigenkapital (EUR) *</span>
+              <input id="eigenkapital" name="eigenkapital" type="number" min="0" step="1000" inputmode="decimal" required />
+            </label>
+            <label class="rentbuy-field">
+              <span>Kaufnebenkosten (%) *</span>
+              <input id="kaufnebenkosten" name="kaufnebenkosten" type="number" min="0" max="100" step="0.1" inputmode="decimal" required />
+            </label>
+            <label class="rentbuy-field">
+              <span>Zinssatz p.a. (%) *</span>
+              <input id="zinssatz" name="zinssatz" type="number" min="0" max="100" step="0.01" inputmode="decimal" required />
+            </label>
+            <label class="rentbuy-field">
+              <span>Kaltmiete pro Monat (EUR) *</span>
+              <input id="kaltmiete" name="kaltmiete" type="number" min="0" step="10" inputmode="decimal" required />
+            </label>
+          </div>
+
+          <fieldset class="rentbuy-mode-group">
+            <legend>Kredit-Planung *</legend>
+            <label class="rentbuy-mode">
+              <input type="radio" name="modus" value="jahre" checked />
+              <span>Ich will in X Jahren fertig sein</span>
+            </label>
+            <label class="rentbuy-field rentbuy-mode-input">
+              <span>Jahre</span>
+              <input id="jahre" name="jahre" type="number" min="1" max="50" step="1" inputmode="numeric" value="25" />
+            </label>
+            <p class="rentbuy-auto" id="auto-rate-text">Berechnete Monatsrate: –</p>
+
+            <label class="rentbuy-mode">
+              <input type="radio" name="modus" value="rate" />
+              <span>Ich kann X EUR pro Monat zahlen</span>
+            </label>
+            <label class="rentbuy-field rentbuy-mode-input">
+              <span>Monatsrate (EUR)</span>
+              <input id="rate" name="rate" type="number" min="0" step="10" inputmode="decimal" value="1500" disabled />
+            </label>
+            <p class="rentbuy-auto" id="auto-years-text">Berechnete Laufzeit: –</p>
+          </fieldset>
+
+          <details class="rentbuy-optional">
+            <summary>Optionale Annahmen</summary>
+            <div class="rentbuy-grid">
+              <label class="rentbuy-field">
+                <span>Mietsteigerung p.a. (%)</span>
+                <input id="mietsteigerung" name="mietsteigerung" type="number" min="0" max="50" step="0.1" inputmode="decimal" />
+              </label>
+              <label class="rentbuy-field">
+                <span>Immobilienwertentwicklung p.a. (%)</span>
+                <input id="wertentwicklung" name="wertentwicklung" type="number" min="-20" max="50" step="0.1" inputmode="decimal" />
+              </label>
+            </div>
+          </details>
+
+          <p class="rentbuy-error" id="rentbuy-error" role="status" aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="rentbuy-card">
+        <h2>Ergebnis</h2>
+        <p id="result-placeholder" class="rentbuy-placeholder">Bitte fülle die Pflichtfelder aus, um den Vergleich zu sehen.</p>
+
+        <div id="result-panel" hidden>
+          <p class="rentbuy-headline" id="result-headline"></p>
+          <p class="rentbuy-period" id="result-period"></p>
+
+          <div class="rentbuy-results-grid">
+            <section class="rentbuy-result-card" id="buy-card" aria-label="Kaufen Ergebnis">
+              <h3>Kaufen</h3>
+              <p class="rentbuy-total" id="buy-total">–</p>
+              <p class="rentbuy-label" id="buy-total-label"></p>
+              <p class="rentbuy-avg" id="buy-avg">–</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+            </section>
+
+            <section class="rentbuy-result-card" id="rent-card" aria-label="Mieten Ergebnis">
+              <h3>Mieten</h3>
+              <p class="rentbuy-total" id="rent-total">–</p>
+              <p class="rentbuy-label" id="rent-total-label"></p>
+              <p class="rentbuy-avg" id="rent-avg">–</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+            </section>
+          </div>
+
+          <details class="rentbuy-details">
+            <summary>Details anzeigen</summary>
+            <ul id="details-list"></ul>
+          </details>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="rentbuy.js"></script>
+</body>
+</html>
