@@ -12,12 +12,18 @@
 
 .rentbuy-page .rentbuy-header h1 {
   margin: 0;
-  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+  font-size: clamp(1.65rem, 5.2vw, 2.35rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  hyphens: auto;
 }
 
 .rentbuy-page .rentbuy-header p {
   margin-top: 0.45rem;
   color: #6b7280;
+  font-size: 1rem;
+  max-width: 58ch;
 }
 
 .rentbuy-page .rentbuy-layout {
@@ -397,6 +403,21 @@
   /* Wenn offen: kein "margin-bottom push" */
   .rentbuy-page .rentbuy-field .field-info.is-open {
     margin-bottom: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .rentbuy-page .rentbuy-shell {
+    padding-top: 1.6rem;
+  }
+
+  .rentbuy-page .rentbuy-header h1 {
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+
+  .rentbuy-page .rentbuy-header p {
+    font-size: 0.98rem;
   }
 }
 
