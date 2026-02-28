@@ -190,6 +190,9 @@
   display: grid;
   gap: 0.95rem;
 }
+.rentbuy-page #result-panel[hidden] {
+  display: none !important;
+}
 
 .rentbuy-page .rentbuy-summary-card {
   border: 1px solid #e5e7eb;
@@ -205,18 +208,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
-  color: #374151;
-  background: #eef2f7;
-}
-
-.rentbuy-page .rentbuy-summary-card.is-buy .rentbuy-summary-strip {
-  color: #1e40af;
-  background: #eaf2ff;
-}
-
-.rentbuy-page .rentbuy-summary-card.is-rent .rentbuy-summary-strip {
-  color: #166534;
-  background: #e9f7ee;
+  color: #166534;       /* immer grün */
+  background: #e9f7ee;  /* immer grün */
 }
 
 .rentbuy-page .rentbuy-headline {
@@ -249,14 +242,10 @@
   background: #ffffff;
 }
 
-.rentbuy-page #result-panel[data-winner="buy"] #buy-card {
+.rentbuy-page #result-panel[data-winner="buy"] #buy-card,
+.rentbuy-page #result-panel[data-winner="rent"] #rent-card {
   background: #eef6ff;
   border-color: #cfe3ff;
-}
-
-.rentbuy-page #result-panel[data-winner="rent"] #rent-card {
-  background: #edf7ef;
-  border-color: #c7e7cf;
 }
 
 .rentbuy-page .rentbuy-result-card h3 {
