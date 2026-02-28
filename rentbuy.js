@@ -213,6 +213,7 @@
     function render(result) {
       const buyCard = document.getElementById("buy-card");
       const rentCard = document.getElementById("rent-card");
+      const summaryCard = document.getElementById("result-summary-card");
       const headline = document.getElementById("result-headline");
       const period = document.getElementById("result-period");
       const details = document.getElementById("details-list");
@@ -238,13 +239,13 @@
 
       const buyIsWinner = result.winner === "buy";
       const rentIsWinner = result.winner === "rent";
-      buyCard.classList.toggle("is-winner", buyIsWinner);
-      rentCard.classList.toggle("is-winner", rentIsWinner);
-
-      const buyKicker = buyCard.querySelector(".rentbuy-winner-kicker");
-      const rentKicker = rentCard.querySelector(".rentbuy-winner-kicker");
-      if (buyKicker) buyKicker.hidden = !buyIsWinner;
-      if (rentKicker) rentKicker.hidden = !rentIsWinner;
+      buyCard.classList.toggle("is-winner", result.winner === "buy");
+      rentCard.classList.toggle("is-winner", result.winner === "rent");
+      panel.dataset.winner = result.winner;
+      if (summaryCard) {
+        summaryCard.classList.toggle("is-buy", buyIsWinner);
+        summaryCard.classList.toggle("is-rent", rentIsWinner);
+      }
 
       details.innerHTML = "";
       const detailItems = [
@@ -267,6 +268,7 @@
       panel.hidden = true;
       placeholder.hidden = false;
       errorNode.textContent = message;
+      delete panel.dataset.winner;
 
       const preview = evaluate({ ...inputState, mode: "jahre", rate: null });
       if (preview.valid) {

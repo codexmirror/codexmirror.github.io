@@ -127,12 +127,14 @@
         <p id="result-placeholder" class="rentbuy-placeholder">Bitte fülle die Pflichtfelder aus, um den Vergleich zu sehen.</p>
 
         <div id="result-panel" hidden>
-          <p class="rentbuy-headline" id="result-headline"></p>
-          <p class="rentbuy-period" id="result-period"></p>
+          <section class="rentbuy-summary-card" id="result-summary-card" aria-live="polite">
+            <p class="rentbuy-summary-strip" id="result-summary-strip">AKTUELL GÜNSTIGER</p>
+            <p class="rentbuy-headline" id="result-headline"></p>
+            <p class="rentbuy-period" id="result-period"></p>
+          </section>
 
           <div class="rentbuy-results-grid">
             <section class="rentbuy-result-card" id="buy-card" aria-label="Kaufen Ergebnis">
-              <p class="rentbuy-winner-kicker" hidden>Aktuell günstiger</p>
               <h3>Kaufen</h3>
               <p class="rentbuy-total" id="buy-total">–</p>
               <p class="rentbuy-label" id="buy-total-label"></p>
@@ -141,7 +143,6 @@
             </section>
 
             <section class="rentbuy-result-card" id="rent-card" aria-label="Mieten Ergebnis">
-              <p class="rentbuy-winner-kicker" hidden>Aktuell günstiger</p>
               <h3>Mieten</h3>
               <p class="rentbuy-total" id="rent-total">–</p>
               <p class="rentbuy-label" id="rent-total-label"></p>
