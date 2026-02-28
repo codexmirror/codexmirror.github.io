@@ -225,7 +225,7 @@
       errorNode.textContent = "";
 
       const winnerText = result.winner === "buy" ? "Kaufen" : "Mieten";
-      headline.textContent = `${winnerText} ist bei reiner Zahlung um ${formatCurrency(result.diff)} günstiger.`;
+      headline.textContent = `Unter deinen Annahmen ist ${winnerText} um ${formatCurrency(result.diff)} günstiger.`;
       period.textContent = `Vergleichszeitraum: ${formatMonthsToYears(result.months)} Jahre`;
 
       document.getElementById("buy-total").textContent = formatCurrency(result.buyTotal);
@@ -236,8 +236,15 @@
       document.getElementById("rent-total-label").textContent = `Gesamtzahlung über ${formatMonthsToYears(result.months)} Jahre`;
       document.getElementById("rent-avg").textContent = formatCurrency(result.rentAverage);
 
-      buyCard.classList.toggle("is-winner", result.winner === "buy");
-      rentCard.classList.toggle("is-winner", result.winner === "rent");
+      const buyIsWinner = result.winner === "buy";
+      const rentIsWinner = result.winner === "rent";
+      buyCard.classList.toggle("is-winner", buyIsWinner);
+      rentCard.classList.toggle("is-winner", rentIsWinner);
+
+      const buyKicker = buyCard.querySelector(".rentbuy-winner-kicker");
+      const rentKicker = rentCard.querySelector(".rentbuy-winner-kicker");
+      if (buyKicker) buyKicker.hidden = !buyIsWinner;
+      if (rentKicker) rentKicker.hidden = !rentIsWinner;
 
       details.innerHTML = "";
       const detailItems = [
