@@ -32,7 +32,13 @@ h1 { margin-bottom: 0.25rem; }
 
 .layout {
   display: grid;
-  gap: 1.25rem; /* neutraler Standard */
+  gap: 1rem;
+}
+/* Abstand vom Tool-Grid (Inputs/Ergebnis) zur ersten Content-Card darunter */
+.layout {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.25rem; /* NEU: mehr Luft nach dem Tool */
 }
 
 .card {
@@ -42,7 +48,10 @@ h1 { margin-bottom: 0.25rem; }
   padding: 1rem;
   overflow: visible;
 }
-
+/* Abstand zwischen aufeinanderfolgenden Cards (FAQ / Content) */
+main.container > .card + .card {
+  margin-top: 1.25rem; /* NEU */
+}
 .card-head {
   display: flex;
   justify-content: space-between;
@@ -766,9 +775,8 @@ li { margin: 0.3rem 0; }
 }
 
 @media (max-width: 768px) {
-  .layout {
-    gap: 2.5rem;
-  }
+  .layout { margin-bottom: 1.5rem; }
+  main.container > .card + .card { margin-top: 1.5rem; }
 }
 
 
