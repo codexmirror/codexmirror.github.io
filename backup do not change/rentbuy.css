@@ -7,7 +7,7 @@
 .rentbuy-page .rentbuy-shell {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 2rem 1rem 3rem;
+  padding: 2rem 1rem 2.25rem;
 }
 
 .rentbuy-page .rentbuy-header h1 {
@@ -24,7 +24,7 @@
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 1rem;
-  margin-top: 1.2rem;
+  margin-top: 1rem;
 }
 
 .rentbuy-page .rentbuy-card {
@@ -32,23 +32,23 @@
   border: 1px solid #d7deea;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(2, 12, 28, 0.06);
-  padding: 1.2rem;
+  padding: 1.25rem;
 }
 
 .rentbuy-page .rentbuy-card h2 {
-  margin-top: 0;
+  margin: 0 0 1rem;
 }
 
 .rentbuy-page .rentbuy-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
+  gap: 1.2rem;
 }
 
 .rentbuy-page .rentbuy-field {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .rentbuy-page .rentbuy-field span {
@@ -59,8 +59,27 @@
 .rentbuy-page .rentbuy-field input {
   border: 1px solid #c9d2e2;
   border-radius: 10px;
-  padding: 0.6rem 0.7rem;
+  padding: 0.65rem 0.72rem;
   font-size: 1rem;
+}
+
+.rentbuy-page .rentbuy-input-suffix {
+  position: relative;
+}
+
+.rentbuy-page .rentbuy-input-suffix input {
+  width: 100%;
+  padding-right: 1.8rem;
+}
+
+.rentbuy-page .rentbuy-input-suffix .input-suffix {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 0.95rem;
+  pointer-events: none;
 }
 
 .rentbuy-page .rentbuy-field input:disabled {
@@ -70,33 +89,58 @@
 }
 
 .rentbuy-page .rentbuy-mode-group {
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   border: 1px solid #d9e1ee;
   border-radius: 12px;
-  padding: 0.9rem;
+  padding: 1rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.rentbuy-page .rentbuy-mode-group legend {
+  padding: 0 0.3rem;
+  font-weight: 700;
+}
+
+.rentbuy-page .rentbuy-mode-option {
+  border: 1px solid #d9e1ee;
+  border-radius: 10px;
+  background: #fafbfe;
+  padding: 0.75rem;
+  transition: opacity 120ms ease, border-color 120ms ease, background-color 120ms ease;
+}
+
+.rentbuy-page .rentbuy-mode-option:has(.rentbuy-mode input:checked) {
+  border-color: #9bb9e6;
+  background: #f3f8ff;
+  opacity: 1;
+}
+
+.rentbuy-page .rentbuy-mode-option:has(.rentbuy-mode input:not(:checked)) {
+  opacity: 0.8;
 }
 
 .rentbuy-page .rentbuy-mode {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin-top: 0.4rem;
+  margin-top: 0;
   font-weight: 600;
 }
 
 .rentbuy-page .rentbuy-mode-input {
-  margin-top: 0.5rem;
+  margin-top: 0.55rem;
   max-width: 250px;
 }
 
 .rentbuy-page .rentbuy-auto {
-  margin: 0.45rem 0 0.7rem;
+  margin: 0.5rem 0 0;
   color: #4b5563;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
 }
 
 .rentbuy-page .rentbuy-optional {
-  margin-top: 1rem;
+  margin-top: 1.2rem;
 }
 
 .rentbuy-page .rentbuy-optional > summary {
@@ -109,6 +153,7 @@
 }
 
 .rentbuy-page .rentbuy-error {
+  margin: 1rem 0 0;
   min-height: 1.2rem;
   color: #b91c1c;
   font-weight: 600;
@@ -138,13 +183,14 @@
 .rentbuy-page .rentbuy-result-card {
   border: 1px solid #dce4f0;
   border-radius: 12px;
-  padding: 0.85rem;
-  background: #fbfcfe;
+  padding: 0.9rem;
+  background: #fcfdff;
 }
 
 .rentbuy-page .rentbuy-result-card.is-winner {
-  border-left: 4px solid #2f7de1;
-  background: #f2f7ff;
+  border-left: 5px solid #2f7de1;
+  border-color: #b4ccef;
+  background: #eff6ff;
 }
 
 .rentbuy-page .rentbuy-result-card h3 {
@@ -152,21 +198,21 @@
 }
 
 .rentbuy-page .rentbuy-total {
-  font-size: 1.55rem;
+  font-size: 1.7rem;
   font-weight: 800;
   margin: 0;
 }
 
 .rentbuy-page .rentbuy-avg {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin: 0.8rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0;
 }
 
 .rentbuy-page .rentbuy-label {
   margin: 0.2rem 0 0;
   color: #4b5563;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
 }
 
 .rentbuy-page .rentbuy-details {
@@ -176,6 +222,23 @@
 .rentbuy-page .rentbuy-details ul {
   margin: 0.7rem 0 0;
   padding-left: 1rem;
+}
+
+.rentbuy-page .page-footer {
+  border-top: 1px solid #dbe3ef;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  padding-bottom: 1.4rem;
+}
+
+.rentbuy-page .page-footer nav {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.rentbuy-page .page-footer a {
+  font-size: 0.85rem;
 }
 
 @media (max-width: 900px) {
