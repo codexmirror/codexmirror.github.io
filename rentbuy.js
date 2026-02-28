@@ -174,6 +174,8 @@
     const panel = document.getElementById("result-panel");
     const autoRateText = document.getElementById("auto-rate-text");
     const autoYearsText = document.getElementById("auto-years-text");
+    const infoButtons = form.querySelectorAll(".info-toggle");
+    const infoPanels = form.querySelectorAll(".field-info");
 
     function getInputs() {
       const modeNode = form.querySelector('input[name="modus"]:checked');
@@ -275,11 +277,39 @@
       render(result);
     }
 
+    const closeAllInfoPanels = () => {
+      infoPanels.forEach((panel) => {
+        panel.hidden = true;
+        panel.classList.remove("is-open");
+      });
+      infoButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
+    };
+
+    const handleInfoToggle = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const button = event.currentTarget;
+      const panelId = button.getAttribute("aria-controls");
+      const panel = document.getElementById(panelId);
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+      closeAllInfoPanels();
+      if (!isOpen && panel) {
+        panel.hidden = false;
+        panel.classList.add("is-open");
+        button.setAttribute("aria-expanded", "true");
+      }
+    };
+
     form.addEventListener("input", update);
     modeInputs.forEach((input) => input.addEventListener("change", update));
+    infoButtons.forEach((button) => {
+      button.addEventListener("pointerup", handleInfoToggle);
+      button.addEventListener("click", handleInfoToggle);
+    });
 
     const initialModeNode = form.querySelector('input[name="modus"]:checked');
     syncMode(initialModeNode ? initialModeNode.value : "jahre");
+    closeAllInfoPanels();
     update();
   }
 
