@@ -794,7 +794,6 @@
     };
 
     infoButtons.forEach((button) => {
-      button.addEventListener("pointerup", handleInfoToggle);
       button.addEventListener("click", handleInfoToggle);
     });
 
