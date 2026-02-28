@@ -32,7 +32,7 @@ h1 { margin-bottom: 0.25rem; }
 
 .layout {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem; /* neutraler Standard */
 }
 
 .card {
@@ -762,6 +762,12 @@ li { margin: 0.3rem 0; }
   .site-header *::after {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout {
+    gap: 2.5rem;
   }
 }
 
