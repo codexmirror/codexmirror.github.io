@@ -17,10 +17,42 @@ document.addEventListener("DOMContentLoaded", async () => {
   const toolsToggle = mount.querySelector(".site-header__tools-toggle");
   const desktopQuery = window.matchMedia("(min-width: 901px)");
 
-  const currentPath = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  const normalizePath = (value) => {
+    if (!value) return "/";
+    const withoutHash = value.split("#")[0];
+    const withoutQuery = withoutHash.split("?")[0];
+    let path = withoutQuery.toLowerCase();
+
+    if (!path.startsWith("/")) {
+      path = `/${path}`;
+    }
+
+    if (path === "/index.html") {
+      return "/";
+    }
+
+    if (path.endsWith("/index.html")) {
+      path = path.slice(0, -"index.html".length);
+    }
+
+    if (path.length > 1 && path.endsWith("/")) {
+      path = path.slice(0, -1);
+    }
+
+    return path || "/";
+  };
+
+  const currentPath = normalizePath(window.location.pathname);
+
   mount.querySelectorAll("a[data-nav]").forEach((link) => {
-    const href = (link.getAttribute("href") || "").toLowerCase();
-    if (href === currentPath || (currentPath === "" && href === "index.html")) {
+    const href = link.getAttribute("href") || "";
+    const targetPath = normalizePath(href);
+
+    const isRatgeberTarget = targetPath === "/ratgeber";
+    const isRatgeberPage = currentPath === "/ratgeber" || currentPath.startsWith("/ratgeber/") || currentPath === "/ratgeber.html";
+    const isMatch = isRatgeberTarget ? isRatgeberPage : targetPath === currentPath;
+
+    if (isMatch) {
       link.classList.add("is-active");
     }
   });

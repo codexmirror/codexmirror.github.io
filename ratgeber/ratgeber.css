@@ -1,0 +1,225 @@
+.ratgeber-page {
+  background: linear-gradient(180deg, #f4f7fc 0%, #f7f9fd 26%, #f3f6fa 100%);
+}
+
+.ratgeber-main {
+  padding-top: 2.25rem;
+  padding-bottom: 2rem;
+}
+
+.ratgeber-hero {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1.25rem;
+  padding: 2rem 1.1rem;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+}
+
+.ratgeber-kicker {
+  margin: 0;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ratgeber-hero h1 {
+  margin: 0.45rem 0 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.02em;
+}
+
+.ratgeber-subtitle {
+  margin: 0.9rem auto 0;
+  max-width: 45rem;
+  color: #4a5565;
+  font-size: clamp(1.03rem, 2vw, 1.45rem);
+  line-height: 1.5;
+}
+
+.ratgeber-search {
+  display: block;
+  max-width: 38rem;
+  margin: 1.3rem auto 0;
+}
+
+.ratgeber-search input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.85rem 1.05rem;
+  font: inherit;
+  background: #fff;
+}
+
+.ratgeber-search input:focus-visible {
+  outline-offset: 1px;
+}
+
+.ratgeber-section {
+  margin-top: 1.6rem;
+}
+
+.ratgeber-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.85rem;
+}
+
+.ratgeber-section-head h2,
+.ratgeber-tools h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  letter-spacing: -0.01em;
+}
+
+#ratgeber-results-count {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.ratgeber-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+.ratgeber-card {
+  background: var(--card);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 1rem;
+  padding: 1.15rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.ratgeber-card__label {
+  margin: 0;
+  color: #4f6080;
+  font-size: 0.79rem;
+  font-weight: 620;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ratgeber-card h3 {
+  margin: 0.45rem 0 0;
+  font-size: 1.22rem;
+  line-height: 1.25;
+}
+
+.ratgeber-card p {
+  margin: 0.68rem 0 0;
+  color: #3f4a5a;
+}
+
+.ratgeber-card a {
+  display: inline-flex;
+  margin-top: 0.95rem;
+  text-decoration: none;
+  font-weight: 560;
+}
+
+.ratgeber-card a:hover {
+  text-decoration: underline;
+}
+
+.ratgeber-tools {
+  margin-top: 1.6rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.09);
+}
+
+.ratgeber-tools > p {
+  margin: 0.55rem 0 0;
+  color: #475569;
+}
+
+.ratgeber-tools__links {
+  margin-top: 0.95rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.ratgeber-tool-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.9rem;
+  background: #fff;
+  padding: 0.8rem 0.9rem;
+}
+
+.ratgeber-tool-link span {
+  display: block;
+  font-weight: 610;
+}
+
+.ratgeber-tool-link small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.ratgeber-tool-link:hover {
+  border-color: #9fb0cf;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.ratgeber-footer {
+  padding-top: 0.25rem;
+}
+
+@media (min-width: 700px) {
+  .ratgeber-main {
+    padding-top: 2.6rem;
+  }
+
+  .ratgeber-hero {
+    padding: 2.5rem 1.7rem;
+  }
+
+  .ratgeber-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .ratgeber-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    grid-template-areas:
+      "hero hero"
+      "topics tools";
+    gap: 1.6rem;
+    align-items: start;
+  }
+
+  .ratgeber-hero {
+    grid-area: hero;
+  }
+
+  .ratgeber-section {
+    grid-area: topics;
+    margin-top: 0;
+  }
+
+  .ratgeber-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ratgeber-tools {
+    grid-area: tools;
+    margin-top: 2.8rem;
+    position: sticky;
+    top: 5.5rem;
+  }
+}
