@@ -575,6 +575,58 @@ li { margin: 0.3rem 0; }
   filter: brightness(0.95);
 }
 
+/* ===== Header: Mobile Layout Fix ===== */
+
+/* Passe die Klassen an, falls sie bei dir anders heißen */
+.site-header .container,
+.header .container,
+.site-header__inner,
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Mobile: alles ordentlich stapeln */
+@media (max-width: 720px) {
+  .site-header .container,
+  .header .container,
+  .site-header__inner,
+  .header-inner {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  /* Logo oben links */
+  .site-logo,
+  .header-logo {
+    flex: 1 1 100%;
+  }
+
+  /* Nav darunter, horizontal scroll statt Zeilenbruch-chaos */
+  .site-nav,
+  .header-nav {
+    flex: 1 1 100%;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+
+  .site-nav a,
+  .header-nav a {
+    white-space: nowrap;
+  }
+
+  /* CTA (falls noch vorhanden) auf Mobile weg */
+  .site-cta,
+  .header-cta {
+    display: none !important;
+  }
+}
+
 @media (max-width: 900px) {
   .site-header__inner {
     flex-wrap: wrap;
