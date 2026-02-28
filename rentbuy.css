@@ -356,6 +356,11 @@
   text-decoration: underline;
 }
 
+.rentbuy-seo h2 { margin-top: 0; }
+.rentbuy-seo h3 { margin-top: 1.25rem; }
+.rentbuy-faq { margin-top: 0.75rem; }
+.rentbuy-seo-note { margin-top: 1rem; color: var(--muted); font-size: 0.92rem; }
+
 /* Tooltip / Info-Panels: auf Desktop als Popover (kein Layout-Shift) */
 @media (min-width: 900px) {
   .rentbuy-page .rentbuy-field {
