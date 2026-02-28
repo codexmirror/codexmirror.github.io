@@ -356,6 +356,35 @@
   text-decoration: underline;
 }
 
+/* Tooltip / Info-Panels: auf Desktop als Popover (kein Layout-Shift) */
+@media (min-width: 900px) {
+  .rentbuy-page .rentbuy-field {
+    position: relative; /* Anker für das Popover */
+  }
+
+  .rentbuy-page .rentbuy-field .field-info {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 8px);
+    width: min(420px, 100%);
+    z-index: 50;
+
+    /* Popover Look */
+    border: 1px solid #cfd6df;
+    border-radius: 10px;
+    background: #f5f7fa;
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+
+    /* kein Pushen mehr */
+    margin: 0;
+  }
+
+  /* Wenn offen: kein "margin-bottom push" */
+  .rentbuy-page .rentbuy-field .field-info.is-open {
+    margin-bottom: 0;
+  }
+}
+
 @media (max-width: 900px) {
   .rentbuy-page .rentbuy-layout,
   .rentbuy-page .rentbuy-results-grid,
