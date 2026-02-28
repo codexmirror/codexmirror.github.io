@@ -184,15 +184,4 @@
   .rentbuy-page .rentbuy-grid {
     grid-template-columns: 1fr;
   }
-   .rentbuy-page .field-head {
-    grid-template-columns: minmax(0, 1fr) 32px;
-    align-items: start;
-    min-height: 0;
-    margin-bottom: 0.15rem;
-  }
-
-  .rentbuy-page .info-toggle {
-    width: 32px;
-    height: 32px;
-  }
 }
