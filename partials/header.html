@@ -1,27 +1,41 @@
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="site-logo" href="index.html">
-      <span class="site-logo__mark">✓</span>
+    <a class="site-logo" href="index.html" data-nav>
+      <span class="site-logo__mark" aria-hidden="true">✓</span>
       grundstuckcheck.de
     </a>
 
-    <button class="site-burger" type="button" aria-expanded="false" aria-controls="mobile-menu">
+    <button
+      class="site-burger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Menü öffnen"
+    >
       <span class="sr-only">Menü öffnen</span>
       ☰
     </button>
 
-    <nav class="site-nav" aria-label="Hauptnavigation">
-      <a class="site-nav__link" href="index.html">Home</a>
+    <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+      <a class="site-nav__link" href="index.html" data-nav>Home</a>
 
       <div class="site-nav__dropdown">
-        <button class="site-nav__toggle" type="button" aria-expanded="false">Tools ▾</button>
-        <div class="site-nav__menu">
-          <a class="site-nav__item" href="rentbuy.html">Mieten oder Kaufen</a>
-          <a class="site-nav__item" href="tool.html">Wohnen oder Bauen erlaubt?</a>
+        <button
+          class="site-nav__toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="tools-menu"
+        >
+          Tools ▾
+        </button>
+
+        <div class="site-nav__menu" id="tools-menu" role="menu">
+          <a class="site-nav__item" href="rentbuy.html" data-nav role="menuitem">Mieten oder Kaufen</a>
+          <a class="site-nav__item" href="tool.html" data-nav role="menuitem">Wohnen oder Bauen erlaubt?</a>
         </div>
       </div>
 
-      <a class="site-nav__link" href="ratgeber.html">Ratgeber</a>
+      <a class="site-nav__link" href="ratgeber.html" data-nav>Ratgeber</a>
     </nav>
   </div>
 </header>

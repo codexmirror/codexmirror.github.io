@@ -467,32 +467,113 @@ li { margin: 0.3rem 0; }
    Site Header (Desktop + Mobile)
    ========================= */
 
+/* =========================
+   Site Header (Desktop Default)
+   ========================= */
+
 .site-header {
   position: sticky;
   top: 0;
   z-index: 2000;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
 
 .site-header__inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 10px 12px;
+  display: flex;
   align-items: center;
-  padding-top: 0.75rem;
-  padding-bottom: 0.6rem;
+  gap: 1rem;
 }
 
 /* Logo */
-.site-logo { grid-column: 1 / 2; grid-row: 1; }
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 750;
+}
 
-/* Burger (nur Mobile) */
+.site-logo__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* Desktop Nav (rechts, clean) */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.site-nav__link,
+.site-nav__toggle,
+.site-nav__item {
+  font: inherit;
+  color: #243041;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  background: transparent;
+  cursor: pointer;
+  line-height: 1.1;
+}
+
+.site-nav__link:hover,
+.site-nav__toggle:hover,
+.site-nav__item:hover {
+  background: #f8fafb;
+  border-color: var(--border);
+}
+
+.site-nav__link.is-active,
+.site-nav__item.is-active {
+  background: var(--accent-soft);
+  border-color: #b9c4d5;
+}
+
+/* Dropdown */
+.site-nav__dropdown { position: relative; }
+
+.site-nav__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 240px;
+  padding: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+  display: none;
+  z-index: 2100;
+}
+
+.site-nav__dropdown.is-open .site-nav__menu {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.site-nav__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+/* Burger (Desktop aus) */
 .site-burger {
-  grid-column: 2 / 3;
-  grid-row: 1;
+  display: none;
   width: 40px;
   height: 40px;
   border-radius: 12px;
@@ -503,55 +584,75 @@ li { margin: 0.3rem 0; }
   line-height: 1;
 }
 
-/* Pills Nav */
-.site-nav {
-  grid-column: 1 / 3;
-  grid-row: 2;
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 4px;
-  scrollbar-width: none;
-}
-.site-nav::-webkit-scrollbar { display: none; }
-
-.site-nav__link,
-.site-nav__toggle {
-  flex: 0 0 auto;
-  padding: 0.42rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: #fff;
-  text-decoration: none;
-  color: #243041;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Dropdown bleibt, aber auf Mobile lieber als Menü (optional später) */
-.site-nav__menu { z-index: 2100; }
-
-/* Desktop: wieder klassische Zeile */
-@media (min-width: 900px) {
+/* =========================
+   Mobile (<= 720px)
+   - Logo + Burger in einer Zeile
+   - Nav als Panel unter dem Header (kein Pills-chaos)
+   ========================= */
+@media (max-width: 720px) {
   .site-header__inner {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
-  .site-burger { display: none; }
+
+  .site-burger {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  /* Nav ist erstmal zu (öffnet per .is-open am Header) */
   .site-nav {
-    overflow: visible;
-    padding-bottom: 0;
+    width: 100%;
+    margin-left: 0;
+    display: none;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+    padding: 0.5rem;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
   }
+
+  .site-header.is-open .site-nav {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  /* Mobile Links: block, clean */
   .site-nav__link,
   .site-nav__toggle {
-    border-radius: 10px;
-    border: 1px solid transparent;
-    background: transparent;
-    padding: 0.45rem 0.6rem;
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    padding: 0.6rem 0.75rem;
+    font-weight: 650;
+  }
+
+  /* Dropdown im Mobile: Menu relativ statt absolut */
+  .site-nav__menu {
+    position: static;
+    display: none;
+    box-shadow: none;
+    border: none;
+    padding: 0.35rem 0 0.15rem;
+    min-width: 0;
+  }
+
+  .site-nav__dropdown.is-open .site-nav__menu {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .site-nav__item {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.55rem 0.75rem;
+    background: #f8fafb;
   }
 }
