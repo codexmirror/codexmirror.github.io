@@ -1,41 +1,50 @@
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container site-header__inner">
-    <a class="site-logo" href="index.html" data-nav>
-      <span class="site-logo__mark" aria-hidden="true">✓</span>
-      grundstuckcheck.de
+    <a class="site-header__logo" href="index.html" data-nav>
+      <span class="site-header__logo-mark" aria-hidden="true">gc</span>
+      <span class="site-header__logo-text">grundstuckcheck.de</span>
     </a>
 
     <button
-      class="site-burger"
+      class="site-header__burger"
       type="button"
       aria-expanded="false"
-      aria-controls="site-nav"
+      aria-controls="site-header-nav"
       aria-label="Menü öffnen"
     >
+      <span class="site-header__burger-line" aria-hidden="true"></span>
+      <span class="site-header__burger-line" aria-hidden="true"></span>
+      <span class="site-header__burger-line" aria-hidden="true"></span>
       <span class="sr-only">Menü öffnen</span>
-      ☰
     </button>
 
-    <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
-      <a class="site-nav__link" href="index.html" data-nav>Home</a>
+    <nav class="site-header__nav" id="site-header-nav" aria-label="Hauptnavigation">
+      <a class="site-header__link" href="index.html" data-nav>Home</a>
 
-      <div class="site-nav__dropdown">
+      <div class="site-header__tools">
         <button
-          class="site-nav__toggle"
+          class="site-header__tools-toggle"
           type="button"
           aria-expanded="false"
-          aria-controls="tools-menu"
+          aria-controls="site-header-tools-panel"
         >
-          Tools ▾
+          Tools
+          <span class="site-header__chevron" aria-hidden="true">▾</span>
         </button>
 
-        <div class="site-nav__menu" id="tools-menu" role="menu">
-          <a class="site-nav__item" href="rentbuy.html" data-nav role="menuitem">Mieten oder Kaufen</a>
-          <a class="site-nav__item" href="tool.html" data-nav role="menuitem">Wohnen oder Bauen erlaubt?</a>
+        <div class="site-header__tools-panel" id="site-header-tools-panel" role="menu" aria-label="Tools Navigation">
+          <a class="site-header__tools-item" href="rentbuy.html" data-nav role="menuitem">
+            <span class="site-header__tools-title">Mieten oder Kaufen</span>
+            <span class="site-header__tools-sub">Finanzielle Einordnung in wenigen Klicks</span>
+          </a>
+          <a class="site-header__tools-item" href="tool.html" data-nav role="menuitem">
+            <span class="site-header__tools-title">Wohnen oder Bauen erlaubt?</span>
+            <span class="site-header__tools-sub">Schneller Check für Ihr Grundstück</span>
+          </a>
         </div>
       </div>
 
-      <a class="site-nav__link" href="ratgeber.html" data-nav>Ratgeber</a>
+      <a class="site-header__link" href="ratgeber.html" data-nav>Ratgeber</a>
     </nav>
   </div>
 </header>
