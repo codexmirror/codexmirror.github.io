@@ -2,81 +2,125 @@ document.addEventListener("DOMContentLoaded", async () => {
   const mount = document.getElementById("site-header");
   if (!mount) return;
 
-  const res = await fetch("/partials/header.html", { cache: "no-store" });
-  if (!res.ok) return;
-  mount.innerHTML = await res.text();
-
-  // Active Link markieren
-  const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-  mount.querySelectorAll('a[data-nav]').forEach((a) => {
-    const href = (a.getAttribute("href") || "").toLowerCase();
-    if (href === current) a.classList.add("is-active");
-  });
+  try {
+    const res = await fetch("/partials/header.html", { cache: "no-store" });
+    if (!res.ok) return;
+    mount.innerHTML = await res.text();
+  } catch {
+    return;
+  }
 
   const header = mount.querySelector(".site-header");
-  const nav = mount.querySelector("#site-nav");
-  const burger = mount.querySelector(".site-burger");
+  const nav = mount.querySelector("#site-header-nav");
+  const burger = mount.querySelector(".site-header__burger");
+  const toolsWrap = mount.querySelector(".site-header__tools");
+  const toolsToggle = mount.querySelector(".site-header__tools-toggle");
+  const desktopQuery = window.matchMedia("(min-width: 901px)");
 
-  const closeAll = () => {
-    // mobile nav
-    burger?.setAttribute("aria-expanded", "false");
+  const currentPath = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+  mount.querySelectorAll("a[data-nav]").forEach((link) => {
+    const href = (link.getAttribute("href") || "").toLowerCase();
+    if (href === currentPath || (currentPath === "" && href === "index.html")) {
+      link.classList.add("is-active");
+    }
+  });
+
+  const firstNavTarget = () => nav?.querySelector("a, button");
+
+  const closeTools = ({ focusToggle = false } = {}) => {
+    toolsWrap?.classList.remove("is-tools-open");
+    toolsToggle?.setAttribute("aria-expanded", "false");
+    if (focusToggle) toolsToggle?.focus();
+  };
+
+  const openTools = () => {
+    toolsWrap?.classList.add("is-tools-open");
+    toolsToggle?.setAttribute("aria-expanded", "true");
+  };
+
+  const closeNav = ({ focusBurger = false } = {}) => {
     header?.classList.remove("is-nav-open");
-
-    // tools dropdown
-    const dropdown = mount.querySelector(".site-nav__dropdown");
-    const btn = dropdown?.querySelector(".site-nav__toggle");
-    dropdown?.classList.remove("is-open");
-    btn?.setAttribute("aria-expanded", "false");
+    burger?.setAttribute("aria-expanded", "false");
+    closeTools();
+    if (focusBurger) burger?.focus();
   };
 
-  // Burger toggle
-  burger?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const isOpen = header.classList.toggle("is-nav-open");
-    burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-
-    // Wenn Nav zu geht -> Dropdown auch zu
-    if (!isOpen) closeAll();
-  });
-
-  // Dropdown toggle (Tools)
-  const dropdown = mount.querySelector(".site-nav__dropdown");
-  const btn = dropdown?.querySelector(".site-nav__toggle");
-  const menu = dropdown?.querySelector(".site-nav__menu");
-
-  const closeDropdown = () => {
-    btn?.setAttribute("aria-expanded", "false");
-    dropdown?.classList.remove("is-open");
-  };
-  const openDropdown = () => {
-    btn?.setAttribute("aria-expanded", "true");
-    dropdown?.classList.add("is-open");
+  const openNav = () => {
+    header?.classList.add("is-nav-open");
+    burger?.setAttribute("aria-expanded", "true");
   };
 
-  btn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const isOpen = btn.getAttribute("aria-expanded") === "true";
-    isOpen ? closeDropdown() : openDropdown();
+  burger?.addEventListener("click", () => {
+    const isOpen = header?.classList.contains("is-nav-open");
+    if (isOpen) {
+      closeNav({ focusBurger: true });
+      return;
+    }
+    openNav();
+    if (!desktopQuery.matches) {
+      firstNavTarget()?.focus();
+    }
   });
 
-  // Outside click (nur wenn dropdown offen)
-  document.addEventListener("click", (e) => {
-    if (!dropdown) return;
-    if (!dropdown.contains(e.target)) closeDropdown();
+  toolsToggle?.addEventListener("click", () => {
+    const isOpen = toolsToggle.getAttribute("aria-expanded") === "true";
+    if (isOpen) {
+      closeTools();
+    } else {
+      openTools();
+    }
   });
 
-  // ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeAll();
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    if (!header?.contains(target)) {
+      closeNav();
+      return;
+    }
+
+    if (!toolsWrap?.contains(target)) {
+      closeTools();
+    }
   });
 
-  // Link click => Menüs schließen (mobile angenehm)
-  nav?.addEventListener("click", (e) => {
-    if (e.target.closest("a")) closeAll();
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    if (toolsToggle?.getAttribute("aria-expanded") === "true") {
+      closeTools({ focusToggle: true });
+      return;
+    }
+
+    if (burger?.getAttribute("aria-expanded") === "true") {
+      closeNav({ focusBurger: true });
+    }
   });
 
-  // Beim Resize auf Desktop: Mobile-Menü sicher schließen
-  window.addEventListener("resize", () => {
-    if (window.matchMedia("(min-width: 901px)").matches) closeAll();
+  nav?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (!target.closest("a")) return;
+
+    if (!desktopQuery.matches) {
+      closeNav();
+      return;
+    }
+
+    closeTools();
   });
+
+  const syncOnResize = () => {
+    if (!desktopQuery.matches) return;
+    closeNav();
+  };
+
+  if (typeof desktopQuery.addEventListener === "function") {
+    desktopQuery.addEventListener("change", syncOnResize);
+  } else {
+    desktopQuery.addListener(syncOnResize);
+  }
+
+  window.addEventListener("resize", syncOnResize);
 });
