@@ -28,11 +28,23 @@
               <input id="eigenkapital" name="eigenkapital" type="number" min="0" step="1000" inputmode="decimal" required />
             </label>
             <label class="rentbuy-field">
-              <span>Kaufnebenkosten (%) *</span>
+              <div class="field-head">
+                <span class="legend-main">Kaufnebenkosten (%) *</span>
+                <button type="button" class="info-toggle" data-info="kaufnebenkosten" aria-expanded="false" aria-controls="info-kaufnebenkosten" aria-label="Erklärung zu Kaufnebenkosten anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-kaufnebenkosten" hidden>
+                Zusätzliche einmalige Kosten zum Kaufpreis, z. B. Notar, Grundbuch und Grunderwerbsteuer. Im Durchschnitt ca. 5%.
+              </div>
               <input id="kaufnebenkosten" name="kaufnebenkosten" type="number" min="0" max="100" step="0.1" inputmode="decimal" required />
             </label>
             <label class="rentbuy-field">
-              <span>Zinssatz p.a. (%) *</span>
+              <div class="field-head">
+                <span class="legend-main">Zinssatz p.a. (%) *</span>
+                <button type="button" class="info-toggle" data-info="zinssatz" aria-expanded="false" aria-controls="info-zinssatz" aria-label="Erklärung zu Zinssatz anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+              </div>
+              <div class="field-info" id="info-zinssatz" hidden>
+                Prozentsatz, den du auf geliehenes Geld pro Jahr zahlst. Typischer Zinssatz beim Immobilienkauf (Stand 2026): ca. 3,3–4,2 % pro Jahr bei einer Laufzeit von 10–20 Jahren.
+              </div>
               <input id="zinssatz" name="zinssatz" type="number" min="0" max="100" step="0.01" inputmode="decimal" required />
             </label>
             <label class="rentbuy-field">
@@ -68,11 +80,23 @@
             <summary>Optionale Annahmen</summary>
             <div class="rentbuy-grid">
               <label class="rentbuy-field">
-                <span>Mietsteigerung p.a. (%)</span>
+                <div class="field-head">
+                  <span class="legend-main">Mietsteigerung p.a. (%)</span>
+                  <button type="button" class="info-toggle" data-info="mietsteigerung" aria-expanded="false" aria-controls="info-mietsteigerung" aria-label="Erklärung zu Mietsteigerung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+                </div>
+                <div class="field-info" id="info-mietsteigerung" hidden>
+                  Prozentuale Erhöhung der Miete innerhalb eines Jahres. Typische Mietsteigerung (Stand 2026): ca. 3–5 % pro Jahr.
+                </div>
                 <input id="mietsteigerung" name="mietsteigerung" type="number" min="0" max="50" step="0.1" inputmode="decimal" />
               </label>
               <label class="rentbuy-field">
-                <span>Immobilienwertentwicklung p.a. (%)</span>
+                <div class="field-head">
+                  <span class="legend-main">Immobilienwertentwicklung p.a. (%)</span>
+                  <button type="button" class="info-toggle" data-info="wertentwicklung" aria-expanded="false" aria-controls="info-wertentwicklung" aria-label="Erklärung zu Immobilienwertentwicklung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
+                </div>
+                <div class="field-info" id="info-wertentwicklung" hidden>
+                  Prozentuale Änderung des Immobilienwertes pro Jahr. Typische Immobilienwertentwicklung (Stand 2026): ca. 2–4 % pro Jahr.
+                </div>
                 <input id="wertentwicklung" name="wertentwicklung" type="number" min="-20" max="50" step="0.1" inputmode="decimal" />
               </label>
             </div>
@@ -116,6 +140,13 @@
       </article>
     </section>
   </main>
+
+  <footer class="container page-footer">
+    <nav aria-label="Rechtliche Seiten">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+  </footer>
 
   <script src="rentbuy.js"></script>
 </body>
