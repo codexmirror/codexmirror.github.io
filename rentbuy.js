@@ -125,11 +125,8 @@
       valid: true,
       mode: inputs.mode,
       months,
-      years: months / 12,
       rate: usedRate,
-      calculatedYears: months / 12,
       kaufnebenkostenEur,
-      darlehen,
       rentTotal,
       buyTotal,
       buyAverage: months === 0 ? 0 : buyTotal / months,
@@ -210,59 +207,52 @@
       elements.rate.disabled = yearsActive;
     }
 
-    function render(result) {
-      const buyCard = document.getElementById("buy-card");
-      const rentCard = document.getElementById("rent-card");
-      const summaryCard = document.getElementById("result-summary-card");
-      const headline = document.getElementById("result-headline");
-      const period = document.getElementById("result-period");
-      const details = document.getElementById("details-list");
+function render(result) {
+  const buyCard = document.getElementById("buy-card");
+  const rentCard = document.getElementById("rent-card");
+  const headline = document.getElementById("result-headline");
+  const period = document.getElementById("result-period");
+  const details = document.getElementById("details-list");
 
-      autoRateText.textContent = `Berechnete Monatsrate: ${formatCurrency(result.rate)}`;
-      autoYearsText.textContent = `Berechnete Laufzeit: ${formatMonthsToYears(result.months)} Jahre`;
+  autoRateText.textContent = `Berechnete Monatsrate: ${formatCurrency(result.rate)}`;
+  autoYearsText.textContent = `Berechnete Laufzeit: ${formatMonthsToYears(result.months)} Jahre`;
 
-      placeholder.hidden = true;
-      panel.hidden = false;
-      errorNode.textContent = "";
+  placeholder.hidden = true;
+  panel.hidden = false;
+  errorNode.textContent = "";
 
-      const winnerText = result.winner === "buy" ? "Kaufen" : "Mieten";
-      headline.textContent = `Unter deinen Annahmen ist ${winnerText} um ${formatCurrency(result.diff)} günstiger.`;
-      period.textContent = `Vergleichszeitraum: ${formatMonthsToYears(result.months)} Jahre`;
+  const winnerText = result.winner === "buy" ? "Kaufen" : "Mieten";
+  headline.textContent = `Unter deinen Annahmen ist ${winnerText} um ${formatCurrency(result.diff)} günstiger.`;
+  period.textContent = `Vergleichszeitraum: ${formatMonthsToYears(result.months)} Jahre`;
 
-      document.getElementById("buy-total").textContent = formatCurrency(result.buyTotal);
-      document.getElementById("buy-total-label").textContent = `Gesamtzahlung über ${formatMonthsToYears(result.months)} Jahre`;
-      document.getElementById("buy-avg").textContent = formatCurrency(result.buyAverage);
+  document.getElementById("buy-total").textContent = formatCurrency(result.buyTotal);
+  document.getElementById("buy-total-label").textContent = `Gesamtzahlung über ${formatMonthsToYears(result.months)} Jahre`;
+  document.getElementById("buy-avg").textContent = formatCurrency(result.buyAverage);
 
-      document.getElementById("rent-total").textContent = formatCurrency(result.rentTotal);
-      document.getElementById("rent-total-label").textContent = `Gesamtzahlung über ${formatMonthsToYears(result.months)} Jahre`;
-      document.getElementById("rent-avg").textContent = formatCurrency(result.rentAverage);
+  document.getElementById("rent-total").textContent = formatCurrency(result.rentTotal);
+  document.getElementById("rent-total-label").textContent = `Gesamtzahlung über ${formatMonthsToYears(result.months)} Jahre`;
+  document.getElementById("rent-avg").textContent = formatCurrency(result.rentAverage);
 
-      const buyIsWinner = result.winner === "buy";
-      const rentIsWinner = result.winner === "rent";
-      buyCard.classList.toggle("is-winner", result.winner === "buy");
-      rentCard.classList.toggle("is-winner", result.winner === "rent");
-      panel.dataset.winner = result.winner;
-      if (summaryCard) {
-        summaryCard.classList.toggle("is-buy", buyIsWinner);
-        summaryCard.classList.toggle("is-rent", rentIsWinner);
-      }
+  buyCard.classList.toggle("is-winner", result.winner === "buy");
+  rentCard.classList.toggle("is-winner", result.winner === "rent");
+  panel.dataset.winner = result.winner;
 
-      details.innerHTML = "";
-      const detailItems = [
-        result.mode === "jahre"
-          ? `Berechnete Monatsrate: ${formatCurrency(result.rate)}`
-          : `Berechnete Laufzeit: ${formatMonthsToYears(result.months)} Jahre`,
-        `Kaufnebenkosten: ${formatCurrency(result.kaufnebenkostenEur)}`,
-        `Gesamte Miete: ${formatCurrency(result.rentTotal)}`,
-        `Endwert Immobilie: ${formatCurrency(result.propertyEndValue)}`
-      ];
+  details.innerHTML = "";
+  const detailItems = [
+    result.mode === "jahre"
+      ? `Berechnete Monatsrate: ${formatCurrency(result.rate)}`
+      : `Berechnete Laufzeit: ${formatMonthsToYears(result.months)} Jahre`,
+    `Kaufnebenkosten: ${formatCurrency(result.kaufnebenkostenEur)}`,
+    `Gesamte Miete: ${formatCurrency(result.rentTotal)}`,
+    `Endwert Immobilie: ${formatCurrency(result.propertyEndValue)}`
+  ];
 
-      detailItems.forEach((text) => {
-        const li = document.createElement("li");
-        li.textContent = text;
-        details.appendChild(li);
-      });
-    }
+  detailItems.forEach((text) => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    details.appendChild(li);
+  });
+}
 
     function renderError(message, inputState) {
       panel.hidden = true;
