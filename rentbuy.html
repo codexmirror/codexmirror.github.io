@@ -32,7 +32,7 @@
               <input id="kaufnebenkosten" name="kaufnebenkosten" type="number" min="0" max="100" step="0.1" inputmode="decimal" required />
             </label>
             <label class="rentbuy-field">
-              <span>Zinssatz p.a. (%) *</span>
+              <span>Zinssatz pro Jahr (%) *</span>
               <input id="zinssatz" name="zinssatz" type="number" min="0" max="100" step="0.01" inputmode="decimal" required />
             </label>
             <label class="rentbuy-field">
@@ -68,7 +68,7 @@
             <summary>Optionale Annahmen</summary>
             <div class="rentbuy-grid">
               <label class="rentbuy-field">
-                <span>Mietsteigerung p.a. (%)</span>
+                <span>Mietsteigerung pro Jahr (%)</span>
                 <input id="mietsteigerung" name="mietsteigerung" type="number" min="0" max="50" step="0.1" inputmode="decimal" />
               </label>
               <label class="rentbuy-field">
@@ -96,7 +96,7 @@
               <p class="rentbuy-total" id="buy-total">–</p>
               <p class="rentbuy-label" id="buy-total-label"></p>
               <p class="rentbuy-avg" id="buy-avg">–</p>
-              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat inkl. Zinsen und Kaufnebenkosten verteilt</p>
             </section>
 
             <section class="rentbuy-result-card" id="rent-card" aria-label="Mieten Ergebnis">
@@ -104,7 +104,7 @@
               <p class="rentbuy-total" id="rent-total">–</p>
               <p class="rentbuy-label" id="rent-total-label"></p>
               <p class="rentbuy-avg" id="rent-avg">–</p>
-              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat inkl. Mietsteigerung (wenn angegeben)</p>
             </section>
           </div>
 
