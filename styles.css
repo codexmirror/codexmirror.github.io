@@ -471,165 +471,87 @@ li { margin: 0.3rem 0; }
   position: sticky;
   top: 0;
   z-index: 2000;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
 
 .site-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 10px 12px;
   align-items: center;
-  gap: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.6rem;
 }
 
 /* Logo */
-.site-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 750;
-}
+.site-logo { grid-column: 1 / 2; grid-row: 1; }
 
-.site-logo__mark {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  display: grid;
-  place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent);
+/* Burger (nur Mobile) */
+.site-burger {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
   border: 1px solid var(--border);
-  font-size: 0.9rem;
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
 }
 
-/* Nav */
+/* Pills Nav */
 .site-nav {
+  grid-column: 1 / 3;
+  grid-row: 2;
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-left: auto;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  scrollbar-width: none;
 }
+.site-nav::-webkit-scrollbar { display: none; }
 
 .site-nav__link,
-.site-nav__toggle,
-.site-nav__item {
-  font: inherit;
-  color: #243041;
-  text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  padding: 0.45rem 0.6rem;
-  background: transparent;
-  cursor: pointer;
-  line-height: 1.1;
-}
-
-.site-nav__link:hover,
-.site-nav__toggle:hover,
-.site-nav__item:hover {
-  background: #f8fafb;
-  border-color: var(--border);
-}
-
-.site-nav__link.is-active,
-.site-nav__item.is-active {
-  background: var(--accent-soft);
-  border-color: #b9c4d5;
-}
-
-/* Dropdown */
-.site-nav__dropdown {
-  position: relative;
-}
-
-.site-nav__menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 240px;
-  padding: 0.4rem;
+.site-nav__toggle {
+  flex: 0 0 auto;
+  padding: 0.42rem 0.7rem;
+  border-radius: 999px;
   border: 1px solid var(--border);
-  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
-  display: none;
-  z-index: 2100;
-}
-
-.site-nav__dropdown.is-open .site-nav__menu {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.site-nav__item {
-  display: block;
-  width: 100%;
-  text-align: left;
-}
-
-/* CTA */
-.site-cta {
-  margin-left: 0.5rem;
-  border-radius: 12px;
-  padding: 0.55rem 0.8rem;
   text-decoration: none;
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid var(--accent);
-  font-weight: 650;
+  color: #243041;
+  font-weight: 600;
   white-space: nowrap;
 }
 
-.site-cta:hover {
-  filter: brightness(0.95);
-}
+/* Dropdown bleibt, aber auf Mobile lieber als Menü (optional später) */
+.site-nav__menu { z-index: 2100; }
 
-/* =========================
-   Mobile (<= 720px)
-   - Logo oben
-   - Nav darunter, horizontal scroll (kein wrap)
-   - CTA aus
-   ========================= */
-@media (max-width: 720px) {
+/* Desktop: wieder klassische Zeile */
+@media (min-width: 900px) {
   .site-header__inner {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
   }
-
-  .site-logo {
-    width: 100%;
-  }
-
+  .site-burger { display: none; }
   .site-nav {
-    width: 100%;
-    margin-left: 0;
-
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-
-    flex-wrap: nowrap;
-    gap: 18px;
+    overflow: visible;
+    padding-bottom: 0;
   }
-
   .site-nav__link,
   .site-nav__toggle {
-    white-space: nowrap;
-    flex: 0 0 auto;
-  }
-
-  /* CTA auf Mobile aus */
-  .site-cta {
-    display: none !important;
-  }
-
-  /* Dropdown-Menü bleibt links ausgerichtet */
-  .site-nav__menu {
-    left: 0;
-    right: auto;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 0.45rem 0.6rem;
+    font-weight: 500;
   }
 }
-
