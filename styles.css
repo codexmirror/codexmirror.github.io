@@ -764,3 +764,35 @@ li { margin: 0.3rem 0; }
     animation-duration: 1ms !important;
   }
 }
+
+
+/* FAQ / Content Sections */
+.card details {
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.card details:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.card details > summary {
+  font-weight: 650;
+  list-style: none;
+}
+
+.card details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.card details[open] > summary {
+  color: #111827;
+}
+
+.card details p {
+  margin: 0.45rem 0 0;
+  color: #243041;
+}
+   

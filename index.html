@@ -24,7 +24,47 @@
 
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=1.0" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Darf ich im Außenbereich (§35) dauerhaft wohnen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Im Außenbereich ist dauerhaftes Wohnen meist stark eingeschränkt und häufig nur in Ausnahmefällen zulässig. In vielen Fällen ist eine Abstimmung mit dem Bauamt entscheidend."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Erlaubt ein Bebauungsplan automatisch, dass ich dort wohnen darf?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ein Bebauungsplan legt fest, was grundsätzlich zulässig ist. Trotzdem können weitere Voraussetzungen wie Erschließung, Nutzung oder Schutzgebiete relevant sein."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Macht eine Anmeldung als Hauptwohnsitz eine Nutzung legal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nein. Melderecht und Baurecht sind getrennt. Eine Anmeldung ersetzt keine baurechtliche Zulässigkeit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was sollte ich als nächsten Schritt prüfen?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Meist sind Bebauungsplan/Flächennutzungsplan, Innen-/Außenbereich, Erschließung sowie Schutz- und Risikogebiete die wichtigsten Punkte. Das Tool zeigt dazu eine priorisierte Empfehlung."
+      }
+    }
+  ]
+}
+</script>
 </head>
   <body>
   <div id="site-header"></div>
@@ -263,18 +303,64 @@
           </section>
         </article>
       </section>
+      
+<section class="card" aria-labelledby="about-tool-title">
+  <h2 id="about-tool-title">Was prüft der Grundstücks-Check?</h2>
+  <p>
+    Der Grundstücks-Check gibt eine erste Einschätzung, ob eine Wohn- oder Bau-Nutzung planungsrechtlich plausibel ist.
+    Grundlage sind typische Kriterien wie Innen- oder Außenbereich (BauGB §34 / §35), Bebauungsplan, Grundstückstyp,
+    geplante Nutzung, Erschließung sowie mögliche Einschränkungen durch Schutz- und Risikogebiete.
+  </p>
 
-      <section class="card" aria-labelledby="topics-title">
-        <h2 id="topics-title">Vertiefende Themen</h2>
-        <p>Je nach Grundstückstyp unterscheiden sich die Regeln deutlich. Hier findest du vertiefende Erklärungen zu typischen Fällen.</p>
-        <ul>
-          <li><a href="wochenendhaus-dauerhaft-wohnen.html">Wochenendhaus dauerhaft wohnen</a></li>
-          <li><a href="hauptwohnsitz-wochenendhaus-anmelden.html">Hauptwohnsitz im Wochenendhaus anmelden</a></li>
-          <li><a href="freizeitgrundstueck-dauerhaft-wohnen.html">Freizeitgrundstück dauerhaft bewohnen</a></li>
-          <li><a href="schrebergarten-dauerhaft-wohnen.html">Schrebergarten dauerhaft wohnen</a></li>
-        </ul>
-        <p>Hinweis: Eine Anmeldung als Hauptwohnsitz macht eine Nutzung nicht automatisch baurechtlich zulässig.</p>
-      </section>
+  <h3>Typische Fragen, die das Tool beantwortet</h3>
+  <ul>
+    <li>Darf ich im Außenbereich dauerhaft wohnen?</li>
+    <li>Kann ich auf einem Freizeitgrundstück bauen oder wohnen?</li>
+    <li>Was bedeutet Bebauungsplan – und was, wenn keiner existiert?</li>
+    <li>Wann gilt §34 (Innenbereich) und wann §35 (Außenbereich)?</li>
+    <li>Welche Sonderfälle können die Planung stoppen (z. B. Schutzgebiet, Hochwasser)?</li>
+  </ul>
+
+  <p class="microcopy">
+    Hinweis: Das Tool ersetzt keine Bauamtsprüfung, hilft aber dabei, Risiken früh zu erkennen und die nächsten Schritte
+    gezielter zu planen.
+    Weitere Hintergründe findest du im <a href="/ratgeber/">Ratgeber</a>.
+  </p>
+</section>
+<section class="card" aria-labelledby="faq-title">
+  <h2 id="faq-title">Häufige Fragen</h2>
+
+  <details>
+    <summary>Darf ich im Außenbereich (§35) dauerhaft wohnen?</summary>
+    <p>
+      Im Außenbereich ist dauerhaftes Wohnen meist stark eingeschränkt und häufig nur in Ausnahmefällen zulässig
+      (z. B. privilegierte Vorhaben). In vielen Fällen ist eine Abstimmung mit dem Bauamt entscheidend.
+    </p>
+  </details>
+
+  <details>
+    <summary>Erlaubt ein Bebauungsplan automatisch, dass ich dort wohnen darf?</summary>
+    <p>
+      Ein Bebauungsplan legt fest, was grundsätzlich zulässig ist. Trotzdem können weitere Voraussetzungen
+      (z. B. Erschließung, Nutzung, Schutzgebiete) relevant sein.
+    </p>
+  </details>
+
+  <details>
+    <summary>Macht eine Anmeldung als Hauptwohnsitz eine Nutzung legal?</summary>
+    <p>
+      Nein. Melderecht (Hauptwohnsitz) und Baurecht sind getrennt. Eine Anmeldung ersetzt keine baurechtliche Zulässigkeit.
+    </p>
+  </details>
+
+  <details>
+    <summary>Was sollte ich als nächsten Schritt prüfen?</summary>
+    <p>
+      Meist sind Bebauungsplan/Flächennutzungsplan, Lage (Innen-/Außenbereich), Erschließung sowie Schutz- und Risikogebiete
+      die wichtigsten Punkte. Das Tool zeigt dir dazu eine priorisierte Empfehlung.
+    </p>
+  </details>
+</section>
     </main>
 
     <footer class="container page-footer">
