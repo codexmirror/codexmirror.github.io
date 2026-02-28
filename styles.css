@@ -462,11 +462,16 @@ li { margin: 0.3rem 0; }
   color: #fff;
   border-color: #111827;
 }
+
+    /* =========================
+   Site Header (Desktop + Mobile)
+   ========================= */
+
 .site-header {
   position: sticky;
   top: 0;
   z-index: 2000;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
 }
@@ -477,6 +482,7 @@ li { margin: 0.3rem 0; }
   gap: 1rem;
 }
 
+/* Logo */
 .site-logo {
   display: inline-flex;
   align-items: center;
@@ -498,6 +504,7 @@ li { margin: 0.3rem 0; }
   font-size: 0.9rem;
 }
 
+/* Nav */
 .site-nav {
   display: flex;
   align-items: center;
@@ -516,6 +523,7 @@ li { margin: 0.3rem 0; }
   padding: 0.45rem 0.6rem;
   background: transparent;
   cursor: pointer;
+  line-height: 1.1;
 }
 
 .site-nav__link:hover,
@@ -531,6 +539,7 @@ li { margin: 0.3rem 0; }
   border-color: #b9c4d5;
 }
 
+/* Dropdown */
 .site-nav__dropdown {
   position: relative;
 }
@@ -546,6 +555,7 @@ li { margin: 0.3rem 0; }
   background: #fff;
   box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
   display: none;
+  z-index: 2100;
 }
 
 .site-nav__dropdown.is-open .site-nav__menu {
@@ -559,6 +569,7 @@ li { margin: 0.3rem 0; }
   text-align: left;
 }
 
+/* CTA */
 .site-cta {
   margin-left: 0.5rem;
   border-radius: 12px;
@@ -575,72 +586,50 @@ li { margin: 0.3rem 0; }
   filter: brightness(0.95);
 }
 
-/* ===== Header: Mobile Layout Fix ===== */
-
-/* Passe die Klassen an, falls sie bei dir anders heißen */
-.site-header .container,
-.header .container,
-.site-header__inner,
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-/* Mobile: alles ordentlich stapeln */
+/* =========================
+   Mobile (<= 720px)
+   - Logo oben
+   - Nav darunter, horizontal scroll (kein wrap)
+   - CTA aus
+   ========================= */
 @media (max-width: 720px) {
-  .site-header .container,
-  .header .container,
-  .site-header__inner,
-  .header-inner {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-
-  /* Logo oben links */
-  .site-logo,
-  .header-logo {
-    flex: 1 1 100%;
-  }
-
-  /* Nav darunter, horizontal scroll statt Zeilenbruch-chaos */
-  .site-nav,
-  .header-nav {
-    flex: 1 1 100%;
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-  }
-
-  .site-nav a,
-  .header-nav a {
-    white-space: nowrap;
-  }
-
-  /* CTA (falls noch vorhanden) auf Mobile weg */
-  .site-cta,
-  .header-cta {
-    display: none !important;
-  }
-}
-
-@media (max-width: 900px) {
   .site-header__inner {
     flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  .site-logo {
+    width: 100%;
   }
 
   .site-nav {
     width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
     margin-left: 0;
+
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+
+    flex-wrap: nowrap;
+    gap: 18px;
   }
 
+  .site-nav__link,
+  .site-nav__toggle {
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  /* CTA auf Mobile aus */
+  .site-cta {
+    display: none !important;
+  }
+
+  /* Dropdown-Menü bleibt links ausgerichtet */
   .site-nav__menu {
     left: 0;
     right: auto;
   }
 }
+
