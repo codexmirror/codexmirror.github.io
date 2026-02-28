@@ -64,15 +64,49 @@
   align-items: start;
 }
 
+/* Info-Button: sauberer Kreis + zentriert, unabhängig von OS/Browser */
 .rentbuy-page .info-toggle {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  /* native button styles killen (wichtig auf Safari/Chrome/Windows) */
+  appearance: none;
+  -webkit-appearance: none;
+
   line-height: 1;
 }
 
+/* das "i" im Kreis */
 .rentbuy-page .info-glyph {
-  display: block;
-  font-size: 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
   line-height: 1;
-  transform: translateY(-0.5px);
+  color: #475569;
+  transform: translateY(-0.5px); /* optional, falls minimal off-center */
+}
+
+@media (hover: hover) {
+  .rentbuy-page .info-toggle:hover {
+    background: #eef2f7;
+    border-color: #94a3b8;
+  }
+}
+
+.rentbuy-page .info-toggle:focus-visible {
+  outline: 2px solid #bfdbfe;
+  outline-offset: 2px;
 }
 
 .rentbuy-page .rentbuy-field input {
