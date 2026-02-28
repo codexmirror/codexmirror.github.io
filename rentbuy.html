@@ -35,17 +35,23 @@
               <div class="field-info" id="info-kaufnebenkosten" hidden>
                 Zusätzliche einmalige Kosten zum Kaufpreis, z. B. Notar, Grundbuch und Grunderwerbsteuer. Im Durchschnitt etwa 5 %.
               </div>
-              <input id="kaufnebenkosten" name="kaufnebenkosten" type="number" min="0" max="100" step="0.1" inputmode="decimal" required />
+              <div class="rentbuy-input-suffix">
+                <input id="kaufnebenkosten" name="kaufnebenkosten" type="number" min="0" max="100" step="0.1" inputmode="decimal" required />
+                <span class="input-suffix" aria-hidden="true">%</span>
+              </div>
             </label>
             <label class="rentbuy-field">
               <span class="field-head">
-                <span class="legend-main">Zinssatz p.a. (%) *</span>
+                <span class="legend-main">Zinssatz pro Jahr (%) *</span>
                 <button type="button" class="info-toggle" data-info="zinssatz" aria-expanded="false" aria-controls="info-zinssatz" aria-label="Erklärung zu Zinssatz anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
               </span>
               <div class="field-info" id="info-zinssatz" hidden>
                 Prozentsatz, den du auf geliehenes Geld pro Jahr zahlst. Typischer Zinssatz beim Immobilienkauf (Stand 2026): etwa 3,3–4,2 % pro Jahr bei einer Laufzeit von 10–20 Jahren.
               </div>
-              <input id="zinssatz" name="zinssatz" type="number" min="0" max="100" step="0.01" inputmode="decimal" required />
+              <div class="rentbuy-input-suffix">
+                <input id="zinssatz" name="zinssatz" type="number" min="0" max="100" step="0.01" inputmode="decimal" required />
+                <span class="input-suffix" aria-hidden="true">%</span>
+              </div>
             </label>
             <label class="rentbuy-field">
               <span>Kaltmiete pro Monat (EUR) *</span>
@@ -55,25 +61,29 @@
 
           <fieldset class="rentbuy-mode-group">
             <legend>Kredit-Planung *</legend>
-            <label class="rentbuy-mode">
-              <input type="radio" name="modus" value="jahre" checked />
-              <span>Ich will in X Jahren fertig sein</span>
-            </label>
-            <label class="rentbuy-field rentbuy-mode-input">
-              <span>Jahre</span>
-              <input id="jahre" name="jahre" type="number" min="1" max="50" step="1" inputmode="numeric" value="25" />
-            </label>
-            <p class="rentbuy-auto" id="auto-rate-text">Berechnete Monatsrate: –</p>
+            <div class="rentbuy-mode-option">
+              <label class="rentbuy-mode">
+                <input type="radio" name="modus" value="jahre" checked />
+                <span>Ich will in X Jahren fertig sein</span>
+              </label>
+              <label class="rentbuy-field rentbuy-mode-input">
+                <span>Jahre</span>
+                <input id="jahre" name="jahre" type="number" min="1" max="50" step="1" inputmode="numeric" value="25" />
+              </label>
+              <p class="rentbuy-auto" id="auto-rate-text">Berechnete Monatsrate: –</p>
+            </div>
 
-            <label class="rentbuy-mode">
-              <input type="radio" name="modus" value="rate" />
-              <span>Ich kann X EUR pro Monat zahlen</span>
-            </label>
-            <label class="rentbuy-field rentbuy-mode-input">
-              <span>Monatsrate (EUR)</span>
-              <input id="rate" name="rate" type="number" min="0" step="10" inputmode="decimal" value="1500" disabled />
-            </label>
-            <p class="rentbuy-auto" id="auto-years-text">Berechnete Laufzeit: –</p>
+            <div class="rentbuy-mode-option">
+              <label class="rentbuy-mode">
+                <input type="radio" name="modus" value="rate" />
+                <span>Ich kann X EUR pro Monat zahlen</span>
+              </label>
+              <label class="rentbuy-field rentbuy-mode-input">
+                <span>Monatsrate (EUR)</span>
+                <input id="rate" name="rate" type="number" min="0" step="10" inputmode="decimal" value="1500" disabled />
+              </label>
+              <p class="rentbuy-auto" id="auto-years-text">Berechnete Laufzeit: –</p>
+            </div>
           </fieldset>
 
           <details class="rentbuy-optional">
@@ -81,23 +91,29 @@
             <div class="rentbuy-grid">
               <label class="rentbuy-field">
                 <span class="field-head">
-                  <span class="legend-main">Mietsteigerung p.a. (%)</span>
+                  <span class="legend-main">Mietsteigerung pro Jahr (%)</span>
                   <button type="button" class="info-toggle" data-info="mietsteigerung" aria-expanded="false" aria-controls="info-mietsteigerung" aria-label="Erklärung zu Mietsteigerung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
                 </span>
                 <div class="field-info" id="info-mietsteigerung" hidden>
                   Prozentuale Erhöhung der Miete innerhalb eines Jahres. Typische Mietsteigerung (Stand 2026): etwa 3–5 % pro Jahr.
                 </div>
-                <input id="mietsteigerung" name="mietsteigerung" type="number" min="0" max="50" step="0.1" inputmode="decimal" />
+                <div class="rentbuy-input-suffix">
+                  <input id="mietsteigerung" name="mietsteigerung" type="number" min="0" max="50" step="0.1" inputmode="decimal" />
+                  <span class="input-suffix" aria-hidden="true">%</span>
+                </div>
               </label>
               <label class="rentbuy-field">
                 <span class="field-head">
-                  <span class="legend-main">Immobilienwertentwicklung p.a. (%)</span>
+                  <span class="legend-main">Immobilienwertentwicklung pro Jahr (%)</span>
                   <button type="button" class="info-toggle" data-info="wertentwicklung" aria-expanded="false" aria-controls="info-wertentwicklung" aria-label="Erklärung zu Immobilienwertentwicklung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">ⓘ</span></button>
                 </span>
                 <div class="field-info" id="info-wertentwicklung" hidden>
                   Prozentuale Änderung des Immobilienwertes pro Jahr. Typische Immobilienwertentwicklung (Stand 2026): etwa 2–4 % pro Jahr.
                 </div>
-                <input id="wertentwicklung" name="wertentwicklung" type="number" min="-20" max="50" step="0.1" inputmode="decimal" />
+                <div class="rentbuy-input-suffix">
+                  <input id="wertentwicklung" name="wertentwicklung" type="number" min="-20" max="50" step="0.1" inputmode="decimal" />
+                  <span class="input-suffix" aria-hidden="true">%</span>
+                </div>
               </label>
             </div>
           </details>
@@ -120,7 +136,7 @@
               <p class="rentbuy-total" id="buy-total">–</p>
               <p class="rentbuy-label" id="buy-total-label"></p>
               <p class="rentbuy-avg" id="buy-avg">–</p>
-              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat (inkl. Kaufnebenkosten verteilt)</p>
             </section>
 
             <section class="rentbuy-result-card" id="rent-card" aria-label="Mieten Ergebnis">
@@ -128,7 +144,7 @@
               <p class="rentbuy-total" id="rent-total">–</p>
               <p class="rentbuy-label" id="rent-total-label"></p>
               <p class="rentbuy-avg" id="rent-avg">–</p>
-              <p class="rentbuy-label">Durchschnitt pro Monat</p>
+              <p class="rentbuy-label">Durchschnitt pro Monat (inkl. Kaufnebenkosten verteilt)</p>
             </section>
           </div>
 
@@ -143,6 +159,7 @@
 
   <footer class="container page-footer">
     <nav aria-label="Rechtliche Seiten">
+      <a href="index.html">Startseite</a>
       <a href="impressum.html">Impressum</a>
       <a href="datenschutz.html">Datenschutz</a>
     </nav>
