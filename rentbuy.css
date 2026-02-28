@@ -361,6 +361,16 @@
 .rentbuy-faq { margin-top: 0.75rem; }
 .rentbuy-seo-note { margin-top: 1rem; color: var(--muted); font-size: 0.92rem; }
 
+/* Abstand zwischen Tool-Bereich und SEO-Block */
+.rentbuy-layout {
+  margin-bottom: 1.25rem;
+}
+
+/* Einheitlicher Abstand zwischen aufeinanderfolgenden Cards */
+.rentbuy-shell > .card + .card {
+  margin-top: 1.25rem;
+}
+
 /* Tooltip / Info-Panels: auf Desktop als Popover (kein Layout-Shift) */
 @media (min-width: 900px) {
   .rentbuy-page .rentbuy-field {
