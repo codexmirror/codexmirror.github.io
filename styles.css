@@ -463,12 +463,8 @@ li { margin: 0.3rem 0; }
   border-color: #111827;
 }
 
-    /* =========================
-   Site Header (Desktop + Mobile)
-   ========================= */
-
 /* =========================
-   Site Header (Desktop Default)
+   Site Header (clean)
    ========================= */
 
 .site-header {
@@ -483,37 +479,53 @@ li { margin: 0.3rem 0; }
 .site-header__inner {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 12px;
+  min-height: 60px;
 }
 
 /* Logo */
 .site-logo {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 10px;
   text-decoration: none;
   color: var(--text);
   font-weight: 750;
 }
 
 .site-logo__mark {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   background: var(--accent-soft);
   color: var(--accent);
   border: 1px solid var(--border);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
-/* Desktop Nav (rechts, clean) */
+/* Burger (mobile) */
+.site-burger {
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  display: none; /* desktop hidden */
+  font: inherit;
+  line-height: 1;
+}
+.site-burger:hover { background: #f8fafb; }
+
+/* Nav (desktop default) */
 .site-nav {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-left: auto;
+  gap: 6px;
 }
 
 .site-nav__link,
@@ -543,7 +555,7 @@ li { margin: 0.3rem 0; }
   border-color: #b9c4d5;
 }
 
-/* Dropdown */
+/* Dropdown (desktop) */
 .site-nav__dropdown { position: relative; }
 
 .site-nav__menu {
@@ -551,18 +563,18 @@ li { margin: 0.3rem 0; }
   top: calc(100% + 8px);
   left: 0;
   min-width: 240px;
-  padding: 0.4rem;
+  padding: 8px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: #fff;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+  box-shadow: 0 12px 30px rgba(17, 24, 39, 0.12);
   display: none;
   z-index: 2100;
 }
 
 .site-nav__dropdown.is-open .site-nav__menu {
   display: grid;
-  gap: 0.25rem;
+  gap: 6px;
 }
 
 .site-nav__item {
@@ -571,88 +583,76 @@ li { margin: 0.3rem 0; }
   text-align: left;
 }
 
-/* Burger (Desktop aus) */
-.site-burger {
-  display: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #fff;
-  cursor: pointer;
-  font: inherit;
-  line-height: 1;
-}
-
 /* =========================
-   Mobile (<= 720px)
-   - Logo + Burger in einer Zeile
-   - Nav als Panel unter dem Header (kein Pills-chaos)
+   Mobile Nav (<= 900px)
+   - Burger sichtbar
+   - Nav wird Panel unter Header
+   - Links als clean list, keine Pills
    ========================= */
-@media (max-width: 720px) {
-  .site-header__inner {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
+@media (max-width: 900px) {
+  .site-burger { display: inline-grid; place-items: center; }
 
-  .site-burger {
-    display: inline-grid;
-    place-items: center;
-  }
-
-  /* Nav ist erstmal zu (öffnet per .is-open am Header) */
   .site-nav {
+    /* wird zum Panel */
+    display: none;
     width: 100%;
     margin-left: 0;
-    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
 
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+
     background: #fff;
-    padding: 0.5rem;
-    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
   }
 
-  .site-header.is-open .site-nav {
-    display: grid;
-    gap: 0.35rem;
+  /* Wenn offen (JS setzt Klasse am Header) */
+  .site-header.is-nav-open .site-nav {
+    display: flex;
   }
 
-  /* Mobile Links: block, clean */
   .site-nav__link,
   .site-nav__toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
-
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    justify-content: space-between;
+    padding: 0.75rem 0.85rem;
+    border-color: var(--border);
     background: #fff;
-    padding: 0.6rem 0.75rem;
-    font-weight: 650;
+    border-radius: 14px;
   }
 
-  /* Dropdown im Mobile: Menu relativ statt absolut */
+  .site-nav__link.is-active {
+    background: var(--accent-soft);
+  }
+
+  /* Dropdown im Mobile: nicht floating, sondern inline submenu */
   .site-nav__menu {
     position: static;
     display: none;
     box-shadow: none;
     border: none;
-    padding: 0.35rem 0 0.15rem;
-    min-width: 0;
+    padding: 6px 0 0;
+    margin: 0 0 6px;
+    background: transparent;
   }
 
   .site-nav__dropdown.is-open .site-nav__menu {
     display: grid;
-    gap: 0.25rem;
+    gap: 6px;
   }
 
   .site-nav__item {
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0.55rem 0.75rem;
-    background: #f8fafb;
+    border-radius: 14px;
+    padding: 0.75rem 0.85rem;
+    background: #fff;
+  }
+
+  .site-nav__item.is-active {
+    background: var(--accent-soft);
   }
 }
