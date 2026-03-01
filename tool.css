@@ -134,13 +134,14 @@
 /* Desktop */
 @media (min-width: 900px) {
   .layout {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 24rem; /* links flexibel, rechts fixed */
     align-items: start;
+    gap: 1.25rem;
   }
 
   .result:not(.result--neutral) {
     position: sticky;
-    top: 1rem;
+    top: 5.5rem; /* damit es nicht unter den Header rutscht */
   }
 
   .tool-hero {
