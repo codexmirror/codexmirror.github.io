@@ -55,12 +55,12 @@
 
 .artikel-hero h1 {
   margin: 0.65rem 0 0;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  font-size: clamp(2.05rem, 6vw, 3.15rem);
-  text-wrap: balance;              
-  hyphens: auto;                  
-  overflow-wrap: break-word;       
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-size: clamp(2rem, 5.5vw, 3rem);
+  text-wrap: balance;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 .artikel-subline {
@@ -422,8 +422,8 @@
   border-bottom: none;
 }
 
+/* Tabelle -> Cards */
 @media (max-width: 760px) {
-  /* Tabelle -> Cards */
   .artikel-content table {
     display: block;
     border: 0;
@@ -442,28 +442,27 @@
   }
 
   .artikel-content tr {
-    margin-top: 0.9rem;
-    border: 1px solid rgba(15, 23, 42, 0.12);
-    border-radius: 0.95rem;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    border-radius: 1rem;
     background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
     overflow: hidden;
   }
-  
-  .artikel-content tbody tr:first-child {
-  margin-top: 0;
-}
 
-  /* Row-Header (Kriterium) wird zur Card-Überschrift */
-  .artikel-content th[scope="row"] {
-    display: block;
-    padding: 0.85rem 0.95rem;
-    background: #f4f7fb;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.10);
-    font-weight: 700;
+  .artikel-content tbody tr:first-child {
+    margin-top: 0;
   }
 
-  /* Zellen: Label + Wert */
+  .artikel-content th[scope="row"] {
+    display: block;
+    padding: 0.7rem 0.95rem;
+    background: rgba(244, 247, 251, 0.7);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    font-weight: 750;
+    letter-spacing: -0.01em;
+  }
+
   .artikel-content td {
     display: grid;
     grid-template-columns: 1fr;
@@ -477,15 +476,26 @@
 
   .artikel-content td::before {
     content: attr(data-label);
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    background: rgba(244, 247, 251, 0.9);
+
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 700;
+    color: #55657a;
+    font-weight: 750;
+    line-height: 1.1;
   }
 
   .artikel-content tr td:last-child {
     border-bottom: none;
   }
-}
 
+}
