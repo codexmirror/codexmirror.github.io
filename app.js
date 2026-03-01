@@ -677,9 +677,9 @@
         if (resultCard) resultCard.classList.add("result--neutral");
         setHidden(resultPlaceholder, false);
         setHidden(resultContent, true);
-        if (detailsToggle && resultDetails) {
+         if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details anzeigen";
+          detailsToggle.textContent = "Details & Begründung";
           resultDetails.hidden = true;
         }
         lastRenderedScore = 50;
@@ -756,21 +756,27 @@
       });
     });
 
-    const markTouched = (event) => {
-      let input = null;
-      if (event.target && event.target.matches && event.target.matches("input[type=radio]")) {
-        input = event.target;
-      } else if (event.target && event.target.closest) {
-        const label = event.target.closest("label");
-        if (label) input = label.querySelector("input[type=radio]");
-      }
-      if (input && input.name) touched.add(input.name);
-      update();
+        // Update-Batching: verhindert mehrere Re-Renders pro Klick (fühlt sich "snappier" an)
+    let updateRaf = 0;
+    const scheduleUpdate = () => {
+      if (updateRaf) return;
+      updateRaf = window.requestAnimationFrame(() => {
+        updateRaf = 0;
+        update();
+      });
     };
 
-    form.addEventListener("change", markTouched);
-    form.addEventListener("input", markTouched);
-    form.addEventListener("click", markTouched);
+    // Bei Radios reicht "change" völlig (input/click würden nur doppelt feuern)
+    const onFormChange = (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (target.type !== "radio") return;
+
+      if (target.name) touched.add(target.name);
+      scheduleUpdate();
+    };
+
+    form.addEventListener("change", onFormChange);
 
     let lastInfoToggleTs = 0;
 
@@ -797,19 +803,28 @@
       button.addEventListener("click", handleInfoToggle);
     });
 
-    if (detailsToggle && resultDetails) {
+        if (detailsToggle && resultDetails) {
+      const CLOSED_LABEL = "Details & Begründung";
+      const OPEN_LABEL = "Details ausblenden";
+
+      // Falls HTML-Label abweicht: initial glattziehen
+      detailsToggle.textContent = CLOSED_LABEL;
+
       detailsToggle.addEventListener("click", () => {
         const expanded = detailsToggle.getAttribute("aria-expanded") === "true";
         const next = !expanded;
+
         detailsToggle.setAttribute("aria-expanded", String(next));
-        detailsToggle.textContent = next ? "Details ausblenden" : "Details anzeigen";
+        detailsToggle.textContent = next ? OPEN_LABEL : CLOSED_LABEL;
         resultDetails.hidden = !next;
       });
     }
 
-    if (optionalDetails) {
+        if (optionalDetails) {
       optionalDetails.addEventListener("toggle", () => {
-        update();
+        // falls scheduleUpdate existiert (siehe Block 1)
+        if (typeof scheduleUpdate === "function") scheduleUpdate();
+        else update();
       });
     }
 
