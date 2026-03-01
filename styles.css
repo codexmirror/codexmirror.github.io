@@ -416,7 +416,13 @@ li { margin: 0.3rem 0; }
   gap: 0.6rem;
   text-decoration: none;
   color: var(--header-text);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+}
+@media (min-width: 900px) {
+  .site-header__logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
 }
 
 .site-header__nav {
