@@ -138,6 +138,24 @@
   font-weight: 620;
 }
 
+/* Inline-Link im Fließtext – dezente Hervorhebung */
+.artikel-content a.text-cta {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  margin: 0 0.1rem;
+  border-radius: 0.5rem;
+  background: rgba(152, 165, 188, 0.15);
+  color: #22344d;
+  font-weight: 620;
+  text-decoration: none;
+  transition: background 140ms ease, transform 120ms ease;
+}
+
+.artikel-content a.text-cta:hover {
+  background: rgba(152, 165, 188, 0.25);
+  transform: translateY(-1px);
+}
+
 /* Callout */
 
 .artikel-callout {
