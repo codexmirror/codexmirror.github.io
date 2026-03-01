@@ -1,8 +1,21 @@
 <header class="site-header" data-site-header>
   <div class="container site-header__inner">
-    <a class="site-header__logo" href="/" data-nav>
-      <span class="site-header__logo-mark" aria-hidden="true">gc</span>
-      <span class="site-header__logo-text">grundstuckcheck.de</span>
+    <a class="site-header__logo" href="/" data-nav aria-label="Grundstückscheck Startseite">
+      <span class="site-header__logo-mark" aria-hidden="true">
+        <img
+          src="/assets/logo.svg"
+          alt=""
+          class="site-header__logo-img"
+          width="160"
+          height="24"
+          loading="eager"
+          decoding="async"
+        />
+      </span>
+
+      <span class="site-header__logo-text">
+        grundstueck<span>check</span>
+      </span>
     </a>
 
     <button
@@ -27,17 +40,19 @@
           type="button"
           aria-expanded="false"
           aria-controls="site-header-tools-panel"
+          aria-haspopup="true"
         >
           Tools
           <span class="site-header__chevron" aria-hidden="true">▾</span>
         </button>
 
-        <div class="site-header__tools-panel" id="site-header-tools-panel" role="menu" aria-label="Tools Navigation">
-          <a class="site-header__tools-item" href="/mieten-oder-kaufen-rechner.html" data-nav role="menuitem">
+        <div class="site-header__tools-panel" id="site-header-tools-panel" aria-label="Tools Navigation">
+          <a class="site-header__tools-item" href="/mieten-oder-kaufen-rechner.html" data-nav>
             <span class="site-header__tools-title">Mieten oder Kaufen</span>
             <span class="site-header__tools-sub">Finanzielle Einordnung in wenigen Klicks</span>
           </a>
-          <a class="site-header__tools-item" href="/index.html" data-nav role="menuitem">
+
+          <a class="site-header__tools-item" href="/index.html" data-nav>
             <span class="site-header__tools-title">Wohnen oder Bauen erlaubt?</span>
             <span class="site-header__tools-sub">Schneller Check für Ihr Grundstück</span>
           </a>

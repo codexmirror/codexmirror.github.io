@@ -15,30 +15,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   const burger = mount.querySelector(".site-header__burger");
   const toolsWrap = mount.querySelector(".site-header__tools");
   const toolsToggle = mount.querySelector(".site-header__tools-toggle");
+  const toolsPanel = mount.querySelector("#site-header-tools-panel");
   const desktopQuery = window.matchMedia("(min-width: 901px)");
 
+  // -----------------------
+  // Active Link Handling
+  // -----------------------
   const normalizePath = (value) => {
     if (!value) return "/";
     const withoutHash = value.split("#")[0];
     const withoutQuery = withoutHash.split("?")[0];
     let path = withoutQuery.toLowerCase();
 
-    if (!path.startsWith("/")) {
-      path = `/${path}`;
-    }
+    if (!path.startsWith("/")) path = `/${path}`;
 
-    if (path === "/index.html") {
-      return "/";
-    }
+    if (path === "/index.html") return "/";
+    if (path.endsWith("/index.html")) path = path.slice(0, -"index.html".length);
 
-    if (path.endsWith("/index.html")) {
-      path = path.slice(0, -"index.html".length);
-    }
-
-    if (path.length > 1 && path.endsWith("/")) {
-      path = path.slice(0, -1);
-    }
-
+    if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
     return path || "/";
   };
 
@@ -49,14 +43,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const targetPath = normalizePath(href);
 
     const isRatgeberTarget = targetPath === "/ratgeber";
-    const isRatgeberPage = currentPath === "/ratgeber" || currentPath.startsWith("/ratgeber/") || currentPath === "/ratgeber.html";
+    const isRatgeberPage =
+      currentPath === "/ratgeber" ||
+      currentPath.startsWith("/ratgeber/") ||
+      currentPath === "/ratgeber.html";
+
     const isMatch = isRatgeberTarget ? isRatgeberPage : targetPath === currentPath;
 
-    if (isMatch) {
-      link.classList.add("is-active");
-    }
+    if (isMatch) link.classList.add("is-active");
   });
 
+  // -----------------------
+  // Helpers
+  // -----------------------
   const firstNavTarget = () => nav?.querySelector("a, button");
 
   const closeTools = ({ focusToggle = false } = {}) => {
@@ -82,44 +81,75 @@ document.addEventListener("DOMContentLoaded", async () => {
     burger?.setAttribute("aria-expanded", "true");
   };
 
+  // -----------------------
+  // Burger (Mobile Nav)
+  // -----------------------
   burger?.addEventListener("click", () => {
     const isOpen = header?.classList.contains("is-nav-open");
     if (isOpen) {
       closeNav({ focusBurger: true });
       return;
     }
+
     openNav();
+
+    // Mobile: Fokus auf erstes Nav-Element
     if (!desktopQuery.matches) {
-      firstNavTarget()?.focus();
+      const first = firstNavTarget();
+      if (first && typeof first.focus === "function") first.focus();
     }
   });
 
+  // -----------------------
+  // Tools Dropdown
+  // -----------------------
   toolsToggle?.addEventListener("click", () => {
     const isOpen = toolsToggle.getAttribute("aria-expanded") === "true";
-    if (isOpen) {
-      closeTools();
-    } else {
-      openTools();
+    if (isOpen) closeTools();
+    else openTools();
+  });
+
+  // Klick auf Tool-Link -> Dropdown schließen (und auf Mobile auch Nav schließen)
+  toolsPanel?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const link = target.closest("a");
+    if (!link) return;
+
+    closeTools();
+
+    if (!desktopQuery.matches) {
+      closeNav();
     }
   });
 
+  // -----------------------
+  // Outside Click Handling
+  // -----------------------
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
 
+    // Klick komplett außerhalb Header -> alles zu
     if (!header?.contains(target)) {
       closeNav();
       return;
     }
 
+    // Klick im Header aber außerhalb Tools -> Tools zu
     if (!toolsWrap?.contains(target)) {
       closeTools();
     }
   });
 
+  // -----------------------
+  // Keyboard Handling
+  // -----------------------
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
 
+    // ESC schließt zuerst Tools, dann Nav
     if (toolsToggle?.getAttribute("aria-expanded") === "true") {
       closeTools({ focusToggle: true });
       return;
@@ -130,6 +160,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // Klick in Nav: auf Mobile Nav schließen, auf Desktop nur Tools schließen
   nav?.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
@@ -143,16 +174,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     closeTools();
   });
 
-  const syncOnResize = () => {
-    if (!desktopQuery.matches) return;
-    closeNav();
+  // -----------------------
+  // Responsive Sync
+  // -----------------------
+  const syncOnBreakpoint = () => {
+    // Wenn Desktop, sicherheitshalber Mobile-Nav schließen
+    if (desktopQuery.matches) closeNav();
   };
 
   if (typeof desktopQuery.addEventListener === "function") {
-    desktopQuery.addEventListener("change", syncOnResize);
+    desktopQuery.addEventListener("change", syncOnBreakpoint);
   } else {
-    desktopQuery.addListener(syncOnResize);
+    desktopQuery.addListener(syncOnBreakpoint);
   }
-
-  window.addEventListener("resize", syncOnResize);
 });
