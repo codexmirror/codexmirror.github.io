@@ -17,7 +17,10 @@
    ========================= */
 
 .artikel-hero {
-  background: rgba(255, 255, 255, 0.9);
+  background:
+    radial-gradient(1100px 280px at 10% -25%, rgba(38, 94, 199, 0.10), transparent 55%),
+    radial-gradient(900px 240px at 95% 0%, rgba(15, 118, 110, 0.07), transparent 55%),
+    rgba(255, 255, 255, 0.90);
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 1.1rem;
   box-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
@@ -51,10 +54,13 @@
 }
 
 .artikel-hero h1 {
-  margin: 0.7rem 0 0;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  font-size: clamp(1.95rem, 5vw, 2.85rem);
+  margin: 0.65rem 0 0;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.05rem, 6vw, 3.15rem);
+  text-wrap: balance;              
+  hyphens: auto;                  
+  overflow-wrap: break-word;       
 }
 
 .artikel-subline {
@@ -417,9 +423,69 @@
 }
 
 @media (max-width: 760px) {
+  /* Tabelle -> Cards */
   .artikel-content table {
     display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .artikel-content thead {
+    display: none;
+  }
+
+  .artikel-content tbody,
+  .artikel-content tr {
+    display: block;
+  }
+
+  .artikel-content tr {
+    margin-top: 0.9rem;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+  }
+  
+  .artikel-content tbody tr:first-child {
+  margin-top: 0;
+}
+
+  /* Row-Header (Kriterium) wird zur Card-Überschrift */
+  .artikel-content th[scope="row"] {
+    display: block;
+    padding: 0.85rem 0.95rem;
+    background: #f4f7fb;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+    font-weight: 700;
+  }
+
+  /* Zellen: Label + Wert */
+  .artikel-content td {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding: 0.8rem 0.95rem;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    vertical-align: top;
+    color: #22344d;
+    font-weight: 560;
+  }
+
+  .artikel-content td::before {
+    content: attr(data-label);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .artikel-content tr td:last-child {
+    border-bottom: none;
   }
 }
+
