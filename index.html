@@ -15,16 +15,20 @@
   <link rel="canonical" href="https://grundstueckcheck.de/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://grundstueckcheck.de/" />
-  <meta property="og:title" content="Grundstücks-Check: Darf ich hier wohnen oder bauen?" />
-  <meta
-    property="og:description"
-    content="Ersteinschätzung für Grundstücke mit Einschränkungen: Ampel, Score, Gründe und nächste Schritte."
-  />
+<meta property="og:url" content="https://grundstueckcheck.de/" />
+<meta property="og:title" content="Grundstücks-Check: Darf ich hier wohnen oder bauen? | Ampel &amp; Score" />
+<meta property="og:description" content="2-Minuten-Grundstücks-Check: Ampel, Score, Gründe und nächste Schritte – für Innen-/Außenbereich, Bebauungsplan &amp; typische Sonderfälle." />
+<meta property="og:image" content="https://grundstueckcheck.de/assets/og/grundstueckcheck-tool.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Grundstücks-Check: Ampel & Score – Darf ich hier wohnen oder bauen?" />
 
-  <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Grundstücks-Check: Darf ich hier wohnen oder bauen? | Ampel &amp; Score" />
+<meta name="twitter:description" content="2-Minuten-Ersteinschätzung: Ampel, Score, Gründe und nächste Schritte – inkl. Innen-/Außenbereich und Bebauungsplan." />
+<meta name="twitter:image" content="https://grundstueckcheck.de/assets/og/grundstueckcheck-tool.jpg" />
 
-  <link rel="stylesheet" href="styles.css?v=1.3" />
+  <link rel="stylesheet" href="styles.css?v=1.4" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -67,24 +71,38 @@
 </script>
 </head>
   <body>
+  <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
   <div id="site-header"></div>
   <script src="/header.js" defer></script>
 
-    <main class="container">
+    <main id="main-content" class="container">
       <header class="page-header">
         <h1>Darf ich hier wohnen oder bauen?</h1>
         <p class="subline">2-Minuten-Check mit Score, Ampel, Gründen und nächsten Schritten.</p>
-        <p class="disclaimer">Dieses Tool bietet nur eine unverbindliche Ersteinschätzung und ersetzt keine individuelle Prüfung.</p>
+        <p class="disclaimer">
+  Unverbindliche Ersteinschätzung – ersetzt keine Prüfung durch Bauamt/Planungsbüro.
+</p>
+        <p class="microcopy">
+  Du brauchst nur: Lage, Bebauungsplan-Status, Grundstückstyp und geplante Nutzung.
+</p>
+
+
       </header>
 
       <section class="layout" aria-label="Realitätscheck Tool">
         <article class="card" aria-labelledby="inputs-title">
-          <div class="card-head">
-            <h2 id="inputs-title">Deine Angaben</h2>
-            <button id="reset-button" type="button" class="secondary">Zurücksetzen</button>
-          </div>
-
-          <form id="check-form" novalidate>
+  <form id="check-form" novalidate>
+    <div class="card-head">
+      <h2 id="inputs-title">Deine Angaben</h2>
+      <button
+        id="reset-button"
+        type="button"
+        class="secondary"
+        aria-label="Alle Angaben zurücksetzen"
+      >
+        Zurücksetzen
+      </button>
+    </div>
             <fieldset data-required="true" data-field="lage">
               <legend class="sr-only">Lage <span aria-hidden="true">*</span></legend>
               <div class="field-head">
@@ -92,8 +110,9 @@
                 <button type="button" class="info-toggle" data-info="lage" aria-expanded="false" aria-controls="info-lage" aria-label="Erklärung zu Lage anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">i</span></button>
               </div>
               <div class="field-info" id="info-lage" hidden>
-                Innenbereich: Liegt im Ort zwischen anderen Häusern. Außenbereich: Liegt außerhalb geschlossener Bebauung (z. B. Feld oder Waldrand).
-              </div>
+  Innenbereich = zusammenhängend bebauter Ortsteil (§34). Außenbereich = außerhalb der Ortslage (§35).
+  Wenn du unsicher bist: „Unklar" wählen – wir bewerten konservativ.
+</div>
               <div class="tile-options" role="radiogroup" aria-label="Lage">
                 <label class="tile"><input type="radio" name="lage" value="innen" />Innenbereich</label>
                 <label class="tile"><input type="radio" name="lage" value="aussen" />Außenbereich</label>
@@ -109,8 +128,9 @@
                 <button type="button" class="info-toggle" data-info="bplan" aria-expanded="false" aria-controls="info-bplan" aria-label="Erklärung zu Bebauungsplan anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">i</span></button>
               </div>
               <div class="field-info" id="info-bplan" hidden>
-                Legt verbindlich fest, was gebaut werden darf.
-              </div>
+  Ein Bebauungsplan legt fest, was auf dem Grundstück grundsätzlich zulässig ist.
+  Wenn du keinen Plan findest: „Unklar" wählen.
+</div>
               <div class="tile-options" role="radiogroup" aria-label="Bebauungsplan">
                 <label class="tile"><input type="radio" name="bplan" value="ja" />Ja</label>
                 <label class="tile"><input type="radio" name="bplan" value="nein" />Nein</label>
@@ -126,8 +146,9 @@
                 <button type="button" class="info-toggle" data-info="typ" aria-expanded="false" aria-controls="info-typ" aria-label="Erklärung zu Grundstückstyp anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">i</span></button>
               </div>
               <div class="field-info" id="info-typ" hidden>
-                Beschreibt die rechtliche Einordnung des Grundstücks.
-              </div>
+  Das hilft, typische Einschränkungen zu erkennen (z. B. Freizeitgrundstück, Wald, Landwirtschaft).
+  Wenn du unsicher bist: „Sonstiges" wählen.
+</div>
               <div class="tile-options" role="radiogroup" aria-label="Grundstückstyp">
                 <label class="tile"><input type="radio" name="typ" value="bauluecke" />Baulücke</label>
                 <label class="tile"><input type="radio" name="typ" value="landwirtschaft" />Landwirtschaft</label>
@@ -145,8 +166,8 @@
                 <button type="button" class="info-toggle" data-info="nutzung" aria-expanded="false" aria-controls="info-nutzung" aria-label="Erklärung zu geplanter Nutzung anzeigen oder ausblenden"><span class="info-glyph" aria-hidden="true">i</span></button>
               </div>
               <div class="field-info" id="info-nutzung" hidden>
-                Wofür das Grundstück dauerhaft oder regelmäßig genutzt werden soll.
-              </div>
+  Entscheidend ist, ob du dauerhaft wohnen willst, nur am Wochenende nutzt oder ein privilegiertes Vorhaben vorliegt.
+</div>
               <div class="tile-options" role="radiogroup" aria-label="Geplante Nutzung">
                 <label class="tile"><input type="radio" name="nutzung" value="wohnen" />Wohnen (dauerhaft)</label>
                 <label class="tile"><input type="radio" name="nutzung" value="wochenende" />Wochenendnutzung</label>
@@ -159,68 +180,69 @@
             <p class="microcopy">Unsicher? Wähle „Unklar" – wir rechnen konservativ.</p>
 
             <details id="optional-details">
-              <summary>Optionale Angaben</summary>
-              <fieldset>
-                <legend>Bestand</legend>
-                <div class="tile-options" role="radiogroup" aria-label="Bestand">
-                  <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
-                  <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
-                  <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
-                </div>
-              </fieldset>
+  <summary>Optional: Ergebnis verfeinern (Bestand, Erschließung, Sonderfälle)</summary>
 
-              <fieldset>
-                <legend>Erschließung</legend>
-                <div class="tile-options" role="radiogroup" aria-label="Erschließung">
-                  <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
-                  <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
-                  <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
-                </div>
-              </fieldset>
+  <fieldset>
+    <legend>Bestehende Bebauung</legend>
+    <div class="tile-options" aria-label="Bestand">
+      <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
+      <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
+      <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
+    </div>
+  </fieldset>
 
-              <fieldset>
-                <legend>Lage-Detail</legend>
-                <p class="microcopy">Nur auswählen, wenn du es sicher weißt. Sonst „Weiß ich nicht“.</p>
-                <div class="tile-options" role="radiogroup" aria-label="Lage-Detail">
-                  <label class="tile"><input type="radio" name="lage_detail" value="innen34" />Innenbereich (§34)</label>
-                  <label class="tile"><input type="radio" name="lage_detail" value="aussen35" />Außenbereich (§35)</label>
-                  <label class="tile"><input type="radio" name="lage_detail" value="randlage" />Randlage</label>
-                  <label class="tile"><input type="radio" name="lage_detail" value="satzung" />Satzungsgebiet</label>
-                  <label class="tile"><input type="radio" name="lage_detail" value="unklar" />Weiß ich nicht</label>
-                </div>
-              </fieldset>
+  <fieldset>
+    <legend>Erschließung</legend>
+    <div class="tile-options" aria-label="Erschließung">
+      <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
+      <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
+      <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
+    </div>
+  </fieldset>
 
-              <section aria-label="Sonderfälle">
-                <h3>Sonderfälle (können Planung stoppen)</h3>
+  <fieldset>
+    <legend>Lage-Detail</legend>
+    <p class="microcopy">Nur auswählen, wenn du es sicher weißt. Sonst „Weiß ich nicht".</p>
+    <div class="tile-options" aria-label="Lage-Detail">
+      <label class="tile"><input type="radio" name="lage_detail" value="innen34" />Innenbereich (§34)</label>
+      <label class="tile"><input type="radio" name="lage_detail" value="aussen35" />Außenbereich (§35)</label>
+      <label class="tile"><input type="radio" name="lage_detail" value="randlage" />Randlage</label>
+      <label class="tile"><input type="radio" name="lage_detail" value="satzung" />Satzungsgebiet</label>
+      <label class="tile"><input type="radio" name="lage_detail" value="unklar" />Weiß ich nicht</label>
+    </div>
+  </fieldset>
 
-                <fieldset>
-                  <legend>Natur-/Schutzgebiet</legend>
-                  <div class="tile-options" role="radiogroup" aria-label="Natur- oder Schutzgebiet">
-                    <label class="tile"><input type="radio" name="schutzgebiet" value="unbekannt" />Unbekannt</label>
-                    <label class="tile"><input type="radio" name="schutzgebiet" value="lsg" />Landschaftsschutzgebiet</label>
-                    <label class="tile"><input type="radio" name="schutzgebiet" value="streng" />Strenges Schutzgebiet</label>
-                  </div>
-                </fieldset>
+  <section aria-label="Sonderfälle">
+    <h3>Sonderfälle (können Planung stoppen)</h3>
 
-                <fieldset>
-                  <legend>Wasserschutz</legend>
-                  <div class="tile-options" role="radiogroup" aria-label="Wasserschutz">
-                    <label class="tile"><input type="radio" name="wasserschutz" value="unbekannt" />Unbekannt</label>
-                    <label class="tile"><input type="radio" name="wasserschutz" value="zone3" />Zone III</label>
-                    <label class="tile"><input type="radio" name="wasserschutz" value="zone12" />Zone I/II</label>
-                  </div>
-                </fieldset>
+    <fieldset>
+      <legend>Natur-/Schutzgebiet</legend>
+      <div class="tile-options" aria-label="Natur- oder Schutzgebiet">
+        <label class="tile"><input type="radio" name="schutzgebiet" value="unbekannt" />Unbekannt</label>
+        <label class="tile"><input type="radio" name="schutzgebiet" value="lsg" />Landschaftsschutzgebiet</label>
+        <label class="tile"><input type="radio" name="schutzgebiet" value="streng" />Strenges Schutzgebiet</label>
+      </div>
+    </fieldset>
 
-                <fieldset>
-                  <legend>Hochwasser</legend>
-                  <div class="tile-options" role="radiogroup" aria-label="Hochwasser">
-                    <label class="tile"><input type="radio" name="hochwasser" value="unbekannt" />Unbekannt</label>
-                    <label class="tile"><input type="radio" name="hochwasser" value="risiko" />Risiko</label>
-                    <label class="tile"><input type="radio" name="hochwasser" value="hq100" />HQ100</label>
-                  </div>
-                </fieldset>
-              </section>
-            </details>
+    <fieldset>
+      <legend>Wasserschutz</legend>
+      <div class="tile-options" aria-label="Wasserschutz">
+        <label class="tile"><input type="radio" name="wasserschutz" value="unbekannt" />Unbekannt</label>
+        <label class="tile"><input type="radio" name="wasserschutz" value="zone3" />Zone III</label>
+        <label class="tile"><input type="radio" name="wasserschutz" value="zone12" />Zone I/II</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Hochwasser</legend>
+      <div class="tile-options" aria-label="Hochwasser">
+        <label class="tile"><input type="radio" name="hochwasser" value="unbekannt" />Unbekannt</label>
+        <label class="tile"><input type="radio" name="hochwasser" value="risiko" />Risiko</label>
+        <label class="tile"><input type="radio" name="hochwasser" value="hq100" />HQ100</label>
+      </div>
+    </fieldset>
+  </section>
+</details>
           </form>
         </article>
 
@@ -230,7 +252,7 @@
             <p id="result-placeholder" class="result-placeholder">Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.</p>
 
             <div id="result-content" hidden>
-              <p class="ampel-badge" id="result-ampel" aria-label="Ampelstatus">🟡 Neutral</p>
+              <p class="ampel-badge" id="result-ampel" role="status" aria-live="polite">🟡 Neutral</p>
               <p class="score" id="result-score">50</p>
               <p class="score-legend-inline" aria-label="Score-Legende">
                 Legende: kritisch · prüfbedürftig · plausibel · gute Ausgangslage
@@ -264,7 +286,7 @@
                 aria-controls="result-details"
                 aria-label="Zusätzliche Details zum Ergebnis anzeigen oder ausblenden"
               >
-                Details anzeigen
+                Details &amp; Begründung
               </button>
 
               <section id="result-details" hidden>

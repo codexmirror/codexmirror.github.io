@@ -20,6 +20,33 @@ body {
   line-height: 1.45;
 }
 
+/* =========================
+   Skip Link (Accessibility)
+   ========================= */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 9999;
+  padding: 0.6rem 0.85rem;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+  transform: translateY(-140%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 2px;
+}
+
 .container {
   max-width: 1140px;
   margin: 0 auto;
@@ -391,8 +418,9 @@ ul {
 li { margin: 0.3rem 0; }
 
 :focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
+  outline: 3px solid rgba(29, 78, 216, 0.55);
+  outline-offset: 3px;
+  border-radius: 10px;
 }
 
 @media (min-width: 900px) {
