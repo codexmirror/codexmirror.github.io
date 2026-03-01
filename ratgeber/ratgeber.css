@@ -94,6 +94,9 @@
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 1rem;
   padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
 
   /* premium motion */
@@ -152,7 +155,8 @@
 /* CTA-Link bleibt als Link erkennbar */
 .ratgeber-card__link {
   display: inline-flex;
-  margin-top: 0.95rem;
+  margin-top: auto;
+  padding-top: 0.95rem;
   text-decoration: none;
   font-weight: 560;
   color: var(--primary, #2f5bff);
