@@ -102,6 +102,9 @@
   position: relative;
   color: #243041;
   line-height: 1.35;
+
+  min-width: 0;            /* wichtig für Grid-Items */
+  overflow-wrap: anywhere; /* verhindert komische Überläufe */
 }
 
 .tool-hero__bullets li::before {
@@ -153,8 +156,10 @@
   }
 
   .tool-hero__bullets {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.7rem;
+  /* statt harte 3 Spalten: responsive Auto-Fit mit Mindestbreite */
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.75rem 0.9rem;
+  align-items: start;
   }
 }
 
