@@ -1,3 +1,7 @@
+/* =========================
+   Layout
+   ========================= */
+
 .artikel-layout {
   display: grid;
   gap: 1.5rem;
@@ -7,6 +11,10 @@
 .artikel-content {
   min-width: 0;
 }
+
+/* =========================
+   Hero
+   ========================= */
 
 .artikel-hero {
   background: rgba(255, 255, 255, 0.9);
@@ -57,6 +65,11 @@
   line-height: 1.55;
 }
 
+/* Mehr Luft zwischen Subline und Kurzantwort */
+.artikel-hero .artikel-subline {
+  margin-bottom: 2.7rem;
+}
+
 .artikel-kurzantwort {
   margin: 1.8rem 0 0;
   background: rgba(255, 255, 255, 0.88);
@@ -73,6 +86,10 @@
   font-size: 0.93rem;
 }
 
+/* =========================
+   Content Sections
+   ========================= */
+
 .artikel-section {
   margin-top: 2.75rem;
 }
@@ -88,6 +105,8 @@
   color: #2f3c4f;
   line-height: 1.65;
 }
+
+/* Überblick */
 
 .artikel-overview {
   margin-top: 2.2rem;
@@ -113,9 +132,13 @@
   line-height: 1.5;
 }
 
+/* Kernbotschaft hervorheben */
 .artikel-overview li:first-child {
   font-size: 1.04rem;
+  font-weight: 620;
 }
+
+/* Callout */
 
 .artikel-callout {
   margin-top: 1.2rem;
@@ -126,12 +149,32 @@
   color: #283547;
 }
 
+/* Praxisbox */
+
 .artikel-praxis {
   padding: 1.1rem;
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(15, 23, 42, 0.09);
   border-radius: 0.95rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 }
+
+.artikel-fall-label {
+  margin: 0 0 0.55rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 620;
+}
+
+.artikel-update-note {
+  margin-top: 2.1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* FAQ */
 
 .artikel-faq details {
   margin-top: 0.95rem;
@@ -146,6 +189,10 @@
 .artikel-faq details p {
   margin-top: 0.7rem;
 }
+
+/* =========================
+   Sidebar
+   ========================= */
 
 .artikel-sidebar {
   display: grid;
@@ -201,6 +248,85 @@
   font-weight: 600;
 }
 
+/* Active TOC Link */
+
+.sidebar-box--toc a.is-active {
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* =========================
+   Mobile TOC
+   ========================= */
+
+.artikel-toc-mobile {
+  display: none;
+  margin: 1.15rem 0 0.35rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.95rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+.artikel-toc-mobile > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.85rem 0.95rem;
+  font-weight: 620;
+  color: #22344d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.artikel-toc-mobile > summary::-webkit-details-marker {
+  display: none;
+}
+
+.artikel-toc-mobile > summary::after {
+  content: "▾";
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: transform 160ms ease;
+}
+
+.artikel-toc-mobile[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.artikel-toc-mobile nav {
+  padding: 0 0.95rem 0.95rem;
+}
+
+.artikel-toc-mobile ul {
+  margin: 0.15rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.artikel-toc-mobile li {
+  margin-top: 0.45rem;
+}
+
+.artikel-toc-mobile a {
+  color: #22344d;
+  text-decoration: none;
+}
+
+.artikel-toc-mobile a:hover {
+  text-decoration: underline;
+}
+
+.artikel-toc-mobile + .artikel-meta {
+  margin-top: 1.05rem;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
 @media (min-width: 820px) {
   .artikel-hero {
     padding: 1.75rem 1.6rem 1.5rem;
@@ -222,5 +348,21 @@
   .artikel-sidebar {
     position: sticky;
     top: 5.5rem;
+    align-self: start;
+  }
+}
+
+@media (max-width: 900px) {
+  .artikel-toc-mobile {
+    display: block;
+  }
+
+  /* Sidebar TOC ausblenden auf Mobile */
+  .sidebar-box--toc {
+    display: none;
+  }
+
+  .artikel-content li {
+    line-height: 1.65;
   }
 }

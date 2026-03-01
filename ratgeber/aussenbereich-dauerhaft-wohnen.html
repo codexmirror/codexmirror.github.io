@@ -18,52 +18,8 @@
 
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/ratgeber/ratgeber.css" />
-  <link rel="stylesheet" href="/ratgeber/artikel.css" />
-
-  <style>
-    .artikel-hero .artikel-subline {
-      margin-bottom: 2.7rem;
-    }
-
-    .sidebar-box--toc {
-      position: sticky;
-      top: 5.5rem;
-      align-self: start;
-    }
-
-    .sidebar-box--toc a.is-active {
-      font-weight: 620;
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 2px;
-    }
-
-    .artikel-overview li:first-child {
-      font-weight: 620;
-    }
-
-
-
-    .artikel-praxis {
-      border-color: rgba(15, 23, 42, 0.09);
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-    }
-
-    .artikel-fall-label {
-      margin: 0 0 0.55rem;
-      font-size: 0.74rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 620;
-    }
-
-    .artikel-update-note {
-      margin-top: 2.1rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="/ratgeber/artikel.css?v=1.1" />
+  
 </head>
 <body class="ratgeber-page">
   <div id="site-header"></div>
@@ -84,6 +40,18 @@
         <p class="artikel-subline">In vielen Fällen ist Dauerwohnen im Außenbereich nicht zulässig. Entscheidend sind Bestand, Genehmigungslage und der konkrete Nutzungszweck nach §35 BauGB Wohnnutzung.</p>
 
         <p class="artikel-kurzantwort"><strong>Kurzantwort:</strong> Dauerhaftes Wohnen im Außenbereich ist nach §35 BauGB in der Regel nur ausnahmsweise zulässig. Ob Außenbereich wohnen erlaubt ist, hängt von einer belastbaren Genehmigung für Wohnnutzung ab.</p>
+         <details class="artikel-toc-mobile" id="toc-mobile">
+  <summary>Inhalt anzeigen</summary>
+  <nav aria-label="Inhaltsverzeichnis">
+    <ul>
+      <li><a href="#regeln">Warum die Regeln streng sind</a></li>
+      <li><a href="#ausnahmen">Wann Ausnahmen möglich sind</a></li>
+      <li><a href="#praxisbeispiel">Praxisbeispiel</a></li>
+      <li><a href="#naechste-schritte">Nächste Schritte</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+</details>
 
         <p class="artikel-meta">Stand: 2026 · Lesezeit: 8 Minuten</p>
       </header>
@@ -97,6 +65,12 @@
           <li>Vor einem Kauf oder Umbau sollte die Nutzung schriftlich mit der Behörde geklärt werden.</li>
         </ul>
       </section>
+      <section class="artikel-inline-cta" aria-label="Grundstücks-Check Hinweis">
+  <p>
+    <strong>Unsicher, ob dein Grundstück betroffen ist?</strong>
+    Mit dem <a href="/index.html">Grundstücks-Check</a> bekommst du in 2 Minuten eine erste Einschätzung.
+  </p>
+</section>
 
       <section id="regeln" class="artikel-section" aria-labelledby="regeln-title">
         <h2 id="regeln-title">Warum der Außenbereich besonders streng behandelt wird</h2>
@@ -181,6 +155,14 @@
       </section>
     </aside>
   </main>
+  
+  <footer class="container page-footer ratgeber-footer">
+  <nav aria-label="Rechtliche Seiten">
+    <a href="/">Startseite</a>
+    <a href="/impressum.html">Impressum</a>
+    <a href="/datenschutz.html">Datenschutz</a>
+  </nav>
+</footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -223,6 +205,18 @@
       sections.forEach((section) => observer.observe(section));
     });
   </script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tocMobile = document.getElementById('toc-mobile');
+    if (tocMobile) {
+      tocMobile.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', () => {
+          tocMobile.removeAttribute('open');
+        });
+      });
+    }
+  });
+</script>
   <script src="/header.js" defer></script>
   <script src="/consent.js" defer></script>
 </body>
