@@ -384,3 +384,42 @@
     line-height: 1.65;
   }
 }
+/* Tabellen */
+
+.artikel-content table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.artikel-content thead th {
+  background: #f4f7fb;
+  color: #283547;
+  text-align: left;
+  font-weight: 620;
+}
+
+.artikel-content th,
+.artikel-content td {
+  padding: 0.72rem 0.75rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.artikel-content tbody tr:last-child th,
+.artikel-content tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 760px) {
+  .artikel-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
