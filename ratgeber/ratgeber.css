@@ -231,10 +231,6 @@
   transform: translateY(-1px);
 }
 
-.ratgeber-footer {
-  padding-top: 0.25rem;
-}
-
 /* Reduced Motion: weil wir nicht barbarisch sind */
 @media (prefers-reduced-motion: reduce) {
   .ratgeber-card,
