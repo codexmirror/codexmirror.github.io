@@ -102,9 +102,6 @@
   position: relative;
   color: #243041;
   line-height: 1.35;
-
-  min-width: 0;            /* wichtig für Grid-Items */
-  overflow-wrap: anywhere; /* verhindert komische Überläufe */
 }
 
 .tool-hero__bullets li::before {
@@ -137,14 +134,13 @@
 /* Desktop */
 @media (min-width: 900px) {
   .layout {
-    grid-template-columns: minmax(0, 1fr) 24rem; /* links flexibel, rechts fixed */
+    grid-template-columns: 1fr 1fr;
     align-items: start;
-    gap: 1.25rem;
   }
 
   .result:not(.result--neutral) {
     position: sticky;
-    top: 5.5rem; /* damit es nicht unter den Header rutscht */
+    top: 1rem;
   }
 
   .tool-hero {
@@ -156,10 +152,8 @@
   }
 
   .tool-hero__bullets {
-  /* statt harte 3 Spalten: responsive Auto-Fit mit Mindestbreite */
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 0.75rem 0.9rem;
-  align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
   }
 }
 
