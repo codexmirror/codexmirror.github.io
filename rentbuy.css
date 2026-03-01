@@ -347,29 +347,6 @@
   color: #374151;
 }
 
-.rentbuy-page .page-footer {
-  border-top: 1px solid #e5e7eb;
-  margin-top: 0.8rem;
-  padding-top: 0.75rem;
-  padding-bottom: 1.2rem;
-}
-
-.rentbuy-page .page-footer nav {
-  display: flex;
-  gap: 0.9rem;
-  flex-wrap: wrap;
-}
-
-.rentbuy-page .page-footer a {
-  font-size: 0.82rem;
-  color: #6b7280;
-  text-decoration: none;
-}
-
-.rentbuy-page .page-footer a:hover {
-  text-decoration: underline;
-}
-
 .rentbuy-seo h2 { margin-top: 0; }
 .rentbuy-seo h3 { margin-top: 1.25rem; }
 .rentbuy-faq { margin-top: 0.75rem; }
