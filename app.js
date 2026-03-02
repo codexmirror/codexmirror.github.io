@@ -14,55 +14,63 @@
       "hochwasser"
     ],
     interpretations: [
-      { min: 1, max: 15, text: "Aktuell spricht sehr viel gegen eine Genehmigung im beantragten Umfang." },
-      { min: 16, max: 29, text: "Derzeit eher unwahrscheinlich – nur mit klaren Ausnahmen denkbar." },
-      { min: 30, max: 45, text: "Teils möglich, aber mit deutlichen rechtlichen Hürden." },
-      { min: 46, max: 59, text: "Grenzbereich: tragfähig, wenn offene Punkte sauber geklärt werden." },
-      { min: 60, max: 75, text: "Grundsätzlich plausibel, sofern Nachweise und Rahmenbedingungen passen." },
-      { min: 76, max: 100, text: "Günstige Ausgangslage – Detailprüfung bleibt trotzdem wichtig." }
-    ],
+  { min: 1, max: 15, text: "Aktuell spricht sehr viel gegen die Zulässigkeit im gewünschten Umfang." },
+  { min: 16, max: 29, text: "Eher unwahrscheinlich – nur mit klaren Ausnahmen oder geänderter Planung denkbar." },
+  { min: 30, max: 45, text: "Teilweise möglich, aber mit deutlichen rechtlichen Hürden." },
+  { min: 46, max: 59, text: "Grenzbereich: machbar, wenn offene Kernpunkte sauber und schriftlich geklärt werden." },
+  { min: 60, max: 75, text: "Gute Tendenz – sofern Nachweise und Rahmenbedingungen passen." },
+  { min: 76, max: 100, text: "Gute Ausgangslage – Detailprüfung und schriftliche Einordnung bleiben wichtig." }
+],
     caps: [
-      {
-        max: 35,
-        applies: (s) => s.erschliessung === "nicht",
-        reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
-      },
-      {
-        max: 35,
-        applies: (s) => s.lage_detail === "randlage",
-        reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
-      },
-      {
-        max: 25,
-        applies: (s) => s.schutzgebiet === "streng",
-        reason: "Strenges Schutzgebiet lässt Vorhaben oft nur stark eingeschränkt zu."
-      },
-      {
-        max: 55,
-        applies: (s) => s.schutzgebiet === "lsg",
-        reason: "Landschaftsschutzgebiet begrenzt die Nutzung je nach Auflagen deutlich."
-      },
-      {
-        max: 35,
-        applies: (s) => s.wasserschutz === "zone12",
-        reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
-      },
-      {
-        max: 55,
-        applies: (s) => s.wasserschutz === "zone3",
-        reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
-      },
-      {
-        max: 45,
-        applies: (s) => s.hochwasser === "hq100",
-        reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
-      },
-      {
-        max: 15,
-        applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
-        reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
-      }
-    ],
+  {
+    id: "cap_erschliessung_nicht",
+    max: 35,
+    applies: (s) => s.erschliessung === "nicht",
+    reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
+  },
+  {
+    id: "cap_randlage",
+    max: 35,
+    applies: (s) => s.lage_detail === "randlage",
+    reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
+  },
+  {
+    id: "cap_schutzgebiet_streng",
+    max: 25,
+    applies: (s) => s.schutzgebiet === "streng",
+    reason: "Strenges Schutzgebiet lässt Vorhaben oft nur stark eingeschränkt zu."
+  },
+  {
+    id: "cap_schutzgebiet_lsg",
+    max: 55,
+    applies: (s) => s.schutzgebiet === "lsg",
+    reason: "Landschaftsschutzgebiet begrenzt die Nutzung je nach Auflagen deutlich."
+  },
+  {
+    id: "cap_wasserschutz_zone12",
+    max: 35,
+    applies: (s) => s.wasserschutz === "zone12",
+    reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
+  },
+  {
+    id: "cap_wasserschutz_zone3",
+    max: 55,
+    applies: (s) => s.wasserschutz === "zone3",
+    reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
+  },
+  {
+    id: "cap_hochwasser_hq100",
+    max: 45,
+    applies: (s) => s.hochwasser === "hq100",
+    reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
+  },
+  {
+    id: "cap_wald_wohnen",
+    max: 15,
+    applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
+    reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
+  }
+],
     nextStepTemplates: {
       stopFactorIntro: "Sonderrisiken zuerst klären: Diese Punkte können die Planung stoppen.",
       lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
@@ -313,9 +321,10 @@
 
     if (isOutsideIsh(state) && restrictedUse && !privileged) {
       gates.push({
-        max: 25,
-        reason: "Außenbereich/Randlage: diese Nutzung ist planungsrechtlich stark eingeschränkt."
-      });
+  id: "gate_outside_restricted_use",
+  max: 25,
+  reason: "Außenbereich/Randlage: diese Nutzung ist planungsrechtlich stark eingeschränkt."
+});
       current = Math.min(current, 25);
     }
 
@@ -461,17 +470,17 @@
   }
 
   function ampelLabel(light) {
-    if (light === "🔴") return "🔴 Kritisch";
-    if (light === "🟡") return "🟡 Vorsicht";
-    return "🟢 Plausibel";
-  }
+  if (light === "🔴") return "🔴 Sehr unwahrscheinlich";
+  if (light === "🟡") return "🟡 Nur mit Klärung";
+  return "🟢 Gute Ausgangslage";
+}
 
   function resultHeadline(light, planningConfidence) {
-    if (light === "🔴") return "Aktuell eher nicht plausibel.";
-    if (light === "🟡") return "Grundsätzlich plausibel, aber noch nicht belastbar.";
-    if (planningConfidence === "niedrig") return "Plausibel, wenn offene Punkte bestätigt werden.";
-    return "Grundsätzlich plausibel.";
-  }
+  if (light === "🔴") return "Aktuell sehr unwahrscheinlich.";
+  if (light === "🟡") return "Möglich – aber nur, wenn Kernpunkte schriftlich geklärt werden.";
+  if (planningConfidence === "niedrig") return "Gute Ausgangslage – aber mehrere Punkte sind noch offen.";
+  return "Gute Ausgangslage – Detailprüfung bleibt nötig.";
+}
 
   function practicalBullets(score, light) {
     if (light === "🔴") {
@@ -492,10 +501,10 @@
       ];
     }
     return [
-      "Die Ausgangslage passt grundsätzlich.",
-      "Offene Detailfragen können das Ergebnis noch verschieben.",
-      "Vor Umsetzung die Nutzung schriftlich bestätigen lassen."
-    ];
+  "Die Ausgangslage wirkt grundsätzlich passend.",
+  "Details (Planstatus, Einordnung, Schutzauflagen) können das Ergebnis ändern.",
+  "Vor Investitionen: schriftliche Einordnung/Bestätigung einholen."
+];
   }
 
   function interpretation(score) {
@@ -840,7 +849,7 @@
         if (optionalDetails) optionalDetails.open = false;
         if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details anzeigen";
+          detailsToggle.textContent = "Details & Begründung";
           resultDetails.hidden = true;
         }
         CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
@@ -909,7 +918,11 @@
           schutzgebiet: "streng",
           optionalActive: true
         },
-        check: (r) => r.score <= 25 && r.why.some((item) => /schutzgebiet/i.test(item.text))
+        check: (r) => {
+  const caps = Array.isArray(r.activeCaps) ? r.activeCaps : [];
+  const hasStreng = caps.some((c) => c && c.id === "cap_schutzgebiet_streng");
+  return r.score <= 25 && hasStreng;
+}
       },
       {
         id: "T6",
@@ -923,11 +936,21 @@
           hochwasser: "hq100",
           optionalActive: true
         },
-        check: (r) =>
-          r.ampel === "🔴" &&
-          r.why.some((item) => /Dominanter Faktor/i.test(item.text)) &&
-          r.steps.length > 0 &&
-          /planung stoppen/i.test(r.steps[0])
+        check: (r) => {
+  const caps = Array.isArray(r.activeCaps) ? r.activeCaps : [];
+const hasStreng = caps.some((c) => c && c.id === "cap_schutzgebiet_streng");
+const hasZone12 = caps.some((c) => c && c.id === "cap_wasserschutz_zone12");
+const hasHq100 = caps.some((c) => c && c.id === "cap_hochwasser_hq100");
+
+return (
+  r.ampel === "🔴" &&
+  r.score <= 25 &&
+  hasStreng &&
+  hasZone12 &&
+  hasHq100 &&
+  r.steps.length > 0
+);
+}
       },
       {
         id: "T7",
@@ -957,9 +980,12 @@
           optionalActive: true
         },
         check: (r) => {
-          const whyText = r.why.map((item) => item.text).join(" |");
-          return /schutzgebiet/i.test(whyText) && /wasserschutz/i.test(whyText) && /hq100|hochwasser/i.test(whyText);
-        }
+  const caps = Array.isArray(r.activeCaps) ? r.activeCaps : [];
+  const hasStreng = caps.some((c) => c && c.id === "cap_schutzgebiet_streng");
+  const hasZone12 = caps.some((c) => c && c.id === "cap_wasserschutz_zone12");
+  const hasHq100 = caps.some((c) => c && c.id === "cap_hochwasser_hq100");
+  return hasStreng && hasZone12 && hasHq100;
+}
       },
       {
         id: "T10",
@@ -971,7 +997,11 @@
           lage_detail: "aussen35",
           optionalActive: true
         },
-        check: (r) => r.score <= 25 && r.ampel === "🔴" && /nicht plausibel/i.test(r.headline)
+        check: (r) =>
+  r.score <= 25 &&
+  r.ampel === "🔴" &&
+  Array.isArray(r.activeCaps) &&
+  r.activeCaps.some((cap) => cap && cap.id === "gate_outside_restricted_use")
       },
       {
         id: "T11",
