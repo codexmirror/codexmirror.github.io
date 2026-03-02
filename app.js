@@ -23,53 +23,61 @@
 ],
     caps: [
   {
-    id: "cap_erschliessung_nicht",
-    max: 35,
-    applies: (s) => s.erschliessung === "nicht",
-    reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
-  },
+  id: "cap_erschliessung_nicht",
+  severity: "hard",
+  max: 35,
+  applies: (s) => s.erschliessung === "nicht",
+  reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
+},
   {
-    id: "cap_randlage",
-    max: 35,
-    applies: (s) => s.lage_detail === "randlage",
-    reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
-  },
+  id: "cap_randlage",
+  severity: "hard",
+  max: 35,
+  applies: (s) => s.lage_detail === "randlage",
+  reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
+},
   {
-    id: "cap_schutzgebiet_streng",
-    max: 25,
-    applies: (s) => s.schutzgebiet === "streng",
-    reason: "Strenges Schutzgebiet lässt Vorhaben oft nur stark eingeschränkt zu."
-  },
+  id: "cap_schutzgebiet_streng",
+  severity: "hard",
+  max: 25,
+  applies: (s) => s.schutzgebiet === "streng",
+  reason: "Strenges Schutzgebiet lässt Vorhaben oft nur stark eingeschränkt zu."
+},
   {
-    id: "cap_schutzgebiet_lsg",
-    max: 55,
-    applies: (s) => s.schutzgebiet === "lsg",
-    reason: "Landschaftsschutzgebiet begrenzt die Nutzung je nach Auflagen deutlich."
-  },
+  id: "cap_schutzgebiet_lsg",
+  severity: "medium",
+  max: 55,
+  applies: (s) => s.schutzgebiet === "lsg",
+  reason: "Landschaftsschutzgebiet begrenzt die Nutzung je nach Auflagen deutlich."
+},
   {
-    id: "cap_wasserschutz_zone12",
-    max: 35,
-    applies: (s) => s.wasserschutz === "zone12",
-    reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
-  },
+  id: "cap_wasserschutz_zone12",
+  severity: "hard",
+  max: 35,
+  applies: (s) => s.wasserschutz === "zone12",
+  reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
+},
   {
-    id: "cap_wasserschutz_zone3",
-    max: 55,
-    applies: (s) => s.wasserschutz === "zone3",
-    reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
-  },
+  id: "cap_wasserschutz_zone3",
+  severity: "medium",
+  max: 55,
+  applies: (s) => s.wasserschutz === "zone3",
+  reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
+},
   {
-    id: "cap_hochwasser_hq100",
-    max: 45,
-    applies: (s) => s.hochwasser === "hq100",
-    reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
-  },
+  id: "cap_hochwasser_hq100",
+  severity: "medium",
+  max: 45,
+  applies: (s) => s.hochwasser === "hq100",
+  reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
+},
   {
-    id: "cap_wald_wohnen",
-    max: 15,
-    applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
-    reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
-  }
+  id: "cap_wald_wohnen",
+  severity: "hard",
+  max: 15,
+  applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
+  reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
+}
 ],
     nextStepTemplates: {
       stopFactorIntro: "Sonderrisiken zuerst klären: Diese Punkte können die Planung stoppen.",
@@ -316,12 +324,13 @@
   function applyGates(score, state) {
     let current = score;
     const gates = [];
-    const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
+        const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
     const privileged = state.nutzung === "landwpriv";
 
     if (isOutsideIsh(state) && restrictedUse && !privileged) {
       gates.push({
   id: "gate_outside_restricted_use",
+  severity: "hard",
   max: 25,
   reason: "Außenbereich/Randlage: diese Nutzung ist planungsrechtlich stark eingeschränkt."
 });
@@ -368,8 +377,8 @@
 
   function buildWhy(activeCaps, reasons) {
     const list = [];
-    const stopCaps = activeCaps.filter((cap) => /schutzgebiet|wasserschutz|hochwasser|hq100|zone i\/ii|zone iii/i.test(cap.reason));
-    const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
+    const stopCaps = activeCaps.filter((cap) => cap && cap.severity === "hard");
+const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
     stopCaps.forEach((cap) => list.push({ type: "cap", text: `Dominanter Faktor: ${cap.reason}` }));
     otherCaps.forEach((cap) => list.push({ type: "cap", text: cap.reason }));
 
@@ -395,11 +404,19 @@
   function buildNextSteps(state, reasons) {
     const steps = [];
 
-    const hasStopFactor =
-      state.schutzgebiet === "streng" ||
-      state.wasserschutz === "zone12" ||
-      state.hochwasser === "hq100";
-    if (hasStopFactor) steps.push(CONFIG.nextStepTemplates.stopFactorIntro);
+         const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
+    const privileged = state.nutzung === "landwpriv";
+
+  const hasStopFactor =
+    state.schutzgebiet === "streng" ||
+    state.wasserschutz === "zone12" ||
+    state.hochwasser === "hq100" ||
+    state.erschliessung === "nicht" ||
+    state.lage_detail === "randlage" ||
+    (state.typ === "wald" && isWohnen(state.nutzung)) ||
+    (isOutsideIsh(state) && restrictedUse && !privileged);
+
+  if (hasStopFactor) steps.push(CONFIG.nextStepTemplates.stopFactorIntro);
     if (state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
     if (state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
     if (state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
@@ -461,13 +478,13 @@
   }
 
   function adjustAmpel(light, state, activeCaps) {
-    const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
-    const privileged = state.nutzung === "landwpriv";
-    const hasHardStopCap = activeCaps.some((cap) => cap.max <= 35);
-    if (hasHardStopCap && light !== "🔴") return "🔴";
-    if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
-    return light;
-  }
+  const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
+  const privileged = state.nutzung === "landwpriv";
+  const hasHardStopCap = activeCaps.some((cap) => cap && (cap.severity === "hard" || cap.max <= 35));
+  if (hasHardStopCap && light !== "🔴") return "🔴";
+  if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
+  return light;
+}
 
   function ampelLabel(light) {
   if (light === "🔴") return "🔴 Sehr unwahrscheinlich";
@@ -1007,6 +1024,30 @@ return (
         id: "T11",
         state: baseline,
         check: (r) => !r.pitfalls.some((item) => /tiny house/i.test(item))
+      },
+            {
+        id: "T12",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          erschliessung: "nicht",
+          optionalActive: true
+        },
+        check: (r) => r.steps[0] && /Sonderrisiken zuerst klären/i.test(r.steps[0])
+      },
+      {
+        id: "T13",
+        state: {
+          lage: "aussen",
+          bplan: "ja",
+          typ: "sonstiges",
+          nutzung: "wohnen",
+          lage_detail: "aussen35",
+          optionalActive: true
+        },
+        check: (r) => r.steps[0] && /Sonderrisiken zuerst klären/i.test(r.steps[0])
       }
     ];
 
