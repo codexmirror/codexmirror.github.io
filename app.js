@@ -614,7 +614,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
       cap: "⚠",
       negative: "⚠",
       positive: "✓",
-      unclear: "ℹ"
+      unclear: "ⓘ"
     };
     const marker = map[item.type] || "⚠";
     return `${marker} ${item.text}`;
