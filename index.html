@@ -33,8 +33,8 @@
 <meta name="twitter:description" content="2-Minuten-Ersteinschätzung: Ampel, Score, Gründe und nächste Schritte – inkl. Innen-/Außenbereich und Bebauungsplan." />
 <meta name="twitter:image" content="https://grundstueckcheck.de/assets/og/grundstueckcheck-tool.jpeg" />
 
-  <link rel="stylesheet" href="styles.css?v=1.8" />
-  <link rel="stylesheet" href="tool.css?v=1.7" />
+  <link rel="stylesheet" href="styles.css?v=1.9" />
+  <link rel="stylesheet" href="tool.css?v=1.8" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -93,10 +93,10 @@
   </p>
 
   <ul class="tool-hero__bullets" aria-label="Was du bekommst">
-    <li><strong>Ampel &amp; Score</strong> für die Ausgangslage</li>
-    <li><strong>Warum</strong>: die wichtigsten Treiber verständlich erklärt</li>
-    <li><strong>Nächste Schritte</strong> als kurze, priorisierte To-do-Liste</li>
-  </ul>
+  <li><strong>Ampel &amp; Score</strong> für deine Ausgangslage</li>
+  <li><strong>Warum</strong>: die wichtigsten Gründe für dein Ergebnis</li>
+  <li><strong>Nächste Schritte</strong> als kurze, priorisierte To-do-Liste</li>
+</ul>
 
   <div class="tool-hero__meta" aria-label="Hinweise">
     <p class="tool-hero__note">
@@ -112,6 +112,7 @@
         <article class="card" aria-labelledby="inputs-title">
   <form id="check-form" novalidate>
     <div class="card-head">
+    <p class="card-kicker">4 Pflichtangaben für die Ersteinschätzung</p>
       <h2 id="inputs-title">Deine Angaben</h2>
       <button
         id="reset-button"
@@ -297,15 +298,15 @@
               </section>
 
               <button
-                type="button"
-                id="details-toggle"
-                class="details-toggle"
-                aria-expanded="false"
-                aria-controls="result-details"
-                aria-label="Zusätzliche Details zum Ergebnis anzeigen oder ausblenden"
-              >
-                Details &amp; Begründung
-              </button>
+  type="button"
+  id="details-toggle"
+  class="details-toggle"
+  aria-expanded="false"
+  aria-controls="result-details"
+  aria-label="Zusätzliche Analyse zum Ergebnis anzeigen oder ausblenden"
+>
+  Analyse anzeigen
+</button>
 
               <section id="result-details" hidden>
                 <p class="interpretation" id="result-interpretation"></p>
@@ -342,28 +343,27 @@
 <section class="card" aria-labelledby="about-tool-title">
   <h2 id="about-tool-title">Was prüft der Grundstücks-Check?</h2>
   <p>
-    Der Grundstücks-Check gibt eine erste Einschätzung, ob eine Wohn- oder Bau-Nutzung planungsrechtlich plausibel ist.
-    Grundlage sind typische Kriterien wie Innen- oder Außenbereich (BauGB §34 / §35), Bebauungsplan, Grundstückstyp,
-    geplante Nutzung, Erschließung sowie mögliche Einschränkungen durch Schutz- und Risikogebiete.
-  </p>
+  Der Grundstücks-Check gibt eine erste Einschätzung, ob eine Wohn- oder Bau-Nutzung planungsrechtlich plausibel ist.
+  Bewertet werden typische Faktoren wie Innen- oder Außenbereich (BauGB §34 / §35), Bebauungsplan, Grundstückstyp,
+  geplante Nutzung, Erschließung sowie Schutz- und Risikogebiete.
+</p>
 
   <h3>Typische Fragen, die das Tool beantwortet</h3>
   <ul>
-    <li>Darf ich im Außenbereich dauerhaft wohnen?</li>
-    <li>Kann ich auf einem Freizeitgrundstück bauen oder wohnen?</li>
-    <li>Was bedeutet Bebauungsplan – und was, wenn keiner existiert?</li>
-    <li>Wann gilt §34 (Innenbereich) und wann §35 (Außenbereich)?</li>
-    <li>Welche Sonderfälle können die Planung stoppen (z. B. Schutzgebiet, Hochwasser)?</li>
-  </ul>
+  <li>Wann gilt §34 (Innenbereich) und wann §35 (Außenbereich)?</li>
+  <li>Was bedeutet Bebauungsplan – und was, wenn keiner existiert?</li>
+  <li>Darf ich im Außenbereich dauerhaft wohnen?</li>
+  <li>Kann ich auf einem Freizeitgrundstück bauen oder wohnen?</li>
+  <li>Welche Sonderfälle können die Planung stoppen (z. B. Schutzgebiet, Hochwasser)?</li>
+</ul>
 
   <p class="microcopy">
-    Hinweis: Das Tool ersetzt keine Bauamtsprüfung, hilft aber dabei, Risiken früh zu erkennen und die nächsten Schritte
-    gezielter zu planen.
-    Weitere Hintergründe findest du im <a href="/ratgeber/">Ratgeber</a>.
-  </p>
+  Hinweis: Das Tool ersetzt keine Prüfung durch das Bauamt, hilft aber dabei, Risiken früh zu erkennen und die nächsten Schritte
+  gezielter zu planen. Weitere Hintergründe findest du im <a href="/ratgeber/">Ratgeber</a>.
+</p>
 </section>
 <section class="card" aria-labelledby="faq-title">
-  <h2 id="faq-title">Häufige Fragen</h2>
+     <h2 id="faq-title">Häufige Fragen zum Grundstücks-Check</h2>
 
   <details>
     <summary>Darf ich im Außenbereich (§35) dauerhaft wohnen?</summary>

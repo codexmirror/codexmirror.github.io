@@ -17,7 +17,7 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 /* =========================
@@ -63,6 +63,7 @@ h1 { margin-bottom: 0.25rem; }
   border-radius: 14px;
   padding: 1rem;
   overflow: visible;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
 }
 /* Abstand zwischen aufeinanderfolgenden Cards (FAQ / Content) */
 main.container > .card + .card {
@@ -160,14 +161,19 @@ legend {
   opacity: 0;
   margin: 0;
   color: #556170;
-  font-size: 0.92rem;
-  line-height: 1.35;
+  font-size: 0.93rem;
+  line-height: 1.4;
   white-space: normal;
   word-break: normal;
   padding: 0 0.6rem;
   border-radius: 10px;
   background: #f5f7fa;
-  transition: max-height 150ms ease, opacity 150ms ease, margin-bottom 150ms ease, padding-top 150ms ease, padding-bottom 150ms ease;
+  transition:
+    max-height 150ms ease,
+    opacity 150ms ease,
+    margin-bottom 150ms ease,
+    padding-top 150ms ease,
+    padding-bottom 150ms ease;
 }
 
 .field-info.is-open {
@@ -190,14 +196,19 @@ legend {
   background: #fff;
   border-radius: 10px;
   padding: 0.58rem 0.8rem;
+  color: var(--text);
+  font: inherit;
   cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
-.secondary:hover { background: #f9fafb; }
+.secondary:hover {
+  background: #f9fafb;
+  border-color: #c5cfdb;
+}
 
 summary {
   cursor: pointer;
-  font-weight: 650;
 }
 
 ul {
@@ -208,7 +219,7 @@ ul {
 li { margin: 0.3rem 0; }
 
 :focus-visible {
-  outline: 3px solid rgba(29, 78, 216, 0.55);
+  outline: 2px solid rgba(29, 78, 216, 0.55);
   outline-offset: 3px;
   border-radius: 10px;
 }
@@ -583,7 +594,7 @@ li { margin: 0.3rem 0; }
     position: absolute;
     left: 1rem;
     right: 1rem;
-    top: calc(100% + 0.2rem);
+    top: calc(100% + 0.35rem);
     margin-left: 0;
     padding: 0.55rem 0.35rem;
     display: block;
@@ -666,8 +677,8 @@ li { margin: 0.3rem 0; }
 /* FAQ / Content Sections */
 .card details {
   border-top: 1px solid var(--border);
-  padding-top: 0.6rem;
-  margin-top: 0.6rem;
+  padding-top: 0.7rem;
+  margin-top: 0.7rem;
 }
 
 .card details:first-of-type {
@@ -689,7 +700,8 @@ li { margin: 0.3rem 0; }
 }
 
 .card details p {
-  margin: 0.45rem 0 0;
+  margin: 0.5rem 0 0;
   color: #243041;
+  line-height: 1.5;
 }
-   
+         
