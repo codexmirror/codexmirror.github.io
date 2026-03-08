@@ -55,7 +55,9 @@
 }
 
 .ratgeber-search input:focus-visible {
-  outline-offset: 1px;
+  outline: none;
+  border-color: rgba(47, 91, 255, 0.45);
+  box-shadow: 0 0 0 4px rgba(47, 91, 255, 0.08);
 }
 
 .ratgeber-section {
@@ -131,13 +133,14 @@
 .ratgeber-card p {
   margin: 0.68rem 0 0;
   color: #3f4a5a;
+  line-height: 1.5;
 }
 
 /* Title-Link: soll wie eine Headline wirken, nicht wie "ich bin ein Link" */
 .ratgeber-card__title {
   color: inherit;
   text-decoration: none;
-  font-weight: inherit; /* übernimmt h3-Styling */
+  font-weight: 650;
   display: inline-block;
 }
 
@@ -190,8 +193,9 @@
   margin-top: 1.6rem;
   padding: 1.2rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(15, 23, 42, 0.09);
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(47, 91, 255, 0.12);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
 }
 
 .ratgeber-tools > p {
@@ -213,6 +217,7 @@
   border-radius: 0.9rem;
   background: #fff;
   padding: 0.8rem 0.9rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
 
   transition: box-shadow 180ms ease, border-color 180ms ease, transform 180ms ease;
 }
