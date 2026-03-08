@@ -815,7 +815,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
         setHidden(resultContent, true);
          if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details & Begründung";
+          detailsToggle.textContent = "Analyse anzeigen";
           resultDetails.hidden = true;
         }
         lastRenderedScore = 50;
@@ -940,8 +940,8 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
     });
 
         if (detailsToggle && resultDetails) {
-      const CLOSED_LABEL = "Details & Begründung";
-      const OPEN_LABEL = "Details ausblenden";
+      const CLOSED_LABEL = "Analyse anzeigen";
+      const OPEN_LABEL = "Analyse ausblenden";
 
       // Falls HTML-Label abweicht: initial glattziehen
       detailsToggle.textContent = CLOSED_LABEL;
@@ -976,7 +976,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
         if (optionalDetails) optionalDetails.open = false;
         if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details & Begründung";
+          detailsToggle.textContent = "Analyse anzeigen";
           resultDetails.hidden = true;
         }
         CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
