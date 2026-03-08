@@ -192,19 +192,40 @@ legend {
 }
 
 .secondary {
-  border: 1px solid var(--border);
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #cfd6df;
   background: #fff;
-  border-radius: 10px;
-  padding: 0.58rem 0.8rem;
-  color: var(--text);
+  color: #435063;
+  border-radius: 12px;
+  padding: 0.68rem 1rem;
+  min-height: 44px;
   font: inherit;
+  font-weight: 500;
+  line-height: 1;
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .secondary:hover {
-  background: #f9fafb;
-  border-color: #c5cfdb;
+  background: #f8fafc;
+  border-color: #bcc7d4;
+  color: #2f3b4d;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+}
+
+.secondary:active {
+  background: #f3f6fa;
+}
+
+.secondary:focus-visible {
+  outline: 2px solid rgba(29, 78, 216, 0.45);
+  outline-offset: 3px;
 }
 
 summary {

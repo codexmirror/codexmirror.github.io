@@ -11,13 +11,10 @@
 .card-head {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
 }
-.card-head .secondary {
-  white-space: nowrap;
-  align-self: flex-start;
-}
+
 .tile-options {
   display: grid;
   gap: 0.5rem;
