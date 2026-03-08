@@ -114,7 +114,35 @@
       bplan: "Bitte einen Bebauungsplan-Status auswählen.",
       typ: "Bitte einen Grundstückstyp auswählen.",
       nutzung: "Bitte eine geplante Nutzung auswählen."
-    }
+    },
+    consistencyRules: [
+      {
+        id: "lage_to_lage_detail",
+        controller: "lage",
+        dependent: "lage_detail",
+        allValues: ["innen34", "aussen35", "randlage", "satzung", "unklar"],
+        allowedByController: {
+          innen: ["innen34", "satzung", "unklar"],
+          aussen: ["aussen35", "randlage", "unklar"],
+          unklar: ["innen34", "aussen35", "randlage", "satzung", "unklar"]
+        },
+        message: "Lage-Detail wurde zurückgesetzt, weil es nicht zur gewählten Lage passt."
+      },
+      {
+        id: "typ_to_nutzung_landwpriv",
+        controller: "typ",
+        dependent: "nutzung",
+        allValues: ["wohnen", "wochenende", "landwpriv", "gewerblich"],
+        allowedByController: {
+          landwirtschaft: ["wohnen", "wochenende", "landwpriv", "gewerblich"],
+          bauluecke: ["wohnen", "wochenende", "gewerblich"],
+          freizeit: ["wohnen", "wochenende", "gewerblich"],
+          wald: ["wohnen", "wochenende", "gewerblich"],
+          sonstiges: ["wohnen", "wochenende", "gewerblich"]
+        },
+        message: "„Landwirtschaftlich privilegiert“ wurde zurückgesetzt, weil der Grundstückstyp nicht zu dieser Nutzung passt."
+      }
+    ]
   };
 
   const TEMPLATES = {
@@ -205,6 +233,69 @@
       };
     }
     return state;
+  }
+
+  function computeOptionalActive(state) {
+    return Boolean(state.bestand || state.erschliessung || state.lage_detail || state.schutzgebiet || state.wasserschutz || state.hochwasser);
+  }
+
+  function allowedValuesForRule(rule, state) {
+    if (!rule || !rule.dependent) return [];
+    const allValues = Array.isArray(rule.allValues) ? rule.allValues : [];
+    const controllerValue = state[rule.controller];
+    if (!controllerValue) return allValues;
+    const configured = rule.allowedByController && rule.allowedByController[controllerValue];
+    return Array.isArray(configured) && configured.length ? configured : allValues;
+  }
+
+  function sanitizeConsistencyState(rawState) {
+    const state = { ...rawState };
+    const conflicts = [];
+
+    CONFIG.consistencyRules.forEach((rule) => {
+      const dependentValue = state[rule.dependent];
+      if (!dependentValue) return;
+      const allowed = new Set(allowedValuesForRule(rule, state));
+      if (!allowed.has(dependentValue)) {
+        state[rule.dependent] = "";
+        conflicts.push({
+          ruleId: rule.id,
+          dependent: rule.dependent,
+          clearedValue: dependentValue,
+          message: rule.message
+        });
+      }
+    });
+
+    state.optionalActive = computeOptionalActive(state);
+    return { state, conflicts };
+  }
+
+  function applyConsistencyToForm(form, state) {
+    const conflicts = [];
+
+    CONFIG.consistencyRules.forEach((rule) => {
+      const allowed = new Set(allowedValuesForRule(rule, state));
+      const radios = form.querySelectorAll(`input[type="radio"][name="${rule.dependent}"]`);
+      radios.forEach((radio) => {
+        const enabled = allowed.has(radio.value);
+        radio.disabled = !enabled;
+        const tile = radio.closest(".tile");
+        if (tile) tile.classList.toggle("is-disabled", !enabled);
+
+        if (!enabled && radio.checked) {
+          radio.checked = false;
+          conflicts.push({
+            ruleId: rule.id,
+            dependent: rule.dependent,
+            clearedValue: radio.value,
+            message: rule.message
+          });
+        }
+      });
+    });
+
+    return conflicts;
   }
 
   function applyModifiers(state) {
@@ -529,7 +620,8 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
   }
 
   function evaluate(rawState) {
-    const state = normalizeOptionalState(rawState);
+    const sanitized = sanitizeConsistencyState(rawState);
+    const state = normalizeOptionalState(sanitized.state);
 
     if (!requiredComplete(state)) {
       return {
@@ -595,7 +687,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
       schutzgebiet,
       wasserschutz,
       hochwasser,
-      optionalActive: Boolean(bestand || erschliessung || lage_detail || schutzgebiet || wasserschutz || hochwasser)
+      optionalActive: computeOptionalActive({ bestand, erschliessung, lage_detail, schutzgebiet, wasserschutz, hochwasser })
     };
   }
 
@@ -663,6 +755,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
     const resultDetails = document.getElementById("result-details");
     const resetBtn = document.getElementById("reset-button");
     const optionalDetails = document.getElementById("optional-details");
+    const consistencyFeedback = document.getElementById("consistency-feedback");
     const infoButtons = form.querySelectorAll(".info-toggle");
     const infoPanels = form.querySelectorAll(".field-info");
 
@@ -694,10 +787,27 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
       });
     };
 
+    const renderConsistencyFeedback = (conflicts) => {
+      if (!consistencyFeedback) return;
+      if (!Array.isArray(conflicts) || conflicts.length === 0) {
+        consistencyFeedback.hidden = true;
+        consistencyFeedback.textContent = "";
+        return;
+      }
+      const uniqueMessages = dedupeTexts(conflicts.map((c) => c.message));
+      consistencyFeedback.hidden = false;
+      consistencyFeedback.textContent = uniqueMessages.join(" ");
+    };
+
     const update = () => {
-      const state = getFormState(form);
+      const rawState = getFormState(form);
+      const uiConflicts = applyConsistencyToForm(form, rawState);
+      const postUiState = getFormState(form);
+      const sanitized = sanitizeConsistencyState(postUiState);
+      const state = sanitized.state;
       const result = evaluate(state);
       renderErrors(state);
+      renderConsistencyFeedback([...uiConflicts, ...sanitized.conflicts]);
 
       if (result.neutral) {
         if (resultCard) resultCard.classList.add("result--neutral");
@@ -923,7 +1033,17 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
           lage_detail: "randlage",
           optionalActive: true
         },
-        check: (r) => r.score <= 45
+        check: (r) => {
+          const control = evaluate({
+            lage: "innen",
+            bplan: "ja",
+            typ: "bauluecke",
+            nutzung: "wohnen",
+            lage_detail: "",
+            optionalActive: false
+          });
+          return r.score === control.score && r.ampel === control.ampel;
+        }
       },
       {
         id: "T5",
@@ -1048,6 +1168,48 @@ return (
           optionalActive: true
         },
         check: (r) => r.steps[0] && /Sonderrisiken zuerst klären/i.test(r.steps[0])
+      },
+      {
+        id: "T14",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "wohnen",
+          lage_detail: "aussen35",
+          optionalActive: true
+        },
+        check: (r) => {
+          const control = evaluate({
+            lage: "innen",
+            bplan: "ja",
+            typ: "bauluecke",
+            nutzung: "wohnen",
+            lage_detail: "",
+            optionalActive: false
+          });
+          return r.score === control.score && r.ampel === control.ampel;
+        }
+      },
+      {
+        id: "T15",
+        state: {
+          lage: "innen",
+          bplan: "ja",
+          typ: "bauluecke",
+          nutzung: "landwpriv",
+          optionalActive: false
+        },
+        check: (r) => {
+          const control = evaluate({
+            lage: "innen",
+            bplan: "ja",
+            typ: "bauluecke",
+            nutzung: "",
+            optionalActive: false
+          });
+          return r.neutral === control.neutral && r.interpretation === control.interpretation;
+        }
       }
     ];
 
@@ -1055,7 +1217,7 @@ return (
   }
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { evaluate, runSelfTests, clipWords };
+    module.exports = { evaluate, runSelfTests, clipWords, sanitizeConsistencyState };
   }
 
   if (typeof document !== "undefined") {
