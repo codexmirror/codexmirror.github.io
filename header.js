@@ -1,16 +1,10 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const mount = document.getElementById("site-header");
   if (!mount) return;
 
-  try {
-    const res = await fetch("/partials/header.html", { cache: "no-store" });
-    if (!res.ok) return;
-    mount.innerHTML = await res.text();
-  } catch {
-    return;
-  }
-
   const header = mount.querySelector(".site-header");
+  if (!header) return;
+
   const nav = mount.querySelector("#site-header-nav");
   const burger = mount.querySelector(".site-header__burger");
   const toolsWrap = mount.querySelector(".site-header__tools");
@@ -132,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!(target instanceof Element)) return;
 
     // Klick komplett außerhalb Header -> alles zu
-    if (!header?.contains(target)) {
+    if (!header.contains(target)) {
       closeNav();
       return;
     }
