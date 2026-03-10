@@ -19,7 +19,76 @@
   <link rel="stylesheet" href="/ratgeber/ratgeber.css?v=1.1" />
 </head>
 <body class="ratgeber-page">
-  <div id="site-header"></div>
+    <div id="site-header">
+      <header class="site-header" data-site-header>
+        <div class="container site-header__inner">
+          <a class="site-header__logo" href="/" data-nav aria-label="Grundstückscheck Startseite">
+            <img
+              src="/favicon-32x32.png"
+              alt=""
+              class="site-header__logo-icon"
+              width="24"
+              height="24"
+              loading="eager"
+              decoding="async"
+            />
+            <img
+              src="/assets/logo.svg"
+              alt=""
+              class="site-header__logo-img"
+              width="192"
+              height="29"
+              loading="eager"
+              decoding="async"
+            />
+          </a>
+      
+          <button
+            class="site-header__burger"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-header-nav"
+            aria-label="Menü öffnen"
+          >
+            <span class="site-header__burger-line" aria-hidden="true"></span>
+            <span class="site-header__burger-line" aria-hidden="true"></span>
+            <span class="site-header__burger-line" aria-hidden="true"></span>
+            <span class="sr-only">Menü öffnen</span>
+          </button>
+      
+          <nav class="site-header__nav" id="site-header-nav" aria-label="Hauptnavigation">
+            <a class="site-header__link" href="/" data-nav>Home</a>
+      
+            <div class="site-header__tools">
+              <button
+                class="site-header__tools-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="site-header-tools-panel"
+                aria-haspopup="true"
+              >
+                Tools
+                <span class="site-header__chevron" aria-hidden="true">▾</span>
+              </button>
+      
+              <div class="site-header__tools-panel" id="site-header-tools-panel" aria-label="Tools Navigation">
+                <a class="site-header__tools-item" href="/mieten-oder-kaufen-rechner.html" data-nav>
+                  <span class="site-header__tools-title">Mieten oder Kaufen</span>
+                  <span class="site-header__tools-sub">Finanzielle Einordnung in wenigen Klicks</span>
+                </a>
+      
+                <a class="site-header__tools-item" href="/index.html" data-nav>
+                  <span class="site-header__tools-title">Wohnen oder Bauen erlaubt?</span>
+                  <span class="site-header__tools-sub">Schneller Check für Ihr Grundstück</span>
+                </a>
+              </div>
+            </div>
+      
+            <a class="site-header__link" href="/ratgeber/" data-nav>Ratgeber</a>
+          </nav>
+        </div>
+      </header>
+    </div>
 
   <main class="container ratgeber-main">
     <section class="ratgeber-hero" aria-labelledby="ratgeber-title">
