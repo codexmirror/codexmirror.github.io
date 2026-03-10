@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="320" height="48" viewBox="0 0 320 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grundstueckcheck Logo">
-  <title>Grundstueckscheck</title>
+  <title>Grundstueckcheck</title>
 
   <!-- Dünne Struktur-Linie -->
   <line x1="12" y1="8" x2="12" y2="40" stroke="#1E2A38" stroke-width="1"/>
@@ -11,6 +11,6 @@
         font-size="20"
         fill="#1E2A38"
         font-weight="400">
-    Grundstuecks<tspan font-weight="600">check</tspan>
+    Grundstueck<tspan font-weight="600">check</tspan>
   </text>
 </svg>
