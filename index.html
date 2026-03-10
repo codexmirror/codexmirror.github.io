@@ -207,63 +207,184 @@
   <summary>Optional: Ergebnis verfeinern (Bestand, Erschließung, Sonderfälle)▾</summary>
 
   <fieldset>
-    <legend>Bestehende Bebauung</legend>
-    <div class="tile-options" aria-label="Bestand">
-      <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
-      <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
-      <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
-    </div>
-  </fieldset>
+  <legend class="sr-only">Bestehende Bebauung</legend>
+  <div class="field-head">
+    <span class="legend-main">Bestehende Bebauung</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="bestand"
+      aria-expanded="false"
+      aria-controls="info-bestand"
+      aria-label="Erklärung zu bestehender Bebauung anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
+
+  <div class="field-info" id="info-bestand" hidden>
+    Gemeint ist, ob auf dem Grundstück bereits ein baurechtlich genehmigter Bestand vorhanden ist.
+    Ein vorhandenes Gebäude allein reicht nicht immer aus, wenn die Genehmigung unklar ist.
+    Wenn du unsicher bist: „Unklar" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Bestand">
+    <label class="tile"><input type="radio" name="bestand" value="genehmigt" />Genehmigt</label>
+    <label class="tile"><input type="radio" name="bestand" value="unklar" />Unklar</label>
+    <label class="tile"><input type="radio" name="bestand" value="unbebaut" />Unbebaut</label>
+  </div>
+</fieldset>
 
   <fieldset>
-    <legend>Erschließung</legend>
-    <div class="tile-options" aria-label="Erschließung">
-      <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
-      <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
-      <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
-    </div>
-  </fieldset>
+  <legend class="sr-only">Erschließung</legend>
+  <div class="field-head">
+    <span class="legend-main">Erschließung</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="erschliessung"
+      aria-expanded="false"
+      aria-controls="info-erschliessung"
+      aria-label="Erklärung zu Erschließung anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
+
+  <div class="field-info" id="info-erschliessung" hidden>
+    Erschließung meint vor allem gesicherte Zufahrt sowie die Anbindung an Strom, Wasser und Abwasser.
+    Fehlende oder unklare Erschließung kann ein Vorhaben deutlich erschweren.
+    Wenn du es nicht sicher weißt: „Teilweise / unklar" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Erschließung">
+    <label class="tile"><input type="radio" name="erschliessung" value="voll" />Voll erschlossen</label>
+    <label class="tile"><input type="radio" name="erschliessung" value="teilweise" />Teilweise / unklar</label>
+    <label class="tile"><input type="radio" name="erschliessung" value="nicht" />Nicht gesichert</label>
+  </div>
+</fieldset>
 
   <fieldset>
-    <legend>Lage-Detail</legend>
-    <div class="tile-options" aria-label="Lage-Detail">
-      <label class="tile"><input type="radio" name="lage_detail" value="innen34" />Innenbereich (§34)</label>
-      <label class="tile"><input type="radio" name="lage_detail" value="aussen35" />Außenbereich (§35)</label>
-      <label class="tile"><input type="radio" name="lage_detail" value="randlage" />Randlage</label>
-      <label class="tile"><input type="radio" name="lage_detail" value="satzung" />Satzungsgebiet</label>
-      <label class="tile"><input type="radio" name="lage_detail" value="unklar" />Weiß ich nicht</label>
-    </div>
-  </fieldset>
+  <legend class="sr-only">Lage-Detail</legend>
+  <div class="field-head">
+    <span class="legend-main">Lage-Detail</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="lage-detail"
+      aria-expanded="false"
+      aria-controls="info-lage-detail"
+      aria-label="Erklärung zu Lage-Detail anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
+
+  <div class="field-info" id="info-lage-detail" hidden>
+    Das Lage-Detail verfeinert die planungsrechtliche Einordnung.
+    Besonders wichtig ist, ob das Grundstück klar im Innenbereich (§34), im Außenbereich (§35),
+    in einer Randlage oder in einem Satzungsgebiet liegt.
+    Wenn du es nicht sicher weißt: „Weiß ich nicht" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Lage-Detail">
+    <label class="tile"><input type="radio" name="lage_detail" value="innen34" />Innenbereich (§34)</label>
+    <label class="tile"><input type="radio" name="lage_detail" value="aussen35" />Außenbereich (§35)</label>
+    <label class="tile"><input type="radio" name="lage_detail" value="randlage" />Randlage</label>
+    <label class="tile"><input type="radio" name="lage_detail" value="satzung" />Satzungsgebiet</label>
+    <label class="tile"><input type="radio" name="lage_detail" value="unklar" />Weiß ich nicht</label>
+  </div>
+</fieldset>
 
   <section aria-label="Sonderfälle">
     <h3>Sonderfälle (können Planung stoppen)</h3>
 
-    <fieldset>
-      <legend>Natur-/Schutzgebiet</legend>
-      <div class="tile-options" aria-label="Natur- oder Schutzgebiet">
-        <label class="tile"><input type="radio" name="schutzgebiet" value="unbekannt" />Unbekannt</label>
-        <label class="tile"><input type="radio" name="schutzgebiet" value="lsg" />Landschaftsschutzgebiet</label>
-        <label class="tile"><input type="radio" name="schutzgebiet" value="streng" />Strenges Schutzgebiet</label>
-      </div>
-    </fieldset>
+   <fieldset>
+  <legend class="sr-only">Natur-/Schutzgebiet</legend>
+  <div class="field-head">
+    <span class="legend-main">Natur-/Schutzgebiet</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="schutzgebiet"
+      aria-expanded="false"
+      aria-controls="info-schutzgebiet"
+      aria-label="Erklärung zu Natur- oder Schutzgebiet anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
+
+  <div class="field-info" id="info-schutzgebiet" hidden>
+    Schutzgebiete können die planungsrechtliche Zulässigkeit deutlich einschränken.
+    Ein Landschaftsschutzgebiet ist oft weniger streng als ein besonders geschützter Bereich,
+    kann aber trotzdem relevant sein. Wenn du keine sicheren Informationen hast: „Unbekannt" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Natur- oder Schutzgebiet">
+    <label class="tile"><input type="radio" name="schutzgebiet" value="unbekannt" />Unbekannt</label>
+    <label class="tile"><input type="radio" name="schutzgebiet" value="lsg" />Landschaftsschutzgebiet</label>
+    <label class="tile"><input type="radio" name="schutzgebiet" value="streng" />Strenges Schutzgebiet</label>
+  </div>
+</fieldset>
 
     <fieldset>
-      <legend>Wasserschutz</legend>
-      <div class="tile-options" aria-label="Wasserschutz">
-        <label class="tile"><input type="radio" name="wasserschutz" value="unbekannt" />Unbekannt</label>
-        <label class="tile"><input type="radio" name="wasserschutz" value="zone3" />Zone III</label>
-        <label class="tile"><input type="radio" name="wasserschutz" value="zone12" />Zone I/II</label>
-      </div>
-    </fieldset>
+  <legend class="sr-only">Wasserschutz</legend>
+  <div class="field-head">
+    <span class="legend-main">Wasserschutz</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="wasserschutz"
+      aria-expanded="false"
+      aria-controls="info-wasserschutz"
+      aria-label="Erklärung zu Wasserschutz anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
 
-    <fieldset>
-      <legend>Hochwasser</legend>
-      <div class="tile-options" aria-label="Hochwasser">
-        <label class="tile"><input type="radio" name="hochwasser" value="unbekannt" />Unbekannt</label>
-        <label class="tile"><input type="radio" name="hochwasser" value="risiko" />Risiko</label>
-        <label class="tile"><input type="radio" name="hochwasser" value="hq100" />HQ100</label>
-      </div>
-    </fieldset>
+  <div class="field-info" id="info-wasserschutz" hidden>
+    In Wasserschutzgebieten gelten je nach Zone unterschiedliche Einschränkungen.
+    Besonders in Zone I und II sind Vorhaben häufig stark begrenzt.
+    Wenn du die genaue Einstufung nicht kennst: „Unbekannt" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Wasserschutz">
+    <label class="tile"><input type="radio" name="wasserschutz" value="unbekannt" />Unbekannt</label>
+    <label class="tile"><input type="radio" name="wasserschutz" value="zone3" />Zone III</label>
+    <label class="tile"><input type="radio" name="wasserschutz" value="zone12" />Zone I/II</label>
+  </div>
+</fieldset>
+
+   <fieldset>
+  <legend class="sr-only">Hochwasser</legend>
+  <div class="field-head">
+    <span class="legend-main">Hochwasser</span>
+    <button
+      type="button"
+      class="info-toggle"
+      data-info="hochwasser"
+      aria-expanded="false"
+      aria-controls="info-hochwasser"
+      aria-label="Erklärung zu Hochwasser anzeigen oder ausblenden"
+    >
+      <span class="info-glyph" aria-hidden="true">i</span>
+    </button>
+  </div>
+
+  <div class="field-info" id="info-hochwasser" hidden>
+    Hochwasserrisiken können die Nutzbarkeit und Genehmigungsfähigkeit deutlich beeinflussen.
+    HQ100 bezeichnet ein statistisches Hochwasserereignis mit hoher Relevanz für die Planung.
+    Wenn du keine belastbare Information hast: „Unbekannt" wählen.
+  </div>
+
+  <div class="tile-options" aria-label="Hochwasser">
+    <label class="tile"><input type="radio" name="hochwasser" value="unbekannt" />Unbekannt</label>
+    <label class="tile"><input type="radio" name="hochwasser" value="risiko" />Risiko</label>
+    <label class="tile"><input type="radio" name="hochwasser" value="hq100" />HQ100</label>
+  </div>
+</fieldset>
   </section>
 </details>
           </form>
