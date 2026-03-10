@@ -408,7 +408,7 @@
 }
 
 .result .interpretation {
-  margin: 0;
+  margin: 0 0 0.8rem;
   font-size: 0.99rem;
   color: #243041;
 }
@@ -438,10 +438,10 @@
 }
 
 .result #primary-step-section {
-  margin-top: 0.9rem;
-  padding: 0.85rem 0.95rem;
+  margin-top: 0.75rem;
+  padding: 0.7rem 0.8rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgba(248, 250, 252, 0.9);
 }
 
@@ -451,7 +451,8 @@
 }
 
 .result #primary-step-section ul {
-  margin: 0;
+  margin: 0.15rem 0 0;
+  padding-left: 1.1rem;
 }
 
 .result .score-legend-details__body {
