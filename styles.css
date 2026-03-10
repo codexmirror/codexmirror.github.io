@@ -447,6 +447,22 @@ li { margin: 0.3rem 0; }
   text-decoration: none;
   color: var(--header-text);
   letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+.site-header__logo-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.site-header__logo-img {
+  display: block;
+  width: 192px;
+  height: auto;
+  flex-shrink: 0;
 }
 
 .site-header__nav {
@@ -603,6 +619,19 @@ li { margin: 0.3rem 0; }
 @media (max-width: 900px) {
   .site-header__inner {
     min-height: 4rem;
+  }
+  
+    .site-header__logo {
+    gap: 0.45rem;
+  }
+
+  .site-header__logo-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .site-header__logo-img {
+    width: 160px;
   }
 
   .site-header__burger {
