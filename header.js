@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const mount = document.getElementById("site-header");
-  if (!mount) return;
+  const header = mount?.querySelector(".site-header");
 
-  const header = mount.querySelector(".site-header");
-  if (!header) return;
+  if (!mount || !header) return;
 
   const nav = mount.querySelector("#site-header-nav");
   const burger = mount.querySelector(".site-header__burger");
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toolsToggle = mount.querySelector(".site-header__tools-toggle");
   const toolsPanel = mount.querySelector("#site-header-tools-panel");
   const desktopQuery = window.matchMedia("(min-width: 901px)");
-
+  
   // -----------------------
   // Active Link Handling
   // -----------------------
@@ -126,10 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!(target instanceof Element)) return;
 
     // Klick komplett außerhalb Header -> alles zu
-    if (!header.contains(target)) {
-      closeNav();
-      return;
-    }
+    if (!header?.contains(target)) {
+  closeNav();
+  return;
+}
 
     // Klick im Header aber außerhalb Tools -> Tools zu
     if (!toolsWrap?.contains(target)) {
