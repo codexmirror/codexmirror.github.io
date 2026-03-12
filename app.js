@@ -31,10 +31,10 @@
 },
   {
   id: "cap_randlage",
-  severity: "hard",
-  max: 35,
+  severity: "medium",
+  max: 45,
   applies: (s) => s.lage_detail === "randlage",
-  reason: "Randlage begrenzt die planungsrechtliche Belastbarkeit deutlich."
+  reason: "Randlage ist planungsrechtlich oft heikel und sollte besonders sorgfältig eingeordnet werden."
 },
   {
   id: "cap_schutzgebiet_streng",
@@ -66,17 +66,17 @@
 },
   {
   id: "cap_hochwasser_hq100",
-  severity: "medium",
-  max: 45,
+  severity: "hard",
+  max: 35,
   applies: (s) => s.hochwasser === "hq100",
-  reason: "HQ100-Lage begrenzt Vorhaben oft über Auflagen oder Verbote."
+  reason: "HQ100-Lage ist oft nur unter engen Voraussetzungen oder gar nicht bebaubar; die konkrete Gebietsfestsetzung ist entscheidend."
 },
   {
   id: "cap_wald_wohnen",
-  severity: "hard",
-  max: 15,
+  severity: "medium",
+  max: 20,
   applies: (s) => s.typ === "wald" && isWohnen(s.nutzung),
-  reason: "Waldflächen sind für Wohnen in der Regel nicht vorgesehen."
+  reason: "Waldflächen sind für Wohnen regelmäßig sehr problematisch; maßgeblich bleiben Einordnung, Erschließung und weitere Fachvorgaben."
 }
 ],
     nextStepTemplates: {
@@ -92,8 +92,8 @@
       landwpriv: "Privilegierung belastbar nachweisen: Betrieb, Flächen und konkreten Bedarf.",
       freizeitWohnen: "Zweckbestimmung schriftlich klären: Freizeitnutzung ist kein dauerhaftes Wohnen.",
       naturschutzKlaeren: "Naturschutz: Schutzstatus und Auflagen schriftlich klären.",
-      wasserschutzKlaeren: "Wasserschutz: Schutzzone und Auflagen schriftlich klären.",
-      hochwasserKlaeren: "Hochwasser: Karten prüfen und Auflagen klären.",
+      wasserschutzKlaeren: "Wasserschutz: Schutzzone, konkrete Verordnung und Auflagen schriftlich klären.",
+      hochwasserKlaeren: "Hochwasser: amtliche Karten prüfen und klären, ob ein festgesetztes Gebiet oder nur ein Risikohinweis vorliegt.",
       geoportalPruefen: "Geoportal prüfen (Schutz/Wasser/Hochwasser).",
       starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet vorbereiten.",
       fallback: "Bei Unsicherheit: Bauamt-Auskunft schriftlich einholen."
@@ -104,8 +104,8 @@
       freizeit: "Freizeitnutzung und Dauerwohnen sind planungsrechtlich verschieden.",
       bestand: "Bestandsschutz oder Duldung gilt selten pauschal für neue Vorhaben.",
       naturschutz: "Strenges Schutzgebiet kann Vorhaben vollständig ausschließen.",
-      wasserschutz: "Wasserschutz Zone I/II kann Neubau und Nutzungsänderungen faktisch blockieren.",
-      hochwasser: "HQ100-Lage kann zu Bauverboten, strengen Auflagen oder Folgekosten führen.",
+      wasserschutz: "Wasserschutz Zone I/II kann Neubau und Nutzungsänderungen stark begrenzen; entscheidend bleibt die konkrete Schutzgebietsverordnung.",
+      hochwasser: "HQ100-Lage kann je nach Gebietsfestsetzung zu Bauverboten, strengen Auflagen oder erheblichen Folgekosten führen.",
       general: "Exposé-Formulierungen ersetzen keine schriftliche Einordnung vom Bauamt.",
       fallback: "Mündliche Aussagen sind hilfreich, entscheidend ist die schriftliche Einordnung."
     },
@@ -148,10 +148,10 @@
   const TEMPLATES = {
     positives: {
       lage_innen: "Innenbereich ist oft planungsrechtlich günstiger.",
-      bplan_ja: "Bebauungsplan kann die Zulässigkeit klarer absichern.",
-      typ_bauluecke: "Baulücken sind häufig eher für Bebauung gedacht.",
+      bplan_ja: "Ein Bebauungsplan kann die Zulässigkeit klarer einordnen, wenn die gewünschte Nutzung seinen Festsetzungen entspricht.",
+      typ_bauluecke: "Baulücken können die Ausgangslage verbessern, wenn sich das Vorhaben einfügt und die Erschließung gesichert ist.",
       typ_freizeit_wochenende: "Freizeitgrundstück passt eher zu Wochenendnutzung.",
-      typ_landwpriv: "Privilegierte Landwirtschaft kann im Außenbereich eher möglich sein.",
+      typ_landwpriv: "Privilegierte Landwirtschaft kann im Außenbereich eher möglich sein, wenn ein echter betrieblicher Bezug nachweisbar ist.",
       bestand_genehmigt: "Genehmigter Bestand kann die Ausgangslage stützen.",
       erschl_voll: "Voll erschlossen senkt praktische Hürden deutlich."
     },
@@ -161,7 +161,7 @@
       bplan_unklar: "Unklarer Bebauungsplan erhöht das Planungsrisiko.",
       typ_freizeit_wohnen: "Freizeitgrundstück ist für Dauerwohnen häufig ungeeignet.",
       nutzung_gewerblich: "Gewerbliche Nutzung braucht oft zusätzliche Vorgaben und Nachweise.",
-      erschl_teilweise: "Teilweise Erschließung kann Bau und Nutzung bremsen.",
+      erschl_teilweise: "Teilweise oder unklare Erschließung kann die Zulässigkeit deutlich schwächen; gesicherte Erschließung bleibt ein Kernpunkt.",
       landwpriv_unplausibel: "Privilegierung ohne klaren landwirtschaftlichen Bezug ist meist nicht tragfähig.",
       innen34_einfuegen: "Innenbereich (§34) verlangt Einfügen in Art und Maß der Umgebung.",
       sonderfall_lsg: "Landschaftsschutz bringt oft zusätzliche Auflagen und Einschränkungen.",
@@ -324,9 +324,9 @@
     }
 
     if (state.typ === "bauluecke" && isInsideIsh(state)) {
-      score += 20;
-      reasons.push(makeReason("typ", 20, TEMPLATES.positives.typ_bauluecke, "positive"));
-    }
+  score += 12;
+  reasons.push(makeReason("typ", 12, TEMPLATES.positives.typ_bauluecke, "positive"));
+}
     if (state.typ === "freizeit" && state.nutzung === "wochenende") {
       score += 10;
       reasons.push(makeReason("typ", 10, TEMPLATES.positives.typ_freizeit_wochenende, "positive"));
@@ -367,14 +367,14 @@
       score += 10;
       reasons.push(makeReason("erschliessung", 10, TEMPLATES.positives.erschl_voll, "positive"));
     } else if (state.erschliessung === "teilweise") {
-      score -= 5;
-      reasons.push(makeReason("erschliessung", -5, TEMPLATES.negatives.erschl_teilweise, "unclear"));
-    }
+  score -= 10;
+  reasons.push(makeReason("erschliessung", -10, TEMPLATES.negatives.erschl_teilweise, "unclear"));
+}
 
     if (state.lage_detail === "randlage") {
-      score -= 15;
-      reasons.push(makeReason("lage_detail", -15, "Randlage wird planungsrechtlich häufig wie Außenbereich behandelt.", "negative"));
-    } else if (state.lage_detail === "satzung") {
+  score -= 12;
+  reasons.push(makeReason("lage_detail", -12, "Randlage ist planungsrechtlich oft unsicher und muss im Einzelfall sauber eingeordnet werden.", "negative"));
+} else if (state.lage_detail === "satzung") {
       score += 5;
       reasons.push(makeReason("lage_detail", 5, "Klarer Satzungsbezug kann die Einordnung stützen.", "positive"));
     }
@@ -499,13 +499,12 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
     const privileged = state.nutzung === "landwpriv";
 
   const hasStopFactor =
-    state.schutzgebiet === "streng" ||
-    state.wasserschutz === "zone12" ||
-    state.hochwasser === "hq100" ||
-    state.erschliessung === "nicht" ||
-    state.lage_detail === "randlage" ||
-    (state.typ === "wald" && isWohnen(state.nutzung)) ||
-    (isOutsideIsh(state) && restrictedUse && !privileged);
+  state.schutzgebiet === "streng" ||
+  state.wasserschutz === "zone12" ||
+  state.hochwasser === "hq100" ||
+  state.erschliessung === "nicht" ||
+  (state.typ === "wald" && isWohnen(state.nutzung)) ||
+  (isOutsideIsh(state) && restrictedUse && !privileged);
 
   if (hasStopFactor) steps.push(CONFIG.nextStepTemplates.stopFactorIntro);
     if (state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
@@ -571,7 +570,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
   function adjustAmpel(light, state, activeCaps) {
   const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
   const privileged = state.nutzung === "landwpriv";
-  const hasHardStopCap = activeCaps.some((cap) => cap && (cap.severity === "hard" || cap.max <= 35));
+  const hasHardStopCap = activeCaps.some((cap) => cap && cap.severity === "hard");
   if (hasHardStopCap && light !== "🔴") return "🔴";
   if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
   return light;
@@ -1062,19 +1061,19 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
 }
       },
       {
-        id: "T6",
-        state: {
-          lage: "innen",
-          bplan: "ja",
-          typ: "bauluecke",
-          nutzung: "wohnen",
-          schutzgebiet: "streng",
-          wasserschutz: "zone12",
-          hochwasser: "hq100",
-          optionalActive: true
-        },
-        check: (r) => {
-  const caps = Array.isArray(r.activeCaps) ? r.activeCaps : [];
+  id: "T6",
+  state: {
+    lage: "innen",
+    bplan: "ja",
+    typ: "bauluecke",
+    nutzung: "wohnen",
+    schutzgebiet: "streng",
+    wasserschutz: "zone12",
+    hochwasser: "hq100",
+    optionalActive: true
+  },
+  check: (r) => {
+const caps = Array.isArray(r.activeCaps) ? r.activeCaps : [];
 const hasStreng = caps.some((c) => c && c.id === "cap_schutzgebiet_streng");
 const hasZone12 = caps.some((c) => c && c.id === "cap_wasserschutz_zone12");
 const hasHq100 = caps.some((c) => c && c.id === "cap_hochwasser_hq100");
@@ -1088,7 +1087,7 @@ return (
   r.steps.length > 0
 );
 }
-      },
+},
       {
         id: "T7",
         state: baseline,
@@ -1210,7 +1209,20 @@ return (
           });
           return r.neutral === control.neutral && r.interpretation === control.interpretation;
         }
-      }
+      },
+      {
+  id: "T16",
+  state: {
+    lage: "aussen",
+    bplan: "nein",
+    typ: "wald",
+    nutzung: "wohnen",
+    optionalActive: false
+  },
+  check: (r) =>
+    r.score <= 20 &&
+    r.ampel === "🔴"
+}
     ];
 
     return scenarios.map((s) => ({ id: s.id, pass: s.check(evaluate(s.state)), result: evaluate(s.state) }));
