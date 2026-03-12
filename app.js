@@ -413,23 +413,38 @@
   }
 
   function applyGates(score, state) {
-    let current = score;
-    const gates = [];
-        const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
-    const privileged = state.nutzung === "landwpriv";
+  let current = score;
+  const gates = [];
+  const privileged = state.nutzung === "landwpriv";
 
-    if (isOutsideIsh(state) && restrictedUse && !privileged) {
-      gates.push({
-  id: "gate_outside_restricted_use",
-  severity: "hard",
-  max: 25,
-  reason: "Außenbereich/Randlage: diese Nutzung ist planungsrechtlich stark eingeschränkt."
-});
-      current = Math.min(current, 25);
-    }
-
-    return { score: current, gates };
+  if (isOutsideIsh(state) && state.nutzung === "wohnen" && !privileged) {
+    gates.push({
+      id: "gate_outside_wohnen",
+      severity: "hard",
+      max: 25,
+      reason: "Außenbereich/Randlage: Wohnen ist planungsrechtlich stark eingeschränkt."
+    });
+    current = Math.min(current, 25);
+  } else if (isOutsideIsh(state) && state.nutzung === "wochenende" && state.typ === "freizeit") {
+    gates.push({
+      id: "gate_outside_wochenende_freizeit",
+      severity: "medium",
+      max: 40,
+      reason: "Wochenendnutzung auf Freizeitgrundstücken im Außenbereich ist gesondert einzuordnen und oft klärungsbedürftig."
+    });
+    current = Math.min(current, 40);
+  } else if (isOutsideIsh(state) && state.nutzung === "wochenende") {
+    gates.push({
+      id: "gate_outside_wochenende",
+      severity: "hard",
+      max: 25,
+      reason: "Wochenendnutzung im Außenbereich ist planungsrechtlich stark eingeschränkt."
+    });
+    current = Math.min(current, 25);
   }
+
+  return { score: current, gates };
+}
 
   function clampScore(score) {
     return Math.min(100, Math.max(1, score));
@@ -495,10 +510,13 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
   function buildNextSteps(state, reasons) {
     const steps = [];
 
-         const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
-    const privileged = state.nutzung === "landwpriv";
+         const restrictedUse =
+  state.nutzung === "wohnen" ||
+  (state.nutzung === "wochenende" && state.typ !== "freizeit");
 
-  const hasStopFactor =
+const privileged = state.nutzung === "landwpriv";
+
+const hasStopFactor =
   state.schutzgebiet === "streng" ||
   state.wasserschutz === "zone12" ||
   state.hochwasser === "hq100" ||
@@ -568,11 +586,24 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
   }
 
   function adjustAmpel(light, state, activeCaps) {
-  const restrictedUse = ["wohnen", "wochenende"].includes(state.nutzung);
   const privileged = state.nutzung === "landwpriv";
   const hasHardStopCap = activeCaps.some((cap) => cap && cap.severity === "hard");
+
   if (hasHardStopCap && light !== "🔴") return "🔴";
-  if (isAussenbereich(state) && restrictedUse && !privileged && light === "🟢") return "🟡";
+
+  if (isAussenbereich(state) && state.nutzung === "wohnen" && !privileged && light === "🟢") {
+    return "🟡";
+  }
+
+  if (
+    isAussenbereich(state) &&
+    state.nutzung === "wochenende" &&
+    state.typ === "freizeit" &&
+    light === "🟢"
+  ) {
+    return "🟡";
+  }
+
   return light;
 }
 
@@ -1137,7 +1168,7 @@ return (
   r.score <= 25 &&
   r.ampel === "🔴" &&
   Array.isArray(r.activeCaps) &&
-  r.activeCaps.some((cap) => cap && cap.id === "gate_outside_restricted_use")
+  r.activeCaps.some((cap) => cap && cap.id === "gate_outside_wohnen")
       },
       {
         id: "T11",
@@ -1222,7 +1253,37 @@ return (
   check: (r) =>
     r.score <= 20 &&
     r.ampel === "🔴"
-}
+},
+      {
+        id: "T17",
+        state: {
+          lage: "aussen",
+          bplan: "ja",
+          typ: "freizeit",
+          nutzung: "wochenende",
+          optionalActive: false
+        },
+        check: (r) =>
+          r.score <= 40 &&
+          r.ampel === "🟡" &&
+          Array.isArray(r.activeCaps) &&
+          r.activeCaps.some((cap) => cap && cap.id === "gate_outside_wochenende_freizeit")
+      },
+      {
+        id: "T18",
+        state: {
+          lage: "aussen",
+          bplan: "ja",
+          typ: "sonstiges",
+          nutzung: "wochenende",
+          optionalActive: false
+        },
+        check: (r) =>
+          r.score <= 25 &&
+          r.ampel === "🔴" &&
+          Array.isArray(r.activeCaps) &&
+          r.activeCaps.some((cap) => cap && cap.id === "gate_outside_wochenende")
+      }
     ];
 
     return scenarios.map((s) => ({ id: s.id, pass: s.check(evaluate(s.state)), result: evaluate(s.state) }));
