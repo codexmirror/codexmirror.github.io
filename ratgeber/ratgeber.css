@@ -108,6 +108,44 @@
     transform 180ms ease;
 }
 
+.ratgeber-card--featured {
+  position: relative;
+  background: linear-gradient(180deg, rgba(47, 91, 255, 0.045) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border: 1px solid rgba(47, 91, 255, 0.22);
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.05),
+    0 0 0 1px rgba(47, 91, 255, 0.04);
+}
+
+.ratgeber-card--featured::before {
+  content: "Empfohlener Einstieg";
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.28rem 0.58rem;
+  border-radius: 999px;
+  background: rgba(47, 91, 255, 0.10);
+  color: var(--primary, #2f5bff);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+.ratgeber-card--featured .ratgeber-card__label {
+  color: color-mix(in srgb, var(--primary, #2f5bff) 62%, #334155);
+}
+
+.ratgeber-card--featured:hover {
+  border-color: rgba(47, 91, 255, 0.32);
+  box-shadow:
+    0 16px 38px rgba(15, 23, 42, 0.08),
+    0 0 0 1px rgba(47, 91, 255, 0.07);
+}
+
 /* Hover-Feedback auf der ganzen Karte */
 .ratgeber-card:hover {
   border-color: rgba(15, 23, 42, 0.16);
