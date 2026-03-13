@@ -136,23 +136,25 @@
   line-height: 1;
 }
 
-.ratgeber-card--featured:hover {
+/* Hover-Feedback auf der ganzen Karte */
+.ratgeber-card:hover {
+  border-color: rgba(15, 23, 42, 0.16);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Featured-Karte behält eigene Hover-Optik */
+.ratgeber-card.ratgeber-card--featured:hover {
   border-color: rgba(47, 91, 255, 0.32);
   box-shadow:
     0 16px 38px rgba(15, 23, 42, 0.08),
     0 0 0 1px rgba(47, 91, 255, 0.07);
 }
 
-.ratgeber-card--featured .ratgeber-card__title,
-.ratgeber-card--featured:hover .ratgeber-card__title {
+/* Titel der Featured-Karte bleibt auch im Hover dunkel */
+.ratgeber-card.ratgeber-card--featured .ratgeber-card__title,
+.ratgeber-card.ratgeber-card--featured:hover .ratgeber-card__title {
   color: #1f2937;
-}
-
-/* Hover-Feedback auf der ganzen Karte */
-.ratgeber-card:hover {
-  border-color: rgba(15, 23, 42, 0.16);
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
-  transform: translateY(-2px);
 }
 
 .ratgeber-card__label {
