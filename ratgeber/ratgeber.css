@@ -340,4 +340,13 @@
     position: sticky;
     top: 5.5rem;
   }
+  @media (min-width: 1040px) {
+  .ratgeber-card--featured::before {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.2rem 0.48rem;
+    font-size: 0.66rem;
+    font-weight: 620;
+    letter-spacing: 0.02em;
+  }
 }
