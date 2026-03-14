@@ -92,10 +92,10 @@
 
 .tool-hero h1 {
   margin: 0;
-  letter-spacing: -0.032em;
-  line-height: 1.03;
-  font-size: clamp(2.15rem, 4.6vw, 3.35rem);
-  max-width: 12ch;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  max-width: 13ch;
   text-wrap: balance;
 }
 
@@ -104,7 +104,7 @@
   color: #3f4a5a;
   font-size: 1.01rem;
   line-height: 1.58;
-  max-width: 50rem;
+  max-width: 46rem;
 }
 
 .tool-hero__bullets {
