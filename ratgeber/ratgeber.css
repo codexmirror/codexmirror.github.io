@@ -340,7 +340,7 @@
     position: sticky;
     top: 5.5rem;
   }
-  @media (min-width: 1040px) {
+
   .ratgeber-card--featured::before {
     top: 0.75rem;
     right: 0.75rem;
