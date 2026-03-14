@@ -267,8 +267,8 @@
   }
 
   .tool-hero h1 {
-  max-width: 22ch;
-  font-size: clamp(1.85rem, 1.95vw, 2.3rem);
+  max-width: 24ch;
+  font-size: clamp(1.9rem, 2vw, 2.35rem);
   line-height: 1.08;
 }
 
