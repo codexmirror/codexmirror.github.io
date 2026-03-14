@@ -334,18 +334,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .ratgeber-card--featured {
-    grid-column: span 2;
-    padding-top: 1.75rem;
-  }
-
-  .ratgeber-card--featured::before {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.24rem 0.56rem;
-    font-size: 0.68rem;
-  }
-
   .ratgeber-tools {
     grid-area: tools;
     margin-top: 2.8rem;
