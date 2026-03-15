@@ -158,12 +158,23 @@ def classify_score(
             and edge_index <= 0.55
             and not rural_landuse_signal
         )
+        old_town_square_pattern = (
+            building_count_80m <= 2
+            and building_count_150m >= 20
+            and building_count_250m >= 45
+            and sector_coverage >= 7
+            and edge_index <= 0.45
+            and not rural_landuse_signal
+        )
         loose_village_core = (
-            building_count_80m >= 2
-            and building_count_150m >= 6
-            and building_count_250m >= 12
-            and sector_coverage >= 5
-            and edge_index <= 0.65
+            2 <= building_count_80m <= 5
+            and 6 <= building_count_150m <= 16
+            and 12 <= building_count_250m <= 34
+            and 5 <= sector_coverage <= 7
+            and 0.42 <= edge_index <= 0.72
+            and not strong_urban_pattern
+            and not open_space_inside_settlement
+            and not old_town_square_pattern
             and not rural_landuse_signal
         )
         weak_settlement_pattern = (

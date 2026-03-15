@@ -26,14 +26,25 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
         and sector_coverage >= 7
         and edge_index <= 0.45
         and building_count_150m >= 20
+        and building_count_250m >= 45
         and not rural_landuse_signal
     )
     protected_open_space_pattern = urban_open_space_pattern or old_town_square_pattern
+    strong_urban_pattern = (
+        building_count_80m >= 4
+        and building_count_150m >= 15
+        and building_count_250m >= 25
+        and sector_coverage >= 6
+        and edge_index <= 0.55
+        and not rural_landuse_signal
+    )
     loose_village_core = (
-        building_count_80m >= 2
-        and building_count_150m >= 6
-        and sector_coverage >= 5
-        and edge_index <= 0.65
+        2 <= building_count_80m <= 5
+        and 6 <= building_count_150m <= 16
+        and 12 <= building_count_250m <= 34
+        and 5 <= sector_coverage <= 7
+        and 0.42 <= edge_index <= 0.72
+        and not rural_landuse_signal
     )
 
     if building_count_80m >= 6:
@@ -65,7 +76,7 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
     elif sector_coverage <= 2:
         lines.append("Die Bebauung konzentriert sich eher auf wenige Richtungen.")
 
-    if loose_village_core and not protected_open_space_pattern:
+    if loose_village_core and not protected_open_space_pattern and not strong_urban_pattern:
         lines.append("Das Muster passt zu einem lockeren Siedlungskern.")
 
     if building_count_250m >= 35 and building_count_80m <= 2 and sector_coverage >= 5:
