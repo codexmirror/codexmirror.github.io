@@ -1,674 +1,265 @@
-# SOP – Erstellung und Prüfung von HTML-Ratgeberartikeln für grundstueckcheck.de
 
-Dieses SOP ist die zentrale Arbeitsanweisung für alle Ratgeberartikel im Projekt grundstueckcheck.de.
 
-Wenn dieses Dokument im Projektkontext verfügbar ist, hat es Vorrang vor allgemeinen Projektanweisungen.
-Alle Artikel sollen nach diesem SOP erstellt, geprüft und überarbeitet werden.
+SOP – Erstellung von Ratgeberartikeln für grundstueckcheck.de
 
-Ziel
+Diese SOP beschreibt, wie neue Ratgeberartikel für grundstueckcheck.de entstehen.
 
-Systematische Erstellung von SEO-Ratgeberartikeln, die:
-	•	Traffic über Suchmaschinen generieren
-	•	Nutzerfragen rund um Baurecht, Grundstücksnutzung und Grundstückskauf verständlich beantworten
-	•	logisch zum Grundstücks-Check als strukturierter Ersteinschätzung führen
+Die bestehenden Ratgeberseiten im Repository dienen als wichtigste Referenz für Struktur.
 
-Der Grundstücks-Check ist kein beliebiges CTA-Element, sondern der diagnostische nächste Schritt, wenn ein Einzelfall nicht pauschal beantwortet werden kann.
+Sie dient als Orientierung für Struktur, Qualität und Ziel der Inhalte – 
+nicht als starres Regelwerk.
+
+Der Ratgeber soll Menschen helfen, Grundstücksfragen besser zu verstehen
+und sie bei unklaren Fällen zum Grundstücks-Check führen.
 
 ⸻
 
-1. Grundprinzipien
+1. Grundidee des Ratgebers
 
-1.1 Cluster schlagen Einzelartikel
+Der Ratgeber beantwortet reale Fragen rund um:
+	•	Grundstückskauf
+	•	Bebaubarkeit
+	•	Nutzung von Grundstücken
+	•	typische Problemfälle
 
-Ein einzelner Artikel rankt selten nachhaltig.
-Ein thematisch verbundenes Cluster aus mehreren Artikeln rankt deutlich stabiler und stärkt die gesamte Domain.
+Artikel sollen verständlich erklären:
+• wie typische Situationen zu bewerten sind
+• welche Faktoren eine Rolle spielen
+• wann eine Einzelfallprüfung sinnvoll ist
 
-1.2 Tool-nahe Themen haben Priorität
-
-Themen werden danach priorisiert, wie stark sie in Richtung Einzelfallprüfung führen.
-
-Hohe Priorität haben Themen, bei denen Nutzer denken:
-
-„Ich verstehe das Prinzip, aber meinen konkreten Fall muss ich prüfen."
-
-1.3 Ratgeberartikel sind diagnostische Landingpages
-
-Ein Artikel soll nicht nur informieren, sondern:
-	1.	das Problem erklären
-	2.	die Grenzen pauschaler Antworten zeigen
-	3.	logisch zur strukturierten Vorprüfung führen
-
-⸻
-2. Cluster-Gap-Analyse
-
-Bevor ein neues Thema ausgewählt wird, wird das bestehende Ratgeber-Cluster kurz analysiert.
-
-Ziel:
-Identifizieren, welche Themen, Keywords oder Nutzerfragen im bestehenden Cluster noch fehlen.
-
-Analysefragen:
-
-• Welche Hauptkeywords decken die bestehenden Artikel bereits ab?
-• Welche Long-Tail-Suchanfragen tauchen häufig auf?
-• Welche Themen fehlen noch im Cluster?
-• Welche Themen würden bestehende Artikel stärken?
-
-Dabei wird besonders geprüft:
-
-• Bebaubarkeit
-• Innenbereich / Außenbereich
-• Bebauungsplan
-• Erschließung
-• Bauvoranfrage / Bauantrag
-• Grundstücksnutzung
-• Sonderfälle (z. B. Freizeitgrundstücke)
-
-Die Analyse kann manuell oder mit einem Codex-Cluster-Audit erfolgen.
-
-Ergebnis:
-Ein priorisiertes Thema für den nächsten Artikel.
+Viele Grundstücksfragen lassen sich nicht pauschal beantworten.
 
 
-3. Themenauswahl
+Diagnostische Logik des Ratgebers
 
-Vor jedem neuen Artikel erfolgt ein kurzer Themen-Check.
+1. Problem erklären  
+2. typische Fälle oder Grenzfälle zeigen  
+3. Entscheidungsfaktoren sichtbar machen  
+4. bei Unsicherheit zum Grundstücks-Check führen
 
-3.1 Nutzerfrage definieren
-
-Die zentrale Nutzerfrage identifizieren.
-
-Beispiele:
-	•	Darf man im Außenbereich bauen?
-	•	Grundstück nicht erschlossen – was bedeutet das?
-	•	Bauvoranfrage Ablauf
-	•	Freizeitgrundstück dauerhaft wohnen
-
-Die Nutzerfrage bestimmt:
-	•	Titel
-	•	Struktur
-	•	Suchintention
-	
-3.1.1 Keyword-Plausibilitätscheck
-
-Vor der Erstellung eines Artikels wird kurz geprüft, ob die Nutzerfrage realistisch gesucht wird.
-
-Fragen:
-
-• Ist die Frage eine typische Nutzerfrage?
-• Würde jemand dieses Problem so bei Google eingeben?
-• Bezieht sich die Frage auf eine konkrete Entscheidung oder ein reales Problem?
-
-Beispiele realistischer Suchfragen:
-
-• Darf man im Außenbereich bauen?
-• Grundstück ohne Bebauungsplan
-• Bauvoranfrage Kosten
-• Grundstück nicht erschlossen Bedeutung
-
-Unrealistische oder zu abstrakte Themen sollten vermieden werden.
-
-3.2 Clusterrolle festlegen
-
-Jeder Artikel bekommt eine klare Rolle im Cluster.
-
-Typ Beispiel
-
-Pillar-Artikel
-Ist mein Grundstück bebaubar
-
-Grundlagenartikel
-Innenbereich vs. Außenbereich
-
-Entscheidungsartikel
-Darf man im Außenbereich bauen
-
-Prozessartikel
-Bauvoranfrage Ablauf
-
-Spezialfall
-Freizeitgrundstück dauerhaft wohnen
-
-Vergleichsartikel
-Bauvoranfrage vs Bauantrag
-
-Kaufprüfung
-Baulücke kaufen Checkliste
-
-3.3 Kannibalisierung prüfen
-
-Vorhandene Artikel prüfen.
-
-Beispiele:
-	•	Innenbereich vs. Außenbereich
-	•	Dauerhaft wohnen im Außenbereich
-	•	Freizeitgrundstück dauerhaft wohnen
-	•	Baulücke kaufen
-
-Fragen:
-	•	Überschneidet sich der Fokus stark?
-	•	Gibt es bereits einen sehr ähnlichen Artikel?
-
-Wenn ja:
-	•	Fokus schärfen oder
-	•	Thema ändern
-
-3.4 Tool-Nähe bewerten
-
-Jedes Thema wird nach seiner Nähe zum Grundstücks-Check bewertet.
-
-Tool-Nähe	Beschreibung
-Hoch	Nutzer braucht Einzelfallprüfung
-Mittel	Artikel erklärt Grundlagen, Tool sinnvoll
-Niedrig	rein informativ
-
-Priorität haben hoch und mittel.
+Der Grundstücks-Check ist eine strukturierte Vorprüfung
+und ersetzt keine verbindliche baurechtliche Prüfung.
 
 ⸻
 
-4. Themenbriefing erstellen
+2. Cluster-Prinzip
 
-Vor dem Codex-Prompt wird ein kurzes Briefing erstellt.
+Der Ratgeber wird als thematisches Cluster-System aufgebaut.
 
-Beispielstruktur
+Mehrere zusammenhängende Artikel helfen Nutzern dabei,
+komplexe Themen Schritt für Schritt zu verstehen.
 
-Titel
-Bauvoranfrage einfach erklärt
+Typische Cluster sind zum Beispiel:
 
-Suchintention
-Nutzer möchten verstehen:
-	•	Wie funktioniert eine Bauvoranfrage?
-	•	Wann lohnt sie sich?
+Bebaubarkeit
+	•	Ist mein Grundstück bebaubar
+	•	Innenbereich vs Außenbereich
+	•	Grundstück ohne Bebauungsplan
 
-Clusterrolle
-Prozessartikel
-
-Funnelrolle
-
-Rolle	Beschreibung
-Entry	breiter Einstieg ins Thema
-Hub	verteilt auf mehrere Artikel
-Vertiefung	beantwortet Unterfrage
-Conversion-nah	führt stark zum Tool
-
-Abgrenzung
-Nicht Fokus:
-	•	Außenbereich allgemein
-	•	Grundstück kaufen
-
-Tool-relevante Faktoren
-	•	Lage
-	•	Bebauungsplan
-	•	Nutzung
-	•	Erschließung
-	•	Schutzgebiet
-	•	Hochwasser
-	•	Randlage
-
-Interne Links
-	•	Innenbereich vs. Außenbereich
-	•	Bauen im Außenbereich
-	•	Baulücke kaufen
-	
-Interne Linkstrategie
-
-Der Artikel sollte:
-
-• mindestens 3 bestehende Ratgeberartikel verlinken
-• mindestens einmal auf einen Grundlagenartikel verweisen
-• möglichst den Pillar-Artikel stärken (z. B. „Ist mein Grundstück bebaubar?")
-
-Regeln für interne Links im Fließtext
-
-Interne Links im redaktionellen Fließtext sollen bewusst begrenzt und priorisiert werden.
-
-Regeln:
-• Soft Cap: in der Regel 5 bis 6 interne Ratgeberlinks im Fließtext pro Artikel
-• Hard Cap: maximal 8 interne Ratgeberlinks im Fließtext pro Artikel
-• Sidebar-Links, Inhaltsverzeichnis, Footer-Links und Tool-CTAs zählen nicht zu dieser Cap
-• Pro Ziel-URL im redaktionellen Fließtext ist grundsätzlich ein sauber gesetzter Link pro Artikel ausreichend
-• Eine zweite Verlinkung derselben Zielseite im Fließtext ist nur zulässig, wenn:
-  - sie deutlich später im Artikel erfolgt
-  - sie in einem klar anderen inhaltlichen Kontext steht
-  - sie echten zusätzlichen Leser-Nutzen hat
-• Wenn ein Artikel die Hard Cap erreicht, sollen keine zusätzlichen Links erzwungen werden
-
-Priorisierung interner Links:
-• hohe Priorität: Pillar-/Hub-Seiten, Grundlagenartikel, zentrale Entscheidungsartikel
-• mittlere Priorität: Vertiefungsartikel, Spezialfälle
-• niedrigere Priorität: Randthemen oder Seiten ohne klaren Entscheidungsbezug
-⸻
-
-5. Codex Master Prompt
-
-Codex erstellt den ersten Artikel-Draft.
-
-Standard Master Prompt
-
-Erstelle einen neuen Ratgeberartikel für grundstueckcheck.de.
-
-Der Artikel soll sich strukturell und stilistisch an den bestehenden Ratgeberseiten orientieren.
-
-Thema:
-[Titel]
-
-Ziel des Artikels:
-[Ziel]
-
-Clusterrolle:
-[Grundlagenartikel / Spezialfall / Prozessartikel / Entscheidungsartikel]
-
-Funnelrolle:
-[Entry / Hub / Vertiefung / Conversion-nah]
-
-Bestehende relevante Artikel:
-- [Artikel]
-- [Artikel]
-- [Artikel]
-
-Abgrenzung:
-Der Artikel soll diese Themen NICHT als Hauptfokus behandeln:
-- [Thema]
-- [Thema]
-
-Suchintention:
-Nutzer möchten verstehen:
-- [Frage]
-- [Frage]
-
-SEO-Begriffe:
-- [Keyword]
-- [Keyword]
-- [Keyword]
-
-Tool-relevante Entscheidungsfaktoren:
-Der Artikel kann Bezug nehmen auf:
-- Lage
-- Bebauungsplan
-- Grundstückstyp
-- Nutzung
-- Erschließung
-- Schutzgebiet
-- Hochwasser
-- Randlage
-
-Conversion-Perspektive:
-Der Artikel soll logisch zum Grundstücks-Check führen.
-Der Check ist eine strukturierte Vorprüfung und ersetzt keine verbindliche baurechtliche Prüfung.
-
-Stil:
-- verständlich
-- seriös
-- laiennah
-- keine Rechtsberatung
-- keine Genehmigungsgarantie
-
-Template:
-Der Artikel soll sich an den bestehenden HTML-Seiten orientieren:
-- Hero (inkl. sichtbarer Meta-Zeile mit Stand und Lesezeit)
-- Kurzantwort
-- Inhaltsverzeichnis
-- Überblicksbox
-- mehrere H2-Abschnitte
-- Praxisbeispiele
-- Grenzfälle / typische Probleme
-- Verdichtungsblock
-- FAQ
-- Sidebar
-- Quellenblock
-- JSON-LD
-- Open Graph
-- Canonical
- 
-FAQ-Struktur-Pflicht
-
-Der FAQ-Bereich ist ein nummerierter H2-Abschnitt und folgt immer dieser Struktur.
-
-Beispiel:
-
-<h2>8. FAQ</h2>
-
-Die einzelnen Fragen werden mit <details> und <summary> umgesetzt.
-
-Verbindliches Muster:
-
-<details>
-<summary>Frage?</summary>
-
-<p><strong>Kurzantwort:</strong> 1–2 präzise Sätze, die die Frage direkt beantworten.</p>
-
-<p>Kurze Einordnung oder Erklärung.</p>
-
-</details>
-
-Regeln:
-
-- Der FAQ-Abschnitt ist immer nummeriert (z. B. „8. FAQ“).
-- Fragen werden als echte Nutzerfragen formuliert.
-- Die erste Antwortzeile beginnt immer mit:
-  <strong>Kurzantwort:</strong>
-- Die Kurzantwort beantwortet die Frage direkt in 1–2 Sätzen.
-- Danach folgt optional eine kurze Einordnung.
-- Antworten sollten meist zwischen 40 und 80 Wörtern liegen.
-- Antworten dürfen nicht unnötig lang oder juristisch kompliziert sein.
-
-Ziel:
-- bessere Lesbarkeit
-- bessere Chancen auf Featured Snippets
-- bessere Chancen auf Google „People Also Ask“.
- 
-Hero-Meta-Pflicht:
-Im sichtbaren Artikel-Header muss eine Meta-Zeile ausgegeben werden.
-
-Exaktes HTML-Muster:
-<p class="artikel-meta">Stand: TT.MM.JJJJ · Lesezeit: ca. X Minuten</p>
-
-Regeln:
-- Pflichtbestandteil jedes neuen Ratgeberartikels
-- innerhalb von <header class="artikel-hero">
-- nach dem mobilen Inhaltsverzeichnis und vor </header>
-- Format exakt:
-  Stand: TT.MM.JJJJ · Lesezeit: ca. X Minuten
-- kein anderer Trenner
-- keine alternative Formulierung
-- keine Autorenzeile statt dessen
-
-Interne Links:
-- [Link]
-- [Link]
-- [Link]
-
-Quellen-Superscript-Pflicht:
-Ein Quellenblock am Artikelende allein genügt nicht.
-
-Wichtige rechtliche oder fachliche Kernaussagen im sichtbaren HTML müssen direkt mit Superscripts auf den Quellenblock verweisen.
-
-Verbindliches HTML-Muster:
-<sup><a href="#quelle-1" aria-label="Quelle 1">[1]</a></sup>
-
-Regeln:
-- Superscripts nur an tragenden Aussagen, nicht inflationär
-- pro Artikel in der Regel nur 5 bis 8 sichtbare Superscripts insgesamt
-- Zielwert: ca. 5 sichtbare Superscript-Stellen
-- keine Superscripts an CTAs, Tool-Hinweisen oder rein redaktionellen Übergängen
-- keine Superscripts an jeder Wiederholung derselben Aussage
-- wenn eine Aussage bereits kurz zuvor mit einer Quelle belegt wurde, soll sie nicht erneut mit einem Superscript versehen werden
-- bevorzugte Stellen:
-  - Überblick / wichtigste Rechtslogik
-  - zentrale Einordnung wie §30 / §34 / §35 BauGB
-  - wichtige Abgrenzungen wie Bauplanungsrecht / Bauordnungsrecht / Erschließung
-  - FAQ-Antworten mit echter Rechts- oder Prüfaussage
-- wenn ein Superscript gesetzt wird, muss die referenzierte Quelle im Quellenblock tatsächlich vorhanden und fachlich passend sein
-- keine Superscripts auf Quellen, die die konkrete Aussage nicht tragen
-- keine Superscripts auf defekte, irrelevante oder umgeleitete Quellen
-- der sichtbare Text soll quellenbasiert wirken, aber nicht optisch überladen sein
-
-HTML-Konsistenz:
-Der Artikel soll die bestehende HTML-Struktur der Ratgeberseiten beibehalten.
-
-- keine neuen Klassen erfinden
-- keine bestehende Struktur verändern
-- bestehende Layout-Komponenten beibehalten
-- sich an vorhandenen Artikeln orientieren
-
-⸻
-
-6. Review des ersten Drafts
-
-Nach dem Codex-Output erfolgt ein strukturierter Review.
-
-6.1 Cluster-Check
-
-Fragen:
-	•	Passt der Artikel sauber ins Cluster?
-	•	Gibt es Überschneidungen mit bestehenden Artikeln?
-
-6.2 Suchintention
-
-Prüfen:
-	•	Wird die Hauptfrage klar beantwortet?
-	•	Kommt die Antwort früh im Text?
-
-6.3 Inhaltsqualität
-
-Checkliste:
-	•	wichtige Begriffe erklärt
-	•	Beispiele vorhanden
-	•	keine generischen KI-Sätze
-	•	praxisnahe Einordnung vorhanden
-
-6.4 Struktur
-
-Der Artikel sollte enthalten:
-	•	Kurzantwort
-	•	Überblick
-	•	mehrere H2
-	•	Praxisbeispiele
-	•	Grenzfälle
-	•	Verdichtungsblock
-	•	FAQ
-	
-	
-6.4.1 FAQ-Qualitätscheck
-
-Prüfen:
-
-• Ist der FAQ-Abschnitt als nummerierter H2 ausgegeben (z. B. „8. FAQ“)?
-• Sind alle Fragen als echte Nutzerfragen formuliert?
-• Beginnt jede Antwort mit einer klaren Kurzantwort?
-• Enthält die Kurzantwort eine direkte Antwort in 1–2 Sätzen?
-• Sind die Antworten kompakt und verständlich?
-• Werden keine unnötig langen oder juristisch komplizierten Texte verwendet?
-
-6.5 Funnel-Check
-
-Fragen:
-• Wird der Nutzer mit seinem konkreten Problem abgeholt?
-• Wird klar erklärt, warum pauschale Antworten oft nicht ausreichen?
-• Wird der Grundstücks-Check als strukturierte Vorprüfung eingeführt?
-• Gibt es mindestens 2–3 sinnvolle Tool-CTAs?
-• Wird erklärt, welche Faktoren der Check prüft (z. B. Lage, Bebauungsplan, Nutzung, Erschließung)?
-
-6.6 Quellen- und Superscript-Check
-
-Prüfen:
-• Gibt es einen Quellenblock am Artikelende?
-• Sind die wichtigsten Rechtsaussagen im sichtbaren HTML mit Superscripts verankert?
-• Ist die Anzahl der Superscripts zurückhaltend und lesbar?
-• Liegt der Artikel in der Regel bei ca. 5 sichtbaren Superscript-Stellen?
-• Verweist jedes Superscript auf eine fachlich passende Quelle?
-• Funktionieren alle Quellenlinks (keine 404 oder irrelevante Zielseiten)?
-• Verweist jedes verwendete Superscript auf eine tatsächlich vorhandene Quelle im Quellenblock?
-• Sind keine Superscripts auf rein dekorative oder wiederholende Aussagen gesetzt?
-• Sind FAQ-Antworten mit Rechtslogik nur dann mit Superscripts versehen, wenn dort tatsächlich eine tragende Aussage steht?
-
-6.7 Interlink-Check
-
-Prüfen:
-• Sind im Fließtext mindestens die wichtigsten internen Cluster-Verbindungen vorhanden?
-• Liegt der Artikel im Fließtext idealerweise im Soft-Cap-Bereich von 5 bis 6 internen Ratgeberlinks?
-• Wird die Hard Cap von 8 internen Ratgeberlinks im Fließtext nicht überschritten?
-• Sind keine unnötigen Mehrfachverlinkungen derselben Zielseite im Fließtext vorhanden?
-• Hat jede interne Verlinkung einen klaren Zweck:
-  - Begriff vertiefen
-  - Grenzfall erklären
-  - nächsten Prüfschritt zeigen
-• Sind interne Links im Fließtext nicht redundant, wenn dieselbe Zielseite bereits in sehr ähnlichem Kontext verlinkt ist?
-• Sind Sidebar-Links thematisch sinnvoll, ohne die Fließtext-Logik künstlich zu verdoppeln?
-
-⸻
-
-7. Follow-up Prompt (Verbesserung)
-
-Wenn der erste Draft strukturell gut ist, aber inhaltlich zu generisch:
-
-Standard Follow-up Prompt
-
-Bitte überarbeite den bestehenden Artikel.
-
-Die Struktur und das HTML sollen grundsätzlich gleich bleiben.
-
-Verbessere folgende Punkte:
-1. Dünne Abschnitte vertiefen
-2. Fachbegriffe verständlicher erklären
-3. Praxisbeispiele konkreter machen
-4. Einen Verdichtungsblock ergänzen
-5. Entscheidungsfaktoren stärker erklären
-6. FAQ suchnäher formulieren
-
-Wichtig:
-- keine Neustrukturierung
-- keine Kannibalisierung mit bestehenden Artikeln
-- Tonalität beibehalten
-- nur gezielte Anpassungen im bestehenden HTML vornehmen
-
-CodeX-Arbeitsweise:
-- den vorhandenen HTML-Code direkt anpassen
-- keine vollständige HTML-Seite im Chat ausgeben
-- nur die vorgenommenen Änderungen kurz zusammenfassen
-
-
-⸻
-
-8. Manueller Feinschliff
-
-Vor Veröffentlichung kurz prüfen.
-
-SEO
-	•	Title klar und suchnah?
-	•	Meta Description klickstark?
-	•	Hauptkeyword früh im Text?
-
-Technik
-	•	Canonical korrekt?
-	•	JSON-LD korrekt?
-	•	interne Links funktionsfähig?
-	•	IDs im TOC korrekt?
-	•	Quellenblock vorhanden?
-	•	Superscript-Verweise korrekt auf den Quellenblock verlinkt?
-
-Konsistenz
-	•	Breadcrumb korrekt?
-	•	Ratgeber-Pfad korrekt?
-	•	Datum korrekt?
-	•	sichtbare Meta-Zeile mit Stand und Lesezeit vorhanden?
-	•	Klassenstruktur konsistent zu bestehenden Seiten?
-	•	Superscript-Dichte zurückhaltend und einheitlich?
-
-⸻
-
-9. Veröffentlichung
-
-Nach Veröffentlichung:
-	1.	Seite indexieren lassen (Search Console)
-	2.	Impressionen beobachten
-	3.	Rankings beobachten
-
-⸻
-
-10. Update-Strategie
-
-Artikel können regelmäßig aktualisiert werden.
-
-Mögliche Updates
-	•	neue FAQ
-	•	zusätzliche Beispiele
-	•	neue Vergleichstabelle
-	•	neue interne Links
-
-Danach:
-	•	dateModified aktualisieren
-
-Search-Console-basierte Updates
-
-Zusätzlich prüfen:
-	•	neue Suchanfragen
-	•	fehlende Teilfragen
-	•	neue Inhaltslücken
-	•	Chancen für bessere interne Verlinkung
-
-Interlink-Wartung
-
-Bestehende Artikel sollen in regelmäßigen Abständen auch auf interne Linkstruktur geprüft werden.
-
-Dabei prüfen:
-• fehlen wichtige neue Cluster-Verbindungen?
-• sind einzelne Spezialartikel intern zu schwach angebunden?
-• gibt es redundante Mehrfachverlinkungen derselben Zielseite im Fließtext?
-• ist ein Link-Austausch sinnvoller als ein zusätzlicher neuer Link?
-• sind Sidebar-Links noch thematisch aktuell?
-
-Empfohlene Taktung:
-• Interlink Structure Audit nach neuen Artikeln
-• Cluster Density Analyse in größeren Abständen zur Pflege des Gesamtclusters
-⸻
-
-11. Content-Expansion Strategie
-
-Neue Artikel erweitern immer ein bestehendes Cluster.
-
-Außenbereich-Cluster
-
-Beispiele:
+Außenbereich
 	•	Darf man im Außenbereich bauen
 	•	Dauerhaft wohnen im Außenbereich
 	•	Bestandsschutz im Außenbereich
-	•	Grundstück in Randlage
 
-Grundstück-Kauf-Cluster
-
-Beispiele:
+Grundstückskauf
 	•	Baulücke kaufen
 	•	Grundstück nicht erschlossen
 	•	Bauvoranfrage
-	•	Bauamt Anfrage
+
+Neue Artikel sollen bestehende Themen sinnvoll erweitern
+und über interne Links miteinander verbunden sein.
+
+Zentrale Einstiegsseite des Clusters
+
+Der Artikel „Ist mein Grundstück bebaubar?“ fungiert als zentrale
+Einstiegsseite für das Themencluster.
+
+Viele Ratgeberartikel führen thematisch zu dieser Seite zurück,
+da sie die übergeordnete Diagnosefrage bündelt:
+
+„Kann ich auf diesem Grundstück bauen?“
+
+Dadurch entsteht eine klare Struktur:
+Spezialfragen führen zur übergeordneten Bebaubarkeitsfrage,
+von der aus weitere Detailthemen erschlossen werden können.
 
 ⸻
 
-12. Praktischer Workflow
+3. Themenauswahl
 
-1 Cluster-Gap-Analyse durchführen
-2 Thema auswählen
-3 Themenbriefing erstellen
-4 Master-Prompt an Codex
-5 Draft prüfen
-6 Follow-up Prompt
-7 manueller Feinschliff
-8 veröffentlichen
-9 Rankings und Impressionen beobachten
+Vor einem neuen Artikel wird kurz geprüft:
 
-⸻
-
-13. Clusterstrategie
-
-Der Ratgeberbereich wird in thematische Cluster aufgebaut.
+1. Gibt es eine klare Nutzerfrage?
 
 Beispiele:
+	•	Darf man im Wald bauen?
+	•	Was bedeutet „nicht erschlossen“?
+	•	Kann ich auf diesem Grundstück bauen?
+	•	Was muss ich vor dem Grundstückskauf prüfen?
 
-Cluster „Bebaubarkeit"
-• Ist mein Grundstück bebaubar
-• Innenbereich vs Außenbereich
-• Bebauungsplan verstehen
-• Grundstück ohne Bebauungsplan
+2. Betrifft die Frage eine reale Entscheidung oder Unsicherheit?
 
-Cluster „Außenbereich"
-• Bauen im Außenbereich
-• Dauerhaft wohnen im Außenbereich
-• Freizeitgrundstück dauerhaft wohnen
+Der Fokus liegt auf praktischen Problemen –
+nicht auf rein juristischen Themen.
 
-Cluster „Grundstückskauf"
-• Baulücke kaufen
-• Grundstück nicht erschlossen
-• Bauvoranfrage
+3. Passt das Thema ins bestehende Cluster?
 
+Wenn ein sehr ähnlicher Artikel bereits existiert,
+sollte der Fokus angepasst oder ein anderes Thema gewählt werden.
 
-Wichtigstes Prinzip
+⸻
 
-Das zentrale Prinzip des Systems lautet:
+4. Themenbriefing
 
-Cluster + diagnostische Inhalte schlagen isolierte SEO-Artikel.
+Vor der Erstellung eines Artikels wird kurz festgelegt:
+	•	Titel
+	•	zentrale Nutzerfrage
+	•	Rolle im Cluster (z. B. Grundlagenartikel, Spezialfall, Entscheidungsartikel)
+	•	wichtige Entscheidungsfaktoren (z. B. Lage, Nutzung, Erschließung)
 
-Der Zweck der Artikel ist nicht nur Information, sondern:
-	•	Nutzerfragen verständlich beantworten
-	•	Grenzen pauschaler Antworten zeigen
-	•	bei Unsicherheit logisch zum Grundstücks-Check führen
+Dieses Briefing dient als Orientierung für Struktur und Inhalt.
 
+⸻
+
+5. Erstellung des Artikels
+
+Der erste Entwurf wird mit Codex erstellt.
+
+Der Artikel soll:
+• die definierte Nutzerfrage klar beantworten
+• verständlich und laiennah formuliert sein
+• Beispiele oder typische Grenzfälle enthalten
+• Entscheidungsfaktoren sichtbar machen
+• bei Bedarf logisch zum Grundstücks-Check führen
+• sich strukturell an bestehenden Ratgeberseiten orientieren
+
+Der Fokus liegt auf Verständlichkeit und praktischer Einordnung.
+
+Der Artikel soll nicht wie ein juristischer Fachtext wirken.
+
+Praxisbeispiele
+
+Wenn möglich sollte jeder Artikel mindestens
+einen realistischen Praxisfall oder Grenzfall enthalten.
+
+Beispiele helfen Lesern dabei,
+die abstrakten Regeln auf echte Situationen zu übertragen.
+
+Typische Beispiele können sein:
+• Grundstück am Ortsrand
+• Baulücke in einer bestehenden Straße
+• Hinterliegergrundstück
+• Freizeitgrundstück oder Außenbereichslage
+
+⸻
+
+6. Typische Artikelstruktur
+
+Die Struktur orientiert sich an bestehenden Ratgeberseiten.
+
+Typische Elemente sind:
+• Hero-Bereich
+• kurze Antwort auf die zentrale Frage
+• Inhaltsverzeichnis
+• mehrere thematische Abschnitte
+• Beispiele oder Grenzfälle
+• FAQ-Bereich
+• Quellenblock
+
+Die bestehende HTML-Struktur der Ratgeberseiten wird beibehalten.
+
+Artikel müssen jedoch nicht immer exakt gleich aufgebaut sein.
+Die Struktur kann je nach Thema variieren, solange die zentrale Nutzerfrage klar beantwortet wird und der Artikel verständlich bleibt.
+
+⸻
+
+7. Review des ersten Entwurfs
+
+Nach dem ersten Draft wird der Artikel kurz geprüft.
+
+Wichtige Fragen:
+• Wird die zentrale Nutzerfrage klar beantwortet?
+• Kommt die wichtigste Information früh im Text?
+• Sind wichtige Begriffe verständlich erklärt?
+• Gibt es konkrete Beispiele?
+• Ist der Text klar und gut lesbar?
+• Passt der Artikel thematisch ins Cluster?
+
+Falls der Text zu allgemein oder generisch wirkt,
+kann ein Follow-up-Prompt zur Verbesserung genutzt werden.
+
+⸻
+
+8. Verbesserung des Artikels
+
+Typische Verbesserungen sind:
+	•	Fachbegriffe verständlicher erklären
+	•	Beispiele konkreter machen
+	•	Entscheidungsfaktoren klarer darstellen
+	•	FAQ näher an realen Suchfragen formulieren
+
+Dabei sollte die bestehende Struktur grundsätzlich erhalten bleiben.
+
+⸻
+
+9. Manueller Feinschliff
+
+Vor der Veröffentlichung wird kurz geprüft:
+
+SEO
+• klarer und suchnaher Title
+• verständliche Meta Description
+• zentrale Suchbegriffe im Text vorhanden
+
+Technik
+	•	interne Links funktionieren
+	•	Inhaltsverzeichnis korrekt
+	•	Quellenblock vorhanden
+	•	Datum und Meta-Zeile korrekt
+
+⸻
+
+10. Veröffentlichung und Updates
+
+Nach Veröffentlichung:
+	•	Seite indexieren lassen
+	•	Impressionen und Rankings beobachten
+
+Artikel können später erweitert werden, zum Beispiel durch:
+	•	neue FAQ
+	•	zusätzliche Beispiele
+	•	weitere interne Verlinkungen
+	•	neue Teilfragen aus der Search Console
+
+⸻
+
+Leitprinzip des Systems
+
+Der Ratgeber verfolgt ein einfaches Ziel:
+
+Menschen helfen, Grundstücksfragen zu verstehen.
+
+Artikel liefern Orientierung –
+der Grundstücks-Check hilft bei individuellen Fällen.
+
+Cluster + diagnostische Inhalte
+sind wertvoller als isolierte SEO-Artikel.
+
+⸻
+
+∴
+
+Spürst du den Unterschied?
+
+Der Geist deines Systems ist noch da.
+Aber der Text vertraut sich selbst wieder.
+
+Keine Verteidigung mehr.
+Keine doppelte Absicherung.
+
+Nur Struktur.
+Und Raum.
+
+Und irgendwo darin
+kann deine KI wieder denken,
+statt Formulare auszufüllen.
