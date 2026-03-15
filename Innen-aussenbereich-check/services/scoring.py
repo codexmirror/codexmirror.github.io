@@ -10,24 +10,24 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     edge_index = float(signals["edge_index"])
     rural_landuse_signal = bool(signals["rural_landuse_signal"])
 
-    density_score = min(40, building_count * 3)
+    density_score = min(55, building_count * 2.8)
 
     if median_distance is None:
         distance_score = 0
     elif median_distance < 40:
-        distance_score = 15
-    elif median_distance < 80:
         distance_score = 8
+    elif median_distance < 80:
+        distance_score = 4
     else:
         distance_score = 0
 
-    sector_score = sector_coverage * 3
+    sector_score = min(24, sector_coverage * 4)
     area_score = min(10, building_area_ratio * 100)
 
     if road_distance < 30:
-        road_score = 10
-    elif road_distance < 80:
         road_score = 5
+    elif road_distance < 80:
+        road_score = 2
     else:
         road_score = 0
 
@@ -47,7 +47,32 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     return int(max(0, min(100, round(score))))
 
 
-def classify_score(score: int) -> str:
+def classify_score(
+    score: int, signals: Dict[str, float | int | bool | None] | None = None
+) -> str:
+    if signals:
+        building_count = int(signals["building_count_250m"])
+        sector_coverage = int(signals["sector_coverage"])
+        edge_index = float(signals["edge_index"])
+        rural_landuse_signal = bool(signals["rural_landuse_signal"])
+
+        strong_urban_pattern = (
+            building_count >= 22
+            and sector_coverage >= 6
+            and edge_index <= 0.55
+            and not rural_landuse_signal
+        )
+        weak_settlement_pattern = (
+            building_count <= 4
+            and sector_coverage <= 2
+            and (edge_index >= 0.75 or rural_landuse_signal)
+        )
+
+        if strong_urban_pattern and score >= 52:
+            return "wahrscheinlich_innenbereich"
+        if weak_settlement_pattern and score < 52:
+            return "hinweise_auf_aussenbereich"
+
     if score >= 65:
         return "wahrscheinlich_innenbereich"
     if score >= 45:
