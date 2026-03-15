@@ -4,7 +4,7 @@ import requests
 
 from services.geocoder import ExternalAPIError
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_URL = "https://overpass.kumi.systems/api/interpreter"
 RADIUS_METERS = 250
 REQUEST_TIMEOUT = 10
 
