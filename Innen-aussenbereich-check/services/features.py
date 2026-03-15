@@ -50,6 +50,7 @@ def compute_features(
         median_distance = None
         sector_coverage = 0
         edge_index = 1.0
+        half_ring_dominance = 1.0
     else:
         distances_250m = [distance for _, distance in buildings_250m]
         median_distance = round(statistics.median(distances_250m), 1)
@@ -60,6 +61,11 @@ def compute_features(
 
         sector_coverage = sum(1 for value in sectors if value > 0)
         edge_index = max(sectors) / building_count_250m
+        max_half_ring_sum = max(
+            sum(sectors[(start + offset) % 8] for offset in range(4))
+            for start in range(8)
+        )
+        half_ring_dominance = max_half_ring_sum / building_count_250m
 
     if roads:
         road_distance = round(
@@ -82,6 +88,7 @@ def compute_features(
         "median_distance_m": median_distance,
         "sector_coverage": sector_coverage,
         "edge_index": round(edge_index, 2),
+        "half_ring_dominance": round(half_ring_dominance, 2),
         "road_distance": road_distance,
         "building_area_ratio": round(building_area_ratio, 2),
         "rural_landuse_signal": rural_landuse_signal,
