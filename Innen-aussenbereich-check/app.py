@@ -42,7 +42,7 @@ def innen_aussen_check(payload: CheckRequest):
 
         signals = compute_features(lat, lon, buildings, roads, landuse)
         score = compute_score(signals)
-        classification = classify_score(score)
+        classification = classify_score(score, signals)
         explanation = build_explanations(signals)
 
         return {
