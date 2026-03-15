@@ -15,6 +15,7 @@ EXCLUDED_BUILDING_TYPES = {
     "container",
     "greenhouse",
     "farm_auxiliary",
+    "barn",
 }
 
 MERGE_DISTANCE_METERS = 8

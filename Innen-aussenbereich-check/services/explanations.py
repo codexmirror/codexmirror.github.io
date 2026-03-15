@@ -9,6 +9,7 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
     building_count_80m = int(signals.get("building_count_80m", 0))
     building_count_150m = int(signals.get("building_count_150m", 0))
     building_count_250m = int(signals["building_count_250m"])
+    near_density_ratio = float(signals.get("near_density_ratio", 0.0))
     sector_coverage = int(signals["sector_coverage"])
     median_distance = signals["median_distance_m"]
     road_distance = float(signals["road_distance"])
@@ -147,12 +148,35 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
             "Auch im größeren Umfeld ist die Bebauung eher gering ausgeprägt.",
         )
 
-    # 6. Gegensignale
+    # 6. near_density_ratio nur bei klaren Mustern ergänzen
+    if (
+        near_density_ratio < 0.15
+        and building_count_250m >= 12
+        and building_count_80m <= 2
+        and (half_ring_dominance >= 0.68 or sector_coverage <= 4)
+        and not protected_urban_like_pattern
+        and not loose_village_core
+    ):
+        add_unique(
+            secondary,
+            "Die direkte Einbindung ist schwächer als die Umgebungsbebauung.",
+        )
+
+    # 7. Gegensignale
     if rural_landuse_signal:
         add_unique(
             tertiary,
             "Die Umgebung zeigt zusätzlich landwirtschaftliche oder naturnahe Nutzungen.",
         )
+
+    if (
+        near_density_ratio < 0.1
+        and building_count_250m >= 16
+        and (half_ring_dominance >= 0.76 or sector_coverage <= 4)
+        and not protected_urban_like_pattern
+        and not loose_village_core
+    ):
+        add_unique(tertiary, "Die Lage wirkt eher am Rand der Umgebungsbebauung.")
 
     if (
         median_distance is not None
