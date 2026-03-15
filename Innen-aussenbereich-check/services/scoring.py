@@ -46,15 +46,16 @@ def _weak_nearby_penalty(
         sector_coverage >= 7
         and edge_index <= 0.45
         and building_count_150m >= 20
+        and building_count_250m >= 45
         and not rural_landuse_signal
     )
 
     if building_count_80m >= 3:
         return 0
-    if urban_open_space_pattern:
-        return 0
     if old_town_square_pattern:
         return 1
+    if urban_open_space_pattern:
+        return 0
 
     if building_count_80m == 0:
         if building_count_150m >= 12 and building_count_250m >= 30:
@@ -67,7 +68,6 @@ def _weak_nearby_penalty(
         return 3
 
     return 0
-
 
 
 def _half_ring_penalty(
@@ -197,6 +197,7 @@ def classify_score(
         building_count_250m = int(signals["building_count_250m"])
         sector_coverage = int(signals["sector_coverage"])
         edge_index = float(signals["edge_index"])
+        half_ring_dominance = float(signals.get("half_ring_dominance", 1.0))
         rural_landuse_signal = bool(signals["rural_landuse_signal"])
 
         strong_urban_pattern = (
@@ -229,6 +230,7 @@ def classify_score(
             and 12 <= building_count_250m <= 34
             and 5 <= sector_coverage <= 7
             and 0.42 <= edge_index <= 0.72
+            and 0.58 <= half_ring_dominance <= 0.82
             and not strong_urban_pattern
             and not open_space_inside_settlement
             and not old_town_square_pattern
