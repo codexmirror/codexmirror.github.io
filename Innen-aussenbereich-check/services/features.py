@@ -45,6 +45,7 @@ def compute_features(
         if distance <= 250
     ]
     building_count_250m = len(buildings_250m)
+    near_density_ratio = round(building_count_80m / max(1, building_count_250m), 2)
 
     if building_count_250m == 0:
         median_distance = None
@@ -85,6 +86,7 @@ def compute_features(
         "building_count_80m": building_count_80m,
         "building_count_150m": building_count_150m,
         "building_count_250m": building_count_250m,
+        "near_density_ratio": near_density_ratio,
         "median_distance_m": median_distance,
         "sector_coverage": sector_coverage,
         "edge_index": round(edge_index, 2),
