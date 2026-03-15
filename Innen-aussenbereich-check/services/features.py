@@ -31,22 +31,35 @@ def compute_features(
     roads: List[Dict[str, float]],
     landuse: List[Dict[str, str | float]],
 ) -> Dict[str, float | int | bool | None]:
-    building_count = len(buildings)
+    building_distances = [
+        (building, haversine_m(lat, lon, building["lat"], building["lon"]))
+        for building in buildings
+    ]
 
-    if building_count == 0:
+    building_count_80m = sum(1 for _, distance in building_distances if distance <= 80)
+    building_count_150m = sum(1 for _, distance in building_distances if distance <= 150)
+
+    buildings_250m = [
+        (building, distance)
+        for building, distance in building_distances
+        if distance <= 250
+    ]
+    building_count_250m = len(buildings_250m)
+
+    if building_count_250m == 0:
         median_distance = None
         sector_coverage = 0
         edge_index = 1.0
     else:
-        distances = [haversine_m(lat, lon, b["lat"], b["lon"]) for b in buildings]
-        median_distance = round(statistics.median(distances), 1)
+        distances_250m = [distance for _, distance in buildings_250m]
+        median_distance = round(statistics.median(distances_250m), 1)
 
         sectors = [0] * 8
-        for b in buildings:
-            sectors[_sector_index(lat, lon, b["lat"], b["lon"])] += 1
+        for building, _ in buildings_250m:
+            sectors[_sector_index(lat, lon, building["lat"], building["lon"])] += 1
 
         sector_coverage = sum(1 for value in sectors if value > 0)
-        edge_index = max(sectors) / building_count
+        edge_index = max(sectors) / building_count_250m
 
     if roads:
         road_distance = round(
@@ -55,15 +68,17 @@ def compute_features(
     else:
         road_distance = 9999.0
 
-    radius_area = math.pi * (RADIUS_METERS ** 2)
-    building_area_ratio = (building_count * 120) / radius_area
+    radius_area = math.pi * (RADIUS_METERS**2)
+    building_area_ratio = (building_count_250m * 120) / radius_area
 
     rural_types = {"farmland", "meadow", "forest", "orchard"}
     rural_count = sum(1 for item in landuse if item.get("landuse") in rural_types)
     rural_landuse_signal = rural_count >= 2
 
     return {
-        "building_count_250m": building_count,
+        "building_count_80m": building_count_80m,
+        "building_count_150m": building_count_150m,
+        "building_count_250m": building_count_250m,
         "median_distance_m": median_distance,
         "sector_coverage": sector_coverage,
         "edge_index": round(edge_index, 2),
