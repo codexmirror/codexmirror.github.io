@@ -89,20 +89,31 @@ von der aus weitere Detailthemen erschlossen werden können.
 
 Vor einem neuen Artikel wird kurz geprüft:
 
-1. Gibt es eine klare Nutzerfrage?
+3.1. Gibt es eine klare Nutzerfrage?
 
 Beispiele:
-	•	Darf man im Wald bauen?
-	•	Was bedeutet „nicht erschlossen“?
-	•	Kann ich auf diesem Grundstück bauen?
-	•	Was muss ich vor dem Grundstückskauf prüfen?
+• Darf man im Wald bauen?
+• Was bedeutet „nicht erschlossen“?
+• Kann ich auf diesem Grundstück bauen?
+• Was muss ich vor dem Grundstückskauf prüfen?
 
-2. Betrifft die Frage eine reale Entscheidung oder Unsicherheit?
+3.2. Betrifft die Frage eine reale Entscheidung oder Unsicherheit?
 
 Der Fokus liegt auf praktischen Problemen –
 nicht auf rein juristischen Themen.
 
-3. Passt das Thema ins bestehende Cluster?
+Viele Nutzerfragen entstehen aus typischen Annahmen oder Missverständnissen,
+zum Beispiel:
+
+• „Wenn kein Bebauungsplan existiert, darf ich bauen.“
+• „Wenn nebenan Häuser stehen, kann ich dort auch bauen.“
+• „Wenn das Grundstück mir gehört, darf ich dort wohnen.“
+
+Solche Annahmen können ein sinnvoller Einstiegspunkt
+für einen Artikel sein.
+
+
+3.3 Passt das Thema ins bestehende Cluster?
 
 Wenn ein sehr ähnlicher Artikel bereits existiert,
 sollte der Fokus angepasst oder ein anderes Thema gewählt werden.
@@ -111,11 +122,9 @@ sollte der Fokus angepasst oder ein anderes Thema gewählt werden.
 
 4. Themenbriefing
 
-Vor der Erstellung eines Artikels wird kurz festgelegt:
-	•	Titel
-	•	zentrale Nutzerfrage
-	•	Rolle im Cluster (z. B. Grundlagenartikel, Spezialfall, Entscheidungsartikel)
-	•	wichtige Entscheidungsfaktoren (z. B. Lage, Nutzung, Erschließung)
+Vor der Erstellung eines Artikels wird kurz geklärt:
+• welche Nutzerfrage beantwortet werden soll
+• welche Rolle der Artikel im Themencluster spielt
 
 Dieses Briefing dient als Orientierung für Struktur und Inhalt.
 
