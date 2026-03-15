@@ -11,8 +11,17 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
     median_distance = signals["median_distance_m"]
     road_distance = float(signals["road_distance"])
     edge_index = float(signals["edge_index"])
+    half_ring_dominance = float(signals.get("half_ring_dominance", 1.0))
     rural_landuse_signal = bool(signals["rural_landuse_signal"])
 
+    strong_urban_pattern = (
+        building_count_80m >= 4
+        and building_count_150m >= 15
+        and building_count_250m >= 25
+        and sector_coverage >= 6
+        and edge_index <= 0.55
+        and not rural_landuse_signal
+    )
     urban_open_space_pattern = (
         building_count_80m <= 2
         and building_count_150m >= 15
@@ -30,20 +39,18 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
         and not rural_landuse_signal
     )
     protected_open_space_pattern = urban_open_space_pattern or old_town_square_pattern
-    strong_urban_pattern = (
-        building_count_80m >= 4
-        and building_count_150m >= 15
-        and building_count_250m >= 25
-        and sector_coverage >= 6
-        and edge_index <= 0.55
-        and not rural_landuse_signal
+    protected_urban_like_pattern = (
+        strong_urban_pattern or urban_open_space_pattern or old_town_square_pattern
     )
+
     loose_village_core = (
         2 <= building_count_80m <= 5
         and 6 <= building_count_150m <= 16
         and 12 <= building_count_250m <= 34
         and 5 <= sector_coverage <= 7
         and 0.42 <= edge_index <= 0.72
+        and 0.58 <= half_ring_dominance <= 0.82
+        and not protected_urban_like_pattern
         and not rural_landuse_signal
     )
 
@@ -76,7 +83,17 @@ def build_explanations(signals: Dict[str, float | int | bool | None]) -> List[st
     elif sector_coverage <= 2:
         lines.append("Die Bebauung konzentriert sich eher auf wenige Richtungen.")
 
-    if loose_village_core and not protected_open_space_pattern and not strong_urban_pattern:
+    if not protected_urban_like_pattern:
+        if half_ring_dominance >= 0.86:
+            lines.append("Die Bebauung liegt überwiegend auf einer Seite.")
+        elif half_ring_dominance >= 0.78:
+            lines.append("Die Umgebungsbebauung wirkt eher einseitig.")
+        elif half_ring_dominance <= 0.58 and sector_coverage >= 5:
+            lines.append("Die Bebauung liegt eher rund um den Standort.")
+        elif half_ring_dominance <= 0.64 and sector_coverage >= 6:
+            lines.append("Die Bebauung umgibt den Standort aus mehreren Richtungen.")
+
+    if loose_village_core:
         lines.append("Das Muster passt zu einem lockeren Siedlungskern.")
 
     if building_count_250m >= 35 and building_count_80m <= 2 and sector_coverage >= 5:

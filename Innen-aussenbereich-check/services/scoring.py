@@ -69,6 +69,30 @@ def _weak_nearby_penalty(
     return 0
 
 
+
+def _half_ring_penalty(
+    half_ring_dominance: float,
+    strong_urban_pattern: bool,
+    urban_open_space_pattern: bool,
+    old_town_square_pattern: bool,
+) -> float:
+    if half_ring_dominance >= 0.9:
+        base_penalty = 8.0
+    elif half_ring_dominance >= 0.82:
+        base_penalty = 5.0
+    elif half_ring_dominance >= 0.75:
+        base_penalty = 2.5
+    elif half_ring_dominance <= 0.62:
+        return -1.0
+    else:
+        return 0.0
+
+    if strong_urban_pattern or urban_open_space_pattern or old_town_square_pattern:
+        return min(base_penalty, 2.0)
+
+    return base_penalty
+
+
 def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     building_count_80m = int(signals.get("building_count_80m", 0))
     building_count_150m = int(signals.get("building_count_150m", 0))
@@ -78,6 +102,7 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     building_area_ratio = float(signals["building_area_ratio"])
     road_distance = float(signals["road_distance"])
     edge_index = float(signals["edge_index"])
+    half_ring_dominance = float(signals.get("half_ring_dominance", 1.0))
     rural_landuse_signal = bool(signals["rural_landuse_signal"])
 
     density_near_score = _score_building_count_80m(building_count_80m)
@@ -103,6 +128,31 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     else:
         road_score = 0
 
+    strong_urban_pattern = (
+        building_count_80m >= 4
+        and building_count_150m >= 15
+        and building_count_250m >= 25
+        and sector_coverage >= 6
+        and edge_index <= 0.55
+        and not rural_landuse_signal
+    )
+    urban_open_space_pattern = (
+        building_count_80m <= 2
+        and building_count_150m >= 15
+        and building_count_250m >= 40
+        and sector_coverage >= 6
+        and edge_index <= 0.55
+        and not rural_landuse_signal
+    )
+    old_town_square_pattern = (
+        building_count_80m <= 2
+        and building_count_150m >= 20
+        and building_count_250m >= 45
+        and sector_coverage >= 7
+        and edge_index <= 0.45
+        and not rural_landuse_signal
+    )
+
     nearby_penalty = _weak_nearby_penalty(
         building_count_80m,
         building_count_150m,
@@ -113,6 +163,12 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     )
 
     edge_penalty = edge_index * 16
+    half_ring_penalty = _half_ring_penalty(
+        half_ring_dominance,
+        strong_urban_pattern,
+        urban_open_space_pattern,
+        old_town_square_pattern,
+    )
     rural_penalty = 18 if rural_landuse_signal else 0
 
     score = (
@@ -125,6 +181,7 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
         + road_score
         - nearby_penalty
         - edge_penalty
+        - half_ring_penalty
         - rural_penalty
     )
 
