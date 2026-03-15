@@ -1,0 +1,73 @@
+import math
+import statistics
+from typing import Dict, List
+
+from services.osm import RADIUS_METERS
+
+
+def haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371000
+    phi1, phi2 = math.radians(lat1), math.radians(lat2)
+    d_phi = math.radians(lat2 - lat1)
+    d_lambda = math.radians(lon2 - lon1)
+    a = (
+        math.sin(d_phi / 2) ** 2
+        + math.cos(phi1) * math.cos(phi2) * math.sin(d_lambda / 2) ** 2
+    )
+    return 2 * r * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
+def _sector_index(lat: float, lon: float, b_lat: float, b_lon: float) -> int:
+    dx = b_lon - lon
+    dy = b_lat - lat
+    angle_deg = (math.degrees(math.atan2(dy, dx)) + 360) % 360
+    return int(math.floor(angle_deg / 45))
+
+
+def compute_features(
+    lat: float,
+    lon: float,
+    buildings: List[Dict[str, float]],
+    roads: List[Dict[str, float]],
+    landuse: List[Dict[str, str | float]],
+) -> Dict[str, float | int | bool | None]:
+    building_count = len(buildings)
+
+    if building_count == 0:
+        median_distance = None
+        sector_coverage = 0
+        edge_index = 1.0
+    else:
+        distances = [haversine_m(lat, lon, b["lat"], b["lon"]) for b in buildings]
+        median_distance = round(statistics.median(distances), 1)
+
+        sectors = [0] * 8
+        for b in buildings:
+            sectors[_sector_index(lat, lon, b["lat"], b["lon"])] += 1
+
+        sector_coverage = sum(1 for value in sectors if value > 0)
+        edge_index = max(sectors) / building_count
+
+    if roads:
+        road_distance = round(
+            min(haversine_m(lat, lon, r["lat"], r["lon"]) for r in roads), 1
+        )
+    else:
+        road_distance = 9999.0
+
+    radius_area = math.pi * (RADIUS_METERS ** 2)
+    building_area_ratio = (building_count * 120) / radius_area
+
+    rural_types = {"farmland", "meadow", "forest", "orchard"}
+    rural_count = sum(1 for item in landuse if item.get("landuse") in rural_types)
+    rural_landuse_signal = rural_count >= 2
+
+    return {
+        "building_count_250m": building_count,
+        "median_distance_m": median_distance,
+        "sector_coverage": sector_coverage,
+        "edge_index": round(edge_index, 2),
+        "road_distance": road_distance,
+        "building_area_ratio": round(building_area_ratio, 2),
+        "rural_landuse_signal": rural_landuse_signal,
+    }
