@@ -5,7 +5,7 @@ def _score_building_count_80m(building_count_80m: int) -> float:
     if building_count_80m >= 6:
         return 24
     if building_count_80m >= 3:
-        return 14
+        return 12
     if building_count_80m >= 1:
         return 6
     return 0
