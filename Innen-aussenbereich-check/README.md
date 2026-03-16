@@ -77,6 +77,26 @@ curl -X POST http://127.0.0.1:8000/api/innen-aussen-check \
   - `grenzfall` (45–64)
   - `hinweise_auf_aussenbereich` (< 45)
 
+
+## Interner Testharness (synthetische Signalprofile)
+
+Für das Nachjustieren der Heuristik ohne Geocoding und Overpass gibt es ein kleines Skript mit festen Signalprofilen:
+
+```bash
+python synthetic_signal_harness.py
+```
+
+Enthaltene Fallgruppen:
+
+- klar urbaner Innenbereich
+- Altstadt-/Marktplatzfall
+- lockerer Dorfkern
+- randnahe Lage im Ort
+- Übergangslage Siedlung/Freiraum
+- klarer Außenbereich
+
+Das Skript berechnet pro Fall direkt `score`, `classification` und `explanation` auf Basis von `services/scoring.py` und `services/explanations.py`.
+
 ## Grenzen des Tools
 
 - Keine rechtliche Bewertung nach BauGB.

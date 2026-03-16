@@ -72,9 +72,11 @@ def _weak_nearby_penalty(
 
 def _half_ring_penalty(
     half_ring_dominance: float,
+    near_density_ratio: float,
     strong_urban_pattern: bool,
     urban_open_space_pattern: bool,
     old_town_square_pattern: bool,
+    loose_village_core: bool,
 ) -> float:
     if half_ring_dominance >= 0.9:
         base_penalty = 8.0
@@ -89,6 +91,12 @@ def _half_ring_penalty(
 
     if strong_urban_pattern or urban_open_space_pattern or old_town_square_pattern:
         return min(base_penalty, 2.0)
+
+    if not loose_village_core:
+        if half_ring_dominance >= 0.82 and near_density_ratio < 0.14:
+            base_penalty += 0.8
+        if half_ring_dominance >= 0.9 and near_density_ratio < 0.1:
+            base_penalty += 0.7
 
     return base_penalty
 
@@ -126,12 +134,16 @@ def _near_density_adjustment(
         return max(-0.8, min(adjustment, 0.8))
 
     if near_density_ratio < 0.16 and half_ring_dominance >= 0.72:
-        adjustment += 1.2
+        adjustment += 1.6
+        if near_density_ratio < 0.12 and half_ring_dominance >= 0.8:
+            adjustment += 0.9
+        if near_density_ratio < 0.1 and half_ring_dominance >= 0.86:
+            adjustment += 0.7
 
     if rural_landuse_signal and near_density_ratio < 0.16 and half_ring_dominance >= 0.72:
-        adjustment += 2.2
+        adjustment += 1.4
         if near_density_ratio < 0.12 and half_ring_dominance >= 0.8:
-            adjustment += 1.8
+            adjustment += 1.0
 
     return adjustment
 
@@ -231,9 +243,11 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     edge_penalty = edge_index * 16
     half_ring_penalty = _half_ring_penalty(
         half_ring_dominance,
+        near_density_ratio,
         strong_urban_pattern,
         urban_open_space_pattern,
         old_town_square_pattern,
+        loose_village_core,
     )
     rural_penalty = 8 if rural_landuse_signal else 0
 
@@ -262,6 +276,7 @@ def classify_score(
         building_count_80m = int(signals.get("building_count_80m", 0))
         building_count_150m = int(signals.get("building_count_150m", 0))
         building_count_250m = int(signals["building_count_250m"])
+        near_density_ratio = float(signals.get("near_density_ratio", 0.0))
         sector_coverage = int(signals["sector_coverage"])
         edge_index = float(signals["edge_index"])
         half_ring_dominance = float(signals.get("half_ring_dominance", 1.0))
@@ -310,6 +325,21 @@ def classify_score(
             and sector_coverage <= 2
             and (edge_index >= 0.75 or rural_landuse_signal)
         )
+        protected_urban_like_pattern = (
+            strong_urban_pattern or open_space_inside_settlement or old_town_square_pattern
+        )
+        edge_transition_pattern = (
+            building_count_80m <= 2
+            and near_density_ratio < 0.16
+            and building_count_150m >= 12
+            and (
+                building_count_250m >= 28
+                or (building_count_250m >= 24 and near_density_ratio < 0.12)
+            )
+            and (half_ring_dominance >= 0.78 or edge_index >= 0.68)
+            and not protected_urban_like_pattern
+            and not loose_village_core
+        )
 
         if (strong_urban_pattern and score >= 52) or (
             open_space_inside_settlement and score >= 50
@@ -320,6 +350,9 @@ def classify_score(
             return "hinweise_auf_aussenbereich"
 
         if loose_village_core and score < 45:
+            return "grenzfall"
+
+        if edge_transition_pattern and score >= 65:
             return "grenzfall"
 
     if score >= 65:
