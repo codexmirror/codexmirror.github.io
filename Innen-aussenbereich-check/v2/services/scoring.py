@@ -302,6 +302,14 @@ def compute_score_breakdown(signals: Dict[str, float | int | bool | None]) -> Sc
     half_ring_dominance = facts["half_ring_dominance"]
     rural_landuse_signal = facts["rural_landuse_signal"]
 
+    inside_settlement = signals.get("inside_settlement")
+    if not isinstance(inside_settlement, bool):
+        inside_settlement = None
+
+    distance_to_settlement_edge_m = signals.get("distance_to_settlement_edge_m")
+    if not isinstance(distance_to_settlement_edge_m, (int, float)):
+        distance_to_settlement_edge_m = None
+
     density_near_score = _score_building_count_80m(building_count_80m)
     density_structure_score = _score_building_count_150m(building_count_150m)
     density_context_score = _score_building_count_250m(building_count_250m)
@@ -357,6 +365,12 @@ def compute_score_breakdown(signals: Dict[str, float | int | bool | None]) -> Sc
         edge_penalty = min(edge_penalty, 10.0)
         rural_penalty = min(rural_penalty, 2)
 
+    settlement_adjustment = 0.0
+    if inside_settlement is True:
+        settlement_adjustment = 1.0
+    elif inside_settlement is False:
+        settlement_adjustment = -0.4
+
     raw_score = (
         density_near_score
         + density_structure_score
@@ -370,6 +384,7 @@ def compute_score_breakdown(signals: Dict[str, float | int | bool | None]) -> Sc
         - half_ring_penalty
         - rural_penalty
         - near_density_adjustment
+        + settlement_adjustment
     )
     final_score = int(max(0, min(100, round(raw_score))))
 
