@@ -249,7 +249,15 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
         old_town_square_pattern,
         loose_village_core,
     )
-    rural_penalty = 8 if rural_landuse_signal else 0
+    mixed_edge_context = (
+        building_count_80m <= 2
+        and building_count_150m >= 12
+        and building_count_250m >= 24
+        and sector_coverage >= 5
+        and near_density_ratio < 0.16
+        and (half_ring_dominance >= 0.78 or edge_index >= 0.68)
+    )
+    rural_penalty = 4 if (rural_landuse_signal and mixed_edge_context) else (8 if rural_landuse_signal else 0)
 
     score = (
         density_near_score
