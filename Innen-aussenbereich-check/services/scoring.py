@@ -24,7 +24,6 @@ class PatternFlags(TypedDict):
     protected_urban_like_pattern: bool
     edge_transition_pattern: bool
     mixed_edge_context_pattern: bool
-    open_plot_with_settlement_context_pattern: bool
 
 
 class ScoreBreakdown(TypedDict):
@@ -254,17 +253,6 @@ def _detect_patterns(facts: SignalFacts) -> PatternFlags:
         and near_density_ratio < 0.16
         and (half_ring_dominance >= 0.78 or edge_index >= 0.68)
     )
-    open_plot_with_settlement_context_pattern = (
-        building_count_80m <= 2
-        and near_density_ratio < 0.16
-        and building_count_150m >= 7
-        and building_count_250m >= 15
-        and sector_coverage >= 5
-        and edge_index <= 0.78
-        and half_ring_dominance <= 0.88
-        and not protected_urban_like_pattern
-        and not weak_settlement_pattern
-    )
 
     return {
         "strong_urban_pattern": strong_urban_pattern,
@@ -275,7 +263,6 @@ def _detect_patterns(facts: SignalFacts) -> PatternFlags:
         "protected_urban_like_pattern": protected_urban_like_pattern,
         "edge_transition_pattern": edge_transition_pattern,
         "mixed_edge_context_pattern": mixed_edge_context_pattern,
-        "open_plot_with_settlement_context_pattern": open_plot_with_settlement_context_pattern,
     }
 
 
@@ -350,14 +337,6 @@ def compute_score_breakdown(signals: Dict[str, float | int | bool | None]) -> Sc
         else (8 if rural_landuse_signal else 0)
     )
 
-    if patterns["open_plot_with_settlement_context_pattern"]:
-        nearby_penalty = min(nearby_penalty, 1.0)
-        near_density_adjustment = min(near_density_adjustment, 3.0)
-        edge_penalty = min(edge_penalty, 10.0)
-        half_ring_penalty = min(half_ring_penalty, 3.0)
-        if rural_landuse_signal:
-            rural_penalty = min(rural_penalty, 4)
-
     raw_score = (
         density_near_score
         + density_structure_score
@@ -415,9 +394,6 @@ def classify_score(
             return "grenzfall"
 
         if patterns["edge_transition_pattern"] and score >= 65:
-            return "grenzfall"
-
-        if patterns["open_plot_with_settlement_context_pattern"] and score >= 36:
             return "grenzfall"
 
     if score >= 65:
