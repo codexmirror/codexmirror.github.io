@@ -332,7 +332,10 @@ def classify_score(
             building_count_80m <= 2
             and near_density_ratio < 0.16
             and building_count_150m >= 12
-            and building_count_250m >= 28
+            and (
+                building_count_250m >= 28
+                or (building_count_250m >= 24 and near_density_ratio < 0.12)
+            )
             and (half_ring_dominance >= 0.78 or edge_index >= 0.68)
             and not protected_urban_like_pattern
             and not loose_village_core
