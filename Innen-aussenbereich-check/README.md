@@ -1,6 +1,6 @@
 # Innenbereich / Außenbereich Check (MVP)
 
-Ein lauffähiger MVP-Prototyp für eine technische Ersteinschätzung zur Frage, ob die Umgebungsbebauung einer Adresse eher für Innenbereich spricht, nicht eindeutig ist oder Hinweise auf Außenbereich vorliegen.
+Ein lauffähiger MVP-Prototyp für eine **technische Ersteinschätzung**, ob die Umgebungsbebauung eines Standorts eher für Innenbereich spricht, nicht eindeutig ist oder Hinweise auf Außenbereich vorliegen.
 
 > **Wichtig:** Das Tool trifft keine rechtliche Entscheidung und ersetzt keine Rechtsberatung.
 
@@ -20,10 +20,21 @@ uvicorn app:app --reload
 
 Danach im Browser öffnen:
 
-- `http://127.0.0.1:8000/` (Frontend)
-- `http://127.0.0.1:8000/docs` (API-Dokumentation)
+- `http://127.0.0.1:8000/` (MVP-Frontend)
+- `http://127.0.0.1:8000/docs` (Swagger/OpenAPI)
 
-## Beispiel Request
+## API
+
+### Endpoint
+
+- `POST /api/innen-aussen-check`
+
+### Unterstützte Request-Varianten
+
+1. **Adresse** (Geocoding über Nominatim)
+2. **Koordinaten** (`lat` + `lon` gemeinsam)
+
+#### Beispiel: Adresse
 
 ```bash
 curl -X POST http://127.0.0.1:8000/api/innen-aussen-check \
@@ -31,7 +42,15 @@ curl -X POST http://127.0.0.1:8000/api/innen-aussen-check \
   -d '{"address": "Pariser Platz 1, Berlin"}'
 ```
 
-## Beispiel Response
+#### Beispiel: Koordinaten
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/innen-aussen-check \
+  -H "Content-Type: application/json" \
+  -d '{"lat": 52.516, "lon": 13.3777}'
+```
+
+### Erfolgs-Response (Beispiel)
 
 ```json
 {
@@ -43,66 +62,100 @@ curl -X POST http://127.0.0.1:8000/api/innen-aussen-check \
   "classification": "grenzfall",
   "score": 58,
   "signals": {
-    "building_count_250m": 12,
-    "median_distance_m": 47,
-    "sector_coverage": 5,
-    "edge_index": 0.42,
-    "road_distance": 18,
-    "building_area_ratio": 0.12,
-    "rural_landuse_signal": true
+    "building_count_80m": 2,
+    "building_count_150m": 11,
+    "building_count_250m": 26,
+    "near_density_ratio": 0.08,
+    "median_distance_m": 54.7,
+    "sector_coverage": 6,
+    "edge_index": 0.62,
+    "half_ring_dominance": 0.79,
+    "road_distance": 23.4,
+    "building_area_ratio": 0.16,
+    "rural_landuse_signal": false
   },
   "explanation": [
-    "Es gibt eine erkennbare Umgebungsbebauung, aber nicht sehr dicht.",
-    "Die Bebauung liegt auf mehreren Seiten des Standorts.",
-    "Die Umgebung zeigt landwirtschaftliche oder naturnahe Nutzungen."
+    "Im direkten Umfeld sind bereits mehrere Gebäude vorhanden.",
+    "Im erweiterten Umfeld ist eine erkennbare Bebauungsstruktur vorhanden."
   ],
   "disclaimer": "Nur eine technische Ersteinschätzung, keine verbindliche rechtliche Einordnung."
 }
 ```
 
-## Heuristik (MVP)
+### Fehler-Response
 
-- Radius für Analyse: **250 m**
+Bei Validierungs- oder Laufzeitfehlern gibt die API ein einheitliches JSON mit `error` zurück, z. B.:
+
+```json
+{
+  "error": "Ungültige Anfrage: address oder lat/lon ist erforderlich."
+}
+```
+
+## Heuristik (aktueller Stand)
+
+- Analyse-Radius: **250 m**
 - Datenquellen: **Nominatim + Overpass (OSM)**
-- Features:
-  - `building_count_250m`
-  - `median_distance_m`
-  - `sector_coverage`
-  - `edge_index`
-  - `road_distance`
-  - `building_area_ratio` (MVP mit 120 m² Durchschnittsfläche)
-  - `rural_landuse_signal`
-- Ergebnis:
-  - `wahrscheinlich_innenbereich` (Score ≥ 65)
-  - `grenzfall` (45–64)
-  - `hinweise_auf_aussenbereich` (< 45)
+- Verarbeitete OSM-Datentypen:
+  - Gebäude
+  - Straßen
+  - Landnutzung
 
+### Verwendete Signale
+
+- `building_count_80m`
+- `building_count_150m`
+- `building_count_250m`
+- `near_density_ratio`
+- `median_distance_m`
+- `sector_coverage`
+- `edge_index`
+- `half_ring_dominance`
+- `road_distance`
+- `building_area_ratio` (MVP mit 120 m² Durchschnittsfläche je Gebäude)
+- `rural_landuse_signal`
+
+### Klassifikation
+
+- `wahrscheinlich_innenbereich`
+- `grenzfall`
+- `hinweise_auf_aussenbereich`
+
+Die finale Klasse basiert auf Score-Schwellen und zusätzlichen Musterregeln (z. B. starke urbane Muster, lockerer Dorfkern, Rand-/Übergangsmuster).
+
+## Frontend (MVP)
+
+Unter `/` gibt es ein simples HTML-Frontend mit:
+
+- Adresseingabe
+- API-Aufruf auf `/api/innen-aussen-check`
+- Anzeige von Klassifikation, Score, Signalen und Erklärung
 
 ## Interner Testharness (synthetische Signalprofile)
 
-Für das Nachjustieren der Heuristik ohne Geocoding und Overpass gibt es ein kleines Skript mit festen Signalprofilen:
+Zum Nachjustieren der Heuristik ohne Geocoding und Overpass gibt es ein Skript mit festen Signalprofilen:
 
 ```bash
 python synthetic_signal_harness.py
 ```
 
-Enthaltene Fallgruppen:
+Enthaltene Fallgruppen (u. a.):
 
 - klar urbaner Innenbereich
 - Altstadt-/Marktplatzfall
 - lockerer Dorfkern
-- randnahe Lage im Ort
-- Übergangslage Siedlung/Freiraum
+- randnahe Lage
+- Randlage mit starkem Kontext
 - klarer Außenbereich
 
-Das Skript berechnet pro Fall direkt `score`, `classification` und `explanation` auf Basis von `services/scoring.py` und `services/explanations.py`.
+Das Skript berechnet pro Fall direkt `score`, `classification` und `explanation` auf Basis der aktuellen Scoring- und Erklärungslogik.
 
 ## Grenzen des Tools
 
-- Keine rechtliche Bewertung nach BauGB.
-- OSM-Daten können unvollständig oder veraltet sein.
-- Die Analyse nutzt nur einfache Heuristiken.
-- Kein Ersatz für Bauamt, Planer oder juristische Prüfung.
+- Keine rechtliche Bewertung nach BauGB
+- OSM-Daten können unvollständig oder veraltet sein
+- Heuristikbasiertes Modell (kein amtliches Entscheidungsverfahren)
+- Kein Ersatz für Bauamt, Planer oder juristische Prüfung
 
 ## Keine Rechtsberatung
 
