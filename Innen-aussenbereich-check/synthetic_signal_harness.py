@@ -10,6 +10,7 @@ Aufruf:
 
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, List
 
@@ -25,6 +26,8 @@ class SyntheticCase:
     label: str
     signals: Signals
     note: str
+    expected_classification: str | None = None
+    expected_score_range: tuple[int, int] | None = None
 
 
 CASES: List[SyntheticCase] = [
@@ -32,6 +35,8 @@ CASES: List[SyntheticCase] = [
         group="Klar urbaner Innenbereich",
         label="Dichte Blockrandlage",
         note="Sollte stabil als Innenbereich laufen.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(85, 100),
         signals={
             "building_count_80m": 9,
             "building_count_150m": 26,
@@ -50,6 +55,8 @@ CASES: List[SyntheticCase] = [
         group="Altstadt-/Marktplatzfall",
         label="Freier Platz mit dichter Randbebauung",
         note="Wenig im 80m-Ring, aber klar eingebettete Altstadtstruktur.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(70, 95),
         signals={
             "building_count_80m": 1,
             "building_count_150m": 24,
@@ -68,6 +75,8 @@ CASES: List[SyntheticCase] = [
         group="Lockerer Dorfkern",
         label="Ortskern mit gemischter Dichte",
         note="Typischer Dorfkern, sollte nicht vorschnell außen sein.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(60, 85),
         signals={
             "building_count_80m": 3,
             "building_count_150m": 11,
@@ -86,6 +95,8 @@ CASES: List[SyntheticCase] = [
         group="Randnahe Lage im Ort",
         label="Siedlungsrand mit einseitiger Einbindung",
         note="Grenzbereich: genug Kontext, aber schwacher Nahbereich.",
+        expected_classification="grenzfall",
+        expected_score_range=(45, 65),
         signals={
             "building_count_80m": 1,
             "building_count_150m": 13,
@@ -104,6 +115,8 @@ CASES: List[SyntheticCase] = [
         group="Randlage mit starkem Kontext",
         label="Übergang mit starkem 250m-Kontext",
         note="Schwacher Nahbereich trotz starkem Kontext sollte nicht vorschnell innen sein.",
+        expected_classification="grenzfall",
+        expected_score_range=(50, 70),
         signals={
             "building_count_80m": 1,
             "building_count_150m": 24,
@@ -122,6 +135,8 @@ CASES: List[SyntheticCase] = [
         group="Übergangslage Siedlung/Freiraum",
         label="Zwischen Bebauung und Feldkante",
         note="Sollte oft grenzwertig oder außen-nah ausfallen.",
+        expected_classification="hinweise_auf_aussenbereich",
+        expected_score_range=(0, 40),
         signals={
             "building_count_80m": 0,
             "building_count_150m": 7,
@@ -140,6 +155,8 @@ CASES: List[SyntheticCase] = [
         group="Klarer Außenbereich",
         label="Einzellage im Freiraum",
         note="Deutliches Außenbereichsmuster.",
+        expected_classification="hinweise_auf_aussenbereich",
+        expected_score_range=(0, 25),
         signals={
             "building_count_80m": 0,
             "building_count_150m": 1,
@@ -161,19 +178,70 @@ def _is_borderline(score: int) -> bool:
     return 43 <= score <= 47 or 63 <= score <= 67
 
 
+def _evaluate_case(case: SyntheticCase, score: int, classification: str) -> tuple[str, list[str]]:
+    reasons: list[str] = []
+
+    if case.expected_classification is not None and classification != case.expected_classification:
+        reasons.append(
+            "Klassifikation abweichend "
+            f"(erwartet: {case.expected_classification}, erhalten: {classification})"
+        )
+
+    if case.expected_score_range is not None:
+        min_score, max_score = case.expected_score_range
+        if not (min_score <= score <= max_score):
+            reasons.append(
+                "Score außerhalb Range "
+                f"(erwartet: {min_score}-{max_score}, erhalten: {score})"
+            )
+
+    has_expectations = (
+        case.expected_classification is not None or case.expected_score_range is not None
+    )
+
+    if reasons:
+        return "FAIL", reasons
+    if has_expectations:
+        return "PASS", []
+    return "INFO", []
+
+
 def main() -> None:
     print("=== Synthetischer Signalharness (ohne externe APIs) ===")
+
+    status_counter: Counter[str] = Counter()
+    failed_cases: list[str] = []
+    group_counter: Counter[tuple[str, str]] = Counter()
 
     for idx, case in enumerate(CASES, start=1):
         score = compute_score(case.signals)
         classification = classify_score(score, case.signals)
         explanations = build_explanations(case.signals)
 
-        status = "AUFFÄLLIG/GRENZWERTIG" if _is_borderline(score) else "ok"
+        result, reasons = _evaluate_case(case, score, classification)
+        status_counter[result] += 1
+        group_counter[(case.group, result)] += 1
+
+        if result == "FAIL":
+            failed_cases.append(f"{idx}. {case.label}")
+
+        borderline_tag = " | Grenzwertig" if _is_borderline(score) else ""
 
         print(f"\n{idx}. [{case.group}] {case.label}")
         print(f"   Erwartung: {case.note}")
-        print(f"   Score: {score} | Klassifikation: {classification} | Status: {status}")
+        print(f"   Ergebnis: {result}{borderline_tag}")
+        print(f"   Score: {score} | Klassifikation: {classification}")
+
+        if case.expected_classification is not None:
+            print(f"   Erwartete Klassifikation: {case.expected_classification}")
+        if case.expected_score_range is not None:
+            min_score, max_score = case.expected_score_range
+            print(f"   Erwartete Score-Range: {min_score}-{max_score}")
+        if reasons:
+            print("   Abweichungen:")
+            for reason in reasons:
+                print(f"     ! {reason}")
+
         print("   Signale:")
         for key in sorted(case.signals):
             print(f"     - {key}: {case.signals[key]}")
@@ -181,6 +249,24 @@ def main() -> None:
         print("   Erklärungen:")
         for line in explanations:
             print(f"     • {line}")
+
+    print("\n=== Summary / Scoreboard ===")
+    print(f"Fälle gesamt: {len(CASES)}")
+    print(f"PASS: {status_counter['PASS']}")
+    print(f"FAIL: {status_counter['FAIL']}")
+    print(f"INFO (ohne Erwartungsdefinition): {status_counter['INFO']}")
+
+    if failed_cases:
+        print("\nFAIL-Fälle:")
+        for case_label in failed_cases:
+            print(f" - {case_label}")
+
+    print("\nPASS/FAIL je Fallgruppe:")
+    for group in sorted({case.group for case in CASES}):
+        group_pass = group_counter[(group, "PASS")]
+        group_fail = group_counter[(group, "FAIL")]
+        group_info = group_counter[(group, "INFO")]
+        print(f" - {group}: PASS={group_pass}, FAIL={group_fail}, INFO={group_info}")
 
 
 if __name__ == "__main__":
