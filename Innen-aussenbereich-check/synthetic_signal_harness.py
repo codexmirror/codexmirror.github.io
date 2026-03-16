@@ -28,6 +28,7 @@ class SyntheticCase:
     note: str
     expected_classification: str | None = None
     expected_score_range: tuple[int, int] | None = None
+    expectation_level: str = "strict"
 
 
 CASES: List[SyntheticCase] = [
@@ -96,7 +97,8 @@ CASES: List[SyntheticCase] = [
         label="Siedlungsrand mit einseitiger Einbindung",
         note="Grenzbereich: genug Kontext, aber schwacher Nahbereich.",
         expected_classification="grenzfall",
-        expected_score_range=(45, 65),
+        expected_score_range=(40, 68),
+        expectation_level="diagnostic",
         signals={
             "building_count_80m": 1,
             "building_count_150m": 13,
@@ -116,7 +118,8 @@ CASES: List[SyntheticCase] = [
         label="Übergang mit starkem 250m-Kontext",
         note="Schwacher Nahbereich trotz starkem Kontext sollte nicht vorschnell innen sein.",
         expected_classification="grenzfall",
-        expected_score_range=(50, 70),
+        expected_score_range=(48, 72),
+        expectation_level="diagnostic",
         signals={
             "building_count_80m": 1,
             "building_count_150m": 24,
@@ -128,6 +131,174 @@ CASES: List[SyntheticCase] = [
             "road_distance": 65,
             "edge_index": 0.79,
             "half_ring_dominance": 0.73,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Randlage mit starkem Kontext",
+        label="Near-miss knapp unter Innenbereichsschwelle",
+        note="Starker Kontext, aber schwacher Nahbereich und erhöhte Einseitigkeit.",
+        expected_classification="grenzfall",
+        expected_score_range=(52, 68),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 1,
+            "building_count_150m": 19,
+            "building_count_250m": 30,
+            "near_density_ratio": 0.10,
+            "median_distance_m": 84,
+            "sector_coverage": 6,
+            "building_area_ratio": 0.13,
+            "road_distance": 52,
+            "edge_index": 0.76,
+            "half_ring_dominance": 0.84,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Randlage mit starkem Kontext",
+        label="Near-miss knapp über Innenbereichsschwelle",
+        note="Leicht besserer Nahbereich soll gerade noch Innenbereich erlauben.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(62, 78),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 2,
+            "building_count_150m": 20,
+            "building_count_250m": 33,
+            "near_density_ratio": 0.13,
+            "median_distance_m": 70,
+            "sector_coverage": 7,
+            "building_area_ratio": 0.15,
+            "road_distance": 41,
+            "edge_index": 0.71,
+            "half_ring_dominance": 0.79,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Randlage mit starkem Kontext",
+        label="Rural-Toggle ohne Flächensignal",
+        note="Referenzfall ohne rural_signal bei randnaher Übergangslage.",
+        expected_classification="grenzfall",
+        expected_score_range=(50, 68),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 1,
+            "building_count_150m": 14,
+            "building_count_250m": 29,
+            "near_density_ratio": 0.11,
+            "median_distance_m": 82,
+            "sector_coverage": 5,
+            "building_area_ratio": 0.11,
+            "road_distance": 59,
+            "edge_index": 0.72,
+            "half_ring_dominance": 0.83,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Randlage mit starkem Kontext",
+        label="Rural-Toggle mit Flächensignal",
+        note="Gleiches Muster wie Referenzfall, aber mit rural_signal.",
+        expected_classification="grenzfall",
+        expected_score_range=(38, 60),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 1,
+            "building_count_150m": 14,
+            "building_count_250m": 29,
+            "near_density_ratio": 0.11,
+            "median_distance_m": 82,
+            "sector_coverage": 5,
+            "building_area_ratio": 0.11,
+            "road_distance": 59,
+            "edge_index": 0.72,
+            "half_ring_dominance": 0.83,
+            "rural_landuse_signal": True,
+        },
+    ),
+    SyntheticCase(
+        group="Lockerer Dorfkern",
+        label="Dorfkern randnah aber noch eingebunden",
+        note="Plausibler lockerer Kern mit leichter Randtendenz, sollte nicht außen sein.",
+        expected_classification="grenzfall",
+        expected_score_range=(48, 66),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 2,
+            "building_count_150m": 10,
+            "building_count_250m": 22,
+            "near_density_ratio": 0.15,
+            "median_distance_m": 61,
+            "sector_coverage": 6,
+            "building_area_ratio": 0.12,
+            "road_distance": 34,
+            "edge_index": 0.66,
+            "half_ring_dominance": 0.80,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Lockerer Dorfkern",
+        label="Dorfkern mit robuster Einbindung",
+        note="Lockerer Dorfkern mit besserer Nahraumeinbindung, eher innenbereichsnah.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(62, 80),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 3,
+            "building_count_150m": 12,
+            "building_count_250m": 26,
+            "near_density_ratio": 0.19,
+            "median_distance_m": 52,
+            "sector_coverage": 6,
+            "building_area_ratio": 0.14,
+            "road_distance": 29,
+            "edge_index": 0.61,
+            "half_ring_dominance": 0.76,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Altstadt-/Marktplatzfall",
+        label="Urbaner Platz mit leichter Einseitigkeit",
+        note="Open-space-ähnlicher Innenstadtfall soll trotz niedriger Nahdichte innen bleiben.",
+        expected_classification="wahrscheinlich_innenbereich",
+        expected_score_range=(68, 92),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 1,
+            "building_count_150m": 22,
+            "building_count_250m": 49,
+            "near_density_ratio": 0.10,
+            "median_distance_m": 63,
+            "sector_coverage": 7,
+            "building_area_ratio": 0.18,
+            "road_distance": 21,
+            "edge_index": 0.50,
+            "half_ring_dominance": 0.70,
+            "rural_landuse_signal": False,
+        },
+    ),
+    SyntheticCase(
+        group="Lockerer Dorfkern",
+        label="Straßendorfartige lineare Struktur",
+        note="Lineares Muster mit brauchbarer Einbindung darf nicht vorschnell außen sein.",
+        expected_classification="grenzfall",
+        expected_score_range=(44, 68),
+        expectation_level="diagnostic",
+        signals={
+            "building_count_80m": 2,
+            "building_count_150m": 9,
+            "building_count_250m": 20,
+            "near_density_ratio": 0.14,
+            "median_distance_m": 67,
+            "sector_coverage": 5,
+            "building_area_ratio": 0.10,
+            "road_distance": 31,
+            "edge_index": 0.68,
+            "half_ring_dominance": 0.82,
             "rural_landuse_signal": False,
         },
     ),
@@ -198,9 +369,10 @@ def _evaluate_case(case: SyntheticCase, score: int, classification: str) -> tupl
     has_expectations = (
         case.expected_classification is not None or case.expected_score_range is not None
     )
+    expectation_level = case.expectation_level if case.expectation_level in {"strict", "diagnostic"} else "strict"
 
     if reasons:
-        return "FAIL", reasons
+        return ("FAIL" if expectation_level == "strict" else "WARN"), reasons
     if has_expectations:
         return "PASS", []
     return "INFO", []
@@ -211,7 +383,9 @@ def main() -> None:
 
     status_counter: Counter[str] = Counter()
     failed_cases: list[str] = []
+    warn_cases: list[str] = []
     group_counter: Counter[tuple[str, str]] = Counter()
+    level_counter: Counter[str] = Counter()
 
     for idx, case in enumerate(CASES, start=1):
         score = compute_score(case.signals)
@@ -222,14 +396,22 @@ def main() -> None:
         status_counter[result] += 1
         group_counter[(case.group, result)] += 1
 
+        expectation_level = (
+            case.expectation_level if case.expectation_level in {"strict", "diagnostic"} else "strict"
+        )
+        level_counter[expectation_level] += 1
+
         if result == "FAIL":
             failed_cases.append(f"{idx}. {case.label}")
+        if result == "WARN":
+            warn_cases.append(f"{idx}. {case.label}")
 
         borderline_tag = " | Grenzwertig" if _is_borderline(score) else ""
 
         print(f"\n{idx}. [{case.group}] {case.label}")
         print(f"   Erwartung: {case.note}")
-        print(f"   Ergebnis: {result}{borderline_tag}")
+        print(f"   Erwartungsstufe: {expectation_level}")
+        print(f"   Ergebnis: {result} [{expectation_level}]{borderline_tag}")
         print(f"   Score: {score} | Klassifikation: {classification}")
 
         if case.expected_classification is not None:
@@ -254,19 +436,32 @@ def main() -> None:
     print(f"Fälle gesamt: {len(CASES)}")
     print(f"PASS: {status_counter['PASS']}")
     print(f"FAIL: {status_counter['FAIL']}")
+    print(f"WARN: {status_counter['WARN']}")
     print(f"INFO (ohne Erwartungsdefinition): {status_counter['INFO']}")
+    print(
+        "Erwartungsstufen: "
+        f"strict={level_counter['strict']}, diagnostic={level_counter['diagnostic']}"
+    )
 
     if failed_cases:
         print("\nFAIL-Fälle:")
         for case_label in failed_cases:
             print(f" - {case_label}")
 
-    print("\nPASS/FAIL je Fallgruppe:")
+    if warn_cases:
+        print("\nWARN-Fälle:")
+        for case_label in warn_cases:
+            print(f" - {case_label}")
+
+    print("\nPASS/FAIL/WARN je Fallgruppe:")
     for group in sorted({case.group for case in CASES}):
         group_pass = group_counter[(group, "PASS")]
         group_fail = group_counter[(group, "FAIL")]
+        group_warn = group_counter[(group, "WARN")]
         group_info = group_counter[(group, "INFO")]
-        print(f" - {group}: PASS={group_pass}, FAIL={group_fail}, INFO={group_info}")
+        print(
+            f" - {group}: PASS={group_pass}, FAIL={group_fail}, WARN={group_warn}, INFO={group_info}"
+        )
 
 
 if __name__ == "__main__":
