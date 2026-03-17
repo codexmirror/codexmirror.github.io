@@ -397,6 +397,7 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
 
 
 def compute_gate(signals: Dict[str, float | int | bool | None]) -> str | None:
+    """Conservative Frühentscheidung nur für sehr klare Muster; Grenzfälle laufen über Score/Klassifikation."""
     required_keys = {
         "building_count_80m",
         "building_count_150m",
@@ -415,10 +416,19 @@ def compute_gate(signals: Dict[str, float | int | bool | None]) -> str | None:
     except (TypeError, ValueError, KeyError):
         return None
 
-    if patterns["strong_urban_pattern"] or patterns["open_space_inside_settlement_pattern"] or patterns["old_town_square_pattern"]:
+    clear_inside_gate = (
+        patterns["strong_urban_pattern"]
+        or patterns["open_space_inside_settlement_pattern"]
+        # Bewusst enges Innenmuster (Altstadtplatzlage) bleibt Teil des konservativen Gates.
+        or patterns["old_town_square_pattern"]
+    )
+    clear_outside_gate = patterns["weak_settlement_pattern"]
+
+    # Diese klaren Gate-Treffer dürfen selten vor dem regulären Score-Pfad entscheiden.
+    if clear_inside_gate:
         return "wahrscheinlich_innenbereich"
 
-    if patterns["weak_settlement_pattern"]:
+    if clear_outside_gate:
         return "hinweise_auf_aussenbereich"
 
     return None
