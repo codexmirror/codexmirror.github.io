@@ -12,7 +12,7 @@ from services.features import compute_features
 from services.geocoder import AddressNotFoundError, ExternalAPIError, geocode_address
 from services.landuse import get_landuse
 from services.roads import get_roads
-from services.scoring import classify_score, compute_score
+from services.scoring import classify_score, compute_gate, compute_score
 
 logger = logging.getLogger(__name__)
 
@@ -63,8 +63,15 @@ def innen_aussen_check(payload: CheckRequest):
         landuse = get_landuse(lat, lon)
 
         signals = compute_features(lat, lon, buildings, roads, landuse)
-        score = compute_score(signals)
-        classification = classify_score(score, signals)
+        gate_classification = compute_gate(signals)
+
+        if gate_classification is not None:
+            classification = gate_classification
+            score = None
+        else:
+            score = compute_score(signals)
+            classification = classify_score(score, signals)
+
         explanation = build_explanations(signals)
 
         return {

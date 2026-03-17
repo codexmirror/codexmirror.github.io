@@ -396,6 +396,34 @@ def compute_score(signals: Dict[str, float | int | bool | None]) -> int:
     return compute_score_breakdown(signals)["final_score"]
 
 
+def compute_gate(signals: Dict[str, float | int | bool | None]) -> str | None:
+    required_keys = {
+        "building_count_80m",
+        "building_count_150m",
+        "building_count_250m",
+        "near_density_ratio",
+        "sector_coverage",
+        "edge_index",
+        "half_ring_dominance",
+        "rural_landuse_signal",
+    }
+    if any(key not in signals or signals[key] is None for key in required_keys):
+        return None
+
+    try:
+        _, patterns = _extract_facts_and_patterns(signals)
+    except (TypeError, ValueError, KeyError):
+        return None
+
+    if patterns["strong_urban_pattern"] or patterns["open_space_inside_settlement_pattern"] or patterns["old_town_square_pattern"]:
+        return "wahrscheinlich_innenbereich"
+
+    if patterns["weak_settlement_pattern"]:
+        return "hinweise_auf_aussenbereich"
+
+    return None
+
+
 def classify_score(
     score: int, signals: Dict[str, float | int | bool | None] | None = None
 ) -> str:
