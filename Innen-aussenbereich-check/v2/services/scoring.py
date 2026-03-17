@@ -351,6 +351,24 @@ def compute_score_breakdown(signals: Dict[str, float | int | bool | None]) -> Sc
         else (8 if rural_landuse_signal else 0)
     )
 
+    # Lokale Entschärfung für randnahe Übergangskorridore:
+    # Begrenze unnötiges Straf-Stacking nur dort, wo das Edge-Transition-Muster aktiv ist,
+    # aber weder ein klares Innen- noch ein klares Außenmuster vorliegt.
+    if (
+        patterns["edge_transition_pattern"]
+        and not patterns["protected_urban_like_pattern"]
+        and not patterns["weak_settlement_pattern"]
+    ):
+        stacked_transition_penalties = (
+            edge_penalty + half_ring_penalty + rural_penalty + near_density_adjustment
+        )
+        transition_penalty_cap = 21.0
+        if stacked_transition_penalties > transition_penalty_cap:
+            near_density_adjustment = max(
+                0.0,
+                near_density_adjustment - (stacked_transition_penalties - transition_penalty_cap),
+            )
+
     if patterns["open_plot_embedded_edge_pattern"]:
         near_density_adjustment = min(near_density_adjustment, 2.0)
         half_ring_penalty = min(half_ring_penalty, 2.5)
@@ -438,7 +456,7 @@ def classify_score(
     score: int, signals: Dict[str, float | int | bool | None] | None = None
 ) -> str:
     if signals:
-        _, patterns = _extract_facts_and_patterns(signals)
+        facts, patterns = _extract_facts_and_patterns(signals)
 
         if (patterns["strong_urban_pattern"] and score >= 52) or (
             patterns["open_space_inside_settlement_pattern"] and score >= 50
@@ -451,7 +469,11 @@ def classify_score(
         if patterns["loose_village_core"] and score < 45:
             return "grenzfall"
 
-        if patterns["edge_transition_pattern"] and score >= 65:
+        if (
+            patterns["edge_transition_pattern"]
+            and 65 <= score <= 69
+            and (facts["half_ring_dominance"] >= 0.82 or facts["edge_index"] >= 0.74)
+        ):
             return "grenzfall"
 
         if patterns["open_plot_embedded_edge_pattern"] and score >= 38:
