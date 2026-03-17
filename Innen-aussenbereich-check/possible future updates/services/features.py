@@ -3,6 +3,7 @@ import statistics
 from typing import Dict, List
 
 from services.osm import RADIUS_METERS
+from services.settlement import distance_to_settlement_edge, point_inside_settlement
 
 
 def haversine_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -82,6 +83,15 @@ def compute_features(
     rural_count = sum(1 for item in landuse if item.get("landuse") in rural_types)
     rural_landuse_signal = rural_count >= 2
 
+    inside_settlement = None
+    distance_to_settlement_edge_m = None
+    try:
+        inside_settlement = point_inside_settlement(lat, lon)
+        distance_to_settlement_edge_m = distance_to_settlement_edge(lat, lon)
+    except Exception:
+        inside_settlement = None
+        distance_to_settlement_edge_m = None
+
     return {
         "building_count_80m": building_count_80m,
         "building_count_150m": building_count_150m,
@@ -94,4 +104,6 @@ def compute_features(
         "road_distance": road_distance,
         "building_area_ratio": round(building_area_ratio, 2),
         "rural_landuse_signal": rural_landuse_signal,
+        "inside_settlement": inside_settlement,
+        "distance_to_settlement_edge_m": distance_to_settlement_edge_m,
     }
