@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from services.explanations import build_explanations
-from services.scoring import classify_score, compute_score
+from services.scoring import classify_score, compute_gate, compute_score
 
 Signals = Dict[str, float | int | bool | None]
 
@@ -471,11 +471,15 @@ CASES: List[SyntheticCase] = [
 ]
 
 
-def _is_borderline(score: int) -> bool:
+def _is_borderline(score: int | None) -> bool:
+    if score is None:
+        return False
     return 43 <= score <= 47 or 63 <= score <= 67
 
 
-def _evaluate_case(case: SyntheticCase, score: int, classification: str) -> tuple[str, list[str]]:
+def _evaluate_case(
+    case: SyntheticCase, score: int | None, classification: str
+) -> tuple[str, list[str]]:
     reasons: list[str] = []
 
     if case.expected_classification is not None and classification != case.expected_classification:
@@ -484,7 +488,7 @@ def _evaluate_case(case: SyntheticCase, score: int, classification: str) -> tupl
             f"(erwartet: {case.expected_classification}, erhalten: {classification})"
         )
 
-    if case.expected_score_range is not None:
+    if case.expected_score_range is not None and score is not None:
         min_score, max_score = case.expected_score_range
         if not (min_score <= score <= max_score):
             reasons.append(
@@ -514,8 +518,13 @@ def main() -> None:
     level_counter: Counter[str] = Counter()
 
     for idx, case in enumerate(CASES, start=1):
-        score = compute_score(case.signals)
-        classification = classify_score(score, case.signals)
+        gate_classification = compute_gate(case.signals)
+        if gate_classification is not None:
+            score = None
+            classification = gate_classification
+        else:
+            score = compute_score(case.signals)
+            classification = classify_score(score, case.signals)
         explanations = build_explanations(case.signals)
 
         result, reasons = _evaluate_case(case, score, classification)
@@ -533,12 +542,13 @@ def main() -> None:
             warn_cases.append(f"{idx}. {case.label}")
 
         borderline_tag = " | Grenzwertig" if _is_borderline(score) else ""
+        score_display = score if score is not None else "— (Gate)"
 
         print(f"\n{idx}. [{case.group}] {case.label}")
         print(f"   Erwartung: {case.note}")
         print(f"   Erwartungsstufe: {expectation_level}")
         print(f"   Ergebnis: {result} [{expectation_level}]{borderline_tag}")
-        print(f"   Score: {score} | Klassifikation: {classification}")
+        print(f"   Score: {score_display} | Klassifikation: {classification}")
 
         if case.expected_classification is not None:
             print(f"   Erwartete Klassifikation: {case.expected_classification}")
