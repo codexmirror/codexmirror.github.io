@@ -1,7 +1,4 @@
 User-agent: *
-Allow: /
-
 Disallow: /docs/
-Disallow: /Innen-aussenbereich-check/
 
-Sitemap: /sitemap.xml
+Sitemap: https://grundstueckcheck.de/sitemap.xml
