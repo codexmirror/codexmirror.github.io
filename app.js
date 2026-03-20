@@ -872,10 +872,8 @@ const hasStopFactor =
         if (result.confidence) {
           const isPositiveAmpel = result.ampel === "🟢";
           if (confidenceTitleEl) {
-            confidenceTitleEl.textContent = isPositiveAmpel
-              ? "Planungssicherheit"
-              : "Einschätzungssicherheit";
-          }
+  confidenceTitleEl.textContent = "Einschätzungssicherheit";
+}
           const detailText = isPositiveAmpel
   ? confidenceTextMap[result.confidence] || "Bitte als erste Einschätzung verstehen."
   : {
