@@ -14,12 +14,12 @@
       "hochwasser"
     ],
     interpretations: [
-  { min: 1, max: 15, text: "Aktuell spricht sehr viel gegen die Zulässigkeit im gewünschten Umfang." },
-  { min: 16, max: 29, text: "Eher unwahrscheinlich – nur mit klaren Ausnahmen oder geänderter Planung denkbar." },
-  { min: 30, max: 45, text: "Teilweise möglich, aber mit deutlichen rechtlichen Hürden." },
-  { min: 46, max: 59, text: "Grenzbereich: machbar, wenn offene Kernpunkte sauber und schriftlich geklärt werden." },
-  { min: 60, max: 75, text: "Gute Tendenz – sofern Nachweise und Rahmenbedingungen passen." },
-  { min: 76, max: 100, text: "Gute Ausgangslage – Detailprüfung und schriftliche Einordnung bleiben wichtig." }
+  { min: 1, max: 15, text: "Sehr schwierig: In dieser Konstellation wird dein Vorhaben meist nicht genehmigt – kläre zuerst die größten Ausschlussfaktoren." },
+  { min: 16, max: 29, text: "Eher unwahrscheinlich – nur mit klaren Ausnahmen oder einer anderen Planung denkbar." },
+  { min: 30, max: 45, text: "Teilweise denkbar, aber nur mit deutlichen Hürden und genauer Klärung." },
+  { min: 46, max: 59, text: "Grenzfall: Es kann funktionieren, wenn die offenen Kernpunkte sauber geklärt werden." },
+  { min: 60, max: 75, text: "Eher gute Tendenz – wenn die wichtigen Nachweise und Rahmenbedingungen passen." },
+  { min: 76, max: 100, text: "Gute Ausgangslage – trotzdem solltest du die entscheidenden Punkte noch schriftlich prüfen." }
 ],
     caps: [
   {
@@ -27,7 +27,7 @@
   severity: "hard",
   max: 35,
   applies: (s) => s.erschliessung === "nicht",
-  reason: "Ohne gesicherte Zufahrt/Abwasser ist Bauen/Nutzung meist unrealistisch."
+  reason: "Ohne gesicherte Erschließung ist vor allem Neubau oder intensivere Nutzung meist nur schwer realistisch; maßgeblich bleibt der konkrete Einzelfall."
 },
   {
   id: "cap_randlage",
@@ -80,35 +80,35 @@
 }
 ],
     nextStepTemplates: {
-      stopFactorIntro: "Sonderrisiken zuerst klären: Diese Punkte können die Planung stoppen.",
-      lageUnklar: "Bauamt: Innen- oder Außenbereich schriftlich bestätigen lassen.",
-      bplanUnklar: "Gemeinde: Bebauungsplan einsehen und gewünschte Nutzung schriftlich einordnen lassen.",
-      bestandUnklar: "Bestand und Genehmigungsstand schriftlich beim Bauamt klären.",
-      erschlKlaeren: "Erschließung schriftlich klären: Zufahrt, Abwasser, Wasser und Strom.",
-      aussenWohnen: "Bauamt: Wohnen im Außenbereich und mögliche Ausnahmen schriftlich prüfen lassen.",
-      aussenWochenende: "Bauamt: Wochenendnutzung im Außenbereich schriftlich prüfen lassen.",
-      waldWohnen: "Gemeinde/Forstamt: Nutzung klären; Wohnen im Wald ist meist ausgeschlossen.",
-      bplanNein: "Gemeinde: Zulässigkeit ohne Bebauungsplan verbindlich einordnen lassen.",
-      landwpriv: "Privilegierung belastbar nachweisen: Betrieb, Flächen und konkreten Bedarf.",
-      freizeitWohnen: "Zweckbestimmung schriftlich klären: Freizeitnutzung ist kein dauerhaftes Wohnen.",
-      naturschutzKlaeren: "Naturschutz: Schutzstatus und Auflagen schriftlich klären.",
-      wasserschutzKlaeren: "Wasserschutz: Schutzzone, konkrete Verordnung und Auflagen schriftlich klären.",
-      hochwasserKlaeren: "Hochwasser: amtliche Karten prüfen und klären, ob ein festgesetztes Gebiet oder nur ein Risikohinweis vorliegt.",
-      geoportalPruefen: "Geoportal prüfen (Schutz/Wasser/Hochwasser).",
-      starkNegativ: "Kritische Punkte priorisieren und Nachweise geordnet vorbereiten.",
-      fallback: "Bei Unsicherheit: Bauamt-Auskunft schriftlich einholen."
-    },
+  stopFactorIntro: "Diese Punkte solltest du zuerst klären, weil sie das Vorhaben schnell stoppen können.",
+  lageUnklar: "Kläre zuerst, ob dein Grundstück im Innen- oder Außenbereich liegt – am besten über Bauamt oder amtliches Geoportal.",
+  bplanUnklar: "Lass dir von der Gemeinde zeigen, ob ein Bebauungsplan gilt und was dort erlaubt ist.",
+  bestandUnklar: "Kläre zuerst, ob der vorhandene Bestand überhaupt genehmigt ist.",
+  erschlKlaeren: "Prüfe schriftlich, ob Zufahrt, Abwasser, Wasser und Strom gesichert sind.",
+  aussenWohnen: "Lass zuerst schriftlich prüfen, ob Wohnen im Außenbereich in deinem Fall überhaupt denkbar ist.",
+  aussenWochenende: "Lass zuerst schriftlich prüfen, ob Wochenendnutzung an diesem Standort zulässig sein kann.",
+  waldWohnen: "Kläre mit Gemeinde oder Forstbehörde, ob die gewünschte Nutzung dort überhaupt in Betracht kommt.",
+  bplanNein: "Ohne Bebauungsplan solltest du zuerst klären, nach welchen Regeln dein Grundstück beurteilt wird.",
+  landwpriv: "Prüfe, ob die behauptete Privilegierung wirklich mit Unterlagen belegt werden kann.",
+  freizeitWohnen: "Kläre schriftlich, ob das Grundstück nur für Freizeitnutzung gedacht ist oder ob Dauerwohnen überhaupt denkbar ist.",
+  naturschutzKlaeren: "Prüfe zuerst den genauen Schutzstatus und welche Auflagen daraus folgen.",
+  wasserschutzKlaeren: "Prüfe zuerst die Schutzzone und welche konkreten Einschränkungen dort gelten.",
+  hochwasserKlaeren: "Prüfe zuerst, ob nur ein Risikohinweis vorliegt oder ein offiziell festgesetztes Hochwassergebiet.",
+  geoportalPruefen: "Prüfe Schutzgebiete, Wasserschutz und Hochwasser zusätzlich im amtlichen Geoportal.",
+  starkNegativ: "Sortiere die kritischsten Punkte zuerst, bevor du weiter planst oder kaufst.",
+  fallback: "Wenn du unsicher bleibst, hol dir eine schriftliche Ersteinschätzung vom Bauamt."
+},
     pitfallsTemplates: {
-      anmeldung: "Hauptwohnsitz anmelden ersetzt keine baurechtliche Zulässigkeit.",
-      aussen: "Außenbereich heißt nicht automatisch unbebaubar, aber Wohnen bleibt stark eingeschränkt.",
-      freizeit: "Freizeitnutzung und Dauerwohnen sind planungsrechtlich verschieden.",
-      bestand: "Bestandsschutz oder Duldung gilt selten pauschal für neue Vorhaben.",
-      naturschutz: "Strenges Schutzgebiet kann Vorhaben vollständig ausschließen.",
-      wasserschutz: "Wasserschutz Zone I/II kann Neubau und Nutzungsänderungen stark begrenzen; entscheidend bleibt die konkrete Schutzgebietsverordnung.",
-      hochwasser: "HQ100-Lage kann je nach Gebietsfestsetzung zu Bauverboten, strengen Auflagen oder erheblichen Folgekosten führen.",
-      general: "Exposé-Formulierungen ersetzen keine schriftliche Einordnung vom Bauamt.",
-      fallback: "Mündliche Aussagen sind hilfreich, entscheidend ist die schriftliche Einordnung."
-    },
+  anmeldung: "Nur weil du dich anmeldest, heißt das nicht, dass du dort auch wohnen darfst.",
+  aussen: "Außenbereich heißt nicht automatisch unmöglich – aber Wohnen oder Neubau ist dort oft deutlich schwieriger.",
+  freizeit: "Freizeitnutzung und dauerhaftes Wohnen sind rechtlich nicht dasselbe.",
+  bestand: "Ein vorhandenes Gebäude bedeutet nicht automatisch, dass auch deine gewünschte Nutzung erlaubt ist.",
+  naturschutz: "Ein strenges Schutzgebiet kann das Vorhaben stark einschränken oder ganz ausschließen.",
+  wasserschutz: "In Wasserschutzgebieten können Neubau, Umbau oder Nutzungsänderung deutlich eingeschränkt sein.",
+  hochwasser: "Hochwasserlagen können zu Bauverboten, Auflagen oder hohen Folgekosten führen.",
+  general: "Aussagen aus Exposé oder Verkaufsgespräch ersetzen keine schriftliche Einordnung der Behörde.",
+  fallback: "Mündliche Aussagen helfen weiter – wirklich belastbar ist am Ende nur die schriftliche Klärung."
+},
     fieldErrors: {
       lage: "Bitte eine Lage auswählen.",
       bplan: "Bitte einen Bebauungsplan-Status auswählen.",
@@ -161,12 +161,12 @@
       bplan_unklar: "Unklarer Bebauungsplan erhöht das Planungsrisiko.",
       typ_freizeit_wohnen: "Freizeitgrundstück ist für Dauerwohnen häufig ungeeignet.",
       nutzung_gewerblich: "Gewerbliche Nutzung braucht oft zusätzliche Vorgaben und Nachweise.",
-      erschl_teilweise: "Teilweise oder unklare Erschließung kann die Zulässigkeit deutlich schwächen; gesicherte Erschließung bleibt ein Kernpunkt.",
-      landwpriv_unplausibel: "Privilegierung ohne klaren landwirtschaftlichen Bezug ist meist nicht tragfähig.",
-      innen34_einfuegen: "Innenbereich (§34) verlangt Einfügen in Art und Maß der Umgebung.",
-      sonderfall_lsg: "Landschaftsschutz bringt oft zusätzliche Auflagen und Einschränkungen.",
-      sonderfall_zone3: "Wasserschutz (Zone III) kann Planung und Nutzung deutlich einschränken.",
-      sonderfall_hochwasser_hq100: "HQ100-Lage erzeugt strenge Anforderungen bis hin zu Bauverboten."
+      erschl_teilweise: "Wenn Zufahrt oder Anschlüsse unklar sind, wird das Vorhaben schnell unsicher.",
+landwpriv_unplausibel: "Ohne echten landwirtschaftlichen Bezug ist diese Nutzung meist schwer begründbar.",
+innen34_einfuegen: "Im Innenbereich muss sich das Vorhaben zur Umgebung passend einfügen; der Grundstückstyp allein entscheidet das aber nicht.",
+sonderfall_lsg: "Ein Landschaftsschutzgebiet kann zusätzliche Auflagen und Einschränkungen auslösen.",
+sonderfall_zone3: "Wasserschutz in Zone III kann die Nutzung deutlich einschränken.",
+sonderfall_hochwasser_hq100: "Eine HQ100-Lage kann das Vorhaben stark einschränken oder sogar verhindern."
     }
   };
 
@@ -328,9 +328,9 @@
   reasons.push(makeReason("typ", 12, TEMPLATES.positives.typ_bauluecke, "positive"));
 }
     if (state.typ === "freizeit" && state.nutzung === "wochenende") {
-      score += 10;
-      reasons.push(makeReason("typ", 10, TEMPLATES.positives.typ_freizeit_wochenende, "positive"));
-    }
+  score += 6;
+  reasons.push(makeReason("typ", 6, TEMPLATES.positives.typ_freizeit_wochenende, "positive"));
+}
     if (state.typ === "freizeit" && isWohnen(state.nutzung)) {
       score -= 20;
       reasons.push(makeReason("typ", -20, TEMPLATES.negatives.typ_freizeit_wohnen, "negative"));
@@ -345,9 +345,9 @@
     }
 
     if (state.lage_detail === "innen34" && isWohnen(state.nutzung) && state.typ !== "bauluecke") {
-      score -= 6;
-      reasons.push(makeReason("lage_detail", -6, TEMPLATES.negatives.innen34_einfuegen, "negative"));
-    }
+  score -= 2;
+  reasons.push(makeReason("lage_detail", -2, TEMPLATES.negatives.innen34_einfuegen, "negative"));
+}
 
     if (state.nutzung === "gewerblich") {
       const delta = state.lage === "innen" && state.bplan === "ja" ? 0 : -5;
@@ -375,9 +375,9 @@
   score -= 12;
   reasons.push(makeReason("lage_detail", -12, "Randlage ist planungsrechtlich oft unsicher und muss im Einzelfall sauber eingeordnet werden.", "negative"));
 } else if (state.lage_detail === "satzung") {
-      score += 5;
-      reasons.push(makeReason("lage_detail", 5, "Klarer Satzungsbezug kann die Einordnung stützen.", "positive"));
-    }
+  score += 2;
+  reasons.push(makeReason("lage_detail", 2, "Ein klarer Satzungsbezug kann die Einordnung stützen, ersetzt aber keine Prüfung der konkreten Satzungsart und Festsetzungen.", "positive"));
+}
 
     if (state.schutzgebiet === "lsg") {
       score -= 10;
@@ -504,7 +504,7 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
       });
     });
 
-    return list.slice(0, Math.max(4, activeCaps.length)).map((item) => ({ type: item.type, text: clipWords(item.text, 17) }));
+    return list.slice(0, Math.max(4, activeCaps.length)).map((item) => ({ type: item.type, text: clipWords(item.text, 22) }));
   }
 
   function buildNextSteps(state, reasons) {
@@ -554,7 +554,7 @@ const hasStopFactor =
     if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
 
     const topThree = unique.slice(0, 3);
-    return topThree.map((item) => clipWords(item, 17));
+    return topThree.map((item) => clipWords(item, 22));
   }
 
   function buildPitfalls(state) {
@@ -576,7 +576,7 @@ const hasStopFactor =
       if (!alreadyIncluded) pitfalls.push(item);
     });
 
-    return pitfalls.slice(0, 3).map((item) => clipWords(item, 17));
+    return pitfalls.slice(0, 3).map((item) => clipWords(item, 20));
   }
 
   function ampel(score) {
@@ -614,36 +614,36 @@ const hasStopFactor =
 }
 
   function resultHeadline(light, planningConfidence) {
-  if (light === "🔴") return "Aktuell sehr unwahrscheinlich.";
-  if (light === "🟡") return "Möglich – aber nur, wenn Kernpunkte schriftlich geklärt werden.";
-  if (planningConfidence === "niedrig") return "Gute Ausgangslage – aber mehrere Punkte sind noch offen.";
-  return "Gute Ausgangslage – Detailprüfung bleibt nötig.";
+  if (light === "🔴") return "Aktuell spricht in dieser Konstellation mehr gegen als für dein Vorhaben.";
+  if (light === "🟡") return "Es kann möglich sein – aber nur, wenn die offenen Kernpunkte sauber geklärt werden.";
+  if (planningConfidence === "niedrig") return "Die Ausgangslage wirkt eher gut – es sind aber noch wichtige Punkte offen.";
+  return "Die Ausgangslage wirkt gut – trotzdem solltest du die entscheidenden Punkte noch prüfen.";
 }
 
   function practicalBullets(score, light) {
-    if (light === "🔴") {
-      return [
-        "Mehrere Kernkriterien sprechen aktuell dagegen.",
-        "Ohne schriftliche Klärung bleibt das Risiko hoch.",
-        "Keine verbindlichen Schritte vor der Vorprüfung."
-      ];
-    }
-    if (light === "🟡") {
-      const inUpperYellow = score >= 46;
-      return [
-        inUpperYellow
-          ? "Tragfähig, wenn die offenen Punkte belegt werden."
-          : "Zwischen Chance und Risiko: Details entscheiden.",
-        "Die Einschätzung steht und fällt mit schriftlichen Nachweisen.",
-        "Plane erst weiter, wenn die Kernfragen geklärt sind."
-      ];
-    }
+  if (light === "🔴") {
     return [
-  "Die Ausgangslage wirkt grundsätzlich passend.",
-  "Details (Planstatus, Einordnung, Schutzauflagen) können das Ergebnis ändern.",
-  "Vor Investitionen: schriftliche Einordnung/Bestätigung einholen."
-];
+      "Mehrere wichtige Punkte sprechen aktuell gegen dein Vorhaben.",
+      "Ohne schriftliche Klärung ist das Risiko für Fehlplanung oder Fehlkauf hoch.",
+      "Bevor du weiter planst, solltest du zuerst die größten Hürden prüfen."
+    ];
   }
+  if (light === "🟡") {
+    const inUpperYellow = score >= 46;
+    return [
+      inUpperYellow
+        ? "Die Ausgangslage kann funktionieren, wenn die offenen Punkte geklärt werden."
+        : "Ob es klappt, hängt stark von einzelnen offenen Punkten ab.",
+      "Entscheidend sind jetzt vor allem schriftliche Nachweise statt Vermutungen.",
+      "Plane erst weiter, wenn die wichtigsten Fragen sauber geklärt sind."
+    ];
+  }
+  return [
+    "Die Ausgangslage wirkt grundsätzlich passend.",
+    "Trotzdem können Details wie Lage, Erschließung oder Schutzthemen das Ergebnis noch verändern.",
+    "Vor größeren Investitionen solltest du dir die entscheidenden Punkte schriftlich bestätigen lassen."
+  ];
+}
 
   function interpretation(score) {
     return CONFIG.interpretations.find((bucket) => score >= bucket.min && score <= bucket.max).text;
@@ -864,10 +864,10 @@ const hasStopFactor =
       if (interpEl) interpEl.textContent = result.interpretation;
       renderList(practicalList, result.practical);
       const confidenceTextMap = {
-        hoch: "Die Kerndaten sind stimmig.",
-        mittel: "Ein wichtiger Punkt ist noch offen.",
-        niedrig: "Mehrere Angaben sind noch offen."
-      };
+  hoch: "Deine Angaben ergeben ein recht klares Bild.",
+  mittel: "Ein wichtiger Punkt ist noch offen.",
+  niedrig: "Mehrere wichtige Punkte sind noch offen oder unklar."
+};
       if (confidenceEl) {
         if (result.confidence) {
           const isPositiveAmpel = result.ampel === "🟢";
@@ -877,12 +877,12 @@ const hasStopFactor =
               : "Einschätzungssicherheit";
           }
           const detailText = isPositiveAmpel
-            ? confidenceTextMap[result.confidence] || "Bitte als Vorprüfung verstehen."
-            : {
-                hoch: "Die Bewertung ist in dieser Konstellation belastbar.",
-                mittel: "Die Bewertung ist brauchbar – ein wichtiger Punkt ist noch offen.",
-                niedrig: "Die Bewertung ist vorläufig – mehrere Angaben sind noch offen."
-              }[result.confidence] || "Bitte als Vorprüfung verstehen.";
+  ? confidenceTextMap[result.confidence] || "Bitte als erste Einschätzung verstehen."
+  : {
+      hoch: "Die Einschätzung ist für diese Konstellation recht klar.",
+      mittel: "Die Einschätzung ist brauchbar – ein wichtiger Punkt ist noch offen.",
+      niedrig: "Die Einschätzung ist vorläufig – mehrere wichtige Punkte sind noch unklar."
+    }[result.confidence] || "Bitte als erste Einschätzung verstehen.";
           confidenceEl.textContent = `${result.confidence} – ${detailText}`;
         } else {
           confidenceEl.textContent = "";
@@ -1185,7 +1185,7 @@ return (
           erschliessung: "nicht",
           optionalActive: true
         },
-        check: (r) => r.steps[0] && /Sonderrisiken zuerst klären/i.test(r.steps[0])
+        check: (r) => r.steps[0] && /Diese Punkte solltest du zuerst klären/i.test(r.steps[0])
       },
       {
         id: "T13",
@@ -1197,7 +1197,7 @@ return (
           lage_detail: "aussen35",
           optionalActive: true
         },
-        check: (r) => r.steps[0] && /Sonderrisiken zuerst klären/i.test(r.steps[0])
+        check: (r) => r.steps[0] && /Diese Punkte solltest du zuerst klären/i.test(r.steps[0])
       },
       {
         id: "T14",
