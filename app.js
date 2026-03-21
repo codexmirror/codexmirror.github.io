@@ -34,7 +34,7 @@
   severity: "medium",
   max: 45,
   applies: (s) => s.lage_detail === "randlage",
-  reason: "Randlage ist planungsrechtlich oft heikel und sollte besonders sorgfältig eingeordnet werden."
+  reason: "Randlage ist planungsrechtlich oft heikel weil die planungsrechtliche Einordnung dort besonders sorgfältig geprüft werden muss."
 },
   {
   id: "cap_schutzgebiet_streng",
@@ -55,14 +55,14 @@
   severity: "hard",
   max: 35,
   applies: (s) => s.wasserschutz === "zone12",
-  reason: "Wasserschutz (Zone I/II) setzt meist enge Grenzen."
+  reason: "Wasserschutz (Zone I/II) kann je nach Schutzgebietsverordnung sehr enge Grenzen setzen."
 },
   {
   id: "cap_wasserschutz_zone3",
   severity: "medium",
   max: 55,
   applies: (s) => s.wasserschutz === "zone3",
-  reason: "Wasserschutz (Zone III) kann die Nutzung spürbar einschränken."
+  reason: "Wasserschutz (Zone III) kann je nach Schutzgebietsverordnung zusätzliche Einschränkungen auslösen."
 },
   {
   id: "cap_hochwasser_hq100",
@@ -148,7 +148,7 @@
   const TEMPLATES = {
     positives: {
       lage_innen: "Innenbereich ist oft planungsrechtlich günstiger.",
-      bplan_ja: "Ein Bebauungsplan kann die Zulässigkeit klarer einordnen, wenn die gewünschte Nutzung seinen Festsetzungen entspricht.",
+      bplan_ja: "Ein Bebauungsplan kann die planungsrechtliche Zulässigkeit klarer einordnen, ersetzt aber keine Prüfung weiterer Anforderungen.",
       typ_bauluecke: "Baulücken können die Ausgangslage verbessern, wenn sich das Vorhaben einfügt und die Erschließung gesichert ist.",
       typ_freizeit_wochenende: "Freizeitgrundstück passt eher zu Wochenendnutzung.",
       typ_landwpriv: "Privilegierte Landwirtschaft kann im Außenbereich eher möglich sein, wenn ein echter betrieblicher Bezug nachweisbar ist.",
