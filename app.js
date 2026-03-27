@@ -614,10 +614,10 @@ const hasStopFactor =
 }
 
   function resultHeadline(light, planningConfidence) {
-  if (light === "🔴") return "Aktuell spricht in dieser Konstellation mehr gegen als für dein Vorhaben.";
-  if (light === "🟡") return "Es kann möglich sein – aber nur, wenn die offenen Kernpunkte sauber geklärt werden.";
-  if (planningConfidence === "niedrig") return "Die Ausgangslage wirkt eher gut – es sind aber noch wichtige Punkte offen.";
-  return "Die Ausgangslage wirkt gut – trotzdem solltest du die entscheidenden Punkte noch prüfen.";
+  if (light === "🔴") return "Aktuell spricht einiges gegen dein Vorhaben – ohne weitere Prüfung ist die Umsetzung unsicher.";
+  if (light === "🟡") return "Dein Vorhaben kann möglich sein – aber nur, wenn du die entscheidenden Punkte vorab sauber klärst.";
+  if (planningConfidence === "niedrig") return "Die Ausgangslage sieht gut aus – ein paar Punkte solltest du aber noch klären.";
+  return "Die Ausgangslage wirkt gut – aber ohne Klärung riskierst du teure Fehlentscheidungen.";
 }
 
   function practicalBullets(score, light) {
