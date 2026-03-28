@@ -168,13 +168,16 @@
 }
 
 .artikel-content a:not(.text-cta) {
-  color: #4b2d7f;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
+  color: #3f2a75;
+  text-decoration-thickness: 1.6px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(63, 42, 117, 0.35);
+  transition: color 120ms ease, text-decoration-color 120ms ease;
 }
 
 .artikel-content a:not(.text-cta):hover {
-  color: #3e2569;
+  color: #2f1f5a;
+  text-decoration-color: rgba(47, 31, 90, 0.55);
 }
 
 /* Callout */
