@@ -80,23 +80,23 @@
 }
 ],
     nextStepTemplates: {
-  stopFactorIntro: "Diese Punkte solltest du zuerst klären, weil sie das Vorhaben schnell stoppen können.",
-  lageUnklar: "Kläre zuerst, ob dein Grundstück im Innen- oder Außenbereich liegt – am besten über Bauamt oder amtliches Geoportal.",
-  bplanUnklar: "Lass dir von der Gemeinde zeigen, ob ein Bebauungsplan gilt und was dort erlaubt ist.",
-  bestandUnklar: "Kläre zuerst, ob der vorhandene Bestand überhaupt genehmigt ist.",
-  erschlKlaeren: "Prüfe schriftlich, ob Zufahrt, Abwasser, Wasser und Strom gesichert sind.",
-  aussenWohnen: "Lass zuerst schriftlich prüfen, ob Wohnen im Außenbereich in deinem Fall überhaupt denkbar ist.",
-  aussenWochenende: "Lass zuerst schriftlich prüfen, ob Wochenendnutzung an diesem Standort zulässig sein kann.",
-  waldWohnen: "Kläre mit Gemeinde oder Forstbehörde, ob die gewünschte Nutzung dort überhaupt in Betracht kommt.",
-  bplanNein: "Ohne Bebauungsplan solltest du zuerst klären, nach welchen Regeln dein Grundstück beurteilt wird.",
-  landwpriv: "Prüfe, ob die behauptete Privilegierung wirklich mit Unterlagen belegt werden kann.",
-  freizeitWohnen: "Kläre schriftlich, ob das Grundstück nur für Freizeitnutzung gedacht ist oder ob Dauerwohnen überhaupt denkbar ist.",
-  naturschutzKlaeren: "Prüfe zuerst den genauen Schutzstatus und welche Auflagen daraus folgen.",
-  wasserschutzKlaeren: "Prüfe zuerst die Schutzzone und welche konkreten Einschränkungen dort gelten.",
-  hochwasserKlaeren: "Prüfe zuerst, ob nur ein Risikohinweis vorliegt oder ein offiziell festgesetztes Hochwassergebiet.",
-  geoportalPruefen: "Prüfe Schutzgebiete, Wasserschutz und Hochwasser zusätzlich im amtlichen Geoportal.",
-  starkNegativ: "Sortiere die kritischsten Punkte zuerst, bevor du weiter planst oder kaufst.",
-  fallback: "Wenn du unsicher bleibst, hol dir eine schriftliche Ersteinschätzung vom Bauamt."
+  stopFactorIntro: "Zuerst solltest du die Punkte klären, die dein Vorhaben schnell blockieren können.",
+  lageUnklar: "Kläre beim Bauamt oder im amtlichen Geoportal, ob dein Grundstück im Innen- oder Außenbereich liegt.",
+  bplanUnklar: "Frage bei der Gemeinde nach, ob ein Bebauungsplan gilt und welche Nutzung dort vorgesehen ist.",
+  bestandUnklar: "Prüfe mit Unterlagen oder bei der Behörde, ob der vorhandene Bestand tatsächlich genehmigt ist.",
+  erschlKlaeren: "Lass dir schriftlich bestätigen, ob Zufahrt sowie Wasser, Abwasser und Strom für dein Grundstück gesichert sind.",
+  aussenWohnen: "Frage beim Bauamt schriftlich an, ob Wohnen im Außenbereich für dein Grundstück grundsätzlich in Betracht kommt.",
+  aussenWochenende: "Frage beim Bauamt schriftlich an, ob Wochenendnutzung an diesem Standort grundsätzlich zulässig sein kann.",
+  waldWohnen: "Kläre mit Gemeinde oder Forstbehörde, ob deine gewünschte Nutzung auf dieser Fläche überhaupt denkbar ist.",
+  bplanNein: "Kläre bei der Gemeinde oder dem Bauamt, nach welchen Regeln dein Grundstück ohne Bebauungsplan beurteilt wird.",
+  landwpriv: "Prüfe mit Unterlagen, ob die behauptete landwirtschaftliche Privilegierung in deinem Fall wirklich belegbar ist.",
+  freizeitWohnen: "Kläre schriftlich, ob das Grundstück nur für Freizeitnutzung gedacht ist oder ob dauerhaftes Wohnen überhaupt in Betracht kommt.",
+  naturschutzKlaeren: "Prüfe im Geoportal oder bei der zuständigen Behörde den genauen Schutzstatus und die daraus folgenden Auflagen.",
+  wasserschutzKlaeren: "Prüfe im Geoportal oder bei der zuständigen Stelle, in welcher Wasserschutzzone das Grundstück liegt und welche Einschränkungen dort gelten.",
+  hochwasserKlaeren: "Prüfe im Geoportal oder bei der Behörde, ob nur ein Risikohinweis vorliegt oder ein offiziell festgesetztes Hochwassergebiet.",
+  geoportalPruefen: "Prüfe Schutzgebiete, Wasserschutz und Hochwasser zusätzlich im amtlichen Geoportal für dein Grundstück.",
+  starkNegativ: "Klär zuerst die kritischsten Punkte, bevor du weiter planst, kaufst oder Geld investierst.",
+  fallback: "Wenn nach der Vorprüfung wichtige Punkte offen bleiben, solltest du vor Kauf oder Planung eine schriftliche Einschätzung vom Bauamt einholen."
 },
     pitfallsTemplates: {
   anmeldung: "Nur weil du dich anmeldest, heißt das nicht, dass du dort auch wohnen darfst.",
@@ -530,7 +530,12 @@ const hasStopFactor =
     if (state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
 
     if (state.typ === "wald" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
-    if (state.lage === "aussen" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.aussenWohnen);
+    if (isOutsideIsh(state) && isWohnen(state.nutzung) && !privileged) {
+  steps.push(CONFIG.nextStepTemplates.aussenWohnen);
+}
+if (isOutsideIsh(state) && state.nutzung === "wochenende" && state.typ !== "freizeit") {
+  steps.push(CONFIG.nextStepTemplates.aussenWochenende);
+}
     if (isAussenbereich(state) && state.nutzung === "wochenende") steps.push(CONFIG.nextStepTemplates.aussenWochenende);
     if (state.typ === "freizeit" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
     if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
@@ -547,19 +552,26 @@ const hasStopFactor =
     const hasUnknownSpecial = [state.schutzgebiet, state.wasserschutz, state.hochwasser].some((v) => v === "unbekannt");
     if (state.optionalActive && hasUnknownSpecial) steps.push(CONFIG.nextStepTemplates.geoportalPruefen);
 
-    if (reasons.some((r) => r.impact <= -10)) steps.push(CONFIG.nextStepTemplates.starkNegativ);
+    if (reasons.some((r) => r.impact <= -10) && steps.length < 2) {
+  steps.push(CONFIG.nextStepTemplates.starkNegativ);
+}
 
     const unique = dedupeTexts(steps);
-    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|schriftlich/i.test(step));
-    if (unique.length < 3 && !hasAuthorityStep) unique.push(CONFIG.nextStepTemplates.fallback);
+    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|behörde|forstbehörde|geoportal|zuständige stelle|schriftlich/i.test(step));
+if (unique.length < 2 || (unique.length < 3 && !hasAuthorityStep)) {
+  unique.push(CONFIG.nextStepTemplates.fallback);
+}
 
-    const topThree = unique.slice(0, 3);
-    return topThree.map((item) => clipWords(item, 22));
+    const actionableSteps = unique.filter((item) => item !== CONFIG.nextStepTemplates.stopFactorIntro);
+const topThree = actionableSteps.slice(0, 3);
+return topThree.map((item) => clipWords(item, 22));
   }
 
   function buildPitfalls(state) {
     const fallSpecific = [];
-    if (state.lage === "aussen" || (state.typ === "wald" && isWohnen(state.nutzung))) fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
+    if (isOutsideIsh(state) || (state.typ === "wald" && isWohnen(state.nutzung))) {
+  fallSpecific.push(CONFIG.pitfallsTemplates.aussen);
+}
     if (state.typ === "freizeit") fallSpecific.push(CONFIG.pitfallsTemplates.freizeit);
     if (state.bestand === "genehmigt" || state.bestand === "unklar") fallSpecific.push(CONFIG.pitfallsTemplates.bestand);
     if (state.schutzgebiet === "streng") fallSpecific.push(CONFIG.pitfallsTemplates.naturschutz);
@@ -1183,7 +1195,7 @@ return (
           erschliessung: "nicht",
           optionalActive: true
         },
-        check: (r) => r.steps[0] && /Diese Punkte solltest du zuerst klären/i.test(r.steps[0])
+        check: (r) => r.steps[0] && /erschlossen|Zufahrt|Wasser|Abwasser|Strom/i.test(r.steps[0])
       },
       {
         id: "T13",
@@ -1195,7 +1207,7 @@ return (
           lage_detail: "aussen35",
           optionalActive: true
         },
-        check: (r) => r.steps[0] && /Diese Punkte solltest du zuerst klären/i.test(r.steps[0])
+        check: (r) => r.steps[0] && /Bauamt|Außenbereich|Wohnen im Außenbereich/i.test(r.steps[0])
       },
       {
         id: "T14",
