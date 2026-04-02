@@ -112,9 +112,16 @@
     <priority>0.8</priority>
   </url>
   
-   <url>
+  <url>
     <loc>https://grundstueckcheck.de/ratgeber/grundstueck-kaufen-checkliste-bebaubarkeit.html</loc>
     <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://grundstueckcheck.de/ratgeber/tiny-house-grundstueck-genehmigung.html</loc>
+    <lastmod>2026-04-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
