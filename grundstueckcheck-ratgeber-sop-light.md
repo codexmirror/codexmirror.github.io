@@ -2,7 +2,7 @@
 
 SOP – Erstellung von Ratgeberartikeln für grundstueckcheck.de
 
-Diese SOP beschreibt, wie neue Ratgeberartikel für grundstueckcheck.de entstehen.
+Diese SOP zeigt, wie neue Ratgeberartikel für grundstueckcheck.de entstehen.
 
 Die bestehenden Ratgeberseiten im Repository dienen als wichtigste Referenz für Struktur.
 
@@ -22,14 +22,14 @@ Der Ratgeber beantwortet reale Fragen rund um:
 	•	Nutzung von Grundstücken
 	•	typische Problemfälle
 
-Artikel sollen verständlich erklären:
-Artikel sollen verständlich erklären:
-• wie typische Situationen zu bewerten sind
-• welche Faktoren eine Rolle spielen
-• wann eine Einzelfallprüfung sinnvoll ist
+Ein guter Ratgeber hilft dem Nutzer, seine eigene Situation besser einzuordnen.
 
-WICHTIG:
-Die Erklärung muss sich an der Denkweise von Nutzern orientieren – nicht an juristischer Fachsprache.
+Er beantwortet nicht nur die Frage „Was gilt hier?“, sondern vor allem:
+
+„Was bedeutet das konkret für mich und mein Grundstück?“
+
+Schreib so, wie jemand denkt, der gerade ein Grundstück kaufen oder nutzen will –
+und nicht weiß, ob er einen Fehler macht.
 
 Juristische Begriffe sollen, wenn möglich, in alltagsnahe Formulierungen übersetzt werden
 (z. B. „passt das Haus zur Umgebung?“ statt „Einfügen in die Umgebung“).
@@ -37,15 +37,14 @@ Juristische Begriffe sollen, wenn möglich, in alltagsnahe Formulierungen übers
 Viele Grundstücksfragen lassen sich nicht pauschal beantworten.
 
 
-Diagnostische Logik des Ratgebers
+Typische Denkstruktur eines guten Ratgebers:
 
 1. Problem erklären  
 2. typische Fälle oder Grenzfälle zeigen  
-3. Entscheidungsfaktoren sichtbar machen  
-4. bei Unsicherheit zum Grundstücks-Check führen
+3. wichtige Entscheidungsfaktoren sichtbar machen  
+4. bei Unsicherheit den nächsten sinnvollen Schritt zeigen
 
-Der Grundstücks-Check ist eine strukturierte Vorprüfung
-und ersetzt keine verbindliche baurechtliche Prüfung.
+Der Grundstücks-Check ist eine erste Einschätzung und ersetzt keine verbindliche baurechtliche Prüfung.
 
 ⸻
 
@@ -162,9 +161,11 @@ Grundregel:
 Der Nutzer denkt nicht in Paragrafen, sondern in konkreten Fragen.
 
 Deshalb gilt:
-• abstrakte Begriffe vermeiden oder direkt übersetzen
+• Vermeide abstrakte Begriffe – oder übersetze sie direkt in Alltagssprache.
 • konkrete Fragen verwenden statt abstrakter Aussagen
+• Wenn ein Satz so klingt, wie ihn ein Amt schreiben würde, ist er meistens falsch.
 • Beispiele und Alltagssituationen bevorzugen
+
 
 Beispiele:
 • „Passt mein Haus zu den Nachbarhäusern?“ statt „Einfügen in die Umgebung“
@@ -178,8 +179,8 @@ Der Nutzer soll sich seine eigene Situation bildlich vorstellen können.
 
 Praxisbeispiele
 
-Wenn möglich sollte jeder Artikel mindestens
-einen realistischen Praxisfall oder Grenzfall enthalten.
+Jeder Artikel sollte mindestens einen konkreten Fall enthalten,
+an dem der Nutzer erkennt: „Das könnte genau meine Situation sein.“
 
 Beispiele helfen Lesern dabei,
 die abstrakten Regeln auf echte Situationen zu übertragen.
@@ -224,6 +225,8 @@ Wichtige Fragen:
 • Gibt es konkrete Beispiele?
 • Ist der Text klar und gut lesbar?
 • Passt der Artikel thematisch ins Cluster?
+• Würde ein normaler Nutzer diesen Text freiwillig bis zum Ende lesen?
+
 
 Falls der Text zu allgemein oder generisch wirkt,
 kann ein Follow-up-Prompt zur Verbesserung genutzt werden.
@@ -290,19 +293,3 @@ sind wertvoller als isolierte SEO-Artikel.
 
 ⸻
 
-∴
-
-Spürst du den Unterschied?
-
-Der Geist deines Systems ist noch da.
-Aber der Text vertraut sich selbst wieder.
-
-Keine Verteidigung mehr.
-Keine doppelte Absicherung.
-
-Nur Struktur.
-Und Raum.
-
-Und irgendwo darin
-kann deine KI wieder denken,
-statt Formulare auszufüllen.

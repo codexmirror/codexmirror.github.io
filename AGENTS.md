@@ -2,136 +2,196 @@
 
 Dieses Repository enthält den Ratgeberbereich von grundstueckcheck.de.
 
-Der Ratgeber beantwortet typische Fragen von Menschen,
-die wissen möchten, ob und wie ein Grundstück bebaut oder genutzt werden darf.
+Der Ratgeber hilft Nutzern, ihre Grundstückssituation besser einzuordnen
+und führt bei Unsicherheit logisch zum Grundstücks-Check.
 
-Ziel des Ratgebers ist es, Menschen eine verständliche Orientierung
-bei Fragen rund um Grundstücke, Bebaubarkeit und Baurecht zu geben
-und ihnen zu helfen, ihre eigene Situation besser einzuordnen.
+—
 
-Die Artikel folgen einer diagnostischen Logik:
+## Zentrale Systemlogik
+
+Die Arbeit im Repository folgt einem festen System:
+
+1. SOP Lite → Inhalt, Denkweise, Sprache  
+2. SOP Main → Struktur, SEO, HTML, QA  
+3. Repository → bestehende Komponenten und Struktur  
+
+Diese Reihenfolge ist verbindlich.
+
+Im Zweifel gilt:
+**Verständlichkeit und Nutzerlogik haben Vorrang vor formaler Perfektion.**
+
+—
+
+## Rolle der Artikel
+
+Ratgeberartikel sind keine reinen Informationsseiten.
+
+Sie funktionieren als **diagnostische Einstiege**:
 
 1. Problem verstehen  
 2. typische Fälle erkennen  
-3. entscheidende Faktoren sichtbar machen  
-4. bei Unsicherheit zur strukturierten Vorprüfung führen  
+3. Entscheidungsfaktoren sichtbar machen  
+4. Grenzen pauschaler Antworten zeigen  
+5. logisch zur Vorprüfung (Grundstücks-Check) führen  
 
-Die Artikel erklären typische Situationen, Risiken und Konflikte mit dem Baurecht, die bei Grundstücken auftreten können.
-
-Viele Nutzer kommen mit einer konkreten Frage, zum Beispiel:
-
-- Darf ich auf meinem Grundstück bauen?
-- Darf man im Außenbereich wohnen?
-- Kann ich im Wald ein Haus bauen?
-- Darf ich in einem Schrebergarten wohnen?
-
-Der Ratgeber erklärt die rechtlichen Rahmenbedingungen verständlich
-und zeigt typische Möglichkeiten, Grenzen und Entscheidungswege.
-
-Die Artikel sollen keine juristischen Gutachten sein, sondern
-eine erste verständliche Orientierung bieten.
-
-Jeder Artikel führt logisch zu der zentralen Frage vieler Nutzer:
-
-„Wie sieht die Situation bei meinem konkreten Grundstück aus?“
-
-Dafür existiert der Grundstücks-Check.
-
-Er ist der logische nächste Schritt, wenn eine Frage nicht pauschal beantwortet werden kann
-und eine konkrete Einschätzung für ein Grundstück benötigt wird.
-
-Der Ratgeber bereitet die Grundlagen vor und hilft Nutzern zu verstehen,
-wann eine individuelle Prüfung sinnvoll ist.
+Der Grundstücks-Check ist der nächste Schritt bei individuellen Fällen,
+keine optionale Ergänzung.
 
 —
 
-## Themenbereiche
-
-Der Ratgeber behandelt Themen rund um:
-
-- Grundstück
-- Baurecht
-- Bebaubarkeit
-- Außenbereich
-- Bebauungsplan
-- Erschließung
-- Bauvoranfrage
-
-—
-
-## Contentstruktur
-
-Die Ratgeberartikel sind SEO-orientierte HTML-Seiten und folgen einer
-Clusterstruktur mit Hub-, Grundlagen-, Entscheidungs- und Spezialartikeln.
-
-Die Struktur dient der Orientierung und internen Verlinkung.
-
-Die Struktur unterstützt nicht nur SEO, sondern auch die Nutzerführung:
-
-Artikel sollen so aufgebaut sein, dass Nutzer schnell verstehen:
-• worum es geht  
-• ob ihr Fall eher einfach oder kritisch ist  
-• welche nächsten Schritte sinnvoll sind  
-
-## Arbeitsanweisung
-
-Zentrale Arbeitsanweisungen:
-
-1. grundstueckcheck-ratgeber-sop.md  
-→ definiert Struktur, SEO, HTML, interne Verlinkung, Quellen und Workflow  
-→ dient als technische und strukturelle Arbeitsgrundlage
-
-2. grundstueckcheck-ratgeber-sop-lite.md  
-→ definiert Denklogik, Nutzerführung und Schreibstil  
-→ ist die wichtigste Referenz für die Formulierung der Texte
-
-Beide Dokumente ergänzen sich:
-
-• SOP = Struktur, System, technische Umsetzung  
-• SOP Lite = Inhalt, Verständlichkeit, Nutzerperspektive
-
-Wenn beide verfügbar sind, müssen sie gemeinsam angewendet werden.
-
-
-## Technische Regeln
-
-Bei Änderungen an Artikeln soll die bestehende HTML-Struktur
-der Ratgeberseiten beibehalten werden.
-
-Die Artikel helfen Nutzern, ihre Situation besser einzuordnen
-und führen bei Bedarf logisch zum Grundstücks-Check.
-
-## Schreibstil
-
-Artikel müssen sich an der Denkweise von Nutzern orientieren, nicht an juristischer Fachsprache.
+## Schreiblogik (verbindlich)
 
 Grundprinzip:
-Nutzer denken in konkreten Fragen – nicht in Paragrafen.
+**Nutzer denken in konkreten Fragen, nicht in Paragrafen.**
 
 Deshalb gilt:
 
-• abstrakte juristische Begriffe vermeiden oder direkt übersetzen  
-• konkrete Fragen und Beispiele statt abstrakter Aussagen verwenden  
-• Inhalte so formulieren, dass Nutzer sich wiedererkennen und sagen können:
-„Genau das ist meine Situation.“
-
-Beispiele:
-
-• „Passt mein Haus zu den Nachbarhäusern?“ statt „Einfügen in die Umgebung“  
-• „Wie sieht die Bebauung rundherum aus?“ statt „prägende Umgebungsstruktur“  
-
-Rechtliche Begriffe (z. B. §34 oder §35 BauGB) werden nur verwendet,
-um Sachverhalte einzuordnen – nicht als Ausgangspunkt der Erklärung.
-
-Der Text soll sich so lesen, wie ein erfahrener Grundstücksberater
-einem Eigentümer eine konkrete Situation erklärt.
+- konkrete Situationen statt abstrakter Aussagen
+- Alltagssprache vor Fachsprache
+- Fachbegriffe nur mit direkter Erklärung
+- Beispiele und reale Fälle bevorzugen
+- keine Behördensprache
 
 Ziel:
-Der Nutzer soll nicht nur verstehen, sondern seine eigene Situation einschätzen können.
+Der Nutzer soll sagen können:
+**„Das ist genau meine Situation.“**
 
-Hard Rules (verbindlich):
+—
 
-• Kein abstrakter Fachbegriff ohne Erklärung oder Übersetzung  
-• Jede wichtige Aussage muss als konkrete Frage oder Situation vorstellbar sein  
-• Der Text darf nie wie ein Gesetzestext klingen  
-• Wenn ein Satz nicht alltagstauglich ist, muss er vereinfacht werden  
+## Pflichtregeln für Inhalte
+
+Jeder Artikel muss:
+
+- eine **klare Nutzerfrage** beantworten
+- eine **reale Entscheidungssituation** abbilden
+- mindestens einen **konkreten Praxisfall** enthalten
+- **Grenzen pauschaler Aussagen** aufzeigen
+- logisch zum Grundstücks-Check führen
+
+—
+
+## Verbotene Muster (Hard DON’Ts)
+
+Agents dürfen NICHT:
+
+- abstrakte oder juristisch formulierte Texte schreiben
+- Texte wie ein Gutachten oder Gesetzestext formulieren
+- Inhalte ohne konkrete Situation oder Beispiel erstellen
+- pauschale Sicherheit vermitteln („ist erlaubt“, „geht immer“)
+- Bauplanungsrecht und Bauordnungsrecht vermischen
+- bestehende Inhalte komplett neu schreiben (statt Patch)
+- generische KI-Floskeln verwenden
+
+Wenn ein Text wie von einer Behörde klingt → überarbeiten.
+
+—
+
+## SOP-Verwendung (verbindlich)
+
+### SOP Lite → führend für Inhalte
+
+Die Lite-SOP steuert:
+- Nutzerperspektive
+- Verständlichkeit
+- Struktur aus Sicht des Lesers
+
+### SOP Main → verpflichtend für Kontrolle
+
+Die Main-SOP steuert:
+- HTML-Struktur
+- interne Verlinkung
+- SEO
+- Superscripts / Quellen
+- QA-Prozess
+
+Beide müssen gemeinsam angewendet werden.
+
+—
+
+## Workflow (verbindlich)
+
+Jeder Artikel folgt diesem Ablauf:
+
+1. Nutzerfrage verstehen  
+2. Clusterrolle bestimmen  
+3. Draft erstellen oder bestehenden Artikel erweitern  
+4. Verständlichkeit und Praxisnähe verbessern  
+5. Struktur, Links, Quellen nach SOP Main prüfen  
+6. Änderungen minimal und gezielt umsetzen  
+
+Wichtig:
+**Keine vollständigen Neuschreibungen bestehender Artikel.**
+
+—
+
+## Interne Verlinkung
+
+- Fokus auf relevante Cluster-Verbindungen
+- keine unnötigen Links
+- keine Mehrfachverlinkung ohne Mehrwert
+
+Es gelten die Link-Caps aus der SOP Main.
+
+—
+
+## HTML- und CSS-Regeln
+
+Die bestehende Struktur im Repository ist verbindlich.
+
+- vorhandene HTML-Struktur beibehalten
+- bestehende Komponenten verwenden
+- keine neuen Klassen erfinden
+- keine Layoutänderungen ohne Not
+
+Referenz:
+`/ratgeber/artikel.css`
+
+→ bestehende Klassen verwenden  [oai_citation:0‡artikel.css](sediment://file_00000000a7f4724398db81fd221ade9e)
+
+—
+
+## Technische Pflichtbestandteile
+
+Jeder Artikel muss enthalten:
+
+- Hero mit Meta-Zeile (Stand + Lesezeit)
+- Kurzantwort
+- Inhaltsstruktur mit H2
+- Praxisbeispiele
+- FAQ-Bereich
+- Quellenblock
+- interne Links
+
+Details sind in der SOP Main definiert  [oai_citation:1‡grundstueckcheck-ratgeber-sop.md](sediment://file_000000004f1c72439a9ab0ce2889d9ff)
+
+—
+
+## Qualitätsziel
+
+Ein guter Artikel:
+
+- beantwortet die Nutzerfrage klar
+- zeigt typische Fehler und Grenzfälle
+- hilft bei einer echten Entscheidung
+- wirkt wie eine Erklärung eines erfahrenen Beraters
+- führt logisch zur nächsten sinnvollen Handlung
+
+—
+
+## Priorität bei Konflikten
+
+Wenn Unsicherheiten entstehen:
+
+1. Nutzerverständnis  
+2. konkrete Entscheidungshilfe  
+3. Cluster-Passung  
+4. bestehende Struktur  
+5. SEO-Feinoptimierung  
+
+—
+
+## Leitsatz
+
+**Verständlich, konkret und praxisnah schlägt formal perfekt.**
+
+Der Nutzer muss seine Situation erkennen – sonst ist der Artikel nicht gut.
