@@ -42,64 +42,53 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Darf ich im Außenbereich (§35) dauerhaft wohnen?",
+      "name": "Was prüft der Grundstücks-Check überhaupt?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Im Außenbereich ist dauerhaftes Wohnen meist stark eingeschränkt und häufig nur in Ausnahmefällen zulässig. In vielen Fällen ist eine Abstimmung mit dem Bauamt entscheidend."
+        "text": "Der Grundstücks-Check gibt dir eine erste Einschätzung, ob dein Wohn- oder Bauvorhaben auf dem Grundstück eher plausibel wirkt oder ob du zuerst wichtige Punkte klären solltest. Dafür wertet das Tool typische Prüffaktoren wie Lage, Bebauungsplan, Grundstückstyp und geplante Nutzung aus."
       }
     },
     {
       "@type": "Question",
-      "name": "Erlaubt ein Bebauungsplan automatisch, dass ich dort wohnen darf?",
+      "name": "Für wen ist der Grundstücks-Check sinnvoll?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Ein Bebauungsplan legt fest, was grundsätzlich zulässig ist. Trotzdem können weitere Voraussetzungen wie Erschließung, Nutzung oder Schutzgebiete relevant sein."
+        "text": "Das Tool ist vor allem für Menschen sinnvoll, die vor Kauf, Planung oder Bauvoranfrage eine erste Einordnung wollen. Es hilft dir, typische Risiken früher zu erkennen und den nächsten sinnvollen Schritt besser einzuordnen."
       }
     },
     {
       "@type": "Question",
-      "name": "Macht eine Anmeldung als Hauptwohnsitz eine Nutzung legal?",
+      "name": "Welche Angaben brauche ich für den Check?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nein. Melderecht und Baurecht sind getrennt. Eine Anmeldung ersetzt keine baurechtliche Zulässigkeit."
+        "text": "Für den Grundstücks-Check brauchst du zuerst nur vier Angaben: Lage, Bebauungsplan, Grundstückstyp und geplante Nutzung. Weitere Angaben wie Erschließung, Bestand oder Sonderfälle kannst du optional ergänzen, um das Ergebnis zu verfeinern."
       }
     },
     {
       "@type": "Question",
-      "name": "Was sollte ich als nächsten Schritt prüfen?",
+      "name": "Was bedeuten Ampel und Score im Ergebnis?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Meist sind Bebauungsplan oder Flächennutzungsplan, Innen- oder Außenbereich, Erschließung sowie Schutz- und Risikogebiete die wichtigsten Punkte."
+        "text": "Ampel und Score zeigen dir eine vereinfachte Ersteinschätzung deiner Ausgangslage. Sie helfen dir dabei, schneller zu erkennen, ob dein Vorhaben eher plausibel wirkt, kritisch ist oder vor allem noch an wichtigen offenen Punkten hängt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ersetzt der Grundstücks-Check eine Bauvoranfrage oder die Prüfung durch das Bauamt?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nein. Der Grundstücks-Check ersetzt keine Bauvoranfrage und keine behördliche Prüfung. Er dient als unverbindliche Ersteinschätzung, damit du vor Investition oder Antrag besser einordnen kannst, ob du so weitermachen oder zuerst etwas klären solltest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Was sollte ich tun, wenn das Ergebnis kritisch oder unklar ist?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dann solltest du vor allem die im Ergebnis genannten Kernpunkte prüfen. Häufig geht es dabei um Lage, Bebauungsplan, Erschließung oder Sonderrisiken. Wenn danach wichtige Fragen offen bleiben, kann eine schriftliche Klärung mit dem Bauamt oder eine Bauvoranfrage sinnvoll sein."
       }
     }
   ]
-}
-</script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Grundstücks-Check",
-  "url": "https://grundstueckcheck.de/",
-  "inLanguage": "de-DE",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Any",
-  "description": "Tool zur ersten Einschätzung, ob ein Wohn- oder Bauvorhaben auf einem Grundstück sinnvoll weiterverfolgt werden kann – mit Ampel, Score, Gründen und priorisierten nächsten Schritten.",
-  "isAccessibleForFree": true,
-  "featureList": [
-    "Ampel und Score zur Ausgangslage",
-    "Begründungen zum Ergebnis",
-    "Priorisierte nächste Schritte"
-  ],
-  "creator": {
-    "@type": "Organization",
-    "name": "Grundstücks-Check"
-  },
-  "dateModified": "2026-04-17",
-  "potentialAction": {
-    "@type": "UseAction",
-    "target": "https://grundstueckcheck.de/#check-form"
-  }
 }
 </script>
 </head>
@@ -181,10 +170,10 @@
      <header class="page-header tool-hero">
   <p class="tool-hero__kicker">Grundstücks-Check</p>
 
-  <h1>Darf ich auf meinem Grundstück wohnen oder bauen? Das solltest du zuerst klären</h1>
+  <h1>Grundstücks-Check: Darf ich auf meinem Grundstück wohnen oder bauen?</h1>
 
   <p class="tool-hero__lead">
-  In 2 Minuten bekommst du eine erste Einschätzung, ob es sinnvoll ist, dein Wohn- oder Bauvorhaben auf dem Grundstück so weiterzuverfolgen – und welche wichtigen Punkte du zuerst klären solltest.
+  Prüfe in 2 Minuten, ob dein Wohn- oder Bauvorhaben auf dem Grundstück grundsätzlich plausibel ist. Das Tool gibt dir eine erste Einschätzung mit Ampel, Score, Begründung und den wichtigsten nächsten Schritten.
 </p>
 
   <ul class="tool-hero__bullets" aria-label="Was du bekommst">
@@ -550,7 +539,7 @@ Gibt es eine Zufahrt und sind Strom, Wasser und Abwasser vorhanden oder anschlie
       </section>
       
 <section class="card" aria-labelledby="about-tool-title">
-  <h2 id="about-tool-title">Was prüft der Grundstücks-Check?</h2>
+  <h2 id="about-tool-title">So funktioniert der Grundstücks-Check</h2>
 
   <p>
   Der Grundstücks-Check hilft dir bei der ersten Frage, ob du dein Wohn- oder Bauvorhaben auf dem Grundstück
@@ -591,36 +580,57 @@ Gibt es eine Zufahrt und sind Strom, Wasser und Abwasser vorhanden oder anschlie
   </p>
 </section>
 <section class="card" aria-labelledby="faq-title">
-     <h2 id="faq-title">Häufige Fragen: Wohnen oder bauen auf dem Grundstück – was solltest du zuerst klären?</h2>
+  <h2 id="faq-title">Häufige Fragen zum Grundstücks-Check</h2>
 
   <details>
-    <summary>Darf ich im Außenbereich (§35) dauerhaft wohnen?</summary>
+    <summary>Was prüft der Grundstücks-Check überhaupt?</summary>
     <p>
-      Im Außenbereich ist dauerhaftes Wohnen meist stark eingeschränkt und häufig nur in Ausnahmefällen zulässig
-      (z. B. privilegierte Vorhaben). In vielen Fällen ist eine Abstimmung mit dem Bauamt entscheidend.
+      Der Grundstücks-Check gibt dir eine erste Einschätzung, ob dein Wohn- oder Bauvorhaben auf dem Grundstück
+      eher plausibel wirkt oder ob du zuerst wichtige Punkte klären solltest. Dafür bewertet das Tool typische
+      Prüffaktoren wie Lage, Bebauungsplan, Grundstückstyp und geplante Nutzung.
     </p>
   </details>
 
   <details>
-    <summary>Erlaubt ein Bebauungsplan automatisch, dass ich dort wohnen darf?</summary>
+    <summary>Für wen ist der Grundstücks-Check sinnvoll?</summary>
     <p>
-      Ein Bebauungsplan legt fest, was grundsätzlich zulässig ist. Trotzdem können weitere Voraussetzungen
-      (z. B. Erschließung, Nutzung, Schutzgebiete) relevant sein.
+      Das Tool ist vor allem für Menschen sinnvoll, die vor Kauf, Planung oder Bauvoranfrage eine erste Einordnung wollen.
+      Es hilft dir, typische Risiken früher zu erkennen und den nächsten sinnvollen Schritt besser einzuordnen.
     </p>
   </details>
 
   <details>
-    <summary>Macht eine Anmeldung als Hauptwohnsitz eine Nutzung legal?</summary>
+    <summary>Welche Angaben brauche ich für den Check?</summary>
     <p>
-      Nein. Melderecht (Hauptwohnsitz) und Baurecht sind getrennt. Eine Anmeldung ersetzt keine baurechtliche Zulässigkeit.
+      Für den Grundstücks-Check brauchst du zuerst nur vier Angaben: Lage, Bebauungsplan, Grundstückstyp und geplante Nutzung.
+      Weitere Angaben wie Erschließung, Bestand oder Sonderfälle kannst du optional ergänzen, um das Ergebnis zu verfeinern.
     </p>
   </details>
 
   <details>
-    <summary>Was sollte ich als nächsten Schritt prüfen?</summary>
+    <summary>Was bedeuten Ampel und Score im Ergebnis?</summary>
     <p>
-      Meist sind Bebauungsplan oder Flächennutzungsplan, Innen- oder Außenbereich, Erschließung sowie Schutz- und Risikogebiete
-die wichtigsten Punkte.
+      Ampel und Score zeigen dir eine vereinfachte Ersteinschätzung deiner Ausgangslage. Sie helfen dir dabei,
+      schneller zu erkennen, ob dein Vorhaben eher plausibel wirkt, kritisch ist oder vor allem noch an wichtigen
+      offenen Punkten hängt.
+    </p>
+  </details>
+
+  <details>
+    <summary>Ersetzt der Grundstücks-Check eine Bauvoranfrage oder die Prüfung durch das Bauamt?</summary>
+    <p>
+      Nein. Der Grundstücks-Check ersetzt keine Bauvoranfrage und keine behördliche Prüfung. Er dient als unverbindliche
+      Ersteinschätzung, damit du vor Investition oder Antrag besser einordnen kannst, ob du so weitermachen oder zuerst
+      etwas klären solltest.
+    </p>
+  </details>
+
+  <details>
+    <summary>Was sollte ich tun, wenn das Ergebnis kritisch oder unklar ist?</summary>
+    <p>
+      Dann solltest du vor allem die im Ergebnis genannten Kernpunkte prüfen. Häufig geht es dabei um Lage,
+      Bebauungsplan, Erschließung oder Sonderrisiken. Wenn danach wichtige Fragen offen bleiben, kann eine
+      schriftliche Klärung mit dem Bauamt oder eine Bauvoranfrage sinnvoll sein.
     </p>
   </details>
 </section>
