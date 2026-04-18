@@ -292,16 +292,21 @@
 }
 
 @media (max-width: 640px) {
-  .tool-hero {
-    padding: 1rem 0.95rem 0.98rem;
-    border-radius: 16px;
-  }
-
   .tool-hero h1 {
-    font-size: clamp(1.95rem, 7.6vw, 2.45rem);
-    max-width: 9ch;
-    line-height: 1.04;
+    font-size: clamp(1.72rem, 6.4vw, 2.2rem);
+    max-width: 10.5ch;
+    line-height: 1.05;
   }
+}
+
+.tool-hero h1 {
+  margin: 0;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
+  font-size: clamp(1.9rem, 2.6vw, 2.5rem);
+  max-width: 22ch;
+  text-wrap: balance;
+}
 
   .tool-hero__lead {
     font-size: 0.97rem;
