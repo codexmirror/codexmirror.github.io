@@ -671,5 +671,29 @@ Gibt es eine Zufahrt und sind Strom, Wasser und Abwasser vorhanden oder anschlie
 
     <script src="app.js?v=1.2" defer></script>
     <script src="consent.js" defer></script>
+    <script src="app.js?v=1.2" defer></script>
+<script src="consent.js" defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const faqSection = document.querySelector('[aria-labelledby="faq-title"]');
+
+    if (!faqSection) return;
+
+    const faqItems = faqSection.querySelectorAll("details");
+
+    faqItems.forEach((item) => {
+      item.addEventListener("toggle", () => {
+        if (!item.open) return;
+
+        faqItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.removeAttribute("open");
+          }
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
