@@ -675,6 +675,31 @@
   font-size: 0.98rem;
 }
 
+.next-step-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(185, 28, 28, 0.14);
+  color: #991b1b;
+  font-weight: 760;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.next-step-link::after {
+  content: "→";
+  font-weight: 900;
+}
+
+.next-step-link:hover {
+  color: #7f1d1d;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .result-primary-step #steps-list ul {
   margin: 0;
   padding-left: 1.1rem;
