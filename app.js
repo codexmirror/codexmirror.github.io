@@ -543,65 +543,93 @@ const otherCaps = activeCaps.filter((cap) => !stopCaps.includes(cap));
     return list.slice(0, Math.max(4, activeCaps.length)).map((item) => ({ type: item.type, text: clipWords(item.text, 22) }));
   }
 
-  function buildNextSteps(state, reasons) {
-    const steps = [];
+function buildNextSteps(state, reasons) {
+  const steps = [];
 
-         const restrictedUse =
-  state.nutzung === "wohnen" ||
-  (state.nutzung === "wochenende" && state.typ !== "freizeit");
+  const addStep = (key, text) => {
+    steps.push({ key, text });
+  };
 
-const privileged = state.nutzung === "landwpriv";
+  const restrictedUse =
+    state.nutzung === "wohnen" ||
+    (state.nutzung === "wochenende" && state.typ !== "freizeit");
 
-const hasStopFactor =
-  state.schutzgebiet === "streng" ||
-  state.wasserschutz === "zone12" ||
-  state.hochwasser === "hq100" ||
-  state.erschliessung === "nicht" ||
-  (state.typ === "wald" && isWohnen(state.nutzung)) ||
-  (isOutsideIsh(state) && restrictedUse && !privileged);
+  const privileged = state.nutzung === "landwpriv";
 
-  if (hasStopFactor) steps.push(CONFIG.nextStepTemplates.stopFactorIntro);
-    if (state.schutzgebiet === "streng") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
-    if (state.wasserschutz === "zone12") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
-    if (state.hochwasser === "hq100") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
+  const hasStopFactor =
+    state.schutzgebiet === "streng" ||
+    state.wasserschutz === "zone12" ||
+    state.hochwasser === "hq100" ||
+    state.erschliessung === "nicht" ||
+    (state.typ === "wald" && isWohnen(state.nutzung)) ||
+    (isOutsideIsh(state) && restrictedUse && !privileged);
 
-    if (state.typ === "wald" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.waldWohnen);
-    if (isOutsideIsh(state) && isWohnen(state.nutzung) && !privileged) {
-  steps.push(CONFIG.nextStepTemplates.aussenWohnen);
-}
-if (isOutsideIsh(state) && state.nutzung === "wochenende" && state.typ !== "freizeit") {
-  steps.push(CONFIG.nextStepTemplates.aussenWochenende);
-}
-    if (isAussenbereich(state) && state.nutzung === "wochenende") steps.push(CONFIG.nextStepTemplates.aussenWochenende);
-    if (state.typ === "freizeit" && isWohnen(state.nutzung)) steps.push(CONFIG.nextStepTemplates.freizeitWohnen);
-    if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") steps.push(CONFIG.nextStepTemplates.landwpriv);
-    if (state.bplan === "nein") steps.push(CONFIG.nextStepTemplates.bplanNein);
-    if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") steps.push(CONFIG.nextStepTemplates.erschlKlaeren);
+  if (hasStopFactor) addStep("stopFactorIntro", CONFIG.nextStepTemplates.stopFactorIntro);
 
-    if (state.lage === "unklar") steps.push(CONFIG.nextStepTemplates.lageUnklar);
-    if (state.bplan === "unklar") steps.push(CONFIG.nextStepTemplates.bplanUnklar);
-    if (state.bestand === "unklar") steps.push(CONFIG.nextStepTemplates.bestandUnklar);
-    if (state.schutzgebiet === "lsg") steps.push(CONFIG.nextStepTemplates.naturschutzKlaeren);
-    if (state.wasserschutz === "zone3") steps.push(CONFIG.nextStepTemplates.wasserschutzKlaeren);
-    if (state.hochwasser === "risiko") steps.push(CONFIG.nextStepTemplates.hochwasserKlaeren);
+  if (state.schutzgebiet === "streng") addStep("naturschutzKlaeren", CONFIG.nextStepTemplates.naturschutzKlaeren);
+  if (state.wasserschutz === "zone12") addStep("wasserschutzKlaeren", CONFIG.nextStepTemplates.wasserschutzKlaeren);
+  if (state.hochwasser === "hq100") addStep("hochwasserKlaeren", CONFIG.nextStepTemplates.hochwasserKlaeren);
 
-    const hasUnknownSpecial = [state.schutzgebiet, state.wasserschutz, state.hochwasser].some((v) => v === "unbekannt");
-    if (state.optionalActive && hasUnknownSpecial) steps.push(CONFIG.nextStepTemplates.geoportalPruefen);
+  if (state.typ === "wald" && isWohnen(state.nutzung)) addStep("waldWohnen", CONFIG.nextStepTemplates.waldWohnen);
 
-    if (reasons.some((r) => r.impact <= -10) && steps.length < 2) {
-  steps.push(CONFIG.nextStepTemplates.starkNegativ);
-}
-
-    const unique = dedupeTexts(steps);
-    const hasAuthorityStep = unique.some((step) => /bauamt|gemeinde|behörde|forstbehörde|geoportal|zuständige stelle|schriftlich/i.test(step));
-if (unique.length < 2 || (unique.length < 3 && !hasAuthorityStep)) {
-  unique.push(CONFIG.nextStepTemplates.fallback);
-}
-
-    const actionableSteps = unique.filter((item) => item !== CONFIG.nextStepTemplates.stopFactorIntro);
-const topThree = actionableSteps.slice(0, 3);
-return topThree.map((item) => clipWords(item, 22));
+  if (isOutsideIsh(state) && isWohnen(state.nutzung) && !privileged) {
+    addStep("aussenWohnen", CONFIG.nextStepTemplates.aussenWohnen);
   }
+
+  if (isOutsideIsh(state) && state.nutzung === "wochenende" && state.typ !== "freizeit") {
+    addStep("aussenWochenende", CONFIG.nextStepTemplates.aussenWochenende);
+  }
+
+  if (isAussenbereich(state) && state.nutzung === "wochenende") {
+    addStep("aussenWochenende", CONFIG.nextStepTemplates.aussenWochenende);
+  }
+
+  if (state.typ === "freizeit" && isWohnen(state.nutzung)) addStep("freizeitWohnen", CONFIG.nextStepTemplates.freizeitWohnen);
+  if (state.typ === "landwirtschaft" && state.nutzung === "landwpriv") addStep("landwpriv", CONFIG.nextStepTemplates.landwpriv);
+  if (state.bplan === "nein") addStep("bplanNein", CONFIG.nextStepTemplates.bplanNein);
+  if (state.erschliessung === "teilweise" || state.erschliessung === "nicht") addStep("erschlKlaeren", CONFIG.nextStepTemplates.erschlKlaeren);
+
+  if (state.lage === "unklar") addStep("lageUnklar", CONFIG.nextStepTemplates.lageUnklar);
+  if (state.bplan === "unklar") addStep("bplanUnklar", CONFIG.nextStepTemplates.bplanUnklar);
+  if (state.bestand === "unklar") addStep("bestandUnklar", CONFIG.nextStepTemplates.bestandUnklar);
+  if (state.schutzgebiet === "lsg") addStep("naturschutzKlaeren", CONFIG.nextStepTemplates.naturschutzKlaeren);
+  if (state.wasserschutz === "zone3") addStep("wasserschutzKlaeren", CONFIG.nextStepTemplates.wasserschutzKlaeren);
+  if (state.hochwasser === "risiko") addStep("hochwasserKlaeren", CONFIG.nextStepTemplates.hochwasserKlaeren);
+
+  const hasUnknownSpecial = [state.schutzgebiet, state.wasserschutz, state.hochwasser].some((v) => v === "unbekannt");
+  if (state.optionalActive && hasUnknownSpecial) addStep("geoportalPruefen", CONFIG.nextStepTemplates.geoportalPruefen);
+
+  if (reasons.some((r) => r.impact <= -10) && steps.length < 2) {
+    addStep("starkNegativ", CONFIG.nextStepTemplates.starkNegativ);
+  }
+
+  const seen = new Set();
+  const unique = steps.filter((step) => {
+    const normalized = normalizeText(step.text);
+    if (!normalized || seen.has(normalized)) return false;
+    seen.add(normalized);
+    return true;
+  });
+
+  const hasAuthorityStep = unique.some((step) =>
+    /bauamt|gemeinde|behörde|forstbehörde|geoportal|zuständige stelle|schriftlich/i.test(step.text)
+  );
+
+  if (unique.length < 2 || (unique.length < 3 && !hasAuthorityStep)) {
+    unique.push({
+      key: "fallback",
+      text: CONFIG.nextStepTemplates.fallback
+    });
+  }
+
+  const actionableSteps = unique.filter((step) => step.text !== CONFIG.nextStepTemplates.stopFactorIntro);
+  const topThree = actionableSteps.slice(0, 3);
+
+  return {
+    texts: topThree.map((step) => clipWords(step.text, 22)),
+    keys: topThree.map((step) => step.key)
+  };
+}
 
   function buildPitfalls(state) {
     const fallSpecific = [];
@@ -719,18 +747,20 @@ return topThree.map((item) => clipWords(item, 22));
 
     if (!requiredComplete(state)) {
       return {
-        neutral: true,
-        score: 50,
-        ampel: "🟡",
-        ampelText: ampelLabel("🟡"),
-        interpretation: "Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.",
-        headline: "",
-        practical: [],
-        why: [],
-        steps: [],
-        pitfalls: [],
-        confidence: ""
-      };
+  neutral: true,
+  score: 50,
+  ampel: "🟡",
+  ampelText: ampelLabel("🟡"),
+  interpretation: "Bitte alle Pflichtfelder auswählen, um deine Einschätzung zu erhalten.",
+  headline: "",
+  practical: [],
+  why: [],
+  steps: [],
+  stepKeys: [],
+  primaryStepKey: "fallback",
+  pitfalls: [],
+  confidence: ""
+};
     }
 
     const modified = applyModifiers(state);
@@ -741,7 +771,8 @@ return topThree.map((item) => clipWords(item, 22));
     const rawLight = ampel(finalScore);
     const light = adjustAmpel(rawLight, state, activeCaps);
     const planningConfidence = confidence(state);
-
+    const nextSteps = buildNextSteps(state, modified.reasons);
+    
     return {
       neutral: false,
       score: finalScore,
@@ -751,7 +782,9 @@ return topThree.map((item) => clipWords(item, 22));
       headline: resultHeadline(light, planningConfidence),
       practical: practicalBullets(finalScore, light),
       why: buildWhy(activeCaps, modified.reasons),
-      steps: buildNextSteps(state, modified.reasons),
+      steps: nextSteps.texts,
+      stepKeys: nextSteps.keys,
+      primaryStepKey: nextSteps.keys[0] || "fallback",
       pitfalls: buildPitfalls(state),
       confidence: planningConfidence,
       activeCaps
@@ -844,6 +877,7 @@ const resultConfidenceShortEl = document.getElementById("result-confidence-short
     const confidenceTitleEl = document.getElementById("result-confidence-title");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
+    const nextStepLink = document.getElementById("next-step-link");
     const stepsListMore = document.getElementById("steps-list-more");
     const primaryStepSection = document.getElementById("primary-step-section");
     const moreStepsSection = document.getElementById("more-steps-section");
@@ -913,7 +947,7 @@ const resultConfidenceShortEl = document.getElementById("result-confidence-short
         setHidden(resultContent, true);
          if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details & Begründung";
+          detailsToggle.textContent = "Details anzeigen";
           resultDetails.hidden = true;
         }
         lastRenderedScore = 50;
@@ -970,6 +1004,21 @@ renderList(practicalList, result.practical);
       const moreSteps = result.steps.length > 1 ? result.steps.slice(1) : [];
       if (stepsList) {
   stepsList.textContent = primaryStep[0] || "";
+}
+
+if (nextStepLink) {
+  const actions = window.GC_NEXT_ACTIONS || {};
+  const action =
+    actions[result.primaryStepKey] ||
+    actions.fallback ||
+    {
+      href: "/ratgeber/",
+      label: "Zum nächsten Schritt"
+    };
+
+  nextStepLink.href = action.href;
+  nextStepLink.textContent = action.label || "Zum nächsten Schritt";
+  nextStepLink.hidden = false;
 }
       renderList(stepsListMore, moreSteps);
       setHidden(primaryStepSection, primaryStep.length === 0);
@@ -1088,7 +1137,7 @@ const OPEN_LABEL = "Details ausblenden";
         if (optionalDetails) optionalDetails.open = false;
         if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Details & Begründung";
+          detailsToggle.textContent = "Details anzeigen";
           resultDetails.hidden = true;
         }
         CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
