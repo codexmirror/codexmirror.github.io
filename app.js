@@ -968,7 +968,9 @@ renderList(practicalList, result.practical);
       renderList(whyList, result.why.map(decorateWhyItem));
       const primaryStep = result.steps.length > 0 ? [result.steps[0]] : [];
       const moreSteps = result.steps.length > 1 ? result.steps.slice(1) : [];
-      renderList(stepsList, primaryStep);
+      if (stepsList) {
+  stepsList.textContent = primaryStep[0] || "";
+}
       renderList(stepsListMore, moreSteps);
       setHidden(primaryStepSection, primaryStep.length === 0);
       setHidden(moreStepsSection, moreSteps.length === 0);
