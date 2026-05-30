@@ -7,6 +7,9 @@
   // Referenz für sauberes removeEventListener
   var keydownHandler = null;
 
+  // Fallback für Browser/Privacy-Modi, in denen localStorage nicht verfügbar ist
+  var consentInMemory = null;
+
   function getStorage(type) {
     try {
       return window[type];
@@ -34,7 +37,7 @@
   }
 
   function getConsent() {
-    return safeGetStorageItem(getStorage("localStorage"), CONSENT_KEY);
+    return consentInMemory || safeGetStorageItem(getStorage("localStorage"), CONSENT_KEY);
   }
 
   function hasConsent() {
@@ -87,6 +90,8 @@
   }
 
   function setConsent(value) {
+    consentInMemory = value;
+
     var storage = getStorage("localStorage");
     safeSetStorageItem(storage, CONSENT_KEY, value);
     safeSetStorageItem(storage, CONSENT_VERSION_KEY, CONSENT_VERSION);
