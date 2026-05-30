@@ -34,7 +34,7 @@
   <meta name="twitter:image" content="https://grundstueckcheck.de/assets/og/grundstueckcheck-tool.jpeg" />
 
     <link rel="stylesheet" href="/styles.css?v=2.1.1" />
-    <link rel="stylesheet" href="tool.css?v=2.3.5" />
+    <link rel="stylesheet" href="tool.css?v=3.0" />
     <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -502,72 +502,81 @@
             <div class="result-frame">
               <p id="result-placeholder" class="result-placeholder">Wähle alle Pflichtfelder aus, damit wir deine erste Einschätzung berechnen können.</p>
 
-              <div id="result-content" hidden>
-                <p class="ampel-badge" id="result-ampel" role="status" aria-live="polite">🟡 Neutral</p>
-                <p class="score" id="result-score">50</p>
-                <p class="score-legend-inline" aria-label="Score-Legende">
-                  Legende: kritisch · prüfbedürftig · plausibel · gute Ausgangslage
-                </p>
+<div id="result-content" hidden>
+  <div class="result-summary">
+    <p class="ampel-badge" id="result-ampel" role="status" aria-live="polite">🟡 Neutral</p>
 
-                <details class="score-legend-details">
-                  <summary>Legende anzeigen</summary>
-                  <div class="score-legend-details__body">
-                    <p class="score-legend-ranges">
-                      0–30 kritisch<br />
-                      31–60 prüfbedürftig<br />
-                      61–80 plausibel<br />
-                      81–100 gute Ausgangslage
-                    </p>
-                    <p class="score-legend-note">Score zeigt eine vereinfachte Einschätzung der planungsrechtlichen Ausgangslage.</p>
-                  </div>
-                </details>
+    <p class="result-headline" id="result-headline"></p>
 
-                <p class="result-headline" id="result-headline"></p>
+    <p class="result-short-text" id="result-short-text"></p>
 
-                <section class="result-section" id="primary-step-section">
-                  <h3>Wichtigster nächster Schritt</h3>
-                  <ul id="steps-list"></ul>
-                </section>
+    <div class="result-metrics" aria-label="Einschätzung">
+      <div class="result-metric">
+        <span class="result-metric-label">Score</span>
+        <span class="result-score-wrap">
+          <span class="score" id="result-score">50</span>
+          <span class="result-score-max">/100</span>
+        </span>
+      </div>
 
-                <button
+      <div class="result-metric">
+        <span class="result-metric-label">Sicherheit</span>
+        <span class="result-confidence-short" id="result-confidence-short">–</span>
+      </div>
+    </div>
+
+    <section class="result-reasons-preview" aria-labelledby="result-reasons-preview-title">
+      <h3 id="result-reasons-preview-title">Wichtigste Gründe</h3>
+      <ul id="result-reasons-preview-list"></ul>
+    </section>
+  </div>
+
+  <section class="result-section result-primary-step" id="primary-step-section">
+    <h3>Wichtigster nächster Schritt</h3>
+    <div id="steps-list"></div>
+  </section>
+
+  <button
     type="button"
     id="details-toggle"
     class="details-toggle"
     aria-expanded="false"
     aria-controls="result-details"
-    aria-label="Zusätzliche Analyse zum Ergebnis anzeigen oder ausblenden"
+    aria-label="Details und Begründung zum Ergebnis anzeigen oder ausblenden"
   >
-    Analyse anzeigen
+    Details &amp; Begründung anzeigen
   </button>
 
-                <section id="result-details" hidden>
-                  <p class="interpretation" id="result-interpretation"></p>
+  <section id="result-details" hidden>
+    <p class="interpretation" id="result-interpretation"></p>
 
-                  <section class="result-section">
-                    <h3 id="result-confidence-title">Einschätzungssicherheit</h3>
-                    <p class="confidence" id="result-confidence"></p>
-                    <h4 class="result-subtitle">Was bedeutet das praktisch?</h4>
-                    <ul id="practical-list" class="practical-list"></ul>
-                  </section>
+    <section class="result-section">
+      <h3 id="result-confidence-title">Einschätzungssicherheit</h3>
+      <p class="confidence" id="result-confidence"></p>
+      <h4 class="result-subtitle">Was bedeutet das praktisch?</h4>
+      <ul id="practical-list" class="practical-list"></ul>
+    </section>
 
-                  <section class="result-section">
-                    <h3>Warum</h3>
-                    <ul id="why-list"></ul>
-                  </section>
+    <section class="result-section">
+      <h3>Warum im Detail?</h3>
+      <ul id="why-list"></ul>
+    </section>
 
-                  <section class="result-section" id="more-steps-section">
-                    <h3>Weitere Schritte</h3>
-                    <ul id="steps-list-more"></ul>
-                  </section>
+    <section class="result-section" id="more-steps-section">
+      <h3>Weitere Schritte</h3>
+      <ul id="steps-list-more"></ul>
+    </section>
 
-                  <section class="result-section">
-                    <h3>Typische Fallen</h3>
-                    <ul id="pitfalls-list"></ul>
-                  </section>
+    <section class="result-section">
+      <h3>Typische Fallen</h3>
+      <ul id="pitfalls-list"></ul>
+    </section>
 
-                  <p class="result-trust">Die Einschätzung orientiert sich an typischen planungsrechtlichen Prüfschritten wie Innen- oder Außenbereich, Bebauungsplan, Zweckbestimmung und Erschließung und ersetzt keine behördliche Prüfung.</p>
-                </section>
-              </div>
+    <p class="result-trust">
+      Die Einschätzung orientiert sich an typischen planungsrechtlichen Prüfschritten wie Innen- oder Außenbereich, Bebauungsplan, Zweckbestimmung und Erschließung und ersetzt keine behördliche Prüfung.
+    </p>
+  </section>
+</div>
             </div>
           </article>
         </section>

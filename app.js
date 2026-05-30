@@ -696,6 +696,22 @@ return topThree.map((item) => clipWords(item, 22));
   function interpretation(score) {
     return CONFIG.interpretations.find((bucket) => score >= bucket.min && score <= bucket.max).text;
   }
+  
+  function resultShortText(result) {
+  if (result.ampel === "🔴") {
+    return "Dein Vorhaben wirkt aktuell eher unwahrscheinlich. Prüfe zuerst die wichtigsten Punkte, bevor du weiter planst oder Geld investierst.";
+  }
+
+  if (result.ampel === "🟡") {
+    return "Dein Vorhaben ist noch offen. Entscheidend ist jetzt, welche Punkte du vor Kauf, Planung oder Bauvoranfrage sauber klärst.";
+  }
+
+  if (result.confidence === "niedrig") {
+    return "Die Ausgangslage wirkt gut, aber einige wichtige Angaben sind noch unklar. Kläre diese Punkte, bevor du dich darauf verlässt.";
+  }
+
+  return "Die Ausgangslage wirkt gut. Prüfe die wichtigsten Punkte trotzdem schriftlich, bevor du größere Entscheidungen triffst.";
+}
 
   function evaluate(rawState) {
     const sanitized = sanitizeConsistencyState(rawState);
@@ -822,6 +838,9 @@ return topThree.map((item) => clipWords(item, 22));
     const headlineEl = document.getElementById("result-headline");
     const practicalList = document.getElementById("practical-list");
     const confidenceEl = document.getElementById("result-confidence");
+    const resultShortTextEl = document.getElementById("result-short-text");
+const resultReasonsPreviewList = document.getElementById("result-reasons-preview-list");
+const resultConfidenceShortEl = document.getElementById("result-confidence-short");
     const confidenceTitleEl = document.getElementById("result-confidence-title");
     const whyList = document.getElementById("why-list");
     const stepsList = document.getElementById("steps-list");
@@ -894,7 +913,7 @@ return topThree.map((item) => clipWords(item, 22));
         setHidden(resultContent, true);
          if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Analyse anzeigen";
+          detailsToggle.textContent = "Details & Begründung";
           resultDetails.hidden = true;
         }
         lastRenderedScore = 50;
@@ -909,9 +928,20 @@ return topThree.map((item) => clipWords(item, 22));
       lastRenderedScore = result.score;
 
       if (ampelEl) ampelEl.textContent = result.ampelText;
-      if (headlineEl) headlineEl.textContent = result.headline;
-      if (interpEl) interpEl.textContent = result.interpretation;
-      renderList(practicalList, result.practical);
+if (headlineEl) headlineEl.textContent = result.headline;
+if (resultShortTextEl) resultShortTextEl.textContent = resultShortText(result);
+if (interpEl) interpEl.textContent = result.interpretation;
+
+if (resultConfidenceShortEl) {
+  resultConfidenceShortEl.textContent = result.confidence || "–";
+}
+
+renderList(
+  resultReasonsPreviewList,
+  result.why.slice(0, 3).map((item) => item.text)
+);
+
+renderList(practicalList, result.practical);
       const confidenceTextMap = {
   hoch: "Deine Angaben ergeben ein recht klares Bild.",
   mittel: "Ein wichtiger Punkt ist noch offen.",
@@ -1019,8 +1049,8 @@ return topThree.map((item) => clipWords(item, 22));
     });
 
         if (detailsToggle && resultDetails) {
-      const CLOSED_LABEL = "Analyse anzeigen";
-      const OPEN_LABEL = "Analyse ausblenden";
+      const CLOSED_LABEL = "Details anzeigen";
+const OPEN_LABEL = "Details ausblenden";
 
       // Falls HTML-Label abweicht: initial glattziehen
       detailsToggle.textContent = CLOSED_LABEL;
@@ -1056,7 +1086,7 @@ return topThree.map((item) => clipWords(item, 22));
         if (optionalDetails) optionalDetails.open = false;
         if (detailsToggle && resultDetails) {
           detailsToggle.setAttribute("aria-expanded", "false");
-          detailsToggle.textContent = "Analyse anzeigen";
+          detailsToggle.textContent = "Details & Begründung";
           resultDetails.hidden = true;
         }
         CONFIG.requiredFields.forEach((field) => setFieldError(field, ""));
