@@ -7,8 +7,34 @@
   // Referenz für sauberes removeEventListener
   var keydownHandler = null;
 
+  function getStorage(type) {
+    try {
+      return window[type];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeGetStorageItem(storage, key) {
+    try {
+      return storage ? storage.getItem(key) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeSetStorageItem(storage, key, value) {
+    try {
+      if (!storage) return false;
+      storage.setItem(key, value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function getConsent() {
-    return window.localStorage.getItem(CONSENT_KEY);
+    return safeGetStorageItem(getStorage("localStorage"), CONSENT_KEY);
   }
 
   function hasConsent() {
@@ -61,15 +87,16 @@
   }
 
   function setConsent(value) {
-    window.localStorage.setItem(CONSENT_KEY, value);
-    window.localStorage.setItem(CONSENT_VERSION_KEY, CONSENT_VERSION);
+    var storage = getStorage("localStorage");
+    safeSetStorageItem(storage, CONSENT_KEY, value);
+    safeSetStorageItem(storage, CONSENT_VERSION_KEY, CONSENT_VERSION);
 
     if (value === "granted") loadGa();
     removeBanner();
   }
 
   function shouldAskAgain() {
-    var v = window.localStorage.getItem(CONSENT_VERSION_KEY);
+    var v = safeGetStorageItem(getStorage("localStorage"), CONSENT_VERSION_KEY);
     return v !== CONSENT_VERSION;
   }
 
@@ -91,8 +118,7 @@
     var banner = document.createElement("div");
     banner.id = "gc-consent-banner";
     banner.className = "gc-consent-banner";
-    banner.setAttribute("role", "dialog");
-    banner.setAttribute("aria-modal", "true");
+    banner.setAttribute("role", "region");
     banner.setAttribute("aria-labelledby", "gc-consent-title");
     banner.setAttribute("aria-describedby", "gc-consent-desc");
 

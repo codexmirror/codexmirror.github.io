@@ -1,4 +1,40 @@
 (function () {
+  function getStorage(type) {
+    try {
+      return window[type];
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeGetStorageItem(storage, key) {
+    try {
+      return storage ? storage.getItem(key) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeSetStorageItem(storage, key, value) {
+    try {
+      if (!storage) return false;
+      storage.setItem(key, value);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function safeRemoveStorageItem(storage, key) {
+    try {
+      if (!storage) return false;
+      storage.removeItem(key);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   const CONFIG = {
     requiredFields: ["lage", "bplan", "typ", "nutzung"],
     tieBreakerOrder: [
@@ -803,6 +839,7 @@ return topThree.map((item) => clipWords(item, 22));
 
     const touched = new Set();
     let lastRenderedScore = 50;
+    let toolCompletedSentInMemory = false;
     const toolCompletedSessionKey = "gc_tool_completed_sent";
 
     const setHidden = (el, isHidden) => {
@@ -909,9 +946,10 @@ return topThree.map((item) => clipWords(item, 22));
 
       if (
         requiredComplete(state) &&
-        window.localStorage.getItem("gc_consent") === "granted" &&
+        safeGetStorageItem(getStorage("localStorage"), "gc_consent") === "granted" &&
         typeof window.gtag === "function" &&
-        !window.sessionStorage.getItem(toolCompletedSessionKey)
+        !toolCompletedSentInMemory &&
+        !safeGetStorageItem(getStorage("sessionStorage"), toolCompletedSessionKey)
       ) {
         window.gtag("event", "tool_completed", {
           value: result.score,
@@ -919,7 +957,8 @@ return topThree.map((item) => clipWords(item, 22));
           ampel: result.ampelText,
           confidence: result.confidence
         });
-        window.sessionStorage.setItem(toolCompletedSessionKey, "1");
+        toolCompletedSentInMemory = true;
+        safeSetStorageItem(getStorage("sessionStorage"), toolCompletedSessionKey, "1");
       }
     };
 
@@ -1008,8 +1047,9 @@ return topThree.map((item) => clipWords(item, 22));
       resetBtn.addEventListener("click", () => {
         form.reset();
         touched.clear();
-        window.sessionStorage.removeItem(toolCompletedSessionKey);
-        if (window.localStorage.getItem("gc_consent") === "granted" && typeof window.gtag === "function") {
+        toolCompletedSentInMemory = false;
+        safeRemoveStorageItem(getStorage("sessionStorage"), toolCompletedSessionKey);
+        if (safeGetStorageItem(getStorage("localStorage"), "gc_consent") === "granted" && typeof window.gtag === "function") {
           window.gtag("event", "tool_reset");
         }
         closeAllInfoPanels();
