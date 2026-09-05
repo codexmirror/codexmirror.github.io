@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /docs/
+Disallow: /Website-Demo/
 
 Sitemap: https://grundstueckcheck.de/sitemap.xml
