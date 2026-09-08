@@ -10,70 +10,98 @@
 </head>
 <body>
 
-  <header class="site-header">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="site-header" data-header>
     <div class="header-inner">
       <a href="index.html" class="brand" aria-label="Deine Fahrschule &ndash; zur Startseite">
-        <span class="brand-mark">DF</span>
-        <span class="brand-name">Deine<br>Fahrschule</span>
+        <span class="brand-mark" aria-hidden="true">DF</span>
+        <span class="brand-name"><span>Deine</span>Fahrschule</span>
       </a>
+
       <nav class="main-nav" aria-label="Hauptnavigation">
         <a href="klassen.html">Klassen</a>
-        <a href="team.html">Team</a>
-        <a href="fahrzeuge.html">Fahrzeuge</a>
         <a href="preise.html">Preise</a>
         <a href="infos.html">Infos</a>
+        <a href="team.html">Team</a>
+        <a href="fahrzeuge.html">Fahrzeuge</a>
         <a href="standorte.html">Standorte</a>
       </nav>
-      <a href="#kontakt" class="btn btn-primary header-cta">Kontakt</a>
-      <button class="menu-btn" type="button" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+
+      <div class="header-actions">
+        <a href="tel:01234567890" class="header-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg><span>01234 567890</span></a>
+        <a href="#kontakt" class="btn btn-primary btn-sm header-cta">Kontakt</a>
+        <button class="menu-btn" type="button" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" hidden>
-    <div class="mobile-nav-inner">
-      <nav aria-label="Mobile Navigation">
-        <a href="index.html" class="is-current" aria-current="page">Startseite</a>
-        <a href="klassen.html">Klassen</a>
-        <a href="team.html">Team</a>
-        <a href="fahrzeuge.html">Fahrzeuge</a>
-        <a href="preise.html">Preise</a>
-        <a href="infos.html">Infos</a>
-        <a href="standorte.html">Standorte</a>
-        <p class="mobile-nav-group">Mehr</p>
-        <a href="stimmen.html">Stimmen</a>
-        <div class="mobile-nav-legal">
+  <div class="nav-overlay" id="mobile-nav" hidden>
+    <div class="nav-panel" role="dialog" aria-modal="true" aria-label="Navigation">
+      <div class="nav-panel-head">
+        <a href="index.html" class="brand" aria-label="Deine Fahrschule &ndash; zur Startseite">
+          <span class="brand-mark" aria-hidden="true">DF</span>
+          <span class="brand-name"><span>Deine</span>Fahrschule</span>
+        </a>
+        <button class="nav-close" type="button" aria-label="Men&uuml; schlie&szlig;en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <nav class="nav-panel-body" aria-label="Mobile Navigation">
+        <a href="index.html" class="is-current" aria-current="page"><span class="nav-item-text"><strong>Startseite</strong><span>Überblick und Kontakt</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <p class="nav-group-label">Ausbildung</p>
+        <a href="klassen.html"><span class="nav-item-text"><strong>Führerscheinklassen</strong><span>B, BF17, BE, B96 und Zweirad</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="preise.html"><span class="nav-item-text"><strong>Preise</strong><span>Woraus sich die Kosten zusammensetzen</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="infos.html"><span class="nav-item-text"><strong>Nützliche Infos</strong><span>Unterlagen, Ablauf, häufige Fragen</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <p class="nav-group-label">Fahrschule</p>
+        <a href="team.html"><span class="nav-item-text"><strong>Team</strong><span>Wer dich ausbildet</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="fahrzeuge.html"><span class="nav-item-text"><strong>Fahrzeuge</strong><span>Schulfahrzeuge je Klasse</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="standorte.html"><span class="nav-item-text"><strong>Standorte</strong><span>Adressen, Anmelde- und Theoriezeiten</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="stimmen.html"><span class="nav-item-text"><strong>Stimmen</strong><span>Was Fahrschüler später berichten</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </nav>
+
+      <div class="nav-panel-foot">
+        <a href="#kontakt" class="btn btn-primary btn-block">Kontakt aufnehmen</a>
+        <a href="tel:01234567890" class="btn btn-ghost btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg> 01234 567890</a>
+        <div class="nav-legal">
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutz</a>
         </div>
-      </nav>
-      <div class="mobile-nav-actions">
-        <a href="#kontakt" class="btn btn-primary">Kontakt aufnehmen</a>
-        <a href="tel:01234567890" class="btn btn-outline">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:17px;height:17px;color:var(--teal-dark)"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Anrufen
-        </a>
       </div>
     </div>
   </div>
 
-  <main>
+  <main id="inhalt">
 
     <section class="hero">
       <div class="hero-inner">
         <div class="hero-content">
-          <p class="kicker">SICHER. MODERN. PERS&Ouml;NLICH.</p>
-          <h1>Dein Weg<br>zum F&uuml;hrerschein.</h1>
-          <p class="hero-text">Mit Erfahrung, Geduld und einem starken Team begleiten wir dich sicher ans Ziel.</p>
+          <p class="hero-eyebrow"><b>Neu hier?</b> Anmeldung ohne Termin</p>
+          <h1>Dein Weg zum <em>F&uuml;hrerschein.</em></h1>
+          <p class="hero-text">Sicher, modern und pers&ouml;nlich: Mit Erfahrung, Geduld und einem starken Team begleiten wir dich vom ersten Theorieabend bis zur bestandenen Pr&uuml;fung.</p>
           <div class="hero-ctas">
-            <a href="standorte.html" class="btn btn-primary">Jetzt anmelden <span aria-hidden="true">&rarr;</span></a>
-            <a href="klassen.html" class="btn btn-secondary">Mehr erfahren</a>
+            <a href="standorte.html" class="btn btn-primary">Jetzt anmelden <span class="arrow" aria-hidden="true">&rarr;</span></a>
+            <a href="klassen.html" class="btn btn-secondary">Klassen ansehen</a>
+          </div>
+          <div class="hero-facts">
+            <span class="hero-fact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11Z" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2"/></svg>
+              Zwei Standorte
+            </span>
+            <span class="hero-fact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 16v-3.2c0-.5.3-.9.7-1.1l2.6-1.3 1.6-2.9c.3-.6.9-.9 1.6-.9h5c.7 0 1.3.3 1.6.9l1.6 2.9 2.6 1.3c.4.2.7.6.7 1.1V16" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h18" stroke-linecap="round"/><circle cx="7" cy="16.5" r="1.6"/><circle cx="17" cy="16.5" r="1.6"/></svg>
+              Auto, Anh&auml;nger &amp; Zweirad
+            </span>
+            <span class="hero-fact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Theorie am Abend
+            </span>
           </div>
         </div>
-        <div class="hero-visual" role="img" aria-label="Stilisierte Illustration einer Stra&szlig;e mit Auto bei Sonnenaufgang">
+        <div class="hero-visual" role="img" aria-label="Stilisierte Illustration eines Fahrschulwagens auf einer Landstra&szlig;e bei Sonnenaufgang">
           <span class="hero-tagline">Freiheit<br>beginnt hier.</span>
           <div class="road-scene">
             <div class="sky"></div>
@@ -119,10 +147,13 @@
       </div>
     </section>
 
-    <section class="classes" id="klassen">
+    <section class="section" id="klassen">
       <div class="container">
-        <p class="section-label center">ALLE KLASSEN &ndash; DEIN ZIEL</p>
-        <h2 class="section-heading center">Unsere F&uuml;hrerscheinklassen</h2>
+        <div class="section-head center">
+          <p class="section-label">ALLE KLASSEN &ndash; DEIN ZIEL</p>
+          <h2 class="section-heading">Unsere F&uuml;hrerscheinklassen</h2>
+          <p class="section-intro">W&auml;hle deine Klasse &ndash; jede Kachel f&uuml;hrt direkt zu Mindestalter, Ausbildungsumfang und Pr&uuml;fungen.</p>
+        </div>
         <div class="class-grid">
           <a class="class-card" href="klassen.html#klasse-b">
             <span class="class-icon" aria-hidden="true">
@@ -168,18 +199,47 @@
           </a>
         </div>
         <div class="center-btn">
-          <a href="klassen.html" class="btn btn-outline">Alle Klassen ansehen <span aria-hidden="true">&rarr;</span></a>
+          <a href="klassen.html" class="btn btn-outline">Alle Klassen &amp; Erweiterungen <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </section>
 
-    <section class="locations" id="standorte">
+    <section class="section section-paper">
       <div class="container">
-        <p class="section-label center">ZWEI STANDORTE &ndash; EIN STARKES TEAM</p>
-        <h2 class="section-heading center">Immer in deiner N&auml;he</h2>
+        <div class="section-head">
+          <p class="section-label">SO L&Auml;UFT ES AB</p>
+          <h2 class="section-heading">In drei Schritten zur ersten Fahrstunde</h2>
+        </div>
+        <div class="path-band">
+          <div class="path-step">
+            <h3>Vorbereiten</h3>
+            <p>Sehtest, Erste-Hilfe-Kurs und Passbild besorgen &ndash; danach stellst du den F&uuml;hrerscheinantrag bei der Beh&ouml;rde.</p>
+          </div>
+          <div class="path-step">
+            <h3>Anmelden</h3>
+            <p>Komm zu einer Anmeldezeit an einen unserer Standorte. Ausweis mitbringen &ndash; den Rest machen wir gemeinsam.</p>
+          </div>
+          <div class="path-step">
+            <h3>Losfahren</h3>
+            <p>Theorie am Abend, Praxis in deinem Tempo. Wir stimmen die Termine auf Schule, Ausbildung oder Beruf ab.</p>
+          </div>
+        </div>
+        <div class="center-btn">
+          <a href="infos.html" class="btn btn-outline">Alles zum Ablauf &amp; zu den Unterlagen <span class="arrow" aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="standorte">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-label">ZWEI STANDORTE &ndash; EIN STARKES TEAM</p>
+          <h2 class="section-heading">Immer in deiner N&auml;he</h2>
+          <p class="section-intro">Beide Standorte sind gleichwertig. Du kannst frei w&auml;hlen &ndash; und jederzeit wechseln.</p>
+        </div>
         <div class="location-grid">
           <div class="location-card">
-            <div class="location-image location-image-a" aria-hidden="true"></div>
+            <div class="location-image location-image-a" aria-hidden="true"><span class="street"></span></div>
             <div class="location-body">
               <h3>Standort Innenstadt</h3>
               <p class="location-line">
@@ -192,15 +252,15 @@
                 <span class="mini-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </span>
-                Di: 18.30 &ndash; 19.30 Uhr<br>Do: 18.30 &ndash; 19.30 Uhr
+                Anmeldung Di &amp; Do<br>18.30 &ndash; 19.30 Uhr
               </p>
               <a href="standorte.html#innenstadt" class="round-arrow" aria-label="Standort Innenstadt ansehen">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
           <div class="location-card">
-            <div class="location-image location-image-b" aria-hidden="true"></div>
+            <div class="location-image location-image-b" aria-hidden="true"><span class="street"></span></div>
             <div class="location-body">
               <h3>Standort Nord</h3>
               <p class="location-line">
@@ -213,30 +273,36 @@
                 <span class="mini-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </span>
-                Mo: 18.30 &ndash; 19.00 Uhr<br>Sa: 10.30 &ndash; 11.00 Uhr
+                Anmeldung Mo 18.30 Uhr<br>und Sa 10.30 Uhr
               </p>
               <a href="standorte.html#nord" class="round-arrow" aria-label="Standort Nord ansehen">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
             </div>
           </div>
         </div>
 
-        <div class="feature-grid">
+        <div class="feature-grid" style="margin-top: clamp(14px, 2.4vw, 22px);">
           <article class="feature-card">
             <div class="feature-image feature-image-team" aria-hidden="true"></div>
+            <span class="feature-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="3" stroke-linecap="round"/><circle cx="17" cy="9" r="2.4" stroke-linecap="round"/><path d="M2.5 19c.6-3.2 3-5 5.5-5s4.9 1.8 5.5 5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.5 15.2c1.9.3 3.6 1.9 4 3.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
             <div class="feature-body">
               <h3>Unsere Fahrlehrer</h3>
-              <p>Ein erfahrenes Team<br>mit Herz und Geduld.</p>
-              <a href="team.html" class="text-link">Team kennenlernen <span aria-hidden="true">&rarr;</span></a>
+              <p>Ein erfahrenes Team, das erkl&auml;rt statt kommandiert &ndash; und sich Zeit nimmt.</p>
+              <a href="team.html" class="text-link">Team kennenlernen <span class="arrow" aria-hidden="true">&rarr;</span></a>
             </div>
           </article>
           <article class="feature-card">
             <div class="feature-image feature-image-car" aria-hidden="true"></div>
+            <span class="feature-glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 16v-3.2c0-.5.3-.9.7-1.1l2.6-1.3 1.6-2.9c.3-.6.9-.9 1.6-.9h5c.7 0 1.3.3 1.6.9l1.6 2.9 2.6 1.3c.4.2.7.6.7 1.1V16" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16h18" stroke-linecap="round"/><circle cx="7" cy="16.5" r="1.6"/><circle cx="17" cy="16.5" r="1.6"/></svg>
+            </span>
             <div class="feature-body">
               <h3>Unsere Fahrzeuge</h3>
-              <p>Modern, sicher<br>und bestens ausgestattet.</p>
-              <a href="fahrzeuge.html" class="text-link">Fahrzeuge entdecken <span aria-hidden="true">&rarr;</span></a>
+              <p>F&uuml;r jede Klasse das passende Schulfahrzeug &ndash; modern, sicher und gut ausgestattet.</p>
+              <a href="fahrzeuge.html" class="text-link">Fahrzeuge entdecken <span class="arrow" aria-hidden="true">&rarr;</span></a>
             </div>
           </article>
         </div>
@@ -248,6 +314,7 @@
         <div class="contact-text">
           <p class="section-label">NOCH FRAGEN?</p>
           <h2>Wir sind f&uuml;r dich da!</h2>
+          <p>Ruf einfach an oder schreib uns &ndash; wir sagen dir, welche Klasse passt und wann du vorbeikommen kannst.</p>
         </div>
         <div class="contact-actions">
           <a href="tel:01234567890" class="btn btn-pill">
@@ -255,7 +322,7 @@
             01234 567890
           </a>
           <a href="mailto:hallo@deine-fahrschule.de" class="btn btn-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m4 7 8 6 8-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             E-Mail schreiben
           </a>
         </div>
@@ -263,23 +330,36 @@
     </section>
 
   </main>
-
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand">Deine Fahrschule</div>
-      <nav class="footer-nav" aria-label="Fu&szlig;zeilen-Navigation">
-        <a href="klassen.html">Klassen</a>
+      <div class="footer-brand-col">
+        <div class="footer-brand"><span class="brand-mark" aria-hidden="true">DF</span> Deine Fahrschule</div>
+        <p class="footer-claim">Sicher, modern und pers&ouml;nlich zum F&uuml;hrerschein &ndash; mit einem Team, das sich Zeit nimmt.</p>
+        <div class="footer-contact">
+          <a href="tel:01234567890"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg> 01234 567890</a>
+          <a href="mailto:hallo@deine-fahrschule.de"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5" stroke-linecap="round" stroke-linejoin="round"/></svg> hallo@deine-fahrschule.de</a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Ausbildung">
+        <p class="footer-col-title">Ausbildung</p>
+        <a href="klassen.html">F&uuml;hrerscheinklassen</a>
+        <a href="preise.html">Preise</a>
+        <a href="infos.html">N&uuml;tzliche Infos</a>
+      </nav>
+      <nav class="footer-col" aria-label="Fahrschule">
+        <p class="footer-col-title">Fahrschule</p>
         <a href="team.html">Team</a>
         <a href="fahrzeuge.html">Fahrzeuge</a>
-        <a href="preise.html">Preise</a>
-        <a href="infos.html">Infos</a>
         <a href="standorte.html">Standorte</a>
         <a href="stimmen.html">Stimmen</a>
       </nav>
-      <div class="footer-legal">
+      <nav class="footer-col" aria-label="Rechtliches">
+        <p class="footer-col-title">Rechtliches</p>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-      </div>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
       <p class="footer-note">Vorlage / Prototyp. Alle Namen, Adressen, Zeiten, Preise und Zitate auf diesen Seiten sind generische Beispielinhalte und werden vor einer Ver&ouml;ffentlichung durch echte Angaben ersetzt.</p>
     </div>
   </footer>
