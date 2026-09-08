@@ -10,90 +10,95 @@
 </head>
 <body>
 
-  <header class="site-header">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+  <header class="site-header" data-header>
     <div class="header-inner">
       <a href="index.html" class="brand" aria-label="Deine Fahrschule &ndash; zur Startseite">
-        <span class="brand-mark">DF</span>
-        <span class="brand-name">Deine<br>Fahrschule</span>
+        <span class="brand-mark" aria-hidden="true">DF</span>
+        <span class="brand-name"><span>Deine</span>Fahrschule</span>
       </a>
+
       <nav class="main-nav" aria-label="Hauptnavigation">
         <a href="klassen.html">Klassen</a>
-        <a href="team.html" class="is-current" aria-current="page">Team</a>
-        <a href="fahrzeuge.html">Fahrzeuge</a>
         <a href="preise.html">Preise</a>
         <a href="infos.html">Infos</a>
+        <a href="team.html" class="is-current" aria-current="page">Team</a>
+        <a href="fahrzeuge.html">Fahrzeuge</a>
         <a href="standorte.html">Standorte</a>
       </nav>
-      <a href="index.html#kontakt" class="btn btn-primary header-cta">Kontakt</a>
-      <button class="menu-btn" type="button" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+
+      <div class="header-actions">
+        <a href="tel:01234567890" class="header-phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg><span>01234 567890</span></a>
+        <a href="index.html#kontakt" class="btn btn-primary btn-sm header-cta">Kontakt</a>
+        <button class="menu-btn" type="button" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <div class="mobile-nav" id="mobile-nav" hidden>
-    <div class="mobile-nav-inner">
-      <nav aria-label="Mobile Navigation">
-        <a href="index.html">Startseite</a>
-        <a href="klassen.html">Klassen</a>
-        <a href="team.html" class="is-current" aria-current="page">Team</a>
-        <a href="fahrzeuge.html">Fahrzeuge</a>
-        <a href="preise.html">Preise</a>
-        <a href="infos.html">Infos</a>
-        <a href="standorte.html">Standorte</a>
-        <p class="mobile-nav-group">Mehr</p>
-        <a href="stimmen.html">Stimmen</a>
-        <div class="mobile-nav-legal">
+  <div class="nav-overlay" id="mobile-nav" hidden>
+    <div class="nav-panel" role="dialog" aria-modal="true" aria-label="Navigation">
+      <div class="nav-panel-head">
+        <a href="index.html" class="brand" aria-label="Deine Fahrschule &ndash; zur Startseite">
+          <span class="brand-mark" aria-hidden="true">DF</span>
+          <span class="brand-name"><span>Deine</span>Fahrschule</span>
+        </a>
+        <button class="nav-close" type="button" aria-label="Men&uuml; schlie&szlig;en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <nav class="nav-panel-body" aria-label="Mobile Navigation">
+        <a href="index.html"><span class="nav-item-text"><strong>Startseite</strong><span>Überblick und Kontakt</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <p class="nav-group-label">Ausbildung</p>
+        <a href="klassen.html"><span class="nav-item-text"><strong>Führerscheinklassen</strong><span>B, BF17, BE, B96 und Zweirad</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="preise.html"><span class="nav-item-text"><strong>Preise</strong><span>Woraus sich die Kosten zusammensetzen</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="infos.html"><span class="nav-item-text"><strong>Nützliche Infos</strong><span>Unterlagen, Ablauf, häufige Fragen</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <p class="nav-group-label">Fahrschule</p>
+        <a href="team.html" class="is-current" aria-current="page"><span class="nav-item-text"><strong>Team</strong><span>Wer dich ausbildet</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="fahrzeuge.html"><span class="nav-item-text"><strong>Fahrzeuge</strong><span>Schulfahrzeuge je Klasse</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="standorte.html"><span class="nav-item-text"><strong>Standorte</strong><span>Adressen, Anmelde- und Theoriezeiten</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="stimmen.html"><span class="nav-item-text"><strong>Stimmen</strong><span>Was Fahrschüler später berichten</span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </nav>
+
+      <div class="nav-panel-foot">
+        <a href="index.html#kontakt" class="btn btn-primary btn-block">Kontakt aufnehmen</a>
+        <a href="tel:01234567890" class="btn btn-ghost btn-block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg> 01234 567890</a>
+        <div class="nav-legal">
           <a href="impressum.html">Impressum</a>
           <a href="datenschutz.html">Datenschutz</a>
         </div>
-      </nav>
-      <div class="mobile-nav-actions">
-        <a href="index.html#kontakt" class="btn btn-primary">Kontakt aufnehmen</a>
-        <a href="tel:01234567890" class="btn btn-outline">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="width:17px;height:17px;color:var(--teal-dark)"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Anrufen
-        </a>
       </div>
     </div>
   </div>
 
-  <main>
+  <main id="inhalt">
 
-    <section class="page-head">
+    <section class="page-head page-head-people">
       <div class="container">
         <nav class="breadcrumb" aria-label="Brotkrumen-Navigation">
-          <a href="index.html">Startseite</a>
+          <a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m15 6-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Startseite</a>
           <span aria-hidden="true">/</span>
-          <span>Team</span>
+          <span aria-current="page">Team</span>
         </nav>
-        <p class="kicker">MENSCHEN MACHEN DEN UNTERSCHIED</p>
+        <p class="kicker">Menschen machen den Unterschied</p>
         <h1>Unser Team</h1>
-        <p class="page-lead">Fahren lernt man nicht aus einem Heft, sondern mit Menschen, die Zeit haben, erklären können und ruhig bleiben, wenn es einmal nicht klappt. So stellen wir unser Team vor.</p>
-        <div class="head-meta">
-          <span class="chip">Fahrlehrerinnen &amp; Fahrlehrer</span>
-          <span class="chip chip-neutral">Büro &amp; Anmeldung</span>
-        </div>
+        <p class="page-lead">Fahren lernt man nicht aus einem Heft, sondern mit Menschen, die Zeit haben, erkl&auml;ren k&ouml;nnen und ruhig bleiben, wenn es einmal nicht klappt.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
 
-        <div class="note note-template">
-          <span class="note-icon" aria-hidden="true">i</span>
-          <p><strong>Platzhalter-Profile:</strong> Namen, Rollen und Beschreibungen auf dieser Seite sind bewusst generisch. Die Karten zeigen, wie das echte Team später dargestellt wird &ndash; mit Foto, Ausbildungsklassen und einer kurzen persönlichen Vorstellung.</p>
-        </div>
+        <h2 class="section-title">Fahrlehrerinnen und Fahrlehrer</h2>
+        <p class="section-intro">Jede Karte zeigt auf einen Blick, welche Klassen ausgebildet werden. Namen, Rollen und Fotos sind in dieser Vorlage Platzhalter &ndash; die Struktur bleibt sp&auml;ter dieselbe.</p>
 
-        <h2 class="section-title" style="margin-top: clamp(26px, 4.5vw, 40px);">Fahrlehrerinnen und Fahrlehrer</h2>
-        <p class="section-intro">Jede Karte zeigt auf einen Blick, welche Klassen ausgebildet werden.</p>
-
-        <div class="grid grid-2 grid-3">
+        <div class="grid grid-2">
 
           <article class="person-card">
-            <div class="person-photo"><span class="person-initials">FL</span></div>
+            <div class="person-photo" aria-hidden="true"><span class="person-initials">FL</span></div>
             <div class="person-body">
               <p class="person-role">Fahrlehrer/in</p>
               <h3>Fahrlehrer/in 1</h3>
@@ -107,7 +112,7 @@
           </article>
 
           <article class="person-card">
-            <div class="person-photo"><span class="person-initials">FL</span></div>
+            <div class="person-photo" aria-hidden="true"><span class="person-initials">FL</span></div>
             <div class="person-body">
               <p class="person-role">Fahrlehrer/in</p>
               <h3>Fahrlehrer/in 2</h3>
@@ -120,7 +125,7 @@
           </article>
 
           <article class="person-card">
-            <div class="person-photo"><span class="person-initials">FL</span></div>
+            <div class="person-photo" aria-hidden="true"><span class="person-initials">FL</span></div>
             <div class="person-body">
               <p class="person-role">Fahrlehrer/in</p>
               <h3>Fahrlehrer/in 3</h3>
@@ -135,7 +140,7 @@
           </article>
 
           <article class="person-card">
-            <div class="person-photo"><span class="person-initials">FL</span></div>
+            <div class="person-photo" aria-hidden="true"><span class="person-initials">FL</span></div>
             <div class="person-body">
               <p class="person-role">Fahrlehrer/in</p>
               <h3>Fahrlehrer/in 4</h3>
@@ -148,7 +153,7 @@
           </article>
 
           <article class="person-card">
-            <div class="person-photo"><span class="person-initials">BÜ</span></div>
+            <div class="person-photo" aria-hidden="true"><span class="person-initials">BÜ</span></div>
             <div class="person-body">
               <p class="person-role">Büro &amp; Anmeldung</p>
               <h3>Ansprechpartner/in Büro</h3>
@@ -161,7 +166,7 @@
           </article>
 
           <article class="person-card">
-            <div class="person-photo person-photo-empty"><span class="person-initials">+</span></div>
+            <div class="person-photo person-photo-empty" aria-hidden="true"><span class="person-initials">+</span></div>
             <div class="person-body">
               <p class="person-role">Platz für weitere Profile</p>
               <h3>Weitere Teammitglieder</h3>
@@ -186,13 +191,13 @@
           <div class="panel panel-soft">
             <h3>Du willst wissen, wer dich begleitet?</h3>
             <p>Beim Anmeldegespräch lernst du das Team direkt kennen und kannst besprechen, welche Fahrlehrerin oder welcher Fahrlehrer zu deinem Zeitplan passt.</p>
-            <p><a href="standorte.html" class="btn btn-outline">Anmeldezeiten ansehen <span aria-hidden="true">&rarr;</span></a></p>
+            <p><a href="standorte.html" class="btn btn-outline">Anmeldezeiten ansehen <span class="arrow" aria-hidden="true">&rarr;</span></a></p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section-mist">
+    <section class="section section-mist">
       <div class="container">
         <h2 class="section-title">Passend dazu</h2>
         <div class="next-band">
@@ -231,20 +236,34 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand">Deine Fahrschule</div>
-      <nav class="footer-nav" aria-label="Fu&szlig;zeilen-Navigation">
-        <a href="klassen.html">Klassen</a>
+      <div class="footer-brand-col">
+        <div class="footer-brand"><span class="brand-mark" aria-hidden="true">DF</span> Deine Fahrschule</div>
+        <p class="footer-claim">Sicher, modern und pers&ouml;nlich zum F&uuml;hrerschein &ndash; mit einem Team, das sich Zeit nimmt.</p>
+        <div class="footer-contact">
+          <a href="tel:01234567890"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4.5 4h3.2l1.4 4.2-2 1.6a12 12 0 0 0 5.1 5.1l1.6-2 4.2 1.4v3.2c0 1-.8 1.8-1.8 1.7-8-.6-13.9-6.5-14.5-14.5C4.5 4.8 4.5 4 4.5 4Z" stroke-linecap="round" stroke-linejoin="round"/></svg> 01234 567890</a>
+          <a href="mailto:hallo@deine-fahrschule.de"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5" stroke-linecap="round" stroke-linejoin="round"/></svg> hallo@deine-fahrschule.de</a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="Ausbildung">
+        <p class="footer-col-title">Ausbildung</p>
+        <a href="klassen.html">F&uuml;hrerscheinklassen</a>
+        <a href="preise.html">Preise</a>
+        <a href="infos.html">N&uuml;tzliche Infos</a>
+      </nav>
+      <nav class="footer-col" aria-label="Fahrschule">
+        <p class="footer-col-title">Fahrschule</p>
         <a href="team.html">Team</a>
         <a href="fahrzeuge.html">Fahrzeuge</a>
-        <a href="preise.html">Preise</a>
-        <a href="infos.html">Infos</a>
         <a href="standorte.html">Standorte</a>
         <a href="stimmen.html">Stimmen</a>
       </nav>
-      <div class="footer-legal">
+      <nav class="footer-col" aria-label="Rechtliches">
+        <p class="footer-col-title">Rechtliches</p>
         <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html">Datenschutz</a>
-      </div>
+      </nav>
+    </div>
+    <div class="container footer-bottom">
       <p class="footer-note">Vorlage / Prototyp. Alle Namen, Adressen, Zeiten, Preise und Zitate auf diesen Seiten sind generische Beispielinhalte und werden vor einer Ver&ouml;ffentlichung durch echte Angaben ersetzt.</p>
     </div>
   </footer>
