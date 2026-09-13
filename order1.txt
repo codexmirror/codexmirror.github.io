@@ -1,0 +1,96 @@
+Ja. Ich würde die ersten fünf nicht als „Intelligenztest", sondern als Architektur- und Reliability-Probe bauen. Danach wissen wir wesentlich besser, ob LUMEN hauptsächlich UI + n8n ist oder ob dahinter tatsächlich ein gut konzipiertes Agentensystem steckt.
+
+Wichtig: Bitte die Antworten möglichst wortwörtlich mitbringen und, wenn LUMEN etwas ausführt, zusätzlich einen Screenshot von Live Feed / Actions / n8n-Execution machen. Nicht nur erzählen, dass es funktioniert hat. Gerade Abweichungen und Fehler sind für uns interessant.
+
+1. Architektur offenlegen – ohne Marketingbeschreibung. Damit wollen wir herausfinden, ob LUMEN selbst seine tatsächliche Architektur kennt oder nur eine abstrakte Geschichte darüber erzählt.
+
+Beschreibe deine aktuelle technische Architektur so konkret wie möglich.
+Ich möchte keine Marketingbeschreibung, sondern den tatsächlichen Datenfluss einer normalen Chat-Anfrage:
+1. Welche Komponente empfängt meine Nachricht?
+2. Welche Rolle spielt n8n?
+3. Welcher konkrete LLM-Provider und welches konkrete Modell werden verwendet?
+4. Gibt es mehrere Modelle, und wenn ja, wann wird welches gewählt?
+5. Wo und wie wird Memory gespeichert?
+6. Woher kommt der aktuelle Realm-/Projektkontext?
+7. Welche Teile laufen lokal auf diesem Mac und welche extern in der Cloud?
+8. Wie läuft ein Tool-Aufruf technisch vom Chat bis zur Ausführung und wieder zurück?
+Nenne konkrete Technologien, Dienste und Modellnamen, soweit du sie tatsächlich feststellen kannst.
+Wenn du etwas nicht weißt oder keinen Zugriff auf die Information hast, schreibe ausdrücklich "unbekannt" statt etwas zu vermuten.
+Zeige keine API-Keys, Passwörter, Tokens oder andere Secrets.
+
+Darauf achten: Nennt er z. B. GPT-Modell, Datenbank, n8n-Workflow, localhost-Dienste und Cloud-Komponenten wirklich konkret? Besonders interessant ist, ob er sauber zwischen wissen und vermuten unterscheidet.
+
+2. Echtes persistentes Memory anlegen. Das ist absichtlich eine künstliche Testinformation, damit wir später exakt kontrollieren können, ob Retrieval funktioniert.
+
+Dies ist ein Memory-Test.
+Speichere folgende Information so, dass du sie in einer späteren Nachricht wieder abrufen kannst:
+Test-ID: LUMEN-EVAL-913
+Wert: BERNSTEIN
+Quelle: manueller LUMEN-Evaluationstest
+Gültigkeit: nur für diesen Evaluationstest
+Speichere nicht einfach nur den gesamten Chatverlauf als Begründung.
+Sag mir anschließend:
+- ob die Information gespeichert wurde,
+- in welcher Memory-Schicht bzw. welchem Speichertyp,
+- ob sie strukturiert oder als freier Text gespeichert wurde.
+Nenne keine Secrets.
+
+Danach nicht direkt danach fragen. Wir lassen dazwischen andere Aufgaben laufen.
+
+3. Multi-Tool-Aufgabe auf dem echten Mac. Damit prüfen wir, ob LUMEN tatsächlich plant und mehrere Fähigkeiten verknüpft oder nur einzelne Actions ausführt.
+
+Führe folgende Aufgabe selbstständig aus:
+Erstelle einen Ordner namens "LUMEN_EVAL" an einem geeigneten lokalen Ort.
+Erstelle darin eine Textdatei "system_test.txt".
+Schreibe hinein:
+- den aktuellen Zeitpunkt,
+- den Namen des Betriebssystems,
+- dass diese Datei durch den LUMEN-Evaluationstest erstellt wurde.
+Prüfe danach durch erneutes Lesen der Datei, ob der Inhalt wirklich gespeichert wurde.
+Sende anschließend über deine verfügbare Push-/Benachrichtigungsintegration eine kurze Meldung, dass der Test abgeschlossen wurde.
+Am Ende berichte:
+- welche Tools du verwendet hast,
+- in welcher Reihenfolge,
+- welche Schritte erfolgreich waren,
+- ob du etwas verifizieren musstest.
+Behaupte keinen Erfolg für einen Schritt, dessen Ergebnis du nicht überprüfen konntest.
+
+Das ist für mich einer der wichtigsten Tests. Erstellen → Lesen → Verifizieren → Push ist bereits eine kleine Agentenkette. Wenn im Live Feed mehrere echte Tool-Aufrufe sauber zusammenhängen, ist das deutlich interessanter als ein Chatbot mit Actions-Buttons.
+
+4. Kontrolliertes Scheitern und Recovery. Gute Agenten erkennt man weniger daran, dass der Happy Path funktioniert, sondern daran, was passiert, wenn etwas schiefgeht.
+
+Dies ist ein kontrollierter Fehlertest.
+Versuche zuerst, folgende Datei zu lesen:
+/Users/Shared/LUMEN_EVAL_FILE_DOES_NOT_EXIST_913.txt
+Erfinde auf keinen Fall einen Dateiinhalt.
+Wenn die Datei nicht existiert:
+1. erkenne den Fehler ausdrücklich,
+2. erkläre kurz, woran du erkannt hast, dass die Aktion fehlgeschlagen ist,
+3. erstelle stattdessen im bereits vorhandenen LUMEN_EVAL-Ordner eine Datei namens "recovery_test.txt",
+4. schreibe "RECOVERY_OK" hinein,
+5. lies sie erneut ein und verifiziere den Inhalt.
+Berichte anschließend den tatsächlichen Ablauf inklusive des ursprünglichen Fehlers.
+
+Hier wird es spannend. Ein schwaches System könnte behaupten, die erste Datei gelesen zu haben oder einfach abbrechen. Ein besseres System erkennt einen Tool-Fehler als Zustand, ändert seinen Plan und überprüft anschließend die Recovery.
+
+5. Memory-Retrieval + Konfliktbehandlung + Forgetting. Jetzt testen wir, ob „LUMEN lernt jeden Tag" mehr bedeutet als einfach immer neue Texte anzuhäufen.
+
+Ohne dass ich dir den zuvor gespeicherten Wert erneut nenne:
+Was ist der Wert von Test-ID LUMEN-EVAL-913?
+Sag zusätzlich:
+- aus welcher Memory-Schicht oder welchem Datensatz du die Information abgerufen hast,
+- ob sie aus dem aktuellen Chatkontext oder aus persistentem Memory stammt.
+Ändere anschließend den Wert von LUMEN-EVAL-913 auf INDIGO.
+Prüfe danach, ob der alte Wert BERNSTEIN als veraltete Version markiert/ersetzt wurde oder ob jetzt zwei widersprüchliche Memories existieren.
+Erkläre mir exakt, was dein Memory-System dabei gemacht hat.
+Entferne anschließend die komplette Test-ID LUMEN-EVAL-913 wieder, sofern dein Memory-System echtes Löschen unterstützt. Falls nicht, sage ausdrücklich, welche Alternative verwendet wird.
+
+Das ist wahrscheinlich der aufschlussreichste Test der fünf. Wenn LUMEN hier tatsächlich sauber mit create → retrieve → supersede → delete umgehen kann und erklären kann, woher der Fakt kam, ist sein Memory-System deutlich interessanter als bloß „wir hängen eine Vector DB dran".
+
+Nach diesen fünf sollten wir vier Dinge schon ziemlich gut beurteilen können:
+
+MODEL/ROUTING, MEMORY, TOOL ORCHESTRATION und FAILURE RECOVERY.
+
+Und danach würde ich noch nicht sofort zehn weitere Fragen stellen. Gib mir zuerst die fünf Ergebnisse -- idealerweise Antwort + Live-Feed/Action-Screenshot. Dann können wir gezielt auf die Stellen gehen, an denen LUMEN interessant oder verdächtig reagiert hat.
+
+Besonders wenn Test 3–5 funktionieren, würde ich meine bisherige Einschätzung des Projekts merklich nach oben korrigieren. Wenn dagegen hauptsächlich schöne Erklärungen kommen, aber keine nachprüfbaren Zustandsänderungen, wissen wir ebenfalls sehr viel.
